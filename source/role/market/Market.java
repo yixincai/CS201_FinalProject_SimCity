@@ -1,5 +1,4 @@
 package role.market;
-import MarketRole.*;
 
 public class Market {
 	boolean open;
