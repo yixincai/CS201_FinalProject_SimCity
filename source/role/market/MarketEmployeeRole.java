@@ -33,14 +33,15 @@ public class MarketEmployeeRole {
 	public void pickUpOrders(CustomerOrder mc){
 		for (Item item : mc.orderFulfillment)
 			//DoPickUp(item);
+		//DoGoToCashier();
 		m.MarketCashier.msgHereAreGoods(mc);
 	}
 	
 	public void deliverFood(RestaurantOrder mc){
 		for (Item item : mc.orderFulfillment){
-			;
-		}
 			//DoPickUp(Item);
+		}
+		//DoGoToTruck();
 		//Transportation.Truck.msgDeliverToCook(mc.r, mc.orderFulfillment, mc.bill);
 	}
 }

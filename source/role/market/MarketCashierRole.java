@@ -7,6 +7,9 @@ public class MarketCashierRole {
 	List<CustomerOrder> customers; 
 	List<RestaurantOrder> restaurantOrders;
 	Market m;
+	double moneyInHand, moneyInBank;
+	enum MoneyState{OrderedFromBank, none}
+	MoneyState state = MoneyState.none;
 	
 	class Good {
 		String name;
@@ -76,6 +79,10 @@ public class MarketCashierRole {
 			}
 		}
 	}
+	
+	public void msgSuccessTransaction(){
+		state = MoneyState.none;
+	}
 
 	public boolean pickAndExecuteAnAction(){
 		for (CustomerOrder customer : customers){
@@ -110,6 +117,10 @@ public class MarketCashierRole {
 				return true;
 			}
 		}
+		if (moneyInHand > 200 && state == MoneyState.none){
+			//Bank.bankCashierRole.msg();
+			state = MoneyState.OrderedFromBank;
+		}
 		return false;
 	}
 
@@ -130,6 +141,7 @@ public class MarketCashierRole {
 	}
 	
 	public void giveChange(CustomerOrder customer){
+		moneyInHand += customer.bill;
 		customer.mc.msgHereIsGoodAndChange(customer.orderFulfillment, customer.payment - customer.bill);
 	}
 	
@@ -146,6 +158,7 @@ public class MarketCashierRole {
 	}
 	
 	public void makeChange(RestaurantOrder customer){
+		moneyInHand += customer.bill;
 		//customer.r.RestaurantCashier.msgHereIsChange(customer.payment ¨C customer.bill)
 		customer.state = RestaurantOrder.State.none;
 	}
