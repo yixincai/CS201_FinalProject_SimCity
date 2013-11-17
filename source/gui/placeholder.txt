@@ -1,1 +1,14 @@
-Why am i connected to the master?
+This is a placeholder for the GUI folder.  In this folder there will be:
+- The MainWindow class which will create an instance of the main JFrame and hold the rest of the panels
+- The ControlPanel class which will have a tabbed structure containing three tabs, 1)CurrentPerson 2)CurrentBuilding, 
+  and 3)NewPerson.
+	- The Abstract CurrentBuilding class from which BuildingPanels will inherit and add building specific information.  This
+   	  includes such things as a menu for the Restaurants or Stocks for the the Markets. Will use a CardLayout to manage
+   	  all the unique building panels
+	- The NewPerson panel which will inherit from JPanel and contain multiple fields such as Name, Money, Occupation, etc.
+	- The CurrentPerson panel which will inherit from JPanel and display information such as money, current occupation
+	  current nourishment, current active role, etc.
+- The WorldView panel which will inherit from JPanel and contain a bunch of JButtons with 2DTextures to indicate the
+  building
+- The building view which will display the "inside" of the selected building.  Will use card layout to manage each
+  unique building gui. 
