@@ -36,7 +36,7 @@ public class BankHostRole {
 	private void callTeller(BankCustomerRole c, BankTellerRole teller){
 		//DoCallTeller(teller);   
 	    c.msgCalledToDesk(teller);
-	   // teller.setOccupant(c); NEED TO REDESIGN
+	    teller.setOccupied(true);
 	}
 
 }
