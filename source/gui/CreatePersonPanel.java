@@ -41,36 +41,38 @@ public class CreatePersonPanel extends JPanel implements ActionListener
 		this.add(moneyField);
 		this.add(occupationBox);
 		//Position NameLabel
-		layout.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, nameLabel, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, this);
 		//Position NameField
 		layout.putConstraint(SpringLayout.EAST, nameField, -5, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, nameField, 10, SpringLayout.NORTH, this);
 		//Position MoneyLabel
-		layout.putConstraint(SpringLayout.WEST, moneyLabel, 10, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, moneyLabel, 10, SpringLayout.SOUTH, nameLabel);
+		layout.putConstraint(SpringLayout.WEST, moneyLabel, 5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, moneyLabel, 15, SpringLayout.SOUTH, nameLabel);
 		//Position MoneyField
 		layout.putConstraint(SpringLayout.EAST, moneyField, -5, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, moneyField, 10, SpringLayout.SOUTH, nameField);
 		//Position OccupationLabel
-		layout.putConstraint(SpringLayout.WEST, occupationLabel, 10, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, occupationLabel, 10, SpringLayout.SOUTH, moneyLabel);
+		layout.putConstraint(SpringLayout.WEST, occupationLabel, 5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, occupationLabel, 15, SpringLayout.SOUTH, moneyLabel);
 		//Position OccupationBox
 		layout.putConstraint(SpringLayout.EAST, occupationBox, -5, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, occupationBox, 10, SpringLayout.SOUTH, moneyField);
 		
 		JButton addButton = new JButton("Add");
 		addButton.setPreferredSize(new Dimension(1024/3 - 17, 30));
+		addButton.addActionListener(this);
 		this.add(addButton);
 		layout.putConstraint(SpringLayout.SOUTH, addButton, 0, SpringLayout.SOUTH, this);
 	}
 		
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) 
+	public void actionPerformed(ActionEvent e) 
 	{
-		// TODO Auto-generated method stub
-
+		System.out.println("Button clicked");
+		// TODO Implement function to create a new person
+		
 	}
 
 }
