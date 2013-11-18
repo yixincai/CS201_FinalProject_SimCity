@@ -6,7 +6,7 @@ import java.util.concurrent.Semaphore;
 
 import agent.PersonAgent;
 
-public class Bus {
+public class BusAgent {
 	List<MyPerson> passengers;
 	BusState state;
 	String currentDestination;

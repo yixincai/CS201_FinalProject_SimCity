@@ -6,7 +6,7 @@ import java.util.concurrent.Semaphore;
 
 import agent.PersonAgent;
 
-public class Car {
+public class CarRole {
 	List<String> destinations;
 	Dimension currentPos;
 	PersonAgent person;
@@ -15,7 +15,7 @@ public class Car {
 	enum carState{notMoving, turnedOn, moving};
 	carState cState = carState.notMoving;
 	
-	Car(PersonAgent person){
+	CarRole(PersonAgent person){
 		this.person = person;
 	}
 	

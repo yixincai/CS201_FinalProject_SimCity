@@ -7,7 +7,7 @@ import java.util.concurrent.Semaphore;
 import role.market.MarketCashierRole;
 import agent.PersonAgent;
 
-public class Truck {
+public class TruckAgent {
 	List<Package> packages;
 	Semaphore isMoving;
 	MarketCashierRole marketCashier;
@@ -28,7 +28,7 @@ public class Truck {
 	    int amount;
 	}
 	
-	Truck(MarketCashierRole marketCashier){
+	TruckAgent(MarketCashierRole marketCashier){
 		this.marketCashier = marketCashier;
 	}
 	
