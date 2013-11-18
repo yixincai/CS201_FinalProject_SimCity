@@ -11,7 +11,7 @@ public class BankTellerRole {
 	boolean occupied;
 	String name;
 	private int tellerNum;
-	AccountDatabase database;
+	static AccountDatabase database;
 	 
 	private static class AccountDatabase{
 	      Hashtable<Integer, Double> funds;
