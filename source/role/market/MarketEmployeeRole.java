@@ -1,9 +1,11 @@
 package role.market;
 import role.market.MarketCashierRole.CustomerOrder;
 import role.market.MarketCashierRole.RestaurantOrder;
+import role.market.interfaces.MarketEmployee;
+
 import java.util.*;
 
-public class MarketEmployeeRole {
+public class MarketEmployeeRole implements MarketEmployee{
 	Market m;
 	List<CustomerOrder> pickUpOrders;
 	List<RestaurantOrder> deliverOrders;
@@ -27,6 +29,7 @@ public class MarketEmployeeRole {
 			deliverOrders.remove(0);
 			return true;
 		}
+		//DoGoHome();
 		return false;
 	}
 	
@@ -39,7 +42,7 @@ public class MarketEmployeeRole {
 	
 	public void deliverFood(RestaurantOrder mc){
 		for (Item item : mc.orderFulfillment){
-			//DoPickUp(Item);
+			//DoPickUp(item);
 		}
 		//DoGoToTruck();
 		//Transportation.Truck.msgDeliverToCook(mc.r, mc.orderFulfillment, mc.bill);
