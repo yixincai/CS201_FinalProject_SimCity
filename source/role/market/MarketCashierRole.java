@@ -46,13 +46,14 @@ public class MarketCashierRole implements MarketCashier{
 		State state;
 	}
 
+	//customer messages
 	public void msgPlaceOrder(MarketCustomer mc, List<Item> order){
 		customers.add(new CustomerOrder(mc,order, CustomerOrder.customerState.placedBill));
 	}
 
 	public void msgHereAreGoods(CustomerOrder mc){
 		for (CustomerOrder customer : customers){
-			if( customer == mc){
+			if(customer == mc){
 				customer.state = CustomerOrder.customerState.collected;
 				return;
 			}
@@ -70,6 +71,7 @@ public class MarketCashierRole implements MarketCashier{
 		}
 	}
 
+	//restaurant messages
 	public void msgPlaceOrder(Restaurant r, List<Item> order){
 		restaurantOrders.add(new RestaurantOrder(r,order,RestaurantOrder.State.placedBill));
 	}
@@ -84,10 +86,12 @@ public class MarketCashierRole implements MarketCashier{
 		}
 	}
 	
+	//bank messages
 	public void msgSuccessTransaction(){
 		state = MoneyState.none;
 	}
 
+	//Scheduler
 	public boolean pickAndExecuteAnAction(){
 		for (CustomerOrder customer : customers){
 			if( customer.state == CustomerOrder.customerState.placedBill){
@@ -104,7 +108,6 @@ public class MarketCashierRole implements MarketCashier{
 		for (CustomerOrder customer : customers){
 			if( customer.state == CustomerOrder.customerState.paid){
 				giveChange(customer);
-				customers.remove(customer);
 				return true;
 			}
 		}
@@ -149,8 +152,19 @@ public class MarketCashierRole implements MarketCashier{
 	}
 	
 	public void giveChange(CustomerOrder customer){
-		moneyInHand += customer.bill;
-		customer.mc.msgHereIsGoodAndChange(customer.orderFulfillment, customer.payment - customer.bill);
+		if (customer.payment >= customer.bill){
+			moneyInHand += customer.bill;
+			customer.mc.msgHereIsGoodAndChange(customer.orderFulfillment, customer.payment - customer.bill);
+			customers.remove(customer);
+		}
+		else{
+			moneyInHand += customer.payment;
+			//pay next time
+			customer.mc.msgHereIsGoodAndDebt(customer.orderFulfillment, customer.bill - customer.payment);
+			customer.payment = 0;
+			customer.bill = customer.bill - customer.payment;
+			customer.state = CustomerOrder.customerState.none;
+		}
 	}
 	
 	public void deliverOrder(RestaurantOrder customer){

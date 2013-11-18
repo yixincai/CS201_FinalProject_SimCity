@@ -9,8 +9,8 @@ public class MarketCustomerRole implements MarketCustomer{
 	List<Item> orderFulfillment;
 	Map<String, Double> price_list;
 	
-	double money, payment;
-	enum CustomerState {wantToBuy, needPay, pickUpItems, none}
+	double money, payment, debt;
+	enum CustomerState {wantToBuy, needPay, pickUpItems, payNextTime, none}
 	CustomerState state = CustomerState.wantToBuy;
 
 	public void msgHereIsBill(double payment, Map<String, Double> price_list, List<Item> orderFulfillment){
@@ -24,6 +24,12 @@ public class MarketCustomerRole implements MarketCustomer{
 		this.orderFulfillment = orderFulfillment;
 		money += change;
 		state = CustomerState.pickUpItems;
+	}
+	
+	public void msgHereIsGoodAndDebt(List<Item> orderFulfillment, double debt){
+		this.orderFulfillment = orderFulfillment;
+		this.debt = debt;
+		state = CustomerState.payNextTime;
 	}
 
 	public boolean pickAndExecuteAnAction(){
@@ -40,6 +46,11 @@ public class MarketCustomerRole implements MarketCustomer{
 		}
 		if (state == CustomerState.pickUpItems){
 			pickUpItems();
+			state = CustomerState.none;
+			return true;
+		}
+		if (state == CustomerState.payNextTime && money>0){
+			payBackMarket();
 			state = CustomerState.none;
 			return true;
 		}
@@ -64,8 +75,16 @@ public class MarketCustomerRole implements MarketCustomer{
 		market.MarketCashier.msgPlaceOrder(this, order);
 	}
 	
+	public void payBackMarket(){
+		//DoGoToCashier();
+		market.MarketCashier.msgPay(this, money);
+		//DoGoToWaitingArea();
+		money = 0;
+	}
+	
 	public void pickUpItems(){
 		//DoGoToCashier();
+		//DoLeaveMarket();
 		//Active = false;
 	}
 }
