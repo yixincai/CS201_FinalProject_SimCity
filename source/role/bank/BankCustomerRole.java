@@ -27,7 +27,7 @@ public class BankCustomerRole {
 		this.name = name;
 		this.accountNumber = accountNumber;
 		this.money = money;
-		//set values above through personAgent
+		//set values above through personAgent, possible
 		
 		state = State.DoingNothing;
 		event = Event.None;
