@@ -36,7 +36,7 @@ public class MainGui extends JFrame
 		cpanel.setPreferredSize(new Dimension(1024/3, 720));
 		this.add(cpanel, Component.RIGHT_ALIGNMENT);
 		
-		//The code below will add an area for the two gui areas to go
+		//The code below will add an area for the two gui areas to go.
 		JPanel guiArea = new JPanel();
 		guiArea.setBorder(BorderFactory.createTitledBorder("Animations"));
 		guiArea.setPreferredSize(new Dimension(2048/3, 720));
