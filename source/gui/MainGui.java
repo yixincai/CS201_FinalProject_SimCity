@@ -22,15 +22,16 @@ public class MainGui extends JFrame
 	 */
 	public MainGui()
 	{
+		
 		//The code below is for setting up the default window settings
 		this.setSize(1024, 720);
 		this.setLocationRelativeTo(null);
 		this.setTitle("SimCity201 - Team 18");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setVisible(true);
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.X_AXIS));
 		
+
 		//The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
 		ControlPanel cpanel = new ControlPanel();
 		this.add(cpanel, Component.LEFT_ALIGNMENT);
@@ -42,6 +43,10 @@ public class MainGui extends JFrame
 		guiArea.add(new WorldView());
 		guiArea.add(new BuildingWindow());
 		this.add(guiArea, Component.RIGHT_ALIGNMENT);
+		
+		this.setVisible(true);
+		
+
 		
 	}
 	
