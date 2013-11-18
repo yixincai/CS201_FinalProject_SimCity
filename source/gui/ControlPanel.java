@@ -10,6 +10,7 @@ package gui;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 
 public class ControlPanel extends JTabbedPane {
 	
