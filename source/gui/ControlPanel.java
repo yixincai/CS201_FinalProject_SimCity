@@ -21,7 +21,7 @@ public class ControlPanel extends JTabbedPane {
 		//This is all placeholder code just to get the panels into tabs.  Each tab will have its own class eventually.
 		CreatePersonPanel NewPersonPanel = new CreatePersonPanel();
 		JPanel CurrentPersonPanel = new JPanel();
-		JPanel CurrentBuildingPanel = new JPanel();
+		CurrentBuildingPanel CurrentBuildingPanel = new CurrentBuildingPanel();
 		this.addTab("Current Person", null, CurrentPersonPanel, "Not Yet Implemented");
 		this.addTab("Current Building", null, CurrentBuildingPanel, "Not Yet Implemented");
 		this.addTab("New Person", null, NewPersonPanel, "Not Yet Implemented");
