@@ -33,7 +33,7 @@ public class MainGui extends JFrame
 		
 		//The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
 		ControlPanel cpanel = new ControlPanel();
-		this.add(cpanel, Component.RIGHT_ALIGNMENT);
+		this.add(cpanel, Component.LEFT_ALIGNMENT);
 		
 		//The code below will add an area for the two gui areas to go.
 		JPanel guiArea = new JPanel();
@@ -41,7 +41,7 @@ public class MainGui extends JFrame
 		guiArea.setPreferredSize(new Dimension(2048/3, 720));
 		guiArea.add(new WorldView());
 		guiArea.add(new BuildingWindow());
-		this.add(guiArea, Component.CENTER_ALIGNMENT);
+		this.add(guiArea, Component.RIGHT_ALIGNMENT);
 		
 	}
 	
