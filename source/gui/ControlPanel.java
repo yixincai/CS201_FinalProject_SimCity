@@ -8,6 +8,8 @@ package gui;
  * @author Tanner Zigrang
  */
 
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -23,8 +25,7 @@ public class ControlPanel extends JTabbedPane {
 		this.addTab("Current Person", null, CurrentPersonPanel, "Not Yet Implemented");
 		this.addTab("Current Building", null, CurrentBuildingPanel, "Not Yet Implemented");
 		this.addTab("New Person", null, NewPersonPanel, "Not Yet Implemented");
-		
-		
+		this.setPreferredSize(new Dimension(1024/3, 720));
 	}
 
 }
