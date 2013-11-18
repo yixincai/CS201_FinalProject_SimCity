@@ -1,12 +1,18 @@
 package role.market;
 import java.util.*;
 
-public class MarketCashierRole {
+import role.market.interfaces.MarketCashier;
+import role.market.interfaces.MarketCustomer;
+
+public class MarketCashierRole implements MarketCashier{
 
 	Map<String, Good> inventory;
 	List<CustomerOrder> customers; 
 	List<RestaurantOrder> restaurantOrders;
 	Market m;
+	double moneyInHand, moneyInBank;
+	enum MoneyState{OrderedFromBank, none}
+	MoneyState state = MoneyState.none;
 	
 	class Good {
 		String name;
@@ -15,12 +21,12 @@ public class MarketCashierRole {
 	}
 
 	public static class CustomerOrder {
-		CustomerOrder(MarketCustomerRole mc, List<Item> order, CustomerOrder.customerState state){
+		CustomerOrder(MarketCustomer mc, List<Item> order, CustomerOrder.customerState state){
 			this.mc = mc;
 			this.state = state;
 			this.order = order;
 		}
-		MarketCustomerRole mc;
+		MarketCustomer mc;
 		List<Item> order, orderFulfillment;
 		double bill, payment;
 		enum customerState{placedBill, collected, paid, none};
@@ -40,7 +46,7 @@ public class MarketCashierRole {
 		State state;
 	}
 
-	public void msgPlaceOrder(MarketCustomerRole mc, List<Item> order){
+	public void msgPlaceOrder(MarketCustomer mc, List<Item> order){
 		customers.add(new CustomerOrder(mc,order, CustomerOrder.customerState.placedBill));
 	}
 
@@ -54,7 +60,7 @@ public class MarketCashierRole {
 		//person.stateChanged();
 	}
 
-	public void msgPay(MarketCustomerRole mc, double payment){
+	public void msgPay(MarketCustomer mc, double payment){
 		for (CustomerOrder customer : customers){
 			if( customer.mc == mc){
 				customer.payment = payment;
@@ -71,10 +77,15 @@ public class MarketCashierRole {
 	public void msgHereIsPayment(Restaurant r, double payment){
 		for (RestaurantOrder order : restaurantOrders){
 			if( order.r == r){
+				order.payment = payment;
 				order.state = RestaurantOrder.State.paid;
 				return;
 			}
 		}
+	}
+	
+	public void msgSuccessTransaction(){
+		state = MoneyState.none;
 	}
 
 	public boolean pickAndExecuteAnAction(){
@@ -110,6 +121,10 @@ public class MarketCashierRole {
 				return true;
 			}
 		}
+		if (moneyInHand > 200 && state == MoneyState.none){
+			//Bank.bankCashierRole.msg();
+			state = MoneyState.OrderedFromBank;
+		}
 		return false;
 	}
 
@@ -125,27 +140,35 @@ public class MarketCashierRole {
 	}
 
 	public void giveBill(CustomerOrder customer){
-		customer.mc.msgHereIsBill(customer.bill);
+		Map<String, Double> price_list = new HashMap<String, Double>();
+		for (Item item : customer.order){
+			price_list.put(item.name, inventory.get(item.name).price);
+		}
+		customer.mc.msgHereIsBill(customer.bill, price_list, customer.orderFulfillment);
 		customer.state = CustomerOrder.customerState.none;
 	}
 	
 	public void giveChange(CustomerOrder customer){
+		moneyInHand += customer.bill;
 		customer.mc.msgHereIsGoodAndChange(customer.orderFulfillment, customer.payment - customer.bill);
 	}
 	
 	public void deliverOrder(RestaurantOrder customer){
+		Map<String, Double> price_list = new HashMap<String, Double>();
 		for (Item item : customer.order){
 			int amount = Math.min(inventory.get(item.name).amount, item.amount);
 			inventory.get(item.name).amount -= amount;
 			customer.orderFulfillment.add(new Item(item.name, amount));
 			customer.bill += amount* inventory.get(item.name).price;
+			price_list.put(item.name, inventory.get(item.name).price);
 		}
 		m.MarketEmployee.msgPickOrder(customer);
-		//customer.r.RestaurantCashier.msgHereIsBill(customer.bill, Map<String, Double());
+		//customer.r.RestaurantCashier.msgHereIsBill(customer.bill, price_list);
 		customer.state = RestaurantOrder.State.none;
 	}
 	
 	public void makeChange(RestaurantOrder customer){
+		moneyInHand += customer.bill;
 		//customer.r.RestaurantCashier.msgHereIsChange(customer.payment ¨C customer.bill)
 		customer.state = RestaurantOrder.State.none;
 	}
