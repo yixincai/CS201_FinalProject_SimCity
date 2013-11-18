@@ -6,7 +6,7 @@ public abstract class Role
 {
 	// ----------------------------- DATA ------------------------------------
 	private PersonAgent _person;
-	public boolean _active = false;
+	public boolean active = false;
 	
 	// ----------------------------- ACCESSORS ------------------------------------
 	public void setPersonAgent(PersonAgent person) { _person = person; }
@@ -16,7 +16,7 @@ public abstract class Role
 	// ----------------------------- METHODS ------------------------------------
 	protected void stateChanged()
 	{
-		if(_active) _person.stateChanged();
+		if(active) _person.stateChanged();
 	}
 	public abstract boolean pickAndExecuteAnAction();
 }
