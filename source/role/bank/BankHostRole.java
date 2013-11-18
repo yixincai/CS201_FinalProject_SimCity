@@ -1,5 +1,7 @@
 package role.bank;
 
+import gui.BankHostRoleGui;
+
 import java.util.*;
 
 public class BankHostRole {
@@ -7,6 +9,7 @@ public class BankHostRole {
 	//Data
 	List<BankTellerRole> tellers;
 	List<BankCustomerRole> waitingCustomers;
+	BankHostRoleGui gui;
 	
 	//Messages
 	public void msgWaiting(BankCustomerRole c){
@@ -34,7 +37,7 @@ public class BankHostRole {
 	
 	//Actions
 	private void callTeller(BankCustomerRole c, BankTellerRole teller){
-		//DoCallTeller(teller);   
+		gui.DoCallTeller(teller);   
 	    c.msgCalledToDesk(teller);
 	    teller.setOccupied(true);
 	}

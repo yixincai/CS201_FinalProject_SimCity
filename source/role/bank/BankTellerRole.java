@@ -1,5 +1,7 @@
 package role.bank;
 
+import gui.BankTellerRoleGui;
+
 import java.util.Hashtable;
 import java.util.List;
 
@@ -12,6 +14,8 @@ public class BankTellerRole {
 	String name;
 	private int tellerNum;
 	static AccountDatabase database;
+	
+	BankTellerRoleGui gui;
 	 
 	private static class AccountDatabase{
 	      Hashtable<Integer, Double> funds;
@@ -123,7 +127,7 @@ public class BankTellerRole {
 			database.amountOwed.put(m.accountNumber, currentAmountOwed - m.number);
 			m.customer.msgTransactionComplete();
 		} else{ //robber
-		  //DoCallSecurity();
+			gui.DoCallSecurity();
 		}
 	}
 

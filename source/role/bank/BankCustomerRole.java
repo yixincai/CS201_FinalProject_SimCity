@@ -1,5 +1,7 @@
 package role.bank;
 
+import gui.BankCustomerRoleGui;
+
 public class BankCustomerRole {
 
 	//Data
@@ -15,6 +17,7 @@ public class BankCustomerRole {
 	State state;
 	Event event;
 	//Semaphore bankCustSem;
+	BankCustomerRoleGui gui;
 	 
 	enum State {Robber, DoingNothing, Waiting, AtTeller, GaveRequest, 
 		TransactionComplete, TransactionDenied };
@@ -86,13 +89,13 @@ public class BankCustomerRole {
 	}
 	
 	private void goToLine(){
-		  //DoGoToLine();
+		  gui.DoGoToLine();
 		  bankHost.msgWaiting(this);
 		  state = State.Waiting;
 		  // stateChanged();
 	}
 	private void goToTeller(){
-		//DoGoToTeller(this.teller.getTellerNum());
+		  gui.DoGoToTeller(this.teller.getTellerNum());
 		  teller.msgIAmHere(this);
 		  state = State.AtTeller;
 		  // stateChanged();
@@ -110,7 +113,7 @@ public class BankCustomerRole {
 		  // stateChanged();
 	}
 	private void leaveBank(){
-		 // DoLeaveBank();
+		  gui.DoLeaveBank();
 		  bankHost.msgLeavingBank(teller);
 		  teller.msgLeavingBank(this);
 		  state = State.DoingNothing;
@@ -118,6 +121,7 @@ public class BankCustomerRole {
 		  // stateChanged();
 	}
 	private void robBank(){
+		gui.DoRobBank();
 		//teller.msgGiveMeAllYourMoney();
 		state = State.Robber;
 		 // stateChanged();
