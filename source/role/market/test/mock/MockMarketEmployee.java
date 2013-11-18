@@ -6,7 +6,7 @@ import test.mock.Mock;
 import role.market.interfaces.*;
 
 public class MockMarketEmployee extends Mock implements MarketEmployee{
-	MockMarketEmployee(String name){
+	public MockMarketEmployee(String name){
 		super(name);
 	}
 	

@@ -9,7 +9,7 @@ import role.market.interfaces.*;
 
 public class MockMarketCashier extends Mock implements MarketCashier{
 
-	MockMarketCashier(String name){
+	public MockMarketCashier(String name){
 		super(name);
 	}
 	

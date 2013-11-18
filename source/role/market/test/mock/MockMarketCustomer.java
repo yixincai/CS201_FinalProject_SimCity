@@ -8,7 +8,7 @@ import role.market.Item;
 import test.mock.Mock;
 
 public class MockMarketCustomer extends Mock implements MarketCustomer{
-	MockMarketCustomer(String name){
+	public MockMarketCustomer(String name){
 		super(name);
 	}
 	

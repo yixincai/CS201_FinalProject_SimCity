@@ -27,7 +27,7 @@ public abstract class Agent
      * Wakes up the scheduler.
      * This should be called whenever state has changed that might cause the agent to do something.
      */
-    protected void stateChanged()
+    public void stateChanged()
     {
         sleepSemaphore.release();
     }
@@ -78,7 +78,7 @@ public abstract class Agent
         print(msg, null);
     }
     
-    // TEST:
+    // TEST
     protected void logThis(String msg) {
     	log.add(new LoggedEvent(msg));
     }
