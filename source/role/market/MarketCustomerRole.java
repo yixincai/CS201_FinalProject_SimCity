@@ -1,9 +1,9 @@
 package role.market;
 import java.util.*;
-
+import role.Role;
 import role.market.interfaces.MarketCustomer;
 
-public class MarketCustomerRole implements MarketCustomer{
+public class MarketCustomerRole extends Role implements MarketCustomer{
 	Market market;
 	List<Item> order;
 	List<Item> orderFulfillment;

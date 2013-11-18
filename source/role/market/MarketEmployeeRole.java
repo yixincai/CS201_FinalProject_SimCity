@@ -2,10 +2,10 @@ package role.market;
 import role.market.MarketCashierRole.CustomerOrder;
 import role.market.MarketCashierRole.RestaurantOrder;
 import role.market.interfaces.MarketEmployee;
-
+import role.Role;
 import java.util.*;
 
-public class MarketEmployeeRole implements MarketEmployee{
+public class MarketEmployeeRole extends Role implements MarketEmployee{
 	Market market;
 	List<CustomerOrder> pickUpOrders;
 	List<RestaurantOrder> deliverOrders;

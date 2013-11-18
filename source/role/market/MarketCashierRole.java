@@ -1,11 +1,14 @@
 package role.market;
 import java.util.*;
 
+import test.utilities.*;
+import role.Role;
 import role.market.interfaces.MarketCashier;
 import role.market.interfaces.MarketCustomer;
 
-public class MarketCashierRole implements MarketCashier{
+public class MarketCashierRole extends Role implements MarketCashier{
 
+	public EventLog log = new EventLog();
 	public Map<String, Good> inventory = new HashMap<String, Good>();
 	public List<CustomerOrder> customers = new ArrayList<CustomerOrder>(); 
 	public List<RestaurantOrder> restaurantOrders = new ArrayList<RestaurantOrder>();
@@ -20,10 +23,12 @@ public class MarketCashierRole implements MarketCashier{
 
 	//customer messages
 	public void msgPlaceOrder(MarketCustomer mc, List<Item> order){
+		log.add(new LoggedEvent("Received PlaceOrder from customer."));
 		customers.add(new CustomerOrder(mc,order, CustomerOrder.customerState.placedBill));
 	}
 
 	public void msgHereAreGoods(CustomerOrder mc){
+		log.add(new LoggedEvent("Received HereAreGoods from employee."));
 		for (CustomerOrder customer : customers){
 			if(customer == mc){
 				customer.state = CustomerOrder.customerState.collected;
@@ -34,6 +39,7 @@ public class MarketCashierRole implements MarketCashier{
 	}
 
 	public void msgPay(MarketCustomer mc, double payment){
+		log.add(new LoggedEvent("Received Payment from customer."));
 		for (CustomerOrder customer : customers){
 			if( customer.mc == mc){
 				customer.payment = payment;
@@ -45,10 +51,12 @@ public class MarketCashierRole implements MarketCashier{
 
 	//restaurant messages
 	public void msgPlaceOrder(Restaurant r, List<Item> order){
+		log.add(new LoggedEvent("Received PlaceOrder from restaurant."));
 		restaurantOrders.add(new RestaurantOrder(r,order,RestaurantOrder.State.placedBill));
 	}
 
 	public void msgHereIsPayment(Restaurant r, double payment){
+		log.add(new LoggedEvent("Received HereIsPayment from restaurant."));
 		for (RestaurantOrder order : restaurantOrders){
 			if( order.r == r){
 				order.payment = payment;
