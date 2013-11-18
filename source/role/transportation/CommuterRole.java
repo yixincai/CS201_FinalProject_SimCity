@@ -10,6 +10,7 @@ public class CommuterRole extends Role {
 	
 	// This is set by PersonAgent, and it is CommuterRole's responsibility to get to that location, then set its active to false.
 	public Place destination;
+	public Place currentPlace;
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
