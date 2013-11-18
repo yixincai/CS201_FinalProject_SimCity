@@ -1,9 +1,9 @@
 package role.market;
 import java.util.*;
-
+import role.Role;
 import role.market.interfaces.MarketCustomer;
 
-public class MarketCustomerRole implements MarketCustomer{
+public class MarketCustomerRole extends Role implements MarketCustomer{
 	Market market;
 	List<Item> order;
 	List<Item> orderFulfillment;
@@ -13,6 +13,10 @@ public class MarketCustomerRole implements MarketCustomer{
 	enum CustomerState {wantToBuy, needPay, pickUpItems, payNextTime, none}
 	CustomerState state = CustomerState.wantToBuy;
 
+	public MarketCustomerRole(Market m){
+		this.market = m;
+	}
+	
 	public void msgHereIsBill(double payment, Map<String, Double> price_list, List<Item> orderFulfillment){
 		this.payment = payment;
 		this.price_list = price_list;
