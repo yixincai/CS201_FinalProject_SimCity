@@ -2,8 +2,8 @@ package agent;
 
 import java.util.concurrent.*;
 
-import test.utilities.EventLog;
-import test.utilities.LoggedEvent;
+import utilities.EventLog;
+import utilities.LoggedEvent;
 import utilities.StringUtil;
 
 /**
