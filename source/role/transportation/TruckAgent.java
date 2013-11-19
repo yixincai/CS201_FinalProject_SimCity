@@ -7,7 +7,7 @@ import java.util.concurrent.Semaphore;
 import role.market.MarketCashierRole;
 import agent.PersonAgent;
 
-public class Truck {
+public class TruckAgent {
 	List<Package> packages;
 	Semaphore isMoving;
 	MarketCashierRole marketCashier;
@@ -28,7 +28,7 @@ public class Truck {
 	    int amount;
 	}
 	
-	Truck(MarketCashierRole marketCashier){
+	TruckAgent(MarketCashierRole marketCashier){
 		this.marketCashier = marketCashier;
 	}
 	
@@ -55,18 +55,22 @@ public class Truck {
 		for(Package temp: packages){
 			if(temp.pState == packageState.inTruck){
 				DeliverToDestination(temp);
+				return true;
 			}
 			
 			if(temp.pState == packageState.unloaded){
 				RemoveFromList(temp);
+				return true;
 			}
 			
 		}
 		
 		if(packages.isEmpty() && out == true){
 			GoBackToMarket();
+			return true;
 		}
         
+		return false;
 	}
 	
 	public void DeliverToDestination(Package aPackage){
