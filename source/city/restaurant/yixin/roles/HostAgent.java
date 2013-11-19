@@ -4,7 +4,7 @@ import agent.Agent;
 import restaurant.WaiterAgent;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.*;
-import restaurant.test.mock.EventLog;
+import utilities.EventLog;
 
 import java.util.*;
 
