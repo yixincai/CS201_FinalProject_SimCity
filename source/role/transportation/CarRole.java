@@ -9,14 +9,14 @@ import agent.PersonAgent;
 public class CarRole {
 	List<String> destinations;
 	Dimension currentPos;
-	PersonAgent person;
+	CommuterRole commuter;
 	Semaphore isMoving;
 	CarGui gui;
 	enum carState{notMoving, turnedOn, moving};
 	carState cState = carState.notMoving;
 	
-	CarRole(PersonAgent person){
-		this.person = person;
+	CarRole(CommuterRole person){
+		commuter = person;
 	}
 	
 	public void msgGotInCar(PersonAgent person, String destination){

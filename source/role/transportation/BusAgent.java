@@ -7,7 +7,7 @@ import java.util.concurrent.Semaphore;
 import agent.PersonAgent;
 
 public class BusAgent {
-	List<MyPerson> passengers;
+	List<MyCommuter> passengers;
 	BusState state;
 	String currentDestination;
 	
@@ -23,13 +23,13 @@ public class BusAgent {
 	
 	enum PassengerState{onBus, offBus};
 
-	class MyPerson{
-	    PersonAgent person;
+	class MyCommuter{
+	    CommuterRole commuter;
 	    String destination;
 	    PassengerState pState = PassengerState.onBus;
 	    
-	    MyPerson(PersonAgent person, String destination){
-	    	this.person = person;
+	    MyCommuter(CommuterRole person, String destination){
+	    	commuter = person;
 	    	this.destination = destination;
 	    }
 	}
@@ -44,8 +44,8 @@ public class BusAgent {
 	    numPeople--;
 	}
 
-	public void msgGettingOnBoard(PersonAgent person, String destination, int payment){
-	    passengers.add(new MyPerson(person, destination));
+	public void msgGettingOnBoard(CommuterRole person, String destination, int payment){
+	    passengers.add(new MyCommuter(person, destination));
 	    numPeople++; //Fix this
 	}
 	
@@ -71,9 +71,9 @@ public class BusAgent {
 	public void DropOff(){
 	    int i = 0;
 	    bState = BusState.droppingoff;
-	    for(MyPerson person: passengers){
-	        if(person.destination == currentDestination){
-	            person.msgAtBusStop();
+	    for(MyCommuter commuter: passengers){
+	        if(commuter.destination == currentDestination){
+	        	commuter.msgAtBusStop();
 	            expectedPeople--;
 	        }
 	    }
@@ -82,7 +82,7 @@ public class BusAgent {
 	public void PickUp(){
 		bState = BusState.pickingup;
 	    while(numPeople <= capacity){
-	        for(MyPerson person: busstoplist){
+	        for(MyCommuter person: busstoplist){
 	            person.msgPickUpAtBusStop(fare);
 	            expectedPeople++;
 	        }
