@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-import agent.PersonAgent;
+import city.PersonAgent;
 
 public class BusAgent {
 	List<MyCommuter> passengers;

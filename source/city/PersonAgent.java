@@ -5,7 +5,6 @@ import java.util.List;
 import city.transportation.CommuterRole;
 import agent.Agent;
 import agent.Role;
-import role.*;
 
 public class PersonAgent extends Agent
 {
