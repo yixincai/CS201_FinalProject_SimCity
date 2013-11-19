@@ -5,7 +5,9 @@ import gui.BankTellerRoleGui;
 import java.util.Hashtable;
 import java.util.List;
 
-public class BankTellerRole {
+import role.Role;
+
+public class BankTellerRole extends Role {
 	
 	//Data
 	List<MyCustomer> myCustomers;
@@ -37,7 +39,7 @@ public class BankTellerRole {
 	      CustomerState customerState;
 	}
 	
-	enum CustomerState { None, Arrived, GivingRequest, GivenRequest};
+	enum CustomerState { None, Arrived, GivingRequest, GivenRequest, Leaving};
 	
 	//Messages
 	public void msgIAmHere(BankCustomerRole c){
@@ -81,6 +83,10 @@ public class BankTellerRole {
 				processRequest(m);
 				return true;
 			}
+		}
+		
+		if(myCustomers.isEmpty() && !active){
+			leaveBank();
 		}
 		return false;
 	}
