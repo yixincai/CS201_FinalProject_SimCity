@@ -5,8 +5,7 @@ import city.market.MarketCashierRole;
 import city.market.test.mock.MockMarketCustomer;
 import city.market.test.mock.MockMarketEmployee;
 import junit.framework.TestCase;
-import role.market.*;
-import role.market.test.mock.*;
+
 public class MarketCashierTest  extends TestCase {
 	Market m;
 	MarketCashierRole cashier;

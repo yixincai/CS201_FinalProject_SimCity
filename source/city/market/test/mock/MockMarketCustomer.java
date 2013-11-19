@@ -6,7 +6,6 @@ import java.util.Map;
 import city.market.Item;
 import city.market.interfaces.MarketCustomer;
 import agent.Mock;
-import role.market.interfaces.*;
 
 public class MockMarketCustomer extends Mock implements MarketCustomer{
 	public MockMarketCustomer(String name){

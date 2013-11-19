@@ -7,8 +7,6 @@ import city.market.MarketCashierRole.CustomerOrder;
 import city.market.interfaces.MarketCashier;
 import city.market.interfaces.MarketCustomer;
 import agent.Mock;
-import test.mock.*;
-import role.market.interfaces.*;
 
 public class MockMarketCashier extends Mock implements MarketCashier{
 
