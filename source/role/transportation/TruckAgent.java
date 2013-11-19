@@ -55,18 +55,22 @@ public class TruckAgent {
 		for(Package temp: packages){
 			if(temp.pState == packageState.inTruck){
 				DeliverToDestination(temp);
+				return true;
 			}
 			
 			if(temp.pState == packageState.unloaded){
 				RemoveFromList(temp);
+				return true;
 			}
 			
 		}
 		
 		if(packages.isEmpty() && out == true){
 			GoBackToMarket();
+			return true;
 		}
         
+		return false;
 	}
 	
 	public void DeliverToDestination(Package aPackage){
