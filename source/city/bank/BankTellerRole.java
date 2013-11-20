@@ -2,10 +2,13 @@ package city.bank;
 
 import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
+import agent.Role;
+import city.PersonAgent;
 import city.bank.gui.BankTellerRoleGui;
 
-public class BankTellerRole {
+public class BankTellerRole extends Role {
 	
 	//Data
 	List<MyCustomer> myCustomers;
@@ -15,8 +18,19 @@ public class BankTellerRole {
 	private int tellerNum;
 	static AccountDatabase database;
 	
+	enum Command{None, Leave};
+	Command command;
+	Semaphore tellerSem = new Semaphore(0,true);
+	
+	PersonAgent person;
+	
 	BankTellerRoleGui gui;
 	 
+	BankTellerRole(PersonAgent person){
+		super(person);
+		command = Command.None;
+	}
+	
 	private static class AccountDatabase{
 	      Hashtable<Integer, Double> funds;
 	      Hashtable<Integer, Double> amountOwed;
@@ -82,6 +96,10 @@ public class BankTellerRole {
 				return true;
 			}
 		}
+		
+		if(myCustomers.isEmpty() && command == Command.Leave){
+			leaveBank();
+		}
 		return false;
 	}
 	
@@ -128,10 +146,29 @@ public class BankTellerRole {
 			m.customer.msgTransactionComplete(-m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
 		} else{ //robber
 			gui.DoCallSecurity();
+			try{
+				tellerSem.acquire();
+			} catch (Exception e){
+				e.printStackTrace();
+			}
 		}
+	}
+	
+	private void leaveBank(){
+		gui.DoLeaveBank();
+		try{
+			tellerSem.acquire();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		active = false;
 	}
 
 	//Utilities
+	
+	public void releaseSemaphore(){
+		tellerSem.release();
+	}
 	public int getTellerNum(){
 		return tellerNum;
 	}
@@ -141,5 +178,12 @@ public class BankTellerRole {
 	}
 	public void setOccupied(boolean occupied){
 		this.occupied = occupied;
+	}
+	
+	//-------commands--------
+	@Override
+	protected void finishCommandAndLeave() {
+		command = Command.Leave;
+		stateChanged();
 	}
 }

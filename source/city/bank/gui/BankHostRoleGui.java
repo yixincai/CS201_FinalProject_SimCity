@@ -30,5 +30,9 @@ public class BankHostRoleGui implements Gui {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void DoLeaveBank() {
+		// TODO
+	}
 
 }
