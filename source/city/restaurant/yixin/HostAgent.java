@@ -1,10 +1,10 @@
-package city.restaurant.yixin.roles;
+package city.restaurant.yixin;
 
 import agent.Agent;
 import restaurant.WaiterAgent;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.*;
-import utilities.EventLog;
+import restaurant.test.mock.EventLog;
 
 import java.util.*;
 

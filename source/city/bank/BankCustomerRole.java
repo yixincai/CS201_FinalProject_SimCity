@@ -62,6 +62,10 @@ public class BankCustomerRole extends Role {
 		this.amount = amount;
 		stateChanged();
 	}
+	@Override
+	public void cmdFinishAndLeave() {
+		//do nothing
+	}
 	
 	
 	
@@ -84,7 +88,6 @@ public class BankCustomerRole extends Role {
 		  stateChanged();
 	}
 	/**
-	 * 
 	 * @param amountReceived The amount of money received from the teller.  If the transaction was a deposit, this amount will be negative.
 	 */
 	public void msgTransactionComplete(double amountReceived, double funds, double amountOwed){
@@ -192,10 +195,5 @@ public class BankCustomerRole extends Role {
 		//teller.msgGiveMeAllYourMoney();
 		state = State.Robber;
 		 // stateChanged();
-	}
-
-	@Override
-	protected void finishAndLeaveCommand() {
-		//do nothing
 	}
 }

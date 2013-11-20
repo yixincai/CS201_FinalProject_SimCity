@@ -11,6 +11,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	Market market;
 	List<CustomerOrder> pickUpOrders;
 	List<RestaurantOrder> deliverOrders;
+	enum RoleState{WantToLeave,none}
+	RoleState role_state = RoleState.none;
 	
 	public MarketEmployeeRole(PersonAgent p, Market m){
 		super(p);
@@ -36,6 +38,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			deliverOrders.remove(0);
 			return true;
 		}
+		if (pickUpOrders.size() == 0 && deliverOrders.size() == 0 && role_state == RoleState.WantToLeave){
+			finishAndLeaveCommand();
+			role_state = RoleState.none;
+			return true;
+		}
 		//DoGoHome();
 		return false;
 	}
@@ -53,5 +60,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 		//DoGoToTruck();
 		//Transportation.Truck.msgDeliverToCook(mc.r, mc.orderFulfillment, mc.bill);
+	}
+	
+	protected void finishAndLeaveCommand() {
+		//gui.DoLeaveMarket();
+		active = false;
 	}
 }
