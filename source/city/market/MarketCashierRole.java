@@ -16,8 +16,10 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	private List<RestaurantOrder> restaurantOrders = new ArrayList<RestaurantOrder>();
 	Market market;
 	double moneyInHand, moneyInBank;
+	enum RoleState{WantToLeave,none}
+	RoleState role_state = RoleState.none;
 	enum MoneyState{OrderedFromBank, none}
-	MoneyState state = MoneyState.none;
+	MoneyState money_state = MoneyState.none;
 	
 	public MarketCashierRole(PersonAgent person, Market m){
 		super(person);
@@ -71,7 +73,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	
 	//bank messages
 	public void msgSuccessTransaction(){
-		state = MoneyState.none;
+		money_state = MoneyState.none;
 	}
 
 	//Scheduler
@@ -107,9 +109,15 @@ public class MarketCashierRole extends Role implements MarketCashier{
 				return true;
 			}
 		}
-		if (moneyInHand > 200 && state == MoneyState.none){
+		if (moneyInHand > 200 && money_state == MoneyState.none){
 			//Bank.bankCashierRole.msg();
-			state = MoneyState.OrderedFromBank;
+			money_state = MoneyState.OrderedFromBank;
+			return true;
+		}
+		if (restaurantOrders.size() == 0 && customers.size() == 0 && role_state == RoleState.WantToLeave){
+			finishCommandAndLeave();
+			role_state = RoleState.none;
+			return true;
 		}
 		return false;
 	}
@@ -200,5 +208,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		double bill, payment;
 		enum State{placedBill, paid, none}
 		State state;
+	}
+
+	@Override
+	protected void finishCommandAndLeave() {
+		//gui.DoLeaveMarket();
+		active = false;
 	}
 }
