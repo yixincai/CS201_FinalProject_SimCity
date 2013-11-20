@@ -11,9 +11,9 @@ import utilities.LoggedEvent;
 public class MarketCashierRole extends Role implements MarketCashier{
 
 	public EventLog log = new EventLog();
-	private Map<String, Good> inventory = new HashMap<String, Good>();
-	private List<CustomerOrder> customers = new ArrayList<CustomerOrder>(); 
-	private List<RestaurantOrder> restaurantOrders = new ArrayList<RestaurantOrder>();
+	public Map<String, Good> inventory = new HashMap<String, Good>();
+	public List<CustomerOrder> customers = new ArrayList<CustomerOrder>(); 
+	public List<RestaurantOrder> restaurantOrders = new ArrayList<RestaurantOrder>();
 	Market market;
 	double moneyInHand, moneyInBank;
 	enum RoleState{WantToLeave,none}
