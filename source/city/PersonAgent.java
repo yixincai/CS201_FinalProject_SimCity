@@ -2,6 +2,7 @@ package city;
 
 import java.util.List;
 
+import city.bank.BankCustomerRole;
 import city.transportation.CommuterRole;
 import agent.Agent;
 import agent.Role;
@@ -13,16 +14,17 @@ public class PersonAgent extends Agent
 	private String _name;
 	
 	// Role data:
-	private List<Role> _placeRoles; // these are roles that you do when you're at a place e.g. RestaurantXCustomerRole, MarketCustomerRole, BankTellerRole
-	private Role _currentRole;
+	private List<Role> _roles; // these are roles that you do when you're at a place e.g. RestaurantXCustomerRole, MarketCustomerRole, BankTellerRole
+	private Role _currentRole; // this should never be null
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
-	private CommuterRole _commuterRole = new CommuterRole();
+	private CommuterRole _commuterRole = new CommuterRole(this);
 	private Role _occupation;
 	//HomeRole _homeRole;
 	
 	// State data:
 	private double _money;
-	enum WealthState { RICH, NORMAL, DEADBEAT, BROKE, POOR } // the word "deadbeat" courtesy of Wilczynski lol
+	enum WealthState { RICH, NORMAL, BROKE, POOR } // the word "deadbeat" courtesy of Wilczynski lol
+	boolean _deadbeat = false; // if true, means this person doesn't pay loans
 	enum NourishmentState { HUNGRY, FULL }
 	enum LocationState { NONE, TRAVELING, HOME, WORK, BANK, MARKET, RESTAURANT }
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
@@ -36,10 +38,6 @@ public class PersonAgent extends Agent
 			if(_money <= 10)
 			{
 				return (_occupation != null) ? WealthState.BROKE : WealthState.POOR;
-			}
-			else if(_money <= 60)
-			{
-				return WealthState.DEADBEAT;
 			}
 			else if(_money <= 250)
 			{
@@ -62,13 +60,24 @@ public class PersonAgent extends Agent
 			
 			return LocationState.NONE; //TEMP
 		}
+		
+		double time()
+		{
+			return Time.getTime();
+		}
+		
+		Time.Day today()
+		{
+			return Time.today();
+		}
 	}
-	State state = new State();
+	State _state = new State();
 	
 	
 	
 	// -------------------------------- CONSTRUCTORS & PROPERTIES ------------------------------------
 	public PersonAgent(String name) { _name = name; }
+	// public PersonAgent(String name, Role r) { _name = name; ... }
 	public String name() { return _name; }
 	public void changeMoney(double delta) { _money += delta; }
 	
@@ -79,34 +88,69 @@ public class PersonAgent extends Agent
 	protected boolean pickAndExecuteAnAction() {
 		// here, check for and do emergencies/important actions
 		
-		if(_currentRole != null)
+		if(_currentRole.active)
 		{
-			if(_currentRole.active)
+			if(_currentRole.pickAndExecuteAnAction())
 			{
-				if(_currentRole.pickAndExecuteAnAction())
-				{
-					return true;
-				}
+				return true;
+			}
+		}
+		else // i.e. _currentRole.active == false
+		{
+			if(_currentRole == _commuterRole)
+			{
+				// We must have just reached the destination since the role was just set to inactive and the previous value of _currentRole was _transportationRole.
+				_currentRole = _nextRole;
+				_currentRole.active = true;
+				return true;
 			}
 			else
 			{
-				if(_currentRole == _commuterRole)
+				// note: the program will only get to here if we just finished one role, which is not transportation role
+				// Choose the next role to do.  Set _nextRole to the next role you will do, set _currentRole to _commuterRole
+				/*// The model for conditions:
+				if(condition)
 				{
-					// We must have just reached the destination since the role was just set to inactive and the previous value of _currentRole was _transportationRole.
-					_currentRole = _nextRole;
+					restaurant.eric.CustomerRole c = new restaurant.eric.CustomerRole();
+					c.cmdGotHungry();
+					_nextRole = c;
+					_commuterRole.setDestination(restaurantEric);
+					_currentRole = _commuterRole;
+					_currentRole.active = true;
+					return true;
+				}*/
+				
+				// Decide whether or not to go to the bank
+				for(Role r : _roles)
+				{
+					if(r instanceof BankCustomerRole)
+					{
+						BankCustomerRole bcr = (BankCustomerRole)r;
+						
+						if(true /*I want to go to the bank*/)
+						{
+							_nextRole = bcr;
+							_commuterRole.setDestination(bcr.place());
+							_currentRole = _commuterRole;
+							_currentRole.active = true;
+							return true;
+						}
+					}
 				}
-				_currentRole = null;
+				
+				//_nextRole = _HomeRole;
 			}
+		}
+		/*
 		}
 		else // i.e. currentRole == null
 		{
-			// Choose the next role to do.  Set _nextRole to the next role you will do, set _currentRole to _commuterRole
-			
 			// If we chose a role, return true.
 			// note: it's possible that the program will not get here, because of doing an action in the code above.
 			if(_currentRole != null) return true;
 		}
-		// if((e.g. just entered the weekend) and homeRole instanceof ApartmentRenterRole) _homeRole.pickAndExecuteAnAction(); // to pay rent
+		// if((e.g. just entered the weekend) and homeRole instanceof ApartmentRenterRole) { _homeRole.cmdPayRent(); _homeRole.pickAndExecuteAnAction(); } // to pay rent
+		*/
 		//check for and do non-important actions, like check your phone
 		if(_name.equals("Wilczynski"))
 		{
@@ -122,7 +166,7 @@ public class PersonAgent extends Agent
 	private void chooseNextRole()
 	{
 		// For example:
-		if(state.nourishment == NourishmentState.HUNGRY)
+		if(_state.nourishment == NourishmentState.HUNGRY)
 		{
 			actGoToRestaurant();
 		}
@@ -142,6 +186,6 @@ public class PersonAgent extends Agent
 	
 	private void actTellLongStory()
 	{
-		print("When I was a young programmer, my boss ......");
+		print("When I was a young programmer, my boss was skeptical of my design.  I proved him wrong.");
 	}
 }

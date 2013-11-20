@@ -1,4 +1,4 @@
-package city.restaurant.yixin.roles;
+package city.restaurant.yixin;
 
 import java.util.ArrayList;
 import java.util.Collections;

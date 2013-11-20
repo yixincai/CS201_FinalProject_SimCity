@@ -62,6 +62,10 @@ public class BankCustomerRole extends Role {
 		this.amount = amount;
 		stateChanged();
 	}
+	@Override
+	public void cmdFinishAndLeave() {
+		//do nothing
+	}
 	
 	
 	
@@ -84,7 +88,6 @@ public class BankCustomerRole extends Role {
 		  stateChanged();
 	}
 	/**
-	 * 
 	 * @param amountReceived The amount of money received from the teller.  If the transaction was a deposit, this amount will be negative.
 	 */
 	public void msgTransactionComplete(double amountReceived, double funds, double amountOwed){
@@ -103,31 +106,31 @@ public class BankCustomerRole extends Role {
 	
 	public boolean pickAndExecuteAnAction(){
 		if(state == State.LeaveBank && event == Event.DeniedTransaction){
-			leaveBankWithoutTransaction();
+			actLeaveBankWithoutTransaction();
 			return true;
 		}
 		if(state == State.Robber && event == Event.DeniedTransaction){
-			robBank();
+			actRobBank();
 			return true;
 		}
 		if(state == State.DoingNothing && event == Event.None){
-			goToLine();
+			actGoToLine();
 			return true;
 		}
 		if(state == State.Waiting && event == Event.CalledToDesk){
-			goToTeller();	
+			actGoToTeller();	
 			return true;
 		}
 		if(state == State.AtTeller && event == Event.GivenRequestPermission){
-			giveRequest();
+			actGiveRequest();
 			return true;
 		}
 		if(state == State.AtTeller && event == Event.WantsAnotherRequest){
-			giveNewRequest();
+			actGiveNewRequest();
 			return true;
 		}
 		if(state == State.GaveRequest && (event == Event.ApprovedTransaction || event == Event.DeniedTransaction)){
-			leaveBank();
+			actLeaveBank();
 			return true;
 		}
 	/*   maybe redesign these
@@ -138,31 +141,31 @@ public class BankCustomerRole extends Role {
 		return false;
 	}
 	
-	private void goToLine(){
+	private void actGoToLine(){
 		  gui.DoGoToLine();
 		  bankHost.msgWaiting(this);
 		  state = State.Waiting;
 		  // stateChanged();
 	}
-	private void goToTeller(){
+	private void actGoToTeller(){
 		  gui.DoGoToTeller(this.teller.getTellerNum());
 		  teller.msgIAmHere(this);
 		  state = State.AtTeller;
 		  // stateChanged();
 	}
-	private void giveRequest(){
+	private void actGiveRequest(){
 		teller.msgHereIsMyRequest(this, request, accountNumber);
 		state = State.GaveRequest;
 		 // stateChanged();
 	}
-	private void giveNewRequest(){
+	private void actGiveNewRequest(){
 		//may trigger robbery
 		//pick new request using logic tied to accountFunds and amountOwed
 		  //teller.msgHereIsMyRequest(String newRequest, int accountNumber);
 		  state = State.GaveRequest;
 		  // stateChanged();
 	}
-	private void leaveBank(){
+	private void actLeaveBank(){
 		  bankHost.msgLeavingBank(teller);
 		  teller.msgLeavingBank(this);
 		  gui.DoLeaveBank();
@@ -176,7 +179,7 @@ public class BankCustomerRole extends Role {
 		  //send message to person agent to set role inactive, DO NOT SET EVENT TO NONE, THIS WILL RESTART PROCESS
 		  stateChanged();
 	}
-	private void leaveBankWithoutTransaction(){
+	private void actLeaveBankWithoutTransaction(){
 		gui.DoLeaveBank();
 		try {
 			 bankCustSem.acquire();
@@ -187,15 +190,10 @@ public class BankCustomerRole extends Role {
 		active = false;
 		stateChanged();
 	}
-	private void robBank(){
+	private void actRobBank(){
 		gui.DoRobBank();
 		//teller.msgGiveMeAllYourMoney();
 		state = State.Robber;
 		 // stateChanged();
-	}
-
-	@Override
-	protected void finishAndLeaveCommand() {
-		//do nothing
 	}
 }

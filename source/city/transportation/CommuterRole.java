@@ -10,11 +10,10 @@ import city.Place;
  * There is one CommuterRole per person, and the CommuterRole is the one that 
  */
 public class CommuterRole extends Role {
-	
 	// This is set by PersonAgent, and it is CommuterRole's responsibility to get to that location, then set its active to false.
 	public Place _destination;
 	public Place _currentPlace;
-	Car _car = new Car();
+	CarObject _car = new CarObject();
 	
 	//Probably won't need -> not 100% sure though
 	enum carState{noCar, hasCar, usingCar};
@@ -68,7 +67,7 @@ public class CommuterRole extends Role {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	//----------------------------------------------Actions----------------------------------------
 	public void chooseTransportation(){
 		int choice = 0;
@@ -104,17 +103,22 @@ public class CommuterRole extends Role {
 	public void actDriving(){
 		_tState = travelState.driving;
 	}
-
+	
 	@Override
-	protected void finishAndLeaveCommand() {
+	public void cmdFinishAndLeave() {
 		// TODO Auto-generated method stub
-		_person.atDestination(_currentPlace);
+		//_person.atDestination(_currentPlace);
 		active = false;
+		
 	}
 	
 	//----------------------------------------------Setter----------------------------------------
-	public void setCar(Car car){
-		_car = car;
-	}
+	public void setCar(CarObject car){_car = car;}
+	
+	public Place destination() { return _destination; }
+	public void setDestination(Place place) { _destination = place; }
+	
+	public Place currentPlace() { return _currentPlace; }
+	
 
 }

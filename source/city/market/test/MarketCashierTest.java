@@ -1,5 +1,6 @@
 package city.market.test;
 
+import city.PersonAgent;
 import city.market.Market;
 import city.market.MarketCashierRole;
 import city.market.test.mock.MockMarketCustomer;
@@ -15,7 +16,8 @@ public class MarketCashierTest  extends TestCase {
 	public void setUp() throws Exception{
 		m = new Market();
 		super.setUp();
-		cashier = new MarketCashierRole(m);
+		PersonAgent p = new PersonAgent("Mike");
+		cashier = new MarketCashierRole(p,m);
 		customer = new MockMarketCustomer("Customer1");
 		employee = new MockMarketEmployee("Employee1");
 		m.MarketCashier = cashier;
