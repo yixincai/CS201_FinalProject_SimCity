@@ -60,10 +60,12 @@ public class CreatePersonPanel extends JPanel implements ActionListener
 		layout.putConstraint(SpringLayout.NORTH, occupationBox, 10, SpringLayout.SOUTH, moneyField);
 		
 		JButton addButton = new JButton("Add");
-		addButton.setPreferredSize(new Dimension(1024/3 - 17, 30));
+		//addButton.setPreferredSize(new Dimension(1024/3 - 17, 30));
 		addButton.addActionListener(this);
 		this.add(addButton);
 		layout.putConstraint(SpringLayout.SOUTH, addButton, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.WEST, addButton, 5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, addButton, -5, SpringLayout.EAST, this);
 	}
 		
 
