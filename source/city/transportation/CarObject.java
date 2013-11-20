@@ -1,6 +1,7 @@
 package city.transportation;
 
 public class CarObject {
+
 	//Position
 	int _xPos;
 	int _yPos;
@@ -24,4 +25,5 @@ public class CarObject {
 	public int getYPosition(){
 		return _yPos;
 	}
+
 }

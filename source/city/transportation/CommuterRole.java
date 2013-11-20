@@ -42,7 +42,6 @@ public class CommuterRole extends Role {
 	public void msgAtDestination(Place place){
 		
 	}
-	
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
 		if(_destination == _currentPlace){
