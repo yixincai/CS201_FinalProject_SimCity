@@ -19,6 +19,6 @@ public abstract class Role
 	{
 		if(active) _person.stateChanged();
 	}
-	protected abstract void finishAndLeaveCommand();
+	public abstract void cmdFinishAndLeave(); // from PersonAgent
 	public abstract boolean pickAndExecuteAnAction();
 }

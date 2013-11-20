@@ -182,7 +182,7 @@ public class BankTellerRole extends Role {
 	
 	//-------commands--------
 	@Override
-	protected void finishAndLeaveCommand() {
+	protected void cmdFinishAndLeave() {
 		command = Command.Leave;
 		stateChanged();
 	}

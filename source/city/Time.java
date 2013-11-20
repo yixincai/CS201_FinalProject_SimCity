@@ -6,7 +6,31 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 public class Time {
-	private static double Time = 0.0;
+	public static enum Day { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY }
+	private static int todayNumber = 0;
+	private static void incrementDay() { todayNumber++; if(todayNumber == 7) todayNumber = 0; }
+	public static Day today() {
+		switch(todayNumber) {
+		case 0:
+			return Day.MONDAY;
+		case 1:
+			return Day.TUESDAY;
+		case 2:
+			return Day.WEDNESDAY;
+		case 3:
+			return Day.THURSDAY;
+		case 4:
+			return Day.FRIDAY;
+		case 5:
+			return Day.SATURDAY;
+		case 6:
+			return Day.SUNDAY;
+		default:
+			return Day.MONDAY;
+		}
+	}
+	
+	private static double time = 0.0;
 	private static double counter = 0.1;
 	private static double timeFactor = 1.0;
 	
@@ -17,16 +41,15 @@ public class Time {
 			public void actionPerformed(ActionEvent e){
 				incrementTime();}});
 		timer.setRepeats(true);
-		startTimer();
 	}
 	
-	private static void startTimer(){
+	public static void startTimer(){
 		timer.setInitialDelay((int)(12000/timeFactor));
 		timer.restart();
 	}
 	
 	private static void incrementTime(){ //fires every 12 seconds for now, incrementing 1/10th of an hour
-		Time+= counter;
+		time+= counter;
 	}
 	
 	public static void setTimeFactor(int newTimeFactor){
@@ -39,6 +62,6 @@ public class Time {
 	}
 	
 	public static double getTime(){
-		return Time;
+		return time;
 	}
 }
