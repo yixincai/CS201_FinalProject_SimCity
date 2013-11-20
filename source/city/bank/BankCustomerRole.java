@@ -1,5 +1,7 @@
 package city.bank;
 
+import java.util.concurrent.Semaphore;
+
 import agent.Role;
 import city.PersonAgent;
 import city.bank.gui.BankCustomerRoleGui;
@@ -17,11 +19,11 @@ public class BankCustomerRole extends Role {
 	
 	State state;
 	Event event;
-	//Semaphore bankCustSem;
+	Semaphore bankCustSem;
 	BankCustomerRoleGui gui;
 	 
 	enum State {Robber, DoingNothing, Waiting, AtTeller, GaveRequest, 
-		TransactionComplete, TransactionDenied };
+		TransactionComplete, TransactionDenied, LeaveBank };
 	enum Event {None, CalledToDesk, GivenRequestPermission, WantsAnotherRequest, ApprovedTransaction, DeniedTransaction};
 	
 	public BankCustomerRole(PersonAgent person, int accountNumber){
@@ -64,16 +66,22 @@ public class BankCustomerRole extends Role {
 	
 	
 	// ----------------------------- MESSAGES ------------------------------------
+	public void msgWeAreClosed(){
+		state = State.LeaveBank;
+		event = Event.DeniedTransaction;
+		stateChanged();
+	}
+	
 	public void msgCalledToDesk(BankTellerRole teller){
 		  event = Event.CalledToDesk;
 		  this.teller = teller;
-		 // stateChanged();
+		  stateChanged();
 	}
 	public void msgHereIsInfoPickARequest(double funds, double amountOwed){
 		  this.accountFunds = funds;
 		  this.amountOwed = amountOwed;
 		  event = Event.GivenRequestPermission;
-		  //stateChanged();
+		  stateChanged();
 	}
 	/**
 	 * 
@@ -85,15 +93,19 @@ public class BankCustomerRole extends Role {
 		  this.accountFunds = funds;
 		  this.amountOwed = amountOwed;
 		  //or event = WantsAnotherRequest; && state = giveNewRequest; //send another request
-		  //stateChanged(); //may give info
+		  stateChanged(); //may give info
 		}
 	public void msgTransactionDenied(){
 		  event = Event.DeniedTransaction;
 		  //or event = WantsAnotherRequest; && state = giveNewRequest; //send another request
-		  //stateChanged();
+		  stateChanged();
 	}
 	
 	public boolean pickAndExecuteAnAction(){
+		if(state == State.LeaveBank && event == Event.DeniedTransaction){
+			leaveBankWithoutTransaction();
+			return true;
+		}
 		if(state == State.Robber && event == Event.DeniedTransaction){
 			robBank();
 			return true;
@@ -151,17 +163,39 @@ public class BankCustomerRole extends Role {
 		  // stateChanged();
 	}
 	private void leaveBank(){
-		  gui.DoLeaveBank();
 		  bankHost.msgLeavingBank(teller);
 		  teller.msgLeavingBank(this);
+		  gui.DoLeaveBank();
+		  try {
+			  bankCustSem.acquire();
+		  } catch (Exception e){
+			  e.printStackTrace();
+		  }
 		  state = State.DoingNothing;
+		  active = false;
 		  //send message to person agent to set role inactive, DO NOT SET EVENT TO NONE, THIS WILL RESTART PROCESS
-		  // stateChanged();
+		  stateChanged();
+	}
+	private void leaveBankWithoutTransaction(){
+		gui.DoLeaveBank();
+		try {
+			 bankCustSem.acquire();
+	    } catch (Exception e){
+			e.printStackTrace();
+		}
+		state = State.DoingNothing;
+		active = false;
+		stateChanged();
 	}
 	private void robBank(){
 		gui.DoRobBank();
 		//teller.msgGiveMeAllYourMoney();
 		state = State.Robber;
 		 // stateChanged();
+	}
+
+	@Override
+	protected void finishAndLeaveCommand() {
+		//do nothing
 	}
 }
