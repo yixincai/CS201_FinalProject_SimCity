@@ -19,7 +19,7 @@ public class CommuterRole extends Role {
 	enum carState{noCar, hasCar, usingCar};
 	carState _cState = carState.noCar; 
 	
-	enum travelState{choosing, choseCar, driving, choseWalking, walking, choseBus, ridingBus, done};
+	enum travelState{choosing, choseCar, driving, choseWalking, walking, choseBus, ridingBus, atDestination, done};
 	travelState _tState = travelState.done;
 	
 	Random _generator = new Random();
@@ -37,6 +37,10 @@ public class CommuterRole extends Role {
 	public void msgGoToDestination(Place place){
 		_destination = place;
 		_tState = travelState.choosing;
+	}
+	
+	public void msgAtDestination(Place place){
+		
 	}
 	
 	//----------------------------------------------Scheduler----------------------------------------
