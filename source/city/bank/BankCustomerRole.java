@@ -195,7 +195,7 @@ public class BankCustomerRole extends Role {
 	}
 
 	@Override
-	protected void finishCommandAndLeave() {
+	protected void finishAndLeaveCommand() {
 		//do nothing
 	}
 }

@@ -58,7 +58,7 @@ public class BankTellerRole extends Role {
 		  MyCustomer m = new MyCustomer(c);
 		  m.customerState = CustomerState.Arrived;
 		  myCustomers.add(m);
-		  //stateChanged();
+		  stateChanged();
 	}
 	public void msgHereIsMyRequest(BankCustomerRole c, String request, int amount){
 		  for(MyCustomer m: myCustomers){
@@ -66,7 +66,7 @@ public class BankTellerRole extends Role {
 		  	m.customerState = CustomerState.GivenRequest;
 		  	m.request = request;
 		  	m.amount = amount; //
-		  	//stateChanged();
+		  	stateChanged();
 		  	return;
 			}
 		  }
@@ -76,7 +76,7 @@ public class BankTellerRole extends Role {
 			if(m.customer == c){
 				m.customerState = CustomerState.None;
 				myCustomers.remove(m);
-				//stateChanged();
+				stateChanged();
 				return;
 			}
 		  }
@@ -182,7 +182,7 @@ public class BankTellerRole extends Role {
 	
 	//-------commands--------
 	@Override
-	protected void finishCommandAndLeave() {
+	protected void finishAndLeaveCommand() {
 		command = Command.Leave;
 		stateChanged();
 	}
