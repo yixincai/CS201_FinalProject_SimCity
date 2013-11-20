@@ -43,27 +43,27 @@ public class BankHostRole extends Role {
 		for(BankTellerRole t: tellers){
 			if(!t.isOccupied()){
 				if(!waitingCustomers.isEmpty()){
-					callTeller(waitingCustomers.remove(0), t);
+					actCallTeller(waitingCustomers.remove(0), t);
 					return true;
 				}
 			}
 		}
 		
 		if(tellers.isEmpty()){  //host is last to leave bank
-			leaveBank();
+			actLeaveBank();
 			return true;
 		}
 		return false;
 	}
 	
 	//Actions
-	private void callTeller(BankCustomerRole c, BankTellerRole teller){
+	private void actCallTeller(BankCustomerRole c, BankTellerRole teller){
 		gui.DoCallTeller(teller);   
 	    c.msgCalledToDesk(teller);
 	    teller.setOccupied(true);
 	}
 	
-	private void leaveBank(){
+	private void actLeaveBank(){
 		gui.DoLeaveBank();
 		try{
 			hostSem.acquire();
