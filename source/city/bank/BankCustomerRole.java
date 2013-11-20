@@ -1,17 +1,18 @@
 package city.bank;
 
+import agent.Role;
+import city.PersonAgent;
 import city.bank.gui.BankCustomerRoleGui;
 
-public class BankCustomerRole {
+public class BankCustomerRole extends Role {
 
 	//Data
 	BankHostRole bankHost;
 	BankTellerRole teller;
 	String request;
-	String name;
-	double money;
-	double accountFunds;
-	double amountOwed;
+	private double amount;
+	private double accountFunds;
+	private double amountOwed;
 	int accountNumber;
 	
 	State state;
@@ -23,16 +24,46 @@ public class BankCustomerRole {
 		TransactionComplete, TransactionDenied };
 	enum Event {None, CalledToDesk, GivenRequestPermission, WantsAnotherRequest, ApprovedTransaction, DeniedTransaction};
 	
-	public BankCustomerRole(String name, int accountNumber, double money){
-		this.name = name;
+	public BankCustomerRole(PersonAgent person, int accountNumber){
+		super(person);
 		this.accountNumber = accountNumber;
-		this.money = money;
 		//set values above through personAgent, possible
 		
 		state = State.DoingNothing;
 		event = Event.None;
 	}
 	
+	// --------------------- ACCESSORS ---------------
+	public double accountFunds() { return accountFunds; }
+	public double amountOwed() { return amountOwed; }
+	
+	
+	
+	// ------------------------------ COMMANDS ---------------------------------
+	public void cmdWithdraw(double amount) {
+		request = "Withdraw";
+		this.amount = amount;
+		stateChanged();
+	}
+	public void cmdDeposit(double amount) {
+		request = "Deposit";
+		this.amount = amount;
+		stateChanged();
+	}
+	public void cmdWithdrawLoan(double amount) {
+		request = "Withdraw Loan";
+		this.amount = amount;
+		stateChanged();
+	}
+	public void cmdPayLoan(double amount) {
+		request = "Pay Loan";
+		this.amount = amount;
+		stateChanged();
+	}
+	
+	
+	
+	// ----------------------------- MESSAGES ------------------------------------
 	public void msgCalledToDesk(BankTellerRole teller){
 		  event = Event.CalledToDesk;
 		  this.teller = teller;
@@ -44,8 +75,15 @@ public class BankCustomerRole {
 		  event = Event.GivenRequestPermission;
 		  //stateChanged();
 	}
-	public void msgTransactionComplete(){
+	/**
+	 * 
+	 * @param amountReceived The amount of money received from the teller.  If the transaction was a deposit, this amount will be negative.
+	 */
+	public void msgTransactionComplete(double amountReceived, double funds, double amountOwed){
 		  event = Event.ApprovedTransaction;
+		  _person.changeMoney(amountReceived);
+		  this.accountFunds = funds;
+		  this.amountOwed = amountOwed;
 		  //or event = WantsAnotherRequest; && state = giveNewRequest; //send another request
 		  //stateChanged(); //may give info
 		}

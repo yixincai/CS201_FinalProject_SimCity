@@ -13,7 +13,7 @@ public class PersonAgent extends Agent
 	private String _name;
 	
 	// Role data:
-	private List<Role> _temporaryRoles; // these are temporary roles that you do when you're at a place e.g. RestaurantXCustomerRole, MarketCustomerRole
+	private List<Role> _placeRoles; // these are roles that you do when you're at a place e.g. RestaurantXCustomerRole, MarketCustomerRole, BankTellerRole
 	private Role _currentRole;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
 	private CommuterRole _commuterRole = new CommuterRole();
@@ -70,6 +70,7 @@ public class PersonAgent extends Agent
 	// -------------------------------- CONSTRUCTORS & PROPERTIES ------------------------------------
 	public PersonAgent(String name) { _name = name; }
 	public String name() { return _name; }
+	public void changeMoney(double delta) { _money += delta; }
 	
 	
 
@@ -99,7 +100,7 @@ public class PersonAgent extends Agent
 		}
 		else // i.e. currentRole == null
 		{
-			// Choose the next role to do.  Set _nextRole to the next role you will do, set _currentRole to the  
+			// Choose the next role to do.  Set _nextRole to the next role you will do, set _currentRole to _commuterRole
 			
 			// If we chose a role, return true.
 			// note: it's possible that the program will not get here, because of doing an action in the code above.

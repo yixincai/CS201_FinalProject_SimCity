@@ -32,7 +32,7 @@ public class BankTellerRole {
 	      BankCustomerRole customer;
 	      int accountNumber;
 	      String request;
-	      int number;
+	      int amount;
 	      
 	      CustomerState customerState;
 	}
@@ -46,12 +46,12 @@ public class BankTellerRole {
 		  myCustomers.add(m);
 		  //stateChanged();
 	}
-	public void msgHereIsMyRequest(BankCustomerRole c, String request, int number){
+	public void msgHereIsMyRequest(BankCustomerRole c, String request, int amount){
 		  for(MyCustomer m: myCustomers){
 			if(m.customer == c){
 		  	m.customerState = CustomerState.GivenRequest;
 		  	m.request = request;
-		  	m.number = number; //
+		  	m.amount = amount; //
 		  	//stateChanged();
 		  	return;
 			}
@@ -102,16 +102,16 @@ public class BankTellerRole {
 	private void processRequest(MyCustomer m){  //handle multiple requests, MAKE SURE TO ADD CHECK TO SEE IF THEY CAN DO ACTION
 		if(m.request.equalsIgnoreCase("Deposit")){ //not checked
 			double currentFunds = database.funds.remove(m.accountNumber);
-			database.funds.put(m.accountNumber, currentFunds + m.number);
-			//m.customer.funds-= m.number;
+			database.funds.put(m.accountNumber, currentFunds + m.amount);
+			m.customer.msgTransactionComplete(-m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber)); // negative m.amount because I'm taking money from the customer
 		} else if(m.request.equalsIgnoreCase("Withdraw")){ //checked
 		    if(database.amountOwed.get(m.accountNumber) >= 0){
 		    	m.customer.msgTransactionDenied();
 		  	}
 			else {
 				double currentFunds = database.funds.remove(m.accountNumber);
-				database.funds.put(m.accountNumber, currentFunds - m.number);
-				m.customer.msgTransactionComplete();
+				database.funds.put(m.accountNumber, currentFunds - m.amount);
+				m.customer.msgTransactionComplete(m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
 			}
 		} else if(m.request.equalsIgnoreCase("Withdraw Loan")){ // checked a bit, add robber
 			if(database.amountOwed.get(m.accountNumber) >= 0){
@@ -119,13 +119,13 @@ public class BankTellerRole {
 			}
 			else { 
 				double currentAmountOwed = database.amountOwed.remove(m.accountNumber);
-				database.amountOwed.put(m.accountNumber, currentAmountOwed + m.number);
-				m.customer.msgTransactionComplete();
+				database.amountOwed.put(m.accountNumber, currentAmountOwed + m.amount);
+				m.customer.msgTransactionComplete(m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
 			}
 		} else if(m.request.equalsIgnoreCase("Pay Loan")){ // not checked
 			double currentAmountOwed = database.amountOwed.remove(m.accountNumber);
-			database.amountOwed.put(m.accountNumber, currentAmountOwed - m.number);
-			m.customer.msgTransactionComplete();
+			database.amountOwed.put(m.accountNumber, currentAmountOwed - m.amount);
+			m.customer.msgTransactionComplete(-m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
 		} else{ //robber
 			gui.DoCallSecurity();
 		}
