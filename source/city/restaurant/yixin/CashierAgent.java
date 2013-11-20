@@ -4,7 +4,7 @@ import agent.Agent;
 import restaurant.gui.*;
 import restaurant.interfaces.*;
 import restaurant.test.mock.EventLog;
-import utilities.LoggedEvent;
+import restaurant.test.mock.LoggedEvent;
 
 import java.util.*;
 
@@ -56,6 +56,14 @@ public class CashierAgent extends Agent implements Cashier{
 		marketBills.add(new MarketBill(m,bill));
 		stateChanged();
 	}
+	
+	public void msgHereIsTheInvoice(Market m, List<Item> invoice) {
+		for (MarketBill bill : marketBills){
+			if (bill.market == m)
+				bill.invoice_received = true;
+		}
+		stateChanged();		
+	}
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
@@ -75,9 +83,12 @@ public class CashierAgent extends Agent implements Cashier{
 					return true;
 				}
 			}
-			if (marketBills.size()!=0 && money > 0){
-				payMarketBill(marketBills.get(0));
-				return true;
+			if (money > 0){
+				for (MarketBill bill : marketBills)
+					if (bill.invoice_received){
+						payMarketBill(marketBills.get(0));
+						return true;
+					}
 			}
 		}
 		catch(ConcurrentModificationException e){
@@ -153,10 +164,11 @@ public class CashierAgent extends Agent implements Cashier{
 	public static class MarketBill {
 		public double balance;
 		public Market market;
-		
+		public boolean invoice_received;
 		MarketBill(Market market, double money){
 			this.balance = money;
 			this.market = market;
+			invoice_received = false;
 		}
 	}
 }

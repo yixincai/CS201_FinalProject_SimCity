@@ -1,6 +1,6 @@
 package city.restaurant.yixin;
 
-import city.restaurant.yixin.CookAgent.Order;
+import restaurant.CookAgent.Order;
 
 public class SharedDataWaiterAgent extends WaiterAgent{
 	public SharedDataWaiterAgent(String name) {

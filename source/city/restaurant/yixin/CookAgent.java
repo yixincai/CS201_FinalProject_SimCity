@@ -10,20 +10,25 @@ import java.util.concurrent.Semaphore;
 
 public class CookAgent extends Agent implements Cook{
 	public Restaurant r;
+	public Cashier cashier;
 	public EventLog log = new EventLog();
-    private String name = "TheBestCook";
-    public List<MyMarket> markets = new ArrayList<MyMarket>();
+	private String name = "TheBestCook";
 	public List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	public Map<String, Food> inventory = new HashMap<String, Food>();
 	Timer timer = new Timer(), timer2 = new Timer();
 	public CookGui cookGui = null;
 	boolean lowInFood = true;
-	enum CookState{notOrdered,MarketOrderDelivered};
-	CookState state = CookState.notOrdered;
+	enum CookState{ableToOrder,OrderReceived,none};
+	CookState state = CookState.ableToOrder;
 	enum CheckState{notChecked,Checked};
 	CheckState check_state = CheckState.notChecked;	
 	private Semaphore atTable = new Semaphore(0,true);
 	
+	public List<Item> invoice;	
+	public List<Market> markets = new ArrayList<Market>();
+	int market_count = 0;//switch to the next market if one cannot fulfill
+	Market current_market;
+
 	public CookAgent() {
 		super();
 		inventory.put("Steak", new Food("Steak", 5000, 1, 3, 5));
@@ -31,7 +36,7 @@ public class CookAgent extends Agent implements Cook{
 		inventory.put("Salad", new Food("Salad", 1000, 0, 3, 5));
 		inventory.put("Pizza", new Food("Pizza", 3000, 1, 3, 5));
 	}
-	
+
 	public void notifyCook(){
 		stateChanged();
 		check_state = CheckState.notChecked;
@@ -40,20 +45,20 @@ public class CookAgent extends Agent implements Cook{
 	public void setGui(CookGui gui){
 		cookGui = gui;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
 
 	public void addMarket(MarketAgent market) {
-		markets.add(new MyMarket(market));
+		markets.add(market);
 	}
-	
+
 	// Messages
 	public void releaseSemaphore(){
 		atTable.release();
 	}
-	
+
 	public void msgHereIsTheOrder(Waiter w, String choice, int table) {
 		Do("Order received");
 		orders.add(new Order(w,choice,table,Order.OrderState.NotCooked));
@@ -64,23 +69,25 @@ public class CookAgent extends Agent implements Cook{
 		o.state = Order.OrderState.Cooked;
 		stateChanged();
 	}
-	
-	public void msgOrderFulfillment(Market m, Map<String, Integer> order){
+
+	public void msgOrderFulfillment(Market m, List<Item> orderFulfillment){
 		print("Market response received");
-		state = CookState.notOrdered;
-		for (MyMarket market : markets){
-			if (market.market == m){
-				if (order.get("Steak") == 0 && order.get("Chicken") == 0 
-						&& order.get("Pizza") ==0 && order.get("Salad") == 0){
-					market.state = MyMarket.MarketState.Empty;
-				}
-				break;
-			}
+		state = CookState.OrderReceived;
+		current_market = m;
+		invoice = orderFulfillment;
+		boolean fulfilled = true;
+		for (Item item : orderFulfillment){
+			inventory.get(item.name).amount += item.amount;
+			if (inventory.get(item.name).amount < inventory.get(item.name).capacity)
+				fulfilled = false;
 		}
-		inventory.get("Steak").amount += order.get("Steak");
-		inventory.get("Chicken").amount += order.get("Chicken");
-		inventory.get("Pizza").amount += order.get("Pizza");
-		inventory.get("Salad").amount += order.get("Salad");
+		//switch to another market
+		if (!fulfilled){
+			market_count++;
+			if (market_count == 3)
+				market_count = 0;
+		}
+		//check inventory
 		if (inventory.get("Steak").amount < inventory.get("Steak").threshold)
 			lowInFood = true;
 		if (inventory.get("Chicken").amount < inventory.get("Chicken").threshold)
@@ -115,30 +122,31 @@ public class CookAgent extends Agent implements Cook{
 				cookOrder(order);
 				return true;
 			}
-			if(lowInFood && state == CookState.notOrdered){
-				for (MyMarket market : markets){
-					if (market.state == MyMarket.MarketState.NotEmpty){
-						askForSupply(market);
-						state =  CookState.MarketOrderDelivered;
-						lowInFood = false;
-						return true;
+			if(state == CookState.OrderReceived){
+				giveInvoice();
+				state =  CookState.ableToOrder;
+				return true;
+			}
+			if(lowInFood && state == CookState.ableToOrder){
+				askForSupply(markets.get(market_count));
+				state =  CookState.none;
+				lowInFood = false;
+				return true;
+			}
+			if (check_state == CheckState.notChecked){
+				timer2.schedule(new TimerTask() {
+					public void run() {
+						print("Notify the cook to check revolving stand");
+						notifyCook();
 					}
-				}
+				}, 10000);
+				check_state = CheckState.Checked;
 			}
 		}
 		catch(ConcurrentModificationException e){
 			return false;
 		}
 		GoHome();
-		if (check_state == CheckState.notChecked){
-			timer2.schedule(new TimerTask() {
-				public void run() {
-					print("Notify the cook to check revolving stand");
-					notifyCook();
-				}
-			}, 10000);
-			check_state = CheckState.Checked;
-		}
 		return false;
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
@@ -146,27 +154,19 @@ public class CookAgent extends Agent implements Cook{
 	}
 
 	// Actions
-	
-	private void askForSupply(MyMarket market){
+
+	private void askForSupply(Market market){
 		Do("Buy food from market.");
-		Map<String, Integer> order = new HashMap<String, Integer>();
+		List<Item> order = new ArrayList<Item>();
 		if (inventory.get("Steak").amount <= inventory.get("Steak").threshold)
-			order.put("Steak", inventory.get("Steak").capacity - inventory.get("Steak").amount);
-		else
-			order.put("Steak", 0);
+			order.add(new Item("Steak", inventory.get("Steak").capacity - inventory.get("Steak").amount));
 		if (inventory.get("Chicken").amount <= inventory.get("Chicken").threshold)
-			order.put("Chicken", inventory.get("Chicken").capacity - inventory.get("Chicken").amount);
-		else
-			order.put("Chicken", 0);
+			order.add(new Item("Chicken", inventory.get("Chicken").capacity - inventory.get("Chicken").amount));
 		if (inventory.get("Salad").amount <= inventory.get("Salad").threshold)
-			order.put("Salad", inventory.get("Salad").capacity - inventory.get("Salad").amount);
-		else
-			order.put("Salad", 0);
+			order.add(new Item("Salad", inventory.get("Salad").capacity - inventory.get("Salad").amount));
 		if (inventory.get("Pizza").amount <= inventory.get("Pizza").threshold)
-			order.put("Pizza", inventory.get("Pizza").capacity - inventory.get("Pizza").amount);
-		else
-			order.put("Pizza", 0);
-		market.market.msgHereIsTheOrder(order);
+			order.add(new Item("Pizza", inventory.get("Pizza").capacity - inventory.get("Pizza").amount));
+		market.msgHereIsTheOrder(order);
 	}
 
 	private void cookOrder(final Order order) {
@@ -202,10 +202,15 @@ public class CookAgent extends Agent implements Cook{
 		orders.remove(order);
 	}
 	
+	private void giveInvoice(){
+		Do("Giving invoice to cashier");
+		cashier.msgHereIsTheInvoice(current_market, invoice);
+	}
+
 	private void GoHome(){
 		cookGui.DoGoHome();
 	}
-	
+
 	// The animation DoXYZ() routines
 	private void DoGoToCookingPlace() {
 		print("Go Cooking.");
@@ -216,7 +221,7 @@ public class CookAgent extends Agent implements Cook{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void DoCookFood(String choice){
 		print("Cooking " + choice);
 		cookGui.DoCookFood(choice);
@@ -231,7 +236,7 @@ public class CookAgent extends Agent implements Cook{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void DoGoToPlate() {
 		print("Going to plating area");
 		cookGui.DoPutPlate();
@@ -241,7 +246,7 @@ public class CookAgent extends Agent implements Cook{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void DoGoToRevolvingStand() {
 		print("Going to revolving stand");
 		cookGui.DoGoToRevolvingStand();
@@ -260,7 +265,7 @@ public class CookAgent extends Agent implements Cook{
 		public enum OrderState
 		{None, NotCooked, Cooking, Cooked, Delivered};
 		private OrderState state = OrderState.None;
-		
+
 		Order(Waiter w, String choice, int tableNumber, OrderState state) {
 			this.choice = choice;
 			this.tableNumber = tableNumber;
@@ -268,7 +273,7 @@ public class CookAgent extends Agent implements Cook{
 			this.state = state;
 		}
 	}
-	
+
 	public static class Food {
 		String choice;
 		long cookingTime;
@@ -276,7 +281,7 @@ public class CookAgent extends Agent implements Cook{
 		int threshold;
 		int capacity;
 		boolean ordered = false;
-		
+
 		Food(String choice, long time, int amount, int threshold, int capacity){
 			this.choice = choice;
 			this.cookingTime = time;
@@ -285,16 +290,5 @@ public class CookAgent extends Agent implements Cook{
 			this.capacity = capacity;
 		}
 	}
-	
-	public static class MyMarket{
-		Market market;
-		public enum MarketState
-		{NotEmpty, Empty};
-		MarketState state;
-		
-		MyMarket(Market m){
-			this.market = m;
-			this.state = MarketState.NotEmpty;
-		}
-	}
+
 }
