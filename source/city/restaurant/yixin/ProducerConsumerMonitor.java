@@ -1,7 +1,8 @@
-package city.restaurant.yixin.roles;
+package city.restaurant.yixin;
 
 import java.util.Vector;
-import city.restaurant.yixin.roles.CookAgent.Order;
+
+import city.restaurant.yixin.CookAgent.Order;
 
 class ProducerConsumerMonitor extends Object {
     private final int N = 50000;

@@ -1,4 +1,4 @@
-package city.restaurant.yixin.roles;
+package city.restaurant.yixin;
 
 import agent.Agent;
 import restaurant.gui.*;

@@ -1,4 +1,4 @@
-package city.restaurant.yixin.roles;
+package city.restaurant.yixin;
 
 public class NormalWaiterAgent extends WaiterAgent{
 
