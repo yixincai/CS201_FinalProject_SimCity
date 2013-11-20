@@ -16,7 +16,7 @@ public class BankHostRole extends Role {
 
 	//Data
 	List<BankTellerRole> tellers;
-	List<BankCustomerRole> waitingCustomers;
+	private List<BankCustomerRole> waitingCustomers;
 	BankHostRoleGui gui;
 	Semaphore hostSem = new Semaphore(0,true);
 	
@@ -78,7 +78,12 @@ public class BankHostRole extends Role {
 	@Override
 	public void cmdFinishAndLeave() {
 		// TODO Auto-generated method stub
-		//don't really need to do anything
+		command = Command.Leave;
+		stateChanged();
 	}
 
+	//Utilities
+	public boolean isWaitingCustomersEmpty(){
+		return waitingCustomers.isEmpty();
+	}
 }
