@@ -2,6 +2,7 @@ package city;
 
 import java.util.List;
 
+import city.bank.BankCustomerRole;
 import city.transportation.CommuterRole;
 import agent.Agent;
 import agent.Role;
@@ -13,10 +14,10 @@ public class PersonAgent extends Agent
 	private String _name;
 	
 	// Role data:
-	private List<Role> _placeRoles; // these are roles that you do when you're at a place e.g. RestaurantXCustomerRole, MarketCustomerRole, BankTellerRole
+	private List<Role> _roles; // these are roles that you do when you're at a place e.g. RestaurantXCustomerRole, MarketCustomerRole, BankTellerRole
 	private Role _currentRole; // this should never be null
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
-	private CommuterRole _commuterRole = new CommuterRole();
+	private CommuterRole _commuterRole = new CommuterRole(this);
 	private Role _occupation;
 	//HomeRole _homeRole;
 	
@@ -105,7 +106,7 @@ public class PersonAgent extends Agent
 			}
 			else
 			{
-				// Note: the program will only get to here if we just finished one role, which is not transportation role
+				// note: the program will only get to here if we just finished one role, which is not transportation role
 				// Choose the next role to do.  Set _nextRole to the next role you will do, set _currentRole to _commuterRole
 				/*// The model for conditions:
 				if(condition)
@@ -116,8 +117,28 @@ public class PersonAgent extends Agent
 					_commuterRole.setDestination(restaurantEric);
 					_currentRole = _commuterRole;
 					_currentRole.active = true;
+					return true;
 				}*/
-				//_currentRole = _HomeRole;
+				
+				// Decide whether or not to go to the bank
+				for(Role r : _roles)
+				{
+					if(r instanceof BankCustomerRole)
+					{
+						BankCustomerRole bcr = (BankCustomerRole)r;
+						
+						if(true /*I want to go to the bank*/)
+						{
+							_nextRole = bcr;
+							_commuterRole.setDestination(bcr.place());
+							_currentRole = _commuterRole;
+							_currentRole.active = true;
+							return true;
+						}
+					}
+				}
+				
+				//_nextRole = _HomeRole;
 			}
 		}
 		/*
@@ -145,7 +166,7 @@ public class PersonAgent extends Agent
 	private void chooseNextRole()
 	{
 		// For example:
-		if(state.nourishment == NourishmentState.HUNGRY)
+		if(_state.nourishment == NourishmentState.HUNGRY)
 		{
 			actGoToRestaurant();
 		}

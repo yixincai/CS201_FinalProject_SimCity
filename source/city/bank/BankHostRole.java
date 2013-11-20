@@ -76,7 +76,7 @@ public class BankHostRole extends Role {
 	
 	//---------- Commands --------
 	@Override
-	protected void cmdFinishAndLeave() {
+	public void cmdFinishAndLeave() {
 		// TODO Auto-generated method stub
 		//don't really need to do anything
 	}

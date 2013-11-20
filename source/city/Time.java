@@ -8,7 +8,7 @@ import javax.swing.Timer;
 public class Time {
 	public static enum Day { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY }
 	private static int todayNumber = 0;
-	private static void incrementDay() { todayNumber++; if(todayNumber == 7) todayNumber = 0; }
+	private static void incrementDay() { todayNumber++; if(todayNumber >= 7) todayNumber = 0; }
 	public static Day today() {
 		switch(todayNumber) {
 		case 0:
@@ -50,6 +50,10 @@ public class Time {
 	
 	private static void incrementTime(){ //fires every 12 seconds for now, incrementing 1/10th of an hour
 		time+= counter;
+		if(time >= 24.0) {
+			time = 0;
+			incrementDay();
+		}
 	}
 	
 	public static void setTimeFactor(int newTimeFactor){
