@@ -23,7 +23,7 @@ public class PersonAgent extends Agent
 	// State data:
 	private double _money;
 	enum WealthState { RICH, NORMAL, BROKE, POOR } // the word "deadbeat" courtesy of Wilczynski lol
-	boolean deadbeat = false; // means someone doesn't pay loans
+	boolean _deadbeat = false; // if true, means this person doesn't pay loans
 	enum NourishmentState { HUNGRY, FULL }
 	enum LocationState { NONE, TRAVELING, HOME, WORK, BANK, MARKET, RESTAURANT }
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
@@ -62,10 +62,15 @@ public class PersonAgent extends Agent
 		
 		double time()
 		{
-			return Time.
+			return Time.getTime();
+		}
+		
+		Time.Day today()
+		{
+			return Time.today();
 		}
 	}
-	State state = new State();
+	State _state = new State();
 	
 	
 	
