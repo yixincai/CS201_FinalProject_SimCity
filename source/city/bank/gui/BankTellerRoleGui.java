@@ -28,5 +28,9 @@ public class BankTellerRoleGui implements Gui {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void DoLeaveBank() {
+		// TODO
+	}
 
 }
