@@ -59,7 +59,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		if (state == CustomerState.payNextTime && money>0){
 			payBackMarket();
 			state = CustomerState.none;
-			finishAndLeaveCommand();
+			cmdFinishAndLeave();
 			return true;
 		}
 		return false;
@@ -95,7 +95,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		//DoLeaveMarket();
 		//Active = false;
 	}
-	protected void finishAndLeaveCommand() {
+	public void cmdFinishAndLeave() {
 		//gui.DoLeaveMarket();
 		active = false;
 	}

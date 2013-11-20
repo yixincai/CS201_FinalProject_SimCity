@@ -115,7 +115,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			return true;
 		}
 		if (restaurantOrders.size() == 0 && customers.size() == 0 && role_state == RoleState.WantToLeave){
-			finishAndLeaveCommand();
+			cmdFinishAndLeave();
 			role_state = RoleState.none;
 			return true;
 		}
@@ -211,7 +211,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 
 	@Override
-	protected void finishAndLeaveCommand() {
+	public void cmdFinishAndLeave() {
 		//gui.DoLeaveMarket();
 		active = false;
 	}
