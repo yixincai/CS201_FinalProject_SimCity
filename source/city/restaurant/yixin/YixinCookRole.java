@@ -160,7 +160,7 @@ public class YixinCookRole extends Role {//implements Cook{
 	// Actions
 
 	private void askForSupply(Market market){
-		Do("Buy food from market.");
+		print("Buy food from market.");
 		List<Item> order = new ArrayList<Item>();
 		if (inventory.get("Steak").amount <= inventory.get("Steak").threshold)
 			order.add(new Item("Steak", inventory.get("Steak").capacity - inventory.get("Steak").amount));
@@ -179,7 +179,7 @@ public class YixinCookRole extends Role {//implements Cook{
 			lowInFood = true;
 		}		
 		if (f.amount == 0){
-			Do(f.choice + " is running out");
+			print(f.choice + " is running out");
 			order.w.msgFoodRunsOut(order.choice, order.tableNumber);
 			orders.remove(order);
 			return;
@@ -200,14 +200,14 @@ public class YixinCookRole extends Role {//implements Cook{
 	}
 
 	private void returnOrder(Order order) {
-		Do("The order is ready");
+		print("The order is ready");
 		DoGoToPlate();
 		order.w.msgOrderIsReady(order.choice, order.tableNumber);
 		orders.remove(order);
 	}
 	
 	private void giveInvoice(){
-		Do("Giving invoice to cashier");
+		print("Giving invoice to cashier");
 		cashier.msgHereIsTheInvoice(current_market, invoice);
 	}
 

@@ -57,7 +57,7 @@ public class YixinHostRole extends Agent implements Host{
 	public void msgIWantFood(Customer cust, int count) {
 		synchronized(waitingCustomers){
 			waitingCustomers.add(new MyCustomer(cust, count));
-			Do("Got customer " + waitingCustomers.size());
+			print("Got customer " + waitingCustomers.size());
 			stateChanged();
 		}
 	}
@@ -128,7 +128,7 @@ public class YixinHostRole extends Agent implements Host{
 			synchronized(waiters){
 				for (MyWaiter waiter : waiters) {
 					if (waiter.state == MyWaiter.WaiterState.askingForBreak && waiters.size() > 1) {
-						Do("Break granted");
+						print("Break granted");
 						waiter.w.msgBreakGranted();
 						waiters.remove(waiter);
 						return true;
@@ -184,7 +184,7 @@ public class YixinHostRole extends Agent implements Host{
 			waiterNumber++;
 		else
 			waiterNumber = 0;
-		Do("Telling waiter " + waiterNumber + " " + waiters.get(waiterNumber).w + " to seat customer");
+		print("Telling waiter " + waiterNumber + " " + waiters.get(waiterNumber).w + " to seat customer");
 		waiters.get(waiterNumber).w.msgSitAtTable(customer, table.tableNumber, count);
 		table.setOccupant(customer);
 	}

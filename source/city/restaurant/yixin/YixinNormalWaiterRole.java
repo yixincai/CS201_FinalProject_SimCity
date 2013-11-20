@@ -8,7 +8,7 @@ public class YixinNormalWaiterRole extends YixinWaiterRole{
 
 	@Override
 	protected void processOrder(MyCustomer customer) {
-		Do("Process order");
+		print("Process order");
 		customer.state = MyCustomer.CustomerState.none;
 		DoGoToCook();
 		cook.msgHereIsTheOrder(this, customer.choice, customer.tableNumber);

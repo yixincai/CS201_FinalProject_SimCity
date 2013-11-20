@@ -109,7 +109,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	public void msgFoodRunsOut(String choice, int tableNumber) {
 		for (MyCustomer c: customers) {
 			if (c.tableNumber == tableNumber) {
-				Do("Got msg " + choice + " is running out.");
+				print("Got msg " + choice + " is running out.");
 				c.state = MyCustomer.CustomerState.noFood;
 				stateChanged();
 			}
@@ -153,7 +153,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 
 	public void msgBreakGranted(){
 		breakEnabled = true;//for gui purpose
-		Do("Break request granted.");
+		print("Break request granted.");
 		waiterGui.setButtonEnabled();
 		stateChanged();
 	}
@@ -170,13 +170,13 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	public boolean pickAndExecuteAnAction() {
 		try{
 			if (breakRequest){
-				Do("Tell host to break");
+				print("Tell host to break");
 				host.msgWantToBreak(this);
 				breakRequest = false;
 				return true;
 			}
 			if (backRequest){
-				Do("Tell host I'm coming back");
+				print("Tell host I'm coming back");
 				host.msgWantToComeBack(this);
 				backRequest = false;
 				return true;
@@ -272,7 +272,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	}
 
 	private void giveNewMenu(MyCustomer customer){
-		Do("give new menu");
+		print("give new menu");
 		DoGoToCustomer(customer.c, customer.tableNumber);
 		customer.state = MyCustomer.CustomerState.none;
 		Menu m = new Menu();
@@ -284,26 +284,26 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 
 	private void giveOrderToCustomer(MyCustomer customer){
 		DoFetchPlate();
-		Do("Give order to customer");
+		print("Give order to customer");
 		customer.state = MyCustomer.CustomerState.none;
 		DoGiveFoodToCustomer(customer.c, customer.tableNumber, customer.choice);
 		customer.c.msgHereIsYourFood(customer.choice);
 	}
 
 	private void computeBill(MyCustomer customer){
-		Do("Ask Cashier to compute bill");
+		print("Ask Cashier to compute bill");
 		cashier.msgComputeBill(this, customer.c, customer.choice);
 		customer.state = MyCustomer.CustomerState.none;
 	}
 
 	private void giveCheck(MyCustomer customer){
-		Do("Give Customer the bill");
+		print("Give Customer the bill");
 		customer.c.msgHereIsTheCheck(customer.check, cashier);
 		customer.state = MyCustomer.CustomerState.none;
 	}
 
 	private void clearCustomer(MyCustomer customer){
-		Do("Clear customer");
+		print("Clear customer");
 		host.msgTableIsFree(customer.c, customer.tableNumber);
 		customers.remove(customer);
 	}
