@@ -1,6 +1,7 @@
 package city.market;
 import java.util.*;
 
+import city.PersonAgent;
 import city.market.interfaces.MarketCashier;
 import city.market.interfaces.MarketCustomer;
 import agent.Role;
@@ -10,15 +11,16 @@ import utilities.LoggedEvent;
 public class MarketCashierRole extends Role implements MarketCashier{
 
 	public EventLog log = new EventLog();
-	public Map<String, Good> inventory = new HashMap<String, Good>();
-	public List<CustomerOrder> customers = new ArrayList<CustomerOrder>(); 
-	public List<RestaurantOrder> restaurantOrders = new ArrayList<RestaurantOrder>();
+	private Map<String, Good> inventory = new HashMap<String, Good>();
+	private List<CustomerOrder> customers = new ArrayList<CustomerOrder>(); 
+	private List<RestaurantOrder> restaurantOrders = new ArrayList<RestaurantOrder>();
 	Market market;
 	double moneyInHand, moneyInBank;
 	enum MoneyState{OrderedFromBank, none}
 	MoneyState state = MoneyState.none;
 	
-	public MarketCashierRole(Market m){
+	public MarketCashierRole(PersonAgent person, Market m){
+		super(person);
 		this.market = m;
 	}
 

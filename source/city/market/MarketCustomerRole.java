@@ -1,6 +1,7 @@
 package city.market;
 import java.util.*;
 
+import city.PersonAgent;
 import city.market.interfaces.MarketCustomer;
 import agent.Role;
 
@@ -14,7 +15,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	enum CustomerState {wantToBuy, needPay, pickUpItems, payNextTime, none}
 	CustomerState state = CustomerState.wantToBuy;
 
-	public MarketCustomerRole(Market m){
+	public MarketCustomerRole(PersonAgent person, Market m){
+		super(person);
 		this.market = m;
 	}
 	
