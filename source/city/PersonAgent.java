@@ -35,11 +35,11 @@ public class PersonAgent extends Agent
 		/** Get the current wealth state, based on money and occupation status. */
 		WealthState wealth()
 		{
-			if(_money <= 10)
+			if(_money < Constants.POOR_LEVEL)
 			{
 				return (_occupation != null) ? WealthState.BROKE : WealthState.POOR;
 			}
-			else if(_money <= 250)
+			else if(_money < Constants.RICH_LEVEL)
 			{
 				return WealthState.NORMAL;
 			}

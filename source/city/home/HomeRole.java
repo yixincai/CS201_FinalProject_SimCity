@@ -5,6 +5,7 @@ import agent.Role;
 
 public abstract class HomeRole extends Role
 {
+	//private List<Food> _groceries;
 
 
 
