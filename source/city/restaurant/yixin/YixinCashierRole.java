@@ -1,28 +1,33 @@
 package city.restaurant.yixin;
 
 import agent.Agent;
-import restaurant.gui.*;
-import restaurant.interfaces.*;
-import restaurant.test.mock.EventLog;
-import restaurant.test.mock.LoggedEvent;
+import agent.Role;
 
 import java.util.*;
 
-public class CashierAgent extends Agent implements Cashier{
+import utilities.EventLog;
+import utilities.LoggedEvent;
+import city.PersonAgent;
+import city.restaurant.yixin.gui.YixinCashierGui;
+import city.restaurant.yixin.interfaces.Cashier;
+import city.restaurant.yixin.interfaces.Customer;
+import city.restaurant.yixin.interfaces.Waiter;
+
+public class YixinCashierRole extends Role{// implements Cashier{
 	public EventLog log = new EventLog();
     private String name = "Cashier";
 	public List<CustomerBill> bills = Collections.synchronizedList(new ArrayList<CustomerBill>());
 	public List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 	public static Menu menu = new Menu();
-	public CashierGui cashierGui = null;
+	public YixinCashierGui cashierGui = null;
 	public double money;
 	
-	public CashierAgent() {
-		super();
+	public YixinCashierRole(PersonAgent p) {
+		super(p);
 		money = 130.0;
 	}
 	
-	public void setGui(CashierGui g) {
+	public void setGui(YixinCashierGui g) {
 		cashierGui = g;
 	}
 	
@@ -170,5 +175,11 @@ public class CashierAgent extends Agent implements Cashier{
 			this.market = market;
 			invoice_received = false;
 		}
+	}
+
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,5 +1,7 @@
 package city.restaurant.yixin;
 
-public class Restaurant {
+import city.market.Restaurant;
+
+public class YixinRestaurant extends Restaurant{
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
 }

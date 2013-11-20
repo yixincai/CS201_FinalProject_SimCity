@@ -4,6 +4,7 @@ import java.util.*;
 import city.PersonAgent;
 import city.market.MarketCashierRole.CustomerOrder;
 import city.market.MarketCashierRole.RestaurantOrder;
+import city.market.MarketCashierRole.RoleState;
 import city.market.interfaces.MarketEmployee;
 import agent.Role;
 
@@ -17,6 +18,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public MarketEmployeeRole(PersonAgent p, Market m){
 		super(p);
 		this.market = m;
+	}
+	
+	public void cmdFinishAndLeave() {
+		role_state = RoleState.WantToLeave;
 	}
 
 	public void msgPickOrder(CustomerOrder mc){
@@ -62,8 +67,4 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		//Transportation.Truck.msgDeliverToCook(mc.r, mc.orderFulfillment, mc.bill);
 	}
 	
-	public void cmdFinishAndLeave() {
-		//gui.DoLeaveMarket();
-		active = false;
-	}
 }

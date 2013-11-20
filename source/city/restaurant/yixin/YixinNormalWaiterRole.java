@@ -1,8 +1,8 @@
 package city.restaurant.yixin;
 
-public class NormalWaiterAgent extends WaiterAgent{
+public class YixinNormalWaiterRole extends YixinWaiterRole{
 
-	public NormalWaiterAgent(String name) {
+	public YixinNormalWaiterRole(String name) {
 		super(name);
 	}
 

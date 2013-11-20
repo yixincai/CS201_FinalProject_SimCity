@@ -20,6 +20,11 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		this.market = m;
 	}
 	
+	//command from person
+	public void cmdFinishAndLeave() {
+	}
+	
+	//message
 	public void msgHereIsBill(double payment, Map<String, Double> price_list, List<Item> orderFulfillment){
 		this.payment = payment;
 		this.price_list = price_list;
@@ -59,7 +64,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		if (state == CustomerState.payNextTime && money>0){
 			payBackMarket();
 			state = CustomerState.none;
-			cmdFinishAndLeave();
 			return true;
 		}
 		return false;
@@ -95,8 +99,5 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		//DoLeaveMarket();
 		//Active = false;
 	}
-	public void cmdFinishAndLeave() {
-		//gui.DoLeaveMarket();
-		active = false;
-	}
+
 }

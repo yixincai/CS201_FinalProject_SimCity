@@ -5,9 +5,9 @@ import restaurant.CashierAgent;
 import java.awt.*;
 import javax.swing.*;
 
-public class CashierGui extends JPanel implements Gui {
+public class YixinCashierGui extends JPanel implements Gui {
 
-    private CashierAgent agent = null;
+    private YixinCashierRole agent = null;
 
     private int xPos = 300, yPos = 30;//default waiter position
     public static int xGap = 40;
@@ -15,7 +15,7 @@ public class CashierGui extends JPanel implements Gui {
     
     private ImageIcon i = new ImageIcon("image/cashier.jpg");
     private Image image = i.getImage();
-    public CashierGui(CashierAgent agent) {
+    public YixinCashierGui(YixinCashierRole agent) {
         this.agent = agent;
     }
 

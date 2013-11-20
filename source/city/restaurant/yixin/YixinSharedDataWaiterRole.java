@@ -2,13 +2,13 @@ package city.restaurant.yixin;
 
 import restaurant.CookAgent.Order;
 
-public class SharedDataWaiterAgent extends WaiterAgent{
-	public SharedDataWaiterAgent(String name) {
+public class YixinSharedDataWaiterRole extends YixinWaiterRole{
+	public YixinSharedDataWaiterRole(String name) {
 		super(name);
 	}
 
 	@Override
-	protected void processOrder(WaiterAgent.MyCustomer customer) {
+	protected void processOrder(YixinWaiterRole.MyCustomer customer) {
 		Do("Process order");
 		customer.state = MyCustomer.CustomerState.none;
 		DoGoToRevolvingStand();

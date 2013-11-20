@@ -25,6 +25,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		super(person);
 		this.market = m;
 	}
+	
+	@Override
+	public void cmdFinishAndLeave() {
+		role_state = RoleState.WantToLeave;
+	}
 
 	//customer messages
 	public void msgPlaceOrder(MarketCustomer mc, List<Item> order){
@@ -115,7 +120,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			return true;
 		}
 		if (restaurantOrders.size() == 0 && customers.size() == 0 && role_state == RoleState.WantToLeave){
-			cmdFinishAndLeave();
+			//DoLeave();
 			role_state = RoleState.none;
 			return true;
 		}
@@ -210,9 +215,4 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		State state;
 	}
 
-	@Override
-	public void cmdFinishAndLeave() {
-		//gui.DoLeaveMarket();
-		active = false;
-	}
 }

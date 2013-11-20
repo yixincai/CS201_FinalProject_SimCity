@@ -12,7 +12,7 @@ import java.util.*;
  * Restaurant Host Agent
  */
 
-public class HostAgent extends Agent implements Host{
+public class YixinHostRole extends Agent implements Host{
 	public EventLog log = new EventLog();
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
@@ -26,9 +26,9 @@ public class HostAgent extends Agent implements Host{
 	private String name;
 	int waiterNumber = 0;
 
-	public HostGui hostGui = null;
+	public YixinHostGui hostGui = null;
 
-	public HostAgent(String name) {
+	public YixinHostRole(String name) {
 		super();
 
 		this.name = name;
@@ -39,7 +39,7 @@ public class HostAgent extends Agent implements Host{
 		}
 	}
 	
-	public void addWaiter(WaiterAgent w){
+	public void addWaiter(YixinWaiterRole w){
 		waiters.add(new MyWaiter(w));
 		stateChanged();
 	}
@@ -191,11 +191,11 @@ public class HostAgent extends Agent implements Host{
 
 	//utilities
 
-	public void setGui(HostGui gui) {
+	public void setGui(YixinHostGui gui) {
 		hostGui = gui;
 	}
 
-	public HostGui getGui() {
+	public YixinHostGui getGui() {
 		return hostGui;
 	}
 

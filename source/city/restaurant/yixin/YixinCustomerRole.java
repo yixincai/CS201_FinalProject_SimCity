@@ -1,27 +1,22 @@
 package city.restaurant.yixin;
 
-import restaurant.gui.CustomerGui;
-import agent.Agent;
-import restaurant.interfaces.*;
-import restaurant.test.mock.EventLog;
-
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Agent implements Customer{
+public class YixinCustomerRole extends Agent implements Customer{
 	public EventLog log = new EventLog();
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
-	private CustomerGui customerGui;
+	private YixinCustomerGui customerGui;
 	private Semaphore atTable = new Semaphore(0,true);
 	// agent correspondents
-	private HostAgent host;
-	private WaiterAgent waiter;
-	private CashierAgent cashier = null;
+	private YixinHostRole host;
+	private YixinWaiterRole waiter;
+	private YixinCashierRole cashier = null;
 	private Menu menu = null;
 	private String choice;
 	private double money, check, debt = 0;
@@ -46,7 +41,7 @@ public class CustomerAgent extends Agent implements Customer{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent(String name, int count){
+	public YixinCustomerRole(String name, int count){
 		super();
 		this.money = 0;
 		this.name = name;
@@ -56,11 +51,11 @@ public class CustomerAgent extends Agent implements Customer{
 	/**
 	 * hack to establish connection to Host agent.
 	 */
-	public void setHost(HostAgent host) {
+	public void setHost(YixinHostRole host) {
 		this.host = host;
 	}
 	
-	public void setWaiter(WaiterAgent w) {
+	public void setWaiter(YixinWaiterRole w) {
 		this.waiter = w;
 	}
 	
@@ -93,9 +88,9 @@ public class CustomerAgent extends Agent implements Customer{
 	}
 
 	public void msgFollowMe(Waiter w, int tablenumber, Menu menu) {
-		if (w instanceof WaiterAgent){
+		if (w instanceof YixinWaiterRole){
 			print("Received msgSitAtTable");
-			this.waiter = (WaiterAgent)w;
+			this.waiter = (YixinWaiterRole)w;
 			this.menu = menu;
 			seatnumber = tablenumber;
 			event = AgentEvent.followHost;
@@ -123,10 +118,10 @@ public class CustomerAgent extends Agent implements Customer{
 	}
 	
 	public void msgHereIsTheCheck(double money, Cashier cashier){
-		if (cashier instanceof CashierAgent){
+		if (cashier instanceof YixinCashierRole){
 			print("Received check of " + money);
 			event = AgentEvent.billArrived;
-			this.cashier = (CashierAgent) cashier;
+			this.cashier = (YixinCashierRole) cashier;
 			this.check = money;
 			stateChanged();
 		}
@@ -429,11 +424,11 @@ public class CustomerAgent extends Agent implements Customer{
 		return "customer " + getName();
 	}
 
-	public void setGui(CustomerGui g) {
+	public void setGui(YixinCustomerGui g) {
 		customerGui = g;
 	}
 
-	public CustomerGui getGui() {
+	public YixinCustomerGui getGui() {
 		return customerGui;
 	}
 }

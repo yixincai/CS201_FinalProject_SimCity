@@ -6,9 +6,9 @@ import java.awt.*;
 
 import javax.swing.*;
 
-public class CustomerGui extends JPanel implements Gui{
+public class YixinCustomerGui extends JPanel implements Gui{
 
-	private CustomerAgent agent = null;
+	private YixinCustomerRole agent = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 
@@ -34,7 +34,7 @@ public class CustomerGui extends JPanel implements Gui{
     private String choice;
     private boolean show_choice = false;
     
-	public CustomerGui(CustomerAgent c, RestaurantGui gui, int count){ 
+	public YixinCustomerGui(YixinCustomerRole c, RestaurantGui gui, int count){ 
 		agent = c;
 		xPos = OriginX;
 		yPos = OriginY;

@@ -1,22 +1,26 @@
 package city.restaurant.yixin;
 
 import agent.Agent;
-import restaurant.gui.*;
-import restaurant.interfaces.*;
-import restaurant.test.mock.EventLog;
+import agent.Role;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-public class CookAgent extends Agent implements Cook{
-	public Restaurant r;
-	public Cashier cashier;
+import city.PersonAgent;
+import city.market.Item;
+import city.market.Market;
+import city.restaurant.yixin.gui.YixinCookGui;
+import utilities.EventLog;
+
+public class YixinCookRole extends Role {//implements Cook{
+	public YixinRestaurant r;
+	public YixinCashierRole cashier;
 	public EventLog log = new EventLog();
 	private String name = "TheBestCook";
 	public List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	public Map<String, Food> inventory = new HashMap<String, Food>();
 	Timer timer = new Timer(), timer2 = new Timer();
-	public CookGui cookGui = null;
+	public YixinCookGui cookGui = null;
 	boolean lowInFood = true;
 	enum CookState{ableToOrder,OrderReceived,none};
 	CookState state = CookState.ableToOrder;
@@ -29,8 +33,8 @@ public class CookAgent extends Agent implements Cook{
 	int market_count = 0;//switch to the next market if one cannot fulfill
 	Market current_market;
 
-	public CookAgent() {
-		super();
+	public YixinCookRole(PersonAgent p) {
+		super(p);
 		inventory.put("Steak", new Food("Steak", 5000, 1, 3, 5));
 		inventory.put("Chicken", new Food("Chicken", 4000, 1, 3, 5));
 		inventory.put("Salad", new Food("Salad", 1000, 0, 3, 5));
@@ -42,7 +46,7 @@ public class CookAgent extends Agent implements Cook{
 		check_state = CheckState.notChecked;
 	}
 
-	public void setGui(CookGui gui){
+	public void setGui(YixinCookGui gui){
 		cookGui = gui;
 	}
 
@@ -50,7 +54,7 @@ public class CookAgent extends Agent implements Cook{
 		return name;
 	}
 
-	public void addMarket(MarketAgent market) {
+	public void addMarket(Market market) {
 		markets.add(market);
 	}
 
@@ -59,8 +63,8 @@ public class CookAgent extends Agent implements Cook{
 		atTable.release();
 	}
 
-	public void msgHereIsTheOrder(Waiter w, String choice, int table) {
-		Do("Order received");
+	public void msgHereIsTheOrder(YixinWaiterRole w, String choice, int table) {
+		print("Order received");
 		orders.add(new Order(w,choice,table,Order.OrderState.NotCooked));
 		stateChanged();
 	}
@@ -258,21 +262,7 @@ public class CookAgent extends Agent implements Cook{
 	}
 	//utilities
 
-	public static class Order {
-		String choice;
-		int tableNumber;
-		Waiter w;
-		public enum OrderState
-		{None, NotCooked, Cooking, Cooked, Delivered};
-		private OrderState state = OrderState.None;
 
-		Order(Waiter w, String choice, int tableNumber, OrderState state) {
-			this.choice = choice;
-			this.tableNumber = tableNumber;
-			this.w = w;
-			this.state = state;
-		}
-	}
 
 	public static class Food {
 		String choice;
@@ -289,6 +279,12 @@ public class CookAgent extends Agent implements Cook{
 			this.threshold = threshold;
 			this.capacity = capacity;
 		}
+	}
+
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

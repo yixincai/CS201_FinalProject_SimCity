@@ -6,9 +6,9 @@ import java.awt.*;
 
 import javax.swing.*;
 
-public class WaiterGui extends JPanel implements Gui {
+public class YixinWaiterGui extends JPanel implements Gui {
 
-    private WaiterAgent agent = null;
+    private YixinWaiterRole agent = null;
     private boolean show_choice = false;
     private String food;
 	public static final int xTable1 = 200, xTable2 = 300, xTable3 = 100;
@@ -29,7 +29,7 @@ public class WaiterGui extends JPanel implements Gui {
 	private enum Command {noCommand, GoToSeat};
 	private Command command=Command.noCommand;
     
-    public WaiterGui(WaiterAgent  agent, RestaurantGui gui, int count) {
+    public YixinWaiterGui(YixinWaiterRole  agent, RestaurantGui gui, int count) {
         this.agent = agent;
         this.gui = gui;
         this.count = count;

@@ -6,9 +6,9 @@ import java.awt.*;
 
 import javax.swing.*;
 
-public class HostGui extends JPanel implements Gui {
+public class YixinHostGui extends JPanel implements Gui {
 
-    private HostAgent agent = null;
+    private YixinHostRole agent = null;
 
     private int xPos = 50, yPos = 20;//default waiter position
     public static int xGap = 40;
@@ -17,7 +17,7 @@ public class HostGui extends JPanel implements Gui {
     
     //private ImageIcon i = new ImageIcon("image/host.png");
     //private Image image = i.getImage();
-    public HostGui(HostAgent agent) {
+    public YixinHostGui(YixinHostRole agent) {
         this.agent = agent;
     }
 
