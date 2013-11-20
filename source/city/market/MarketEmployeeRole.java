@@ -1,6 +1,7 @@
 package city.market;
 import java.util.*;
 
+import city.PersonAgent;
 import city.market.MarketCashierRole.CustomerOrder;
 import city.market.MarketCashierRole.RestaurantOrder;
 import city.market.interfaces.MarketEmployee;
@@ -11,7 +12,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	List<CustomerOrder> pickUpOrders;
 	List<RestaurantOrder> deliverOrders;
 	
-	public MarketEmployeeRole(Market m){
+	public MarketEmployeeRole(PersonAgent p, Market m){
+		super(p);
 		this.market = m;
 	}
 
