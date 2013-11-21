@@ -1,15 +1,20 @@
 package city.transportation;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
+import city.Place;
+import city.transportation.gui.BusAgentGui;
 
 public class BusAgent {
-	List<MyCommuter> passengers;
-	BusState state;
-	String currentDestination;
+	List<MyCommuter> passengers = new ArrayList<MyCommuter>();
+	BusAgentGui _gui = new BusAgentGui();
+	
+	BusStop currentDestination;
+	List<CommuterRole> currentBusStopList = new ArrayList<CommuterRole>();
 	
 	static int fare;
 	int register;
@@ -25,18 +30,24 @@ public class BusAgent {
 
 	class MyCommuter{
 	    CommuterRole commuter;
-	    String destination;
+	    Place destination;
 	    PassengerState pState = PassengerState.onBus;
 	    
-	    MyCommuter(CommuterRole person, String destination){
-	    	commuter = person;
+	    MyCommuter(CommuterRole person, Place destination){
+	    	this.commuter = person;
 	    	this.destination = destination;
 	    }
 	}
 	
-	public void msgAtDestination(String destination){
-	    currentDestination = destination;
-	    state = BusState.atDestination;
+	public BusAgent(){
+		
+	}
+	
+	//----------------------------------------------Messages----------------------------------------
+	public void msgAtDestination(BusStop busstop){
+	    currentDestination = busstop;
+	    
+	    bState = BusState.atDestination;
 	}
 
 	public void msgGotOff(PersonAgent passenger){
@@ -44,11 +55,13 @@ public class BusAgent {
 	    numPeople--;
 	}
 
-	public void msgGettingOnBoard(CommuterRole person, String destination, int payment){
+	public void msgGettingOnBoard(CommuterRole person, Place destination, int payment){
 	    passengers.add(new MyCommuter(person, destination));
 	    numPeople++; //Fix this
 	}
 	
+	
+	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction(){
 		if(bState == BusState.atDestination){
 			DropOff();
@@ -68,22 +81,23 @@ public class BusAgent {
 		return false;
 	}
 	
+	//----------------------------------------------Actions----------------------------------------
 	public void DropOff(){
-	    int i = 0;
 	    bState = BusState.droppingoff;
 	    for(MyCommuter commuter: passengers){
 	        if(commuter.destination == currentDestination){
-	        	commuter.msgAtBusStop();
+	        	commuter.commuter.msgGetOffBus();
 	            expectedPeople--;
 	        }
 	    }
 	}
 
 	public void PickUp(){
+		currentBusStopList = currentDestination.getList();
 		bState = BusState.pickingup;
-	    while(numPeople <= capacity){
-	        for(MyCommuter person: busstoplist){
-	            person.msgPickUpAtBusStop(fare);
+	    while(expectedPeople <= capacity){
+	    	for(CommuterRole comm: currentBusStopList){
+	    		comm.msgGetOnBus(fare);
 	            expectedPeople++;
 	        }
 	    }
@@ -91,7 +105,7 @@ public class BusAgent {
 
 	public void Leave(){
 	    bState = BusState.moving;
-	    Gui.movetonextdestination();
+	    _gui.moveToNextDestination();
 	}
 	
 }

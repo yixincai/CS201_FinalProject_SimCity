@@ -3,6 +3,7 @@ package city.transportation;
 import java.util.Random;
 
 import agent.Role;
+import city.Directory;
 import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.CommuterRoleGui;
@@ -15,13 +16,13 @@ public class CommuterRole extends Role {
 	public Place _destination;
 	public Place _currentPlace;
 	CarObject _car = new CarObject();
-	CommuterRoleGui gui = new CommuterRoleGui();
+	CommuterRoleGui gui = new CommuterRoleGui(this);
 	
 	//Probably won't need -> not 100% sure though
 	enum carState{noCar, hasCar, usingCar};
 	carState _cState = carState.noCar; 
 	
-	enum travelState{choosing, choseCar, driving, choseWalking, walking, choseBus, goingToBusStop, ridingBus, atDestination, done};
+	enum travelState{choosing, choseCar, driving, choseWalking, walking, choseBus, goingToBusStop, atBusStop, waitingAtBusStop, ridingBus, atDestination, done};
 	travelState _tState = travelState.done;
 	
 	Random _generator = new Random();
@@ -39,6 +40,19 @@ public class CommuterRole extends Role {
 	public void msgGoToDestination(Place place){
 		_destination = place;
 		_tState = travelState.choosing;
+	}
+	
+	public void msgAtBusStop(BusStop busstop){
+		_currentPlace = busstop;
+		_tState = travelState.atBusStop;
+	}
+	
+	public void msgGetOnBus(int fare){
+		
+	}
+	
+	public void msgGetOffBus(){
+		
 	}
 	
 	public void msgAtDestination(Place place){
@@ -68,6 +82,9 @@ public class CommuterRole extends Role {
 		if(_tState == travelState.choseBus){
 			actGoToBusStop();
 			return true;
+		}
+		if(_tState == travelState.atBusStop){
+			actAtBusStop();
 		}
 		if(_tState == travelState.choseCar){
 			actDriving();
@@ -102,22 +119,36 @@ public class CommuterRole extends Role {
 		
 	}
 	
-	//----------------------------------------------Actions----------------------------------------
 	public void actWalking(){
 		_tState = travelState.walking;
 		gui.walkToLocation(_destination);
 	}
 	
 	public void actGoToBusStop(){
+		BusStop busStop;
+
 		_tState = travelState.goingToBusStop;
+		busStop = Directory.getNearestBusStop(_currentPlace);
+		gui.goToBusStop(busStop);
+	}
+	
+	public void actAtBusStop(){
+		BusStop busStop;
+
+		_tState = travelState.waitingAtBusStop;
+		busStop = Directory.getNearestBusStop(_currentPlace);
+		
+		busStop.addPerson(this);
 	}
 	
 	public void actRidingBus(){
 		_tState = travelState.ridingBus;
+		
 	}
 
 	public void actDriving(){
 		_tState = travelState.driving;
+		gui.goToCar(_car, _destination);
 	}
 	
 	public void actAtDestination(){

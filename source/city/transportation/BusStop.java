@@ -3,7 +3,6 @@ package city.transportation;
 import java.util.List;
 
 import city.Place;
-import agent.PersonAgent;
 
 public class BusStop extends Place {
 	List<CommuterRole> _waitList;
@@ -16,7 +15,7 @@ public class BusStop extends Place {
 		_waitList.remove(person);
 	}
 	
-	public List getList(BusAgent bus){
+	public List getList(){
 		return _waitList;
 	}
 }
