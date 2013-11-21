@@ -5,6 +5,8 @@ import java.util.Random;
 
 import city.bank.BankCustomerRole;
 import city.home.HomeRole;
+import city.market.Market;
+import city.market.MarketCustomerRole;
 import city.transportation.CommuterRole;
 import agent.Agent;
 import agent.Role;
@@ -223,7 +225,29 @@ public class PersonAgent extends Agent
 							}
 							else
 							{
-								// Search for a MarketCustomerRole in _roles, use that; if none, 
+								// Search for a MarketCustomerRole in _roles, use that;
+								// if no MarketCustomerRole in _roles, choose a Market from the Directory, and get a new MarketCustomerRole from it
+								for(Role r : _roles)
+								{
+									if(r instanceof MarketCustomerRole)
+									{
+										MarketCustomerRole mcr = (MarketCustomerRole)r;
+										mcr.cmdBuyFood(3);
+										setNextRole(mcr);
+										return true;
+									}
+								}
+								// note: we only get here if no MarketCustomerRole was found in _roles
+								List<Place> markets = Directory.markets();
+								for(Place p : markets)
+								{
+									Market m = (Market)p;
+									MarketCustomerRole mcr = m.generateCustomerRole(this);
+									mcr.cmdBuyFood(3);
+									setNextRole(mcr);
+									_roles.add(mcr);
+									return true;
+								}
 							}
 						}
 					}
@@ -279,6 +303,11 @@ public class PersonAgent extends Agent
 			actTellLongStory();
 			return true;
 		}
+		else if(_name.equals("iWhale"))
+		{
+			actIWhale();
+			return true;
+		}
 		return false;
 	}
 	
@@ -306,9 +335,14 @@ public class PersonAgent extends Agent
 		// roles.add(r);
 	}
 	
+	// (Peanut gallery)
 	private void actTellLongStory()
 	{
 		print("When I was a young programmer, my boss was skeptical of my design.  I proved him wrong.");
+	}
+	private void actIWhale()
+	{
+		print("*_____________________________________*");
 	}
 	
 	
