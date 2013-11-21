@@ -5,6 +5,7 @@ import java.util.Random;
 import agent.Role;
 import city.PersonAgent;
 import city.Place;
+import city.transportation.gui.CommuterRoleGui;
 
 /**
  * There is one CommuterRole per person, and the CommuterRole is the one that 
@@ -14,12 +15,13 @@ public class CommuterRole extends Role {
 	public Place _destination;
 	public Place _currentPlace;
 	CarObject _car = new CarObject();
+	CommuterRoleGui gui = new CommuterRoleGui();
 	
 	//Probably won't need -> not 100% sure though
 	enum carState{noCar, hasCar, usingCar};
 	carState _cState = carState.noCar; 
 	
-	enum travelState{choosing, choseCar, driving, choseWalking, walking, choseBus, ridingBus, atDestination, done};
+	enum travelState{choosing, choseCar, driving, choseWalking, walking, choseBus, goingToBusStop, ridingBus, atDestination, done};
 	travelState _tState = travelState.done;
 	
 	Random _generator = new Random();
@@ -40,39 +42,45 @@ public class CommuterRole extends Role {
 	}
 	
 	public void msgAtDestination(Place place){
-		
+		_currentPlace = place;
+		_tState = travelState.atDestination;
 	}
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
-		if(_destination == _currentPlace){
+		if(_destination == _currentPlace && _tState == travelState.atDestination){
+			actAtDestination();
 			return true;
 		}
-		else{
-			if(_tState == travelState.choosing){
-				chooseTransportation();
-				return true;
-			}
-			
-			if(_tState == travelState.choseWalking){
-				actWalking();
-				return true;
-			}
-			if(_tState == travelState.choseBus){
-				actRidingBus();
-				return true;
-			}
-			if(_tState == travelState.choseCar){
-				actDriving();
-				return true;
-			}
+		if(_destination != _currentPlace && _tState == travelState.atDestination){
+			actChooseTransportation();
+			return true;
 		}
+
+		if(_tState == travelState.choosing){
+			actChooseTransportation();
+			return true;
+		}
+		
+		if(_tState == travelState.choseWalking){
+			actWalking();
+			return true;
+		}
+		if(_tState == travelState.choseBus){
+			actGoToBusStop();
+			return true;
+		}
+		if(_tState == travelState.choseCar){
+			actDriving();
+			return true;
+		}
+
 		
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	//----------------------------------------------Actions----------------------------------------
-	public void chooseTransportation(){
+	public void actChooseTransportation(){
 		int choice = 0;
 		
 		if(_car == null){
@@ -94,9 +102,14 @@ public class CommuterRole extends Role {
 		
 	}
 	
+	//----------------------------------------------Actions----------------------------------------
 	public void actWalking(){
 		_tState = travelState.walking;
-		
+		gui.walkToLocation(_destination);
+	}
+	
+	public void actGoToBusStop(){
+		_tState = travelState.goingToBusStop;
 	}
 	
 	public void actRidingBus(){
@@ -105,6 +118,10 @@ public class CommuterRole extends Role {
 
 	public void actDriving(){
 		_tState = travelState.driving;
+	}
+	
+	public void actAtDestination(){
+		_tState = travelState.done;
 	}
 	
 	@Override
