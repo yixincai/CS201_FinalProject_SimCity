@@ -17,8 +17,11 @@ public class PersonAgent extends Agent
 	private List<Role> _roles; // these are roles that you do when you're at a place e.g. RestaurantXCustomerRole, MarketCustomerRole, BankTellerRole
 	private Role _currentRole; // this should never be null
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
-	private CommuterRole _commuterRole = new CommuterRole(this);
+	private CommuterRole _commuterRole = new CommuterRole(this, null); //TODO null should be a Place
 	private Role _occupation;
+	private double _occupationStartTime;
+	private double _occupationEndTime;
+	private boolean _weekday_notWeekend;
 	//HomeRole _homeRole;
 	
 	// State data:
@@ -80,6 +83,41 @@ public class PersonAgent extends Agent
 	// public PersonAgent(String name, Role r) { _name = name; ... }
 	public String name() { return _name; }
 	public void changeMoney(double delta) { _money += delta; }
+	public void setOccupationStartTime(double occupationStartTime) { _occupationStartTime = occupationStartTime; }
+	public void setOccupationEndTime(double occupationEndTime) { _occupationEndTime = occupationEndTime; }
+	/** Shortcut for setting the occupation start and end times
+	 * @param shift Morning, Afternoon, or Evening; if weekday_notWeekend is false, only matters whether shift is Evening or not
+	 * @param weekday_notWeekend frue if weekday shift, false if weekend shift
+	 */
+	public void setShift(String shift, boolean weekday_notWeekend) {
+		if(weekday_notWeekend) {
+			switch(shift) {
+			case "Morning":
+				_occupationStartTime = 8;
+				_occupationEndTime = 12;
+				break;
+			case "Afternoon":
+				_occupationStartTime = 12;
+				_occupationEndTime = 16;
+				break;
+			case "Evening":
+				_occupationStartTime = 16;
+				_occupationEndTime = 20;
+				break;
+			}
+		}
+		else {
+			if(shift.equals("Evening")) {
+				_occupationStartTime = 18;
+				_occupationEndTime = 23;
+			}
+			else {
+				_occupationStartTime = 8;
+				_occupationEndTime = 18;
+			}
+		}
+		_weekday_notWeekend = weekday_notWeekend;
+	}
 	
 	
 
@@ -90,10 +128,16 @@ public class PersonAgent extends Agent
 		
 		if(_currentRole.active)
 		{
-			if(_currentRole.pickAndExecuteAnAction())
+			// Finish role because you have to get to work:
+			if(workingToday())
 			{
-				return true;
+				if(_currentRole != _occupation && _occupation != null && timeToBeAtWork())
+				{
+					_currentRole.cmdFinishAndLeave();
+				}
 			}
+			
+			if(_currentRole.pickAndExecuteAnAction()) { return true; }
 		}
 		else // i.e. _currentRole.active == false
 		{
@@ -109,7 +153,17 @@ public class PersonAgent extends Agent
 				// note: the program will only get to here if we just finished one role, which is not transportation role
 				// Choose the next role to do.  Set _nextRole to the next role you will do, set _currentRole to _commuterRole
 				
-				if(_state.today() != Time.Day.SATURDAY && _state.today() != Time.Day.SUNDAY)
+				if(workingToday())
+				{
+					if(_occupation != null && timeToBeAtWork()) //TODO add JoblessRole
+					{
+						_nextRole = _occupation;
+						_commuterRole.setDestination(_occupation.place());
+						_currentRole = _commuterRole;
+						_currentRole.active = true;
+						return true;
+					}
+				}
 				
 				/*// The model for conditions:
 				if(condition)
@@ -178,7 +232,7 @@ public class PersonAgent extends Agent
 	
 	
 	
-// ---------------------------------------- ACTIONS ----------------------------------------
+	// ---------------------------------------- ACTIONS ----------------------------------------
 	private void actGoToRestaurant()
 	{
 		// Restaurant r = chooseRestaurant();
@@ -191,5 +245,19 @@ public class PersonAgent extends Agent
 	private void actTellLongStory()
 	{
 		print("When I was a young programmer, my boss was skeptical of my design.  I proved him wrong.");
+	}
+	
+	
+	
+	// ------------------------------------------ UTILITIES -------------------------------------
+	private boolean workingToday()
+	{
+		return ((_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && !_weekday_notWeekend) ||
+				(!(_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && _weekday_notWeekend);
+	}
+	private boolean timeToBeAtWork()
+	{
+		return _state.time() > _occupationStartTime - .5 && // .5 is half an hour
+				_state.time() < _occupationEndTime;
 	}
 }
