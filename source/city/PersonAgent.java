@@ -1,8 +1,10 @@
 package city;
 
 import java.util.List;
+import java.util.Random;
 
 import city.bank.BankCustomerRole;
+import city.home.HomeRole;
 import city.transportation.CommuterRole;
 import agent.Agent;
 import agent.Role;
@@ -16,13 +18,14 @@ public class PersonAgent extends Agent
 	// Role data:
 	private List<Role> _roles; // these are roles that you do when you're at a place e.g. RestaurantXCustomerRole, MarketCustomerRole, BankTellerRole
 	private Role _currentRole; // this should never be null
+	private boolean _sentCmdFinishAndLeave = false;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
 	private CommuterRole _commuterRole = new CommuterRole(this, null); //TODO null should be a Place
 	private Role _occupation;
 	private double _occupationStartTime;
 	private double _occupationEndTime;
 	private boolean _weekday_notWeekend;
-	//HomeRole _homeRole;
+	HomeRole _homeRole;
 	
 	// State data:
 	private double _money;
@@ -33,7 +36,8 @@ public class PersonAgent extends Agent
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
 	class State
 	{
-		NourishmentState nourishment;
+		NourishmentState nourishment; //TODO implement value for hunger
+		NourishmentState nourishment() { return nourishment; }
 		
 		/** Get the current wealth state, based on money and occupation status. */
 		WealthState wealth()
@@ -82,6 +86,7 @@ public class PersonAgent extends Agent
 	public PersonAgent(String name) { _name = name; }
 	// public PersonAgent(String name, Role r) { _name = name; ... }
 	public String name() { return _name; }
+	public double money() { return _money; }
 	public void changeMoney(double delta) { _money += delta; }
 	public void setOccupationStartTime(double occupationStartTime) { _occupationStartTime = occupationStartTime; }
 	public void setOccupationEndTime(double occupationEndTime) { _occupationEndTime = occupationEndTime; }
@@ -129,39 +134,98 @@ public class PersonAgent extends Agent
 		if(_currentRole.active)
 		{
 			// Finish role because you have to get to work:
-			if(workingToday())
+			if(workingToday() && !_sentCmdFinishAndLeave)
 			{
-				if(_currentRole != _occupation && _occupation != null && timeToBeAtWork())
+				if(_occupation != null)
 				{
-					_currentRole.cmdFinishAndLeave();
+					if(_currentRole != _occupation)
+					{
+						if(timeToBeAtWork()) finishAndLeaveCurrentRole();
+						return true;
+					}
+					else // i.e. if you're currently at your job and your shift just finished
+					{
+						if(!timeToBeAtWork()) finishAndLeaveCurrentRole();
+						return true;
+					}
+				}
+			}
+			if(_currentRole == _homeRole && (_state.time() > 20 || _state.time() < 7))
+			{
+				if(_state.nourishment() == NourishmentState.HUNGRY)
+				{
+					if(!_homeRole.cooking())
+					{
+						_homeRole.cmdCookFood();
+						return true;
+					}
+				}
+				else
+				{
+					if(!_homeRole.sleeping())
+					{
+						_homeRole.cmdGoToBed();
+						return true;
+					}
 				}
 			}
 			
+			// Call current role's scheduler
 			if(_currentRole.pickAndExecuteAnAction()) { return true; }
 		}
 		else // i.e. _currentRole.active == false
 		{
+			// note: if we get here, a role just finished leaving.
+			_sentCmdFinishAndLeave = false;
+			
 			if(_currentRole == _commuterRole)
 			{
-				// We must have just reached the destination since the role was just set to inactive and the previous value of _currentRole was _transportationRole.
+				// We must have just reached the destination
 				_currentRole = _nextRole;
 				_currentRole.active = true;
 				return true;
 			}
 			else
 			{
-				// note: the program will only get to here if we just finished one role, which is not transportation role
+				// note: the program will only get to here if we just finished a role that is not transportation role.
 				// Choose the next role to do.  Set _nextRole to the next role you will do, set _currentRole to _commuterRole
 				
-				if(workingToday())
+				if(_occupation != null && workingToday() && timeToBeAtWork()) //TODO add JoblessRole
 				{
-					if(_occupation != null && timeToBeAtWork()) //TODO add JoblessRole
+					setNextRole(_occupation);
+					return true;
+				}
+				else if(_state.time() > 20 || _state.time() < 7) //could replace with variables for sleepTime and wakeTime
+				{
+					setNextRole(_homeRole);
+					return true;
+				}
+				else if(_state.nourishment() == NourishmentState.HUNGRY)
+				{
+					if(_state.wealth() == WealthState.RICH)
 					{
-						_nextRole = _occupation;
-						_commuterRole.setDestination(_occupation.place());
-						_currentRole = _commuterRole;
-						_currentRole.active = true;
-						return true;
+						//go to Yixin's restaurant
+					}
+					else
+					{
+						Random rand = new Random();
+						if(rand.nextInt(4) == 0)
+						{
+							//go to restaurant
+						}
+						else
+						{
+							if(_homeRole.haveFood())
+							{
+								_homeRole.cmdCookFood();
+								setNextRole(_homeRole);
+								return true;
+							}
+							else
+							{
+								// Search for a MarketCustomerRole in _roles, use that; if none, 
+							}
+						}
 					}
 				}
 				
@@ -259,5 +323,17 @@ public class PersonAgent extends Agent
 	{
 		return _state.time() > _occupationStartTime - .5 && // .5 is half an hour
 				_state.time() < _occupationEndTime;
+	}
+	private void finishAndLeaveCurrentRole()
+	{
+		_sentCmdFinishAndLeave = true;
+		_currentRole.cmdFinishAndLeave();
+	}
+	private void setNextRole(Role nextRole)
+	{
+		_nextRole = nextRole;
+		_commuterRole.setDestination(nextRole.place());
+		_currentRole = _commuterRole;
+		_currentRole.active = true;
 	}
 }
