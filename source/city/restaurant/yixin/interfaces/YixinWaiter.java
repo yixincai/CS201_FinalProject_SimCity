@@ -1,7 +1,5 @@
 package city.restaurant.yixin.interfaces;
 
-import restaurant.interfaces.Customer;
-
 public interface YixinWaiter {
 
 	public abstract void msgSitAtTable(YixinCustomer cust, int tablenumber, int count);

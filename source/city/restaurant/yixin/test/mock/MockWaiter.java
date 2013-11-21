@@ -1,6 +1,10 @@
 package city.restaurant.yixin.test.mock;
 
-import restaurant.interfaces.*;
+import city.restaurant.yixin.interfaces.YixinCustomer;
+import city.restaurant.yixin.interfaces.YixinWaiter;
+import agent.Mock;
+import utilities.EventLog;
+import utilities.LoggedEvent;
 
 public class MockWaiter extends Mock implements YixinWaiter{
 	public EventLog log = new EventLog();

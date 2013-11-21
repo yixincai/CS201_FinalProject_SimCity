@@ -1,9 +1,5 @@
 package city.restaurant.yixin;
 
-import agent.Agent;
-
-
-
 import agent.Role;
 
 import java.util.*;

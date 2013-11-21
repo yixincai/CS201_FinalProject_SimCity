@@ -4,7 +4,6 @@ import java.util.*;
 import city.PersonAgent;
 import city.market.MarketCashierRole.CustomerOrder;
 import city.market.MarketCashierRole.RestaurantOrder;
-import city.market.MarketCashierRole.RoleState;
 import city.market.interfaces.MarketEmployee;
 import agent.Role;
 

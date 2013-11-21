@@ -1,6 +1,8 @@
 package city.restaurant.yixin.test.mock;
 
-import restaurant.interfaces.*;
+import utilities.EventLog;
+import city.restaurant.yixin.interfaces.*;
+import agent.Mock;
 
 public class MockHost extends Mock implements YixinHost{
 	public EventLog log = new EventLog();
