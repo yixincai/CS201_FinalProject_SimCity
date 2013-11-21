@@ -2,18 +2,18 @@ package city.restaurant.yixin.test.mock;
 
 import restaurant.interfaces.*;
 
-public class MockCashier extends Mock implements Cashier{
+public class MockCashier extends Mock implements YixinCashier{
 	public EventLog log = new EventLog();
 
 	public MockCashier(String name) {
 		super(name);
 	}
 	
-	public void msgComputeBill(Waiter w, Customer c, String choice){
+	public void msgComputeBill(YixinWaiter w, YixinCustomer c, String choice){
 		log.add(new LoggedEvent("Received ComputeBill from waiter. Choice = "+ choice));
 	}
 	
-	public void msgHereIsThePayment(Customer c, double check, double cash){
+	public void msgHereIsThePayment(YixinCustomer c, double check, double cash){
 		log.add(new LoggedEvent("Received HereIsTheCheck from customer. Check = "+ check + " Payment = "+ cash));
 	}
 	

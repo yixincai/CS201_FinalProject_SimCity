@@ -1,10 +1,10 @@
 package city.restaurant.yixin.gui;
 
-import restaurant.CustomerAgent;
-
+import gui.Gui;
 import java.awt.*;
-
 import javax.swing.*;
+
+import city.restaurant.yixin.YixinCustomerRole;
 
 public class YixinCustomerGui extends JPanel implements Gui{
 
@@ -13,8 +13,6 @@ public class YixinCustomerGui extends JPanel implements Gui{
 	private boolean isHungry = false;
 
 	//private HostAgent host;
-	RestaurantGui gui;
-
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant, GoToCashier};
@@ -34,14 +32,13 @@ public class YixinCustomerGui extends JPanel implements Gui{
     private String choice;
     private boolean show_choice = false;
     
-	public YixinCustomerGui(YixinCustomerRole c, RestaurantGui gui, int count){ 
+	public YixinCustomerGui(YixinCustomerRole c, int count){ 
 		agent = c;
 		xPos = OriginX;
 		yPos = OriginY;
 		xDestination = OriginX;
 		yDestination = OriginY;
 		//maitreD = m;
-		this.gui = gui;
 		this.count = count;
 	}
 
@@ -63,7 +60,6 @@ public class YixinCustomerGui extends JPanel implements Gui{
 				agent.msgAnimationFinishedLeaveRestaurant();
 				System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
-				gui.setCustomerEnabled(agent);
 			}
 			else if (command==Command.GoToCashier) 
 				agent.msgAnimationFinishedGoToCashier();
@@ -148,13 +144,4 @@ public class YixinCustomerGui extends JPanel implements Gui{
 		command = Command.LeaveRestaurant;
 	}
 	
-    public void pauseThread(){
-    	if (agent != null)
-    		agent.pauseThread();
-    }
-
-    public void resumeThread(){
-    	if (agent != null)
-    		agent.resumeThread();
-    }
 }

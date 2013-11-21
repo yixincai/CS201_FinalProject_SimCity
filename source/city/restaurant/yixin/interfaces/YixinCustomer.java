@@ -1,8 +1,5 @@
 package city.restaurant.yixin.interfaces;
 
-import restaurant.interfaces.Waiter;
-import restaurant.interfaces.Cashier;
-import restaurant.Menu;
 
 /**
  * A sample Customer interface built to unit test a CashierAgent.
@@ -10,13 +7,13 @@ import restaurant.Menu;
  * @author Monroe Ekilah
  *
  */
-public interface Customer {
+public interface YixinCustomer {
 
 	public void gotHungry();
 	
 	public void msgNoSeat();
 
-	public void msgFollowMe(Waiter w, int tablenumber, Menu menu);
+	public void msgFollowMe(YixinWaiter w, int tablenumber, Menu menu);
 	
 	public void msgNoFood(Menu menu);
 
@@ -24,7 +21,7 @@ public interface Customer {
 	
 	public void msgHereIsYourFood(String choice);
 	
-	public void msgHereIsTheCheck(double money, Cashier cashier);
+	public void msgHereIsTheCheck(double money, YixinCashier cashier);
 	
 	public void msgHereIsTheChange(double change);
 	

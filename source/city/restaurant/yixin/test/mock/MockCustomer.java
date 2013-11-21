@@ -5,7 +5,7 @@ import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 
-public class MockCustomer extends Mock implements Customer {
+public class MockCustomer extends Mock implements YixinCustomer {
 
 	public EventLog log = new EventLog();
 
@@ -17,7 +17,7 @@ public class MockCustomer extends Mock implements Customer {
 	
 	public void msgNoSeat(){};
 
-	public void msgFollowMe(Waiter w, int tablenumber, Menu menu){};
+	public void msgFollowMe(YixinWaiter w, int tablenumber, Menu menu){};
 	
 	public void msgNoFood(Menu menu){};
 
@@ -25,7 +25,7 @@ public class MockCustomer extends Mock implements Customer {
 	
 	public void msgHereIsYourFood(String choice){};
 	
-	public void msgHereIsTheCheck(double money, Cashier cashier){};
+	public void msgHereIsTheCheck(double money, YixinCashier cashier){};
 	
 	public void msgHereIsTheChange(double change){
 		log.add(new LoggedEvent("Received HereIsTheChange from cashier. Change = "+ change));
