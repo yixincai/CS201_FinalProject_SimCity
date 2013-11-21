@@ -1,9 +1,11 @@
 package city.restaurant.yixin;
 
+import city.PersonAgent;
+
 public class YixinNormalWaiterRole extends YixinWaiterRole{
 
-	public YixinNormalWaiterRole(String name) {
-		super(name);
+	public YixinNormalWaiterRole(PersonAgent person, YixinRestaurant restaurant, String name) {
+		super(person, restaurant, name);
 	}
 
 	@Override
@@ -12,6 +14,12 @@ public class YixinNormalWaiterRole extends YixinWaiterRole{
 		customer.state = MyCustomer.CustomerState.none;
 		DoGoToCook();
 		cook.msgHereIsTheOrder(this, customer.choice, customer.tableNumber);
+	}
+
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

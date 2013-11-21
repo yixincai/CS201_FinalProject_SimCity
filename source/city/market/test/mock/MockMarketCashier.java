@@ -2,10 +2,10 @@ package city.market.test.mock;
 import java.util.List;
 
 import city.market.Item;
-import city.market.Restaurant;
 import city.market.MarketCashierRole.CustomerOrder;
 import city.market.interfaces.MarketCashier;
 import city.market.interfaces.MarketCustomer;
+import city.restaurant.Restaurant;
 import agent.Mock;
 
 public class MockMarketCashier extends Mock implements MarketCashier{

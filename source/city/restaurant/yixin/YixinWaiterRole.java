@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import agent.Role;
+import city.PersonAgent;
 import city.restaurant.yixin.gui.YixinWaiterGui;
 import utilities.EventLog;
 
 
 public abstract class YixinWaiterRole extends Role {//implements Waiter{
-	public YixinRestaurant r;
+	public YixinRestaurant restaurant;
 	public EventLog log = new EventLog();
 	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	public YixinCookRole cook = null;
@@ -26,8 +27,9 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 
 	private String name;
 
-	public YixinWaiterRole(String name) {
-		super();
+	public YixinWaiterRole(PersonAgent p, YixinRestaurant r, String name) {
+		super(p);
+		this.restaurant = r;
 		this.name = name;
 	}
 

@@ -12,12 +12,13 @@ import utilities.EventLog;
  * Restaurant customer agent.
  */
 public class YixinCustomerRole extends Role{// implements Customer{
+	public YixinRestaurant restaurant;
 	public EventLog log = new EventLog();
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
 	private YixinCustomerGui customerGui;
-	private Semaphore atTabsle = new Semaphore(0,true);
+	private Semaphore atTable = new Semaphore(0,true);
 	// agent correspondents
 	private YixinHostRole host;
 	private YixinWaiterRole waiter;
@@ -46,7 +47,7 @@ public class YixinCustomerRole extends Role{// implements Customer{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public YixinCustomerRole(PersonAgent p, String name, int count){
+	public YixinCustomerRole(PersonAgent p, YixinRestaurant r, String name, int count){
 		super(p);
 		this.money = 0;
 		this.name = name;
@@ -92,7 +93,7 @@ public class YixinCustomerRole extends Role{// implements Customer{
 		stateChanged();
 	}
 
-	public void msgFollowMe(Waiter w, int tablenumber, Menu menu) {
+	public void msgFollowMe(YixinWaiterRole w, int tablenumber, Menu menu) {
 		if (w instanceof YixinWaiterRole){
 			print("Received msgSitAtTable");
 			this.waiter = (YixinWaiterRole)w;
@@ -122,7 +123,7 @@ public class YixinCustomerRole extends Role{// implements Customer{
 		stateChanged();
 	}
 	
-	public void msgHereIsTheCheck(double money, Cashier cashier){
+	public void msgHereIsTheCheck(double money, YixinCashierRole cashier){
 		if (cashier instanceof YixinCashierRole){
 			print("Received check of " + money);
 			event = AgentEvent.billArrived;

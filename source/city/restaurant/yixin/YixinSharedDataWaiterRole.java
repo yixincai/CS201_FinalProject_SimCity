@@ -1,8 +1,10 @@
 package city.restaurant.yixin;
 
+import city.PersonAgent;
+
 public class YixinSharedDataWaiterRole extends YixinWaiterRole{
-	public YixinSharedDataWaiterRole(String name) {
-		super(name);
+	public YixinSharedDataWaiterRole(PersonAgent person, YixinRestaurant r, String name) {
+		super(person, r, name);
 	}
 
 	@Override
@@ -13,7 +15,7 @@ public class YixinSharedDataWaiterRole extends YixinWaiterRole{
 		print("Making a new order");
         Order data = new Order(this, customer.choice, customer.tableNumber, Order.OrderState.NotCooked);
         print("Trying to put order on revolving stand");
-        r.revolving_stand.insert(data);
+        restaurant.revolving_stand.insert(data);
 	}
 
 	@Override

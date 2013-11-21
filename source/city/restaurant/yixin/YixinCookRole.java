@@ -13,8 +13,9 @@ import city.restaurant.yixin.gui.YixinCookGui;
 import utilities.EventLog;
 
 public class YixinCookRole extends Role {//implements Cook{
-	public YixinRestaurant r;
+	public YixinRestaurant restaurant;
 	public YixinCashierRole cashier;
+	
 	public EventLog log = new EventLog();
 	private String name = "TheBestCook";
 	public List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
@@ -22,6 +23,7 @@ public class YixinCookRole extends Role {//implements Cook{
 	Timer timer = new Timer(), timer2 = new Timer();
 	public YixinCookGui cookGui = null;
 	boolean lowInFood = true;
+	
 	enum CookState{ableToOrder,OrderReceived,none};
 	CookState state = CookState.ableToOrder;
 	enum CheckState{notChecked,Checked};
@@ -33,8 +35,9 @@ public class YixinCookRole extends Role {//implements Cook{
 	int market_count = 0;//switch to the next market if one cannot fulfill
 	Market current_market;
 
-	public YixinCookRole(PersonAgent p) {
+	public YixinCookRole(PersonAgent p, YixinRestaurant r) {
 		super(p);
+		this.restaurant = r;
 		inventory.put("Steak", new Food("Steak", 5000, 1, 3, 5));
 		inventory.put("Chicken", new Food("Chicken", 4000, 1, 3, 5));
 		inventory.put("Salad", new Food("Salad", 1000, 0, 3, 5));
@@ -119,7 +122,7 @@ public class YixinCookRole extends Role {//implements Cook{
 					return true;
 				}
 			}
-			Order order = r.revolving_stand.remove();
+			Order order = restaurant.revolving_stand.remove();
 			if (order!=null){
 				DoGoToRevolvingStand();
 				orders.add(order);
@@ -170,7 +173,7 @@ public class YixinCookRole extends Role {//implements Cook{
 			order.add(new Item("Salad", inventory.get("Salad").capacity - inventory.get("Salad").amount));
 		if (inventory.get("Pizza").amount <= inventory.get("Pizza").threshold)
 			order.add(new Item("Pizza", inventory.get("Pizza").capacity - inventory.get("Pizza").amount));
-		market.msgHereIsTheOrder(order);
+		market.MarketCashier.msgPlaceOrder(restaurant, order);
 	}
 
 	private void cookOrder(final Order order) {

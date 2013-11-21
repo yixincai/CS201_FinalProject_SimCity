@@ -3,8 +3,8 @@ package city.market.interfaces;
 import java.util.List;
 
 import city.market.Item;
-import city.market.Restaurant;
 import city.market.MarketCashierRole.CustomerOrder;
+import city.restaurant.Restaurant;
 
 public interface MarketCashier {
 
