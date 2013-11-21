@@ -5,7 +5,6 @@ import city.PersonAgent;
 import city.market.interfaces.MarketCashier;
 import city.market.interfaces.MarketCustomer;
 import city.restaurant.Restaurant;
-import city.restaurant.yixin.Menu.Food;
 import agent.Role;
 import utilities.EventLog;
 import utilities.LoggedEvent;
