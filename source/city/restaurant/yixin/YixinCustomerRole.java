@@ -70,7 +70,7 @@ public class YixinCustomerRole extends Role{// implements Customer{
 	}
 	// Messages
 
-	public void gotHungry() {//from animation
+	public void cmdGotHungry() {//from PersonAgent
 		print("I'm hungry");
 		if (name.equals("5"))
 			money = 5;

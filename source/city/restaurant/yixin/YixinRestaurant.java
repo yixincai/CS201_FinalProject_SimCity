@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import agent.Role;
+import city.PersonAgent;
 import city.restaurant.Restaurant;
+import city.restaurant.RestaurantCustomerRole;
 
 
 public class YixinRestaurant extends Restaurant{
@@ -31,8 +33,8 @@ public class YixinRestaurant extends Restaurant{
 	}
 
 	@Override
-	public Role generateCustomerRole() {
-		// TODO Auto-generated method stub
+	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
+		//TODO make a new customer that is initialized with a PersonAgent of person
 		return null;
 	}
 

@@ -7,6 +7,10 @@ import city.bank.BankCustomerRole;
 import city.home.HomeRole;
 import city.market.Market;
 import city.market.MarketCustomerRole;
+import city.restaurant.Restaurant;
+import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.yixin.YixinCustomerRole;
+import city.restaurant.yixin.YixinRestaurant;
 import city.transportation.CommuterRole;
 import agent.Agent;
 import agent.Role;
@@ -206,14 +210,14 @@ public class PersonAgent extends Agent
 				{
 					if(_state.wealth() == WealthState.RICH)
 					{
-						//go to Yixin's restaurant
+						goToRestaurant();
 					}
 					else
 					{
 						Random rand = new Random();
 						if(rand.nextInt(4) == 0)
 						{
-							//go to restaurant
+							goToRestaurant();
 						}
 						else
 						{
@@ -225,29 +229,7 @@ public class PersonAgent extends Agent
 							}
 							else
 							{
-								// Search for a MarketCustomerRole in _roles, use that;
-								// if no MarketCustomerRole in _roles, choose a Market from the Directory, and get a new MarketCustomerRole from it
-								for(Role r : _roles)
-								{
-									if(r instanceof MarketCustomerRole)
-									{
-										MarketCustomerRole mcr = (MarketCustomerRole)r;
-										mcr.cmdBuyFood(3);
-										setNextRole(mcr);
-										return true;
-									}
-								}
-								// note: we only get here if no MarketCustomerRole was found in _roles
-								List<Place> markets = Directory.markets();
-								for(Place p : markets)
-								{
-									Market m = (Market)p;
-									MarketCustomerRole mcr = m.generateCustomerRole(this);
-									mcr.cmdBuyFood(3);
-									setNextRole(mcr);
-									_roles.add(mcr);
-									return true;
-								}
+								goToMarket(3); // 3 meals
 							}
 						}
 					}
@@ -311,29 +293,9 @@ public class PersonAgent extends Agent
 		return false;
 	}
 	
-	/**
-	 * Chooses the next place you are going to go to
-	 */
-	private void chooseNextRole()
-	{
-		// For example:
-		if(_state.nourishment == NourishmentState.HUNGRY)
-		{
-			actGoToRestaurant();
-		}
-	}
-	
 	
 	
 	// ---------------------------------------- ACTIONS ----------------------------------------
-	private void actGoToRestaurant()
-	{
-		// Restaurant r = chooseRestaurant();
-		// gui.getToRestaurant(r);
-		// Role r = r.createNewCustRole();
-		// r.active = true;
-		// roles.add(r);
-	}
 	
 	// (Peanut gallery)
 	private void actTellLongStory()
@@ -369,5 +331,59 @@ public class PersonAgent extends Agent
 		_commuterRole.setDestination(nextRole.place());
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
+	}
+	private boolean goToMarket(int meals)
+	{
+		// Search for a MarketCustomerRole in _roles, use that;
+		// if no MarketCustomerRole in _roles, choose a Market from the Directory, and get a new MarketCustomerRole from it
+		for(Role r : _roles)
+		{
+			if(r instanceof MarketCustomerRole)
+			{
+				MarketCustomerRole mcr = (MarketCustomerRole)r;
+				mcr.cmdBuyFood(meals);
+				setNextRole(mcr);
+				return true;
+			}
+		}
+		// note: we only get here if no MarketCustomerRole was found in _roles
+		List<Place> markets = Directory.markets();
+		for(Place p : markets)
+		{
+			Market m = (Market)p;
+			MarketCustomerRole mcr = m.generateCustomerRole(this);
+			mcr.cmdBuyFood(meals);
+			setNextRole(mcr);
+			_roles.add(mcr);
+			return true;
+		}
+		return false;
+	}
+	private boolean goToRestaurant()
+	{
+		// Search for a YixinCustomerRole in _roles, use that;
+		// if no YixinCustomerRole in _roles, choose a Restaurant from the Directory, and get a new YixinCustomerRole from it
+		for(Role r : _roles)
+		{
+			if(r instanceof YixinCustomerRole)
+			{
+				YixinCustomerRole ycr = (YixinCustomerRole)r;
+				ycr.cmdGotHungry();
+				setNextRole(ycr);
+				return true;
+			}
+		}
+		// note: we only get here if no YixinCustomerRole was found in _roles
+		List<Place> restaurants = Directory.restaurants();
+		for(Place p : restaurants)
+		{
+			YixinRestaurant r = (YixinRestaurant)p;
+			RestaurantCustomerRole ycr = r.generateCustomerRole(this);
+			ycr.cmdGotHungry();
+			setNextRole(ycr);
+			_roles.add(ycr);
+			return true;
+		}
+		return false;
 	}
 }

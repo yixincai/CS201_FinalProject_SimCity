@@ -79,7 +79,7 @@ public class YixinCustomerGui extends JPanel implements Gui{
 	}
 	public void setHungry() {
 		isHungry = true;
-		agent.gotHungry();
+		agent.cmdGotHungry();
 		setPresent(true);
 	}
 	public boolean isHungry() {
