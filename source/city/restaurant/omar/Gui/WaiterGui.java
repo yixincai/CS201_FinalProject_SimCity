@@ -7,7 +7,7 @@ import java.awt.*;
 import city.restaurant.omar.CustomerAgent;
 import city.restaurant.omar.Table;
 import city.restaurant.omar.WaiterAgent;
-
+/*
 public class WaiterGui implements Gui {
 
 	private WaiterAgent agent = null;
@@ -168,6 +168,6 @@ public class WaiterGui implements Gui {
 	    	yDestination = HOMEY;
 	    	
 	    	gotAct = true;
-	    }
+	    } 
 
-}
+} */
