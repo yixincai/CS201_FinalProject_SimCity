@@ -5,7 +5,7 @@ import gui.Gui;
 import java.awt.*;
 
 import city.restaurant.omar.CustomerAgent;
-
+/*
 public class CustomerGui implements Gui{
 
 	private CustomerAgent agent = null;
@@ -137,4 +137,4 @@ public class CustomerGui implements Gui{
 	private void setColor(Color c){
 		this.myColor = c;
 	}
-}
+} */

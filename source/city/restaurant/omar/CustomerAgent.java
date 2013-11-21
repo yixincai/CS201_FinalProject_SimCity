@@ -13,7 +13,7 @@ import java.util.concurrent.Semaphore;
 
 /**
  * Restaurant customer agent.
- */
+ */ 
 public class CustomerAgent extends Agent implements Customer {
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
@@ -106,7 +106,7 @@ public class CustomerAgent extends Agent implements Customer {
 	
 	public void msgAnimationFinishedGoToSeat() {
 		event = AgentEvent.Seated;
-		customerGui.setCurrentStatus("Seated");
+//		customerGui.setCurrentStatus("Seated");
 		custSem.release();
 		//from animation
 		stateChanged();
@@ -393,4 +393,3 @@ public class CustomerAgent extends Agent implements Customer {
 		custSem.release();
 	}
 }
-

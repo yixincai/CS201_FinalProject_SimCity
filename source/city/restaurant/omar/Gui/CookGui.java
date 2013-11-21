@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 
 import city.restaurant.omar.CookAgent;
 
-
+/*
 public class CookGui implements Gui{
 	
 	private static int XGRILL0 = 500; //change numbers to grill positions
@@ -137,4 +137,4 @@ public class CookGui implements Gui{
 		// TODO Auto-generated method stub
 		return true;
 	}
-}
+} */

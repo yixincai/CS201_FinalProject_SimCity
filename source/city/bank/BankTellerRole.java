@@ -97,7 +97,7 @@ public class BankTellerRole extends Role {
 			}
 		}
 		
-		if(myCustomers.isEmpty() && command == Command.Leave){
+		if(myCustomers.isEmpty() && command == Command.Leave && host.isWaitingCustomersEmpty()){
 			actLeaveBank();
 		}
 		return false;
