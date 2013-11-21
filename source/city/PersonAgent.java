@@ -35,11 +35,11 @@ public class PersonAgent extends Agent
 		/** Get the current wealth state, based on money and occupation status. */
 		WealthState wealth()
 		{
-			if(_money <= 10)
+			if(_money < Constants.POOR_LEVEL)
 			{
 				return (_occupation != null) ? WealthState.BROKE : WealthState.POOR;
 			}
-			else if(_money <= 250)
+			else if(_money < Constants.RICH_LEVEL)
 			{
 				return WealthState.NORMAL;
 			}
@@ -108,6 +108,9 @@ public class PersonAgent extends Agent
 			{
 				// note: the program will only get to here if we just finished one role, which is not transportation role
 				// Choose the next role to do.  Set _nextRole to the next role you will do, set _currentRole to _commuterRole
+				
+				if(_state.today() != Time.Day.SATURDAY && _state.today() != Time.Day.SUNDAY)
+				
 				/*// The model for conditions:
 				if(condition)
 				{
@@ -119,7 +122,7 @@ public class PersonAgent extends Agent
 					_currentRole.active = true;
 					return true;
 				}*/
-				
+				/*
 				// Decide whether or not to go to the bank
 				for(Role r : _roles)
 				{
@@ -127,8 +130,9 @@ public class PersonAgent extends Agent
 					{
 						BankCustomerRole bcr = (BankCustomerRole)r;
 						
-						if(true /*I want to go to the bank*/)
+						if(true) //if I want to go to the bank
 						{
+							//bcr.cmd....();
 							_nextRole = bcr;
 							_commuterRole.setDestination(bcr.place());
 							_currentRole = _commuterRole;
@@ -136,7 +140,7 @@ public class PersonAgent extends Agent
 							return true;
 						}
 					}
-				}
+				}*/
 				
 				//_nextRole = _HomeRole;
 			}

@@ -1,5 +1,6 @@
 package city.restaurant;
 
+import agent.Role;
 import city.Place;
 
 public abstract class Restaurant extends Place {
@@ -23,4 +24,11 @@ public abstract class Restaurant extends Place {
 	//private Host _host;
 	//protected void setHost(Host host) { _host = host; }
 	//public host() { return _host; }
+	
+	
+	
+	// ------------------------------------ FACTORIES ---------------------------------------------
+	public abstract Role generateCustomerRole(); // Make a new CustomerRole, which is initialized with a pointer to the HostRole.
+	public abstract Role generateWaiterRole();
+	public abstract Role getHostRole();
 }

@@ -5,10 +5,11 @@ import agent.Role;
 
 public abstract class HomeRole extends Role
 {
+	//private List<Food> _groceries;
 
 
 
-	protected enum Command { NONE, WATCH_TV, COOK_FOOD, GO_TO_BED }
+	protected enum Command { NONE, WATCH_TV, COOK_FOOD, GO_TO_BED, WAKE_UP }
 	protected Command _command;
 	
 	
@@ -25,10 +26,14 @@ public abstract class HomeRole extends Role
 		_command = Command.WATCH_TV;
 		stateChanged();
 	}
-	// note: commands are only from PersonAgent
 	public void cmdGoToBed()
 	{
 		_command = Command.GO_TO_BED;
+		stateChanged();
+	}
+	public void cmdWakeUp()
+	{
+		_command = Command.WAKE_UP;
 		stateChanged();
 	}
 	
