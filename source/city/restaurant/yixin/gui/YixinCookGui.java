@@ -1,5 +1,7 @@
 package city.restaurant.yixin.gui;
 
+import gui.Gui;
+
 import javax.swing.*;
 
 import java.awt.Color;
@@ -8,8 +10,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-import restaurant.CookAgent;
-import restaurant.HostAgent;
+import city.restaurant.yixin.YixinCookRole;
 
 public class YixinCookGui extends JPanel implements Gui{
 	
@@ -109,15 +110,5 @@ public class YixinCookGui extends JPanel implements Gui{
 
     public int getYPos() {
         return yPos;
-    }
-    
-    public void pauseThread(){
-    	if (agent != null)
-    		agent.pauseThread();
-    }
-    
-    public void resumeThread(){
-    	if (agent != null)
-    		agent.resumeThread();
     }
 }

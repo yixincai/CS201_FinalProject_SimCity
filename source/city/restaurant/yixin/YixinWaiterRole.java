@@ -156,7 +156,6 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	public void msgBreakGranted(){
 		breakEnabled = true;//for gui purpose
 		print("Break request granted.");
-		waiterGui.setButtonEnabled();
 		stateChanged();
 	}
 

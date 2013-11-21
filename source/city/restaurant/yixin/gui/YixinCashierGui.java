@@ -1,9 +1,12 @@
 package city.restaurant.yixin.gui;
 
-import restaurant.CashierAgent;
+import gui.Gui;
 
 import java.awt.*;
+
 import javax.swing.*;
+
+import city.restaurant.yixin.YixinCashierRole;
 
 public class YixinCashierGui extends JPanel implements Gui {
 
@@ -36,15 +39,5 @@ public class YixinCashierGui extends JPanel implements Gui {
 
     public int getYPos() {
         return yPos;
-    }
-    
-    public void pauseThread(){
-    	if (agent != null)
-    		agent.pauseThread();
-    }
-    
-    public void resumeThread(){
-    	if (agent != null)
-    		agent.resumeThread();
     }
 }
