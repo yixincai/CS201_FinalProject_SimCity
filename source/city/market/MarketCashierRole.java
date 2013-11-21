@@ -4,6 +4,7 @@ import java.util.*;
 import city.PersonAgent;
 import city.market.interfaces.MarketCashier;
 import city.market.interfaces.MarketCustomer;
+import city.restaurant.Restaurant;
 import agent.Role;
 import utilities.EventLog;
 import utilities.LoggedEvent;
@@ -24,6 +25,17 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public MarketCashierRole(PersonAgent person, Market m){
 		super(person);
 		this.market = m;
+		inventory.put("Steak", new Good("Steak", 10, 1000));
+		inventory.put("Chicken", new Good("Chicken", 7, 1000));		
+		inventory.put("Salad", new Good("Salad", 3, 1000));
+		inventory.put("Pizza", new Good("Pizza", 4, 1000));
+		inventory.put("Car", new Good("Car", 200, 100));
+		inventory.put("Meal", new Good("Meal", 6, 1000));		
+	}
+	
+	@Override
+	public void cmdFinishAndLeave() {
+		role_state = RoleState.WantToLeave;
 	}
 
 	//customer messages
@@ -115,7 +127,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			return true;
 		}
 		if (restaurantOrders.size() == 0 && customers.size() == 0 && role_state == RoleState.WantToLeave){
-			finishAndLeaveCommand();
+			//DoLeave();
 			role_state = RoleState.none;
 			return true;
 		}
@@ -182,6 +194,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		String name;
 		double price;
 		int amount;
+		Good(String name, double price, int amount){
+			this.name = name;
+			this.price = price;
+			this.amount = amount;
+		}
 	}
 
 	public static class CustomerOrder {
@@ -210,9 +227,4 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		State state;
 	}
 
-	@Override
-	protected void finishAndLeaveCommand() {
-		//gui.DoLeaveMarket();
-		active = false;
-	}
 }

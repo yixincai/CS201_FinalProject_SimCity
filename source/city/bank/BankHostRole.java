@@ -16,7 +16,7 @@ public class BankHostRole extends Role {
 
 	//Data
 	List<BankTellerRole> tellers;
-	List<BankCustomerRole> waitingCustomers;
+	private List<BankCustomerRole> waitingCustomers;
 	BankHostRoleGui gui;
 	Semaphore hostSem = new Semaphore(0,true);
 	
@@ -43,27 +43,27 @@ public class BankHostRole extends Role {
 		for(BankTellerRole t: tellers){
 			if(!t.isOccupied()){
 				if(!waitingCustomers.isEmpty()){
-					callTeller(waitingCustomers.remove(0), t);
+					actCallTeller(waitingCustomers.remove(0), t);
 					return true;
 				}
 			}
 		}
 		
 		if(tellers.isEmpty()){  //host is last to leave bank
-			leaveBank();
+			actLeaveBank();
 			return true;
 		}
 		return false;
 	}
 	
 	//Actions
-	private void callTeller(BankCustomerRole c, BankTellerRole teller){
+	private void actCallTeller(BankCustomerRole c, BankTellerRole teller){
 		gui.DoCallTeller(teller);   
 	    c.msgCalledToDesk(teller);
 	    teller.setOccupied(true);
 	}
 	
-	private void leaveBank(){
+	private void actLeaveBank(){
 		gui.DoLeaveBank();
 		try{
 			hostSem.acquire();
@@ -76,9 +76,14 @@ public class BankHostRole extends Role {
 	
 	//---------- Commands --------
 	@Override
-	protected void finishAndLeaveCommand() {
+	public void cmdFinishAndLeave() {
 		// TODO Auto-generated method stub
-		//don't really need to do anything
+		command = Command.Leave;
+		stateChanged();
 	}
 
+	//Utilities
+	public boolean isWaitingCustomersEmpty(){
+		return waitingCustomers.isEmpty();
+	}
 }

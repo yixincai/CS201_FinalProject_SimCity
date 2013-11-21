@@ -1,23 +1,25 @@
 package city.restaurant.yixin.test.mock;
 
-import restaurant.interfaces.*;
+import utilities.EventLog;
+import city.restaurant.yixin.interfaces.*;
+import agent.Mock;
 
-public class MockHost extends Mock implements Host{
+public class MockHost extends Mock implements YixinHost{
 	public EventLog log = new EventLog();
 
 	public MockHost(String name) {
 		super(name);
 	}
 	
-	public void msgIWantFood(Customer cust, int count){}
+	public void msgIWantFood(YixinCustomer cust, int count){}
 
-	public void msgIAmLeaving(Customer cust){}
+	public void msgIAmLeaving(YixinCustomer cust){}
 	
-	public void msgIWantToStay(Customer cust){}
+	public void msgIWantToStay(YixinCustomer cust){}
 
-	public void msgTableIsFree(Customer cust, int tablenumber){}
+	public void msgTableIsFree(YixinCustomer cust, int tablenumber){}
 	
-	public void msgWantToBreak(Waiter w){}
+	public void msgWantToBreak(YixinWaiter w){}
 	
-	public void msgWantToComeBack(Waiter w){}
+	public void msgWantToComeBack(YixinWaiter w){}
 }

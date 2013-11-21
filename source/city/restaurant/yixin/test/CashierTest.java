@@ -10,7 +10,7 @@ import junit.framework.*;
 public class CashierTest extends TestCase
 {
 	//these are instantiated for each test separately via the setUp() method.
-	CashierAgent cashier;
+	YixinCashierRole cashier;
 	MockWaiter waiter1, waiter2;
 	MockCustomer customer1, customer2;
 	MockMarket market1, market2;
@@ -21,7 +21,7 @@ public class CashierTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		cashier = new CashierAgent();		
+		cashier = new YixinCashierRole();		
 		customer1 = new MockCustomer("mockcustomer");
 		customer2 = new MockCustomer("mockcustomer2");	
 		waiter1 = new MockWaiter("Mike");
@@ -218,7 +218,7 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 1 bills in it. It doesn't.",cashier.bills.size(), 1);
 		assertEquals("Bill should have the same waiter. It doesn't.",cashier.bills.get(0).waiter, waiter1);
 		assertEquals("Bill should have the same customer. It doesn't.",cashier.bills.get(0).customer, customer1);
-		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.NotComputed);
+		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.NotComputed);
 		assertEquals("Bill should have the correct choice as Steak. It doesn't.",cashier.bills.get(0).choice, "Steak");		
 		assertEquals("CashierAgent should have one line after the Cashier's ComputeBill is called. Instead, the Cashier's event log reads: "
 				+ cashier.log.toString(), 1, cashier.log.size());
@@ -236,7 +236,7 @@ public class CashierTest extends TestCase
 						+ waiter1.log.toString(), 1, waiter1.log.size());
 		assertTrue("Waiter 1 should have logged an event for cashier's scheduler has been run, but his last event logged reads instead: " 
 				+ waiter1.log.getLastLoggedEvent().toString(), waiter1.log.containsString("Received HereIsTheCheck from cashier. Check = "+ 15.99));		
-		assertEquals("Bill should have the None state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.None);
+		assertEquals("Bill should have the None state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.None);
 		assertEquals("Bill should have the correct price of the food. It doesn't.",cashier.bills.get(0).price, 15.99);
 		
 		//check postconditions for step 1 and preconditions for step 2
@@ -252,7 +252,7 @@ public class CashierTest extends TestCase
 		cashier.msgHereIsThePayment(customer1, 15.99, 20.0);
 		assertEquals("Cashier should have 1 bills in it. It doesn't.",cashier.bills.size(), 1);
 		assertEquals("Bill should have the same customer. It doesn't.",cashier.bills.get(0).customer, customer1);
-		assertEquals("Bill should have the ReturnedFromCustomer state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.ReturnedFromCustomer);
+		assertEquals("Bill should have the ReturnedFromCustomer state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.ReturnedFromCustomer);
 		assertEquals("Bill should have the correct payment. It doesn't.",cashier.bills.get(0).cash, 20.0);
 		assertEquals("CashierAgent should have one line after the Cashier's ComputeBill is called. Instead, the Cashier's event log reads: "
 				+ cashier.log.toString(), 2, cashier.log.size());
@@ -300,7 +300,7 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 1 bills in it. It doesn't.",cashier.bills.size(), 1);
 		assertEquals("Bill should have the same waiter. It doesn't.",cashier.bills.get(0).waiter, waiter1);
 		assertEquals("Bill should have the same customer. It doesn't.",cashier.bills.get(0).customer, customer1);
-		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.NotComputed);
+		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.NotComputed);
 		assertEquals("Bill should have the correct choice as Steak. It doesn't.",cashier.bills.get(0).choice, "Salad");		
 		assertEquals("CashierAgent should have one line after the Cashier's ComputeBill is called. Instead, the Cashier's event log reads: "
 				+ cashier.log.toString(), 1, cashier.log.size());
@@ -314,7 +314,7 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 2 bills in it. It doesn't.",cashier.bills.size(), 2);
 		assertEquals("Bill should have the same waiter. It doesn't.",cashier.bills.get(1).waiter, waiter2);
 		assertEquals("Bill should have the same customer. It doesn't.",cashier.bills.get(1).customer, customer2);
-		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(1).state, CashierAgent.CustomerBill.BillState.NotComputed);
+		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(1).state, YixinCashierRole.CustomerBill.BillState.NotComputed);
 		assertEquals("Bill should have the correct choice as Steak. It doesn't.",cashier.bills.get(1).choice, "Pizza");		
 		assertEquals("CashierAgent should have two line after the Cashier's ComputeBill is called. Instead, the Cashier's event log reads: "
 				+ cashier.log.toString(), 2, cashier.log.size());
@@ -330,7 +330,7 @@ public class CashierTest extends TestCase
 						+ waiter1.log.toString(), 1, waiter1.log.size());
 		assertTrue("Waiter 1 should have logged an event for receiving \"HereIsYourChange\" with the correct change, but his last event logged reads instead: " 
 				+ waiter1.log.getLastLoggedEvent().toString(), waiter1.log.containsString("Received HereIsTheCheck from cashier. Check = "+ 5.99));
-		assertEquals("Bill should have the None state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.None);
+		assertEquals("Bill should have the None state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.None);
 		assertEquals("Bill should have the correct price of the food. It doesn't.",cashier.bills.get(0).price, 5.99);
 		
 		//run scheduler again
@@ -342,7 +342,7 @@ public class CashierTest extends TestCase
 						+ waiter2.log.toString(), 1, waiter1.log.size());
 		assertTrue("MockWaiter2 should have logged an event for receiving \"HereIsYourChange\" with the correct change, but his last event logged reads instead: " 
 				+ waiter2.log.getLastLoggedEvent().toString(), waiter2.log.containsString("Received HereIsTheCheck from cashier. Check = "+ 8.99));
-		assertEquals("Bill should have the None state. It doesn't.",cashier.bills.get(1).state, CashierAgent.CustomerBill.BillState.None);
+		assertEquals("Bill should have the None state. It doesn't.",cashier.bills.get(1).state, YixinCashierRole.CustomerBill.BillState.None);
 		assertEquals("Bill should have the correct price of the food. It doesn't.",cashier.bills.get(1).price, 8.99);		
 		
 		//check postconditions for step 1 and preconditions for step 2
@@ -360,7 +360,7 @@ public class CashierTest extends TestCase
 		cashier.msgHereIsThePayment(customer1, 5.99, 10.0);
 		assertEquals("Cashier should have 2 bills in it. It doesn't.",cashier.bills.size(), 2);
 		assertEquals("Bill should have the same customer. It doesn't.",cashier.bills.get(0).customer, customer1);
-		assertEquals("Bill should have the ReturnedFromCustomer state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.ReturnedFromCustomer);
+		assertEquals("Bill should have the ReturnedFromCustomer state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.ReturnedFromCustomer);
 		assertEquals("Bill should have the correct payment. It doesn't.",cashier.bills.get(0).cash, 10.0);
 		assertEquals("CashierAgent should have three line after the Cashier's ComputeBill is called. Instead, the Cashier's event log reads: "
 				+ cashier.log.toString(), 3, cashier.log.size());
@@ -372,7 +372,7 @@ public class CashierTest extends TestCase
 		cashier.msgHereIsThePayment(customer2, 8.99, 15);
 		assertEquals("Cashier should have 2 bills in it. It doesn't.",cashier.bills.size(), 2);
 		assertEquals("Bill should have the same customer. It doesn't.",cashier.bills.get(1).customer, customer2);
-		assertEquals("Bill should have the ReturnedFromCustomer state. It doesn't.",cashier.bills.get(1).state, CashierAgent.CustomerBill.BillState.ReturnedFromCustomer);
+		assertEquals("Bill should have the ReturnedFromCustomer state. It doesn't.",cashier.bills.get(1).state, YixinCashierRole.CustomerBill.BillState.ReturnedFromCustomer);
 		assertEquals("Bill should have the correct payment. It doesn't.",cashier.bills.get(1).cash, 15.0);
 		assertEquals("CashierAgent should have four lines after the Cashier's ComputeBill is called. Instead, the Cashier's event log reads: "
 				+ cashier.log.toString(), 4, cashier.log.size());
@@ -423,7 +423,7 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 1 bills in it. It doesn't.",cashier.bills.size(), 1);
 		assertEquals("Bill should have the same waiter. It doesn't.",cashier.bills.get(0).waiter, waiter1);
 		assertEquals("Bill should have the same customer. It doesn't.",cashier.bills.get(0).customer, customer1);
-		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.NotComputed);
+		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.NotComputed);
 		assertEquals("CashierAgent should have one line after the Cashier's ComputeBill is called. Instead, the Cashier's event log reads: "
 				+ cashier.log.toString(), 1, cashier.log.size());
 		assertTrue("Cashier should have logged an event for receiving \"ComputeBill\" with the correct change, but his last event logged reads instead: " 
@@ -440,7 +440,7 @@ public class CashierTest extends TestCase
 						+ waiter1.log.toString(), 1, waiter1.log.size());
 		assertTrue("Waiter 1 should have logged an event after cashier's scheduler has been run, but his last event logged reads instead: " 
 				+ waiter1.log.getLastLoggedEvent().toString(), waiter1.log.containsString("Received HereIsTheCheck from cashier. Check = "+ 15.99));
-		assertEquals("Bill should have the None state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.None);
+		assertEquals("Bill should have the None state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.None);
 
 		
 		//check postconditions for step 1 and preconditions for step 2
@@ -456,7 +456,7 @@ public class CashierTest extends TestCase
 		cashier.msgHereIsThePayment(customer1, 15.99, 10);
 		assertEquals("Cashier should have 1 bills in it. It doesn't.",cashier.bills.size(), 1);
 		assertEquals("Bill should have the same customer. It doesn't.",cashier.bills.get(0).customer, customer1);
-		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.ReturnedFromCustomer);
+		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.ReturnedFromCustomer);
 		assertEquals("CashierAgent should have one line after the Cashier's ComputeBill is called. Instead, the Cashier's event log reads: "
 				+ cashier.log.toString(), 2, cashier.log.size());
 		assertTrue("Cashier should have logged an event for receiving \"HereIsTheCheck\" with the correct change, but his last event logged reads instead: " 
@@ -502,7 +502,7 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 1 bills in it. It doesn't.",cashier.bills.size(), 1);
 		assertEquals("Bill should have the same waiter. It doesn't.",cashier.bills.get(0).waiter, waiter1);
 		assertEquals("Bill should have the same customer. It doesn't.",cashier.bills.get(0).customer, customer1);
-		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.NotComputed);
+		assertEquals("Bill should have the NotComputed state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.NotComputed);
 		assertEquals("Bill should have the correct choice as Steak. It doesn't.",cashier.bills.get(0).choice, "Steak");		
 		assertEquals("CashierAgent should have one line after the Cashier's ComputeBill is called. Instead, the Cashier's event log reads: "
 				+ cashier.log.toString(), 1, cashier.log.size());
@@ -533,7 +533,7 @@ public class CashierTest extends TestCase
 						+ waiter1.log.toString(), 1, waiter1.log.size());
 		assertTrue("Waiter 1 should have logged an event for cashier's scheduler has been run, but his last event logged reads instead: " 
 				+ waiter1.log.getLastLoggedEvent().toString(), waiter1.log.containsString("Received HereIsTheCheck from cashier. Check = "+ 15.99));		
-		assertEquals("Bill should have the None state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.None);
+		assertEquals("Bill should have the None state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.None);
 		assertEquals("Bill should have the correct price of the food. It doesn't.",cashier.bills.get(0).price, 15.99);
 		
 
@@ -562,7 +562,7 @@ public class CashierTest extends TestCase
 		cashier.msgHereIsThePayment(customer1, 15.99, 20.0);
 		assertEquals("Cashier should have 1 bills in it. It doesn't.",cashier.bills.size(), 1);
 		assertEquals("Bill should have the same customer. It doesn't.",cashier.bills.get(0).customer, customer1);
-		assertEquals("Bill should have the ReturnedFromCustomer state. It doesn't.",cashier.bills.get(0).state, CashierAgent.CustomerBill.BillState.ReturnedFromCustomer);
+		assertEquals("Bill should have the ReturnedFromCustomer state. It doesn't.",cashier.bills.get(0).state, YixinCashierRole.CustomerBill.BillState.ReturnedFromCustomer);
 		assertEquals("Bill should have the correct payment. It doesn't.",cashier.bills.get(0).cash, 20.0);
 		assertEquals("CashierAgent should have three lines after the Cashier's ComputeBill is called. Instead, the Cashier's event log reads: "
 				+ cashier.log.toString(), 3, cashier.log.size());

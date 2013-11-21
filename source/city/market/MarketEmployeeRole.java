@@ -18,6 +18,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		super(p);
 		this.market = m;
 	}
+	
+	public void cmdFinishAndLeave() {
+		role_state = RoleState.WantToLeave;
+	}
 
 	public void msgPickOrder(CustomerOrder mc){
 		pickUpOrders.add(mc);
@@ -39,7 +43,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			return true;
 		}
 		if (pickUpOrders.size() == 0 && deliverOrders.size() == 0 && role_state == RoleState.WantToLeave){
-			finishAndLeaveCommand();
+			cmdFinishAndLeave();
 			role_state = RoleState.none;
 			return true;
 		}
@@ -62,8 +66,4 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		//Transportation.Truck.msgDeliverToCook(mc.r, mc.orderFulfillment, mc.bill);
 	}
 	
-	protected void finishAndLeaveCommand() {
-		//gui.DoLeaveMarket();
-		active = false;
-	}
 }

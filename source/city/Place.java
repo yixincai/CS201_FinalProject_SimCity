@@ -5,6 +5,5 @@ package city;
  * The Restaurant, Bank, Market, House, Apartment classes should extend this.
  */
 public abstract class Place {
-	// put location data
 	
 }

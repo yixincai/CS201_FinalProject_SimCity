@@ -86,25 +86,25 @@ public class BankTellerRole extends Role {
 	public boolean pickAndExecuteAnAction(){
 		for(MyCustomer m: myCustomers){
 			if(m.customerState == CustomerState.Arrived){
-				askForARequest(m);
+				actAskForARequest(m);
 				return true;
 			}
 		}
 		for(MyCustomer m: myCustomers){
 			if(m.customerState == CustomerState.GivenRequest){
-				processRequest(m);
+				actProcessRequest(m);
 				return true;
 			}
 		}
 		
-		if(myCustomers.isEmpty() && command == Command.Leave){
-			leaveBank();
+		if(myCustomers.isEmpty() && command == Command.Leave && host.isWaitingCustomersEmpty()){
+			actLeaveBank();
 		}
 		return false;
 	}
 	
 	//Actions
-	private void askForARequest(MyCustomer m){
+	private void actAskForARequest(MyCustomer m){
 		if(m.accountNumber == -1){  //means it doesn't exist yet
 		   int newAccntNum = (int)(Math.random()*10000); //open account
 		   while(database.funds.containsKey(newAccntNum)){
@@ -117,7 +117,7 @@ public class BankTellerRole extends Role {
 		m.customerState = CustomerState.GivingRequest;
 	}
 	
-	private void processRequest(MyCustomer m){  //handle multiple requests, MAKE SURE TO ADD CHECK TO SEE IF THEY CAN DO ACTION
+	private void actProcessRequest(MyCustomer m){  //handle multiple requests, MAKE SURE TO ADD CHECK TO SEE IF THEY CAN DO ACTION
 		if(m.request.equalsIgnoreCase("Deposit")){ //not checked
 			double currentFunds = database.funds.remove(m.accountNumber);
 			database.funds.put(m.accountNumber, currentFunds + m.amount);
@@ -154,7 +154,7 @@ public class BankTellerRole extends Role {
 		}
 	}
 	
-	private void leaveBank(){
+	private void actLeaveBank(){
 		gui.DoLeaveBank();
 		try{
 			tellerSem.acquire();
@@ -182,7 +182,7 @@ public class BankTellerRole extends Role {
 	
 	//-------commands--------
 	@Override
-	protected void finishAndLeaveCommand() {
+	public void cmdFinishAndLeave() {
 		command = Command.Leave;
 		stateChanged();
 	}
