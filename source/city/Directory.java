@@ -73,7 +73,13 @@ public class Directory {
 	
 	public static BusStop getNearestBusStop(Place fromPlace)
 	{
-		//TODO
+		for(Place p : _places)
+		{
+			if(p instanceof BusStop)
+			{
+				
+			}
+		}
 		return null;
 	}
 }

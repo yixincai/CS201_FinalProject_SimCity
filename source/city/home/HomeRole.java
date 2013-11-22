@@ -9,7 +9,7 @@ public abstract class HomeRole extends Role
 
 
 
-	protected enum Command { NONE, WATCH_TV, COOK_FOOD, GO_TO_BED, WAKE_UP }
+	protected enum Command { NONE, WATCH_TV, COOK_AND_EAT_FOOD, GO_TO_BED, WAKE_UP }
 	protected Command _command;
 	
 	public enum State { IDLE, COOKING, SLEEPING }
@@ -34,9 +34,9 @@ public abstract class HomeRole extends Role
 		_command = Command.WATCH_TV;
 		stateChanged();
 	}
-	public void cmdCookFood()
+	public void cmdCookAndEatFood()
 	{
-		_command = Command.COOK_FOOD;
+		_command = Command.COOK_AND_EAT_FOOD;
 		stateChanged();
 	}
 	public void cmdGoToBed()

@@ -43,6 +43,7 @@ public class PersonAgent extends Agent
 	class State
 	{
 		NourishmentState nourishment; //TODO implement value for hunger
+		double nourishmentLevel;
 		NourishmentState nourishment() { return nourishment; }
 		
 		/** Get the current wealth state, based on money and occupation status. */
@@ -162,7 +163,7 @@ public class PersonAgent extends Agent
 				{
 					if(!_homeRole.cooking())
 					{
-						_homeRole.cmdCookFood();
+						_homeRole.cmdCookAndEatFood();
 						return true;
 					}
 				}
@@ -223,7 +224,7 @@ public class PersonAgent extends Agent
 						{
 							if(_homeRole.haveFood())
 							{
-								_homeRole.cmdCookFood();
+								_homeRole.cmdCookAndEatFood();
 								setNextRole(_homeRole);
 								return true;
 							}
@@ -235,17 +236,6 @@ public class PersonAgent extends Agent
 					}
 				}
 				
-				/*// The model for conditions:
-				if(condition)
-				{
-					restaurant.eric.CustomerRole c = new restaurant.eric.CustomerRole();
-					c.cmdGotHungry();
-					_nextRole = c;
-					_commuterRole.setDestination(restaurantEric);
-					_currentRole = _commuterRole;
-					_currentRole.active = true;
-					return true;
-				}*/
 				/*
 				// Decide whether or not to go to the bank
 				for(Role r : _roles)
@@ -269,16 +259,7 @@ public class PersonAgent extends Agent
 				//_nextRole = _HomeRole;
 			}
 		}
-		/*
-		}
-		else // i.e. currentRole == null
-		{
-			// If we chose a role, return true.
-			// note: it's possible that the program will not get here, because of doing an action in the code above.
-			if(_currentRole != null) return true;
-		}
-		// if((e.g. just entered the weekend) and homeRole instanceof ApartmentRenterRole) { _homeRole.cmdPayRent(); _homeRole.pickAndExecuteAnAction(); } // to pay rent
-		*/
+		
 		//check for and do non-important actions, like check your phone
 		if(_name.equals("Wilczynski"))
 		{
