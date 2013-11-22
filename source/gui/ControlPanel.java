@@ -40,5 +40,6 @@ public class ControlPanel extends JTabbedPane {
 	public void updateBuildingInfo(BuildingPanel bp){
 		System.out.println("HERE");
 		currentBuildingPanel.setBuildingPanel(bp);
+		this.setSelectedComponent(currentBuildingPanel);
 	}
 }

@@ -20,7 +20,7 @@ public class TruckAgent {
 	BusAgentGui gui;
 	Boolean out = false;
 
-	enum packageState{inTruck, delivering, unloaded, done};
+	enum packageState{atMarket, inTruck, delivering, unloaded, done};
 
 	class Package{
 	    List<Item> _items;
@@ -37,12 +37,12 @@ public class TruckAgent {
 	}
 	
 	//Constructor
-	TruckAgent(Market market){
+	public TruckAgent(Market market){
 		_market = market;
 	}
 	
 	//----------------------------------------------Messages------------------------------------------
-	public void msgHereAreGoodsForDelivery(List<Item> items, Restaurant restaurant){
+	public void msgDeliverToCook(List<Item> items, Restaurant restaurant){
 	    packages.add(new Package(items, restaurant));
 	}
 	
