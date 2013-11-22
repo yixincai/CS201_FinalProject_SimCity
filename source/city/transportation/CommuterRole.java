@@ -13,16 +13,23 @@ import city.transportation.gui.CommuterRoleGui;
  */
 public class CommuterRole extends Role {
 	// This is set by PersonAgent, and it is CommuterRole's responsibility to get to that location, then set its active to false.
+	public PersonAgent _person;
 	public Place _destination;
 	public Place _currentPlace;
 	CarObject _car = new CarObject();
+	BusAgent _bus;
+	int _fare;
 	CommuterRoleGui gui = new CommuterRoleGui(this);
 	
 	//Probably won't need -> not 100% sure though
 	enum carState{noCar, hasCar, usingCar};
 	carState _cState = carState.noCar; 
 	
-	enum travelState{choosing, choseCar, driving, choseWalking, walking, choseBus, goingToBusStop, atBusStop, waitingAtBusStop, ridingBus, atDestination, done};
+	enum travelState{choosing, 
+		choseCar, driving, 
+		choseWalking, walking, 
+		choseBus, goingToBusStop, atBusStop, waitingAtBusStop, busIsHere, ridingBus, 
+			atDestination, done};
 	travelState _tState = travelState.done;
 	
 	Random _generator = new Random();
@@ -30,6 +37,7 @@ public class CommuterRole extends Role {
 	//----------------------------------------------Constructor----------------------------------------
 	public CommuterRole(PersonAgent person, Place place){
 		super(person);
+		_person = person;
 		_currentPlace = place;
 		// TODO Auto-generated constructor stub
 	}
@@ -37,30 +45,33 @@ public class CommuterRole extends Role {
 	//----------------------------------------------Command---------------------------------------------
 	
 	//----------------------------------------------Messages------------------------------------------
-	public void msgGoToDestination(Place place){
+	public void msgGoToDestination(Place place){ //Command to go to destination
 		_destination = place;
 		_tState = travelState.choosing;
 	}
 	
-	public void msgAtBusStop(BusStop busstop){
+	//Bus Transportation messages
+	public void msgAtBusStop(BusStop busstop){ //GUI message
 		_currentPlace = busstop;
 		_tState = travelState.atBusStop;
 	}
-	
-	public void msgGetOnBus(int fare){
-		
+	public void msgGetOnBus(int fare, BusAgent bus){
+		_bus = bus;
+		_fare = fare;
+		_tState = travelState.busIsHere;
 	}
-	
 	public void msgGetOffBus(){
 		
 	}
 	
+	//Msg At Destination from GUI
 	public void msgAtDestination(Place place){
 		_currentPlace = place;
 		_tState = travelState.atDestination;
 	}
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
+		//At Destination
 		if(_destination == _currentPlace && _tState == travelState.atDestination){
 			actAtDestination();
 			return true;
@@ -69,16 +80,20 @@ public class CommuterRole extends Role {
 			actChooseTransportation();
 			return true;
 		}
-
+		
+		//Choosing
 		if(_tState == travelState.choosing){
 			actChooseTransportation();
 			return true;
 		}
 		
+		//Walking
 		if(_tState == travelState.choseWalking){
 			actWalking();
 			return true;
 		}
+		
+		//Riding Bus
 		if(_tState == travelState.choseBus){
 			actGoToBusStop();
 			return true;
@@ -86,6 +101,11 @@ public class CommuterRole extends Role {
 		if(_tState == travelState.atBusStop){
 			actAtBusStop();
 		}
+		if(_tState == travelState.busIsHere && _bus != null && _person.money >= _fare){
+			actGetOnBus();
+		}
+		
+		//Driving
 		if(_tState == travelState.choseCar){
 			actDriving();
 			return true;
@@ -97,6 +117,7 @@ public class CommuterRole extends Role {
 	}
 
 	//----------------------------------------------Actions----------------------------------------
+	//Choosing
 	public void actChooseTransportation(){
 		int choice = 0;
 		
@@ -119,11 +140,13 @@ public class CommuterRole extends Role {
 		
 	}
 	
+	//Walking
 	public void actWalking(){
 		_tState = travelState.walking;
 		gui.walkToLocation(_destination);
 	}
 	
+	//Bus
 	public void actGoToBusStop(){
 		BusStop busStop;
 
@@ -131,7 +154,6 @@ public class CommuterRole extends Role {
 		busStop = Directory.getNearestBusStop(_currentPlace);
 		gui.goToBusStop(busStop);
 	}
-	
 	public void actAtBusStop(){
 		BusStop busStop;
 
@@ -139,6 +161,10 @@ public class CommuterRole extends Role {
 		busStop = Directory.getNearestBusStop(_currentPlace);
 		
 		busStop.addPerson(this);
+	}
+	public void actGetOnBus(){
+		gui.getOnBus();
+		_bus.msgGettingOnBoard(this, _destination, _fare);
 	}
 	
 	public void actRidingBus(){
