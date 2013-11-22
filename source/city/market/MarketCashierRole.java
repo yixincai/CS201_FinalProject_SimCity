@@ -138,14 +138,14 @@ public class MarketCashierRole extends Role implements MarketCashier{
 				restaurantOrders.remove(order);
 				return true;
 			}
-		}
+		}/*
 		if (moneyInHand > 200 && money_state == MoneyState.none){
 			//Bank.bankCashierRole.msg();
 			money_state = MoneyState.OrderedFromBank;
 			return true;
-		}
+		}*/
 		if (restaurantOrders.size() == 0 && customers.size() == 0 && role_state == RoleState.WantToLeave){
-			//DoLeave();
+			LeaveMarket();
 			role_state = RoleState.none;
 			return true;
 		}
@@ -206,6 +206,10 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		moneyInHand += customer.bill;
 		customer.r.Cashier.msgHereIsTheChange(market, customer.payment - customer.bill);
 		customer.state = RestaurantOrder.State.none;
+	}
+	
+	public void LeaveMarket(){
+		gui.LeaveMarket();
 	}
 
 	class Good {

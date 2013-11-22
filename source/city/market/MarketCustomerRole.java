@@ -122,14 +122,14 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 	
 	public void DoGoToCashier(){
-		//gui.GoToCashier();
+		gui.GoToCashier();
 	}
 
 	public void DoGoToWaitingArea(){
-		//gui.GoToWaitingArea();
+		gui.GoToWaitingArea();
 	}
 	
 	public void DoLeaveMarket(){
-		//gui.LeaveMarket();
+		gui.LeaveMarket();
 	}
 }

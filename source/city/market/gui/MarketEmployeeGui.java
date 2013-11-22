@@ -45,6 +45,42 @@ public class MarketEmployeeGui extends JPanel implements Gui {
     public void draw(Graphics2D g) {
     	g.drawImage(image, xPos, yPos, xGap, yGap, this);
     }
+    
+	public void PickUp(String item){
+		if (item.equals("Meal")){
+			//xDestination = ??;
+		}
+		else if (item.equals("Car")){
+			//xDestination = ??;
+		}
+		else if (item.equals("Steak")){
+			//xDestination = ??;
+		}
+		else if (item.equals("Chicken")){
+			//xDestination = ??;
+		}
+		else if (item.equals("Salad")){
+			//xDestination = ??;
+		}
+		else if (item.equals("Pizza")){
+			//xDestination = ??;
+		}
+		command=Command.GoToSeat;		
+	}
+	
+	public void GoToCashier(){
+		//xDestination = ??;
+		command=Command.GoToSeat;
+	}
+	
+	public void GoToTruck(){
+		//xDestination = ??;
+		command=Command.GoToSeat;
+	}
+	
+	public void DoGoHome(){
+		//xDestination = ??;
+	}
 
     public boolean isPresent() {
         return true;

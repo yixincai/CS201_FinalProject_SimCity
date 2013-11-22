@@ -45,6 +45,19 @@ public class MarketCustomerGui extends JPanel implements Gui {
     public void draw(Graphics2D g) {
     	g.drawImage(image, xPos, yPos, xGap, yGap, this);
     }
+    
+	public void GoToCashier(){
+		//xDestination = ;
+		command = Command.GoToSeat;
+	}
+
+	public void GoToWaitingArea(){
+		command = Command.GoToSeat;
+	}
+	
+	public void LeaveMarket(){
+		command = Command.GoToSeat;
+	}
 
     public boolean isPresent() {
         return true;

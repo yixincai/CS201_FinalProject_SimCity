@@ -41,6 +41,16 @@ public class MarketCashierGui extends JPanel implements Gui {
         	role.msgAnimationFinished();
         }
     }
+    
+	public void LeaveMarket(){
+		//xDestination = ??;
+		command = Command.GoToSeat;
+	}
+	
+	public void enterMarket(){
+		//xDestination = ??;
+		command = Command.GoToSeat;
+	}
 
     public void draw(Graphics2D g) {
     	g.drawImage(image, xPos, yPos, xGap, yGap, this);
