@@ -1,5 +1,7 @@
 package city.restaurant;
 
+import java.util.Map;
+
 import city.PersonAgent;
 import city.market.Market;
 import agent.Role;
@@ -10,6 +12,7 @@ public abstract class RestaurantCashierRole extends Role{
 		super(person);
 		// TODO Auto-generated constructor stub
 	}
-	public abstract void msgHereIsTheBill(Market m, double bill);
+	public abstract void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list);
 
+	public abstract void msgHereIsTheChange(Market m, double change);
 }

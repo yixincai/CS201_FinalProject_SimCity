@@ -6,11 +6,11 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import city.market.MarketCashierRole;
+import city.market.*;
 
-public class MarketCashierGui extends JPanel implements Gui {
+public class MarketCustomerGui extends JPanel implements Gui {
 
-    private MarketCashierRole role = null;
+    private MarketCustomerRole role = null;
 
     private int xPos = 300, yPos = 30;//default waiter position
     public static int xGap = 40;
@@ -18,11 +18,11 @@ public class MarketCashierGui extends JPanel implements Gui {
     private int xDestination = 300, yDestination = 30;//default waiter position
 	private enum Command {noCommand, GoToSeat};
 	private Command command=Command.noCommand;
-	
+    
     private ImageIcon i = new ImageIcon("image/cashier.jpg");
     private Image image = i.getImage();
     
-    public MarketCashierGui(MarketCashierRole agent) {
+    public MarketCustomerGui(MarketCustomerRole agent) {
         this.role = agent;
     }
 
@@ -41,20 +41,23 @@ public class MarketCashierGui extends JPanel implements Gui {
         	role.msgAnimationFinished();
         }
     }
-    
-	public void LeaveMarket(){
-		//xDestination = ??;
-		command = Command.GoToSeat;
-	}
-	
-	public void enterMarket(){
-		//xDestination = ??;
-		command = Command.GoToSeat;
-	}
 
     public void draw(Graphics2D g) {
     	g.drawImage(image, xPos, yPos, xGap, yGap, this);
     }
+    
+	public void GoToCashier(){
+		//xDestination = ;
+		command = Command.GoToSeat;
+	}
+
+	public void GoToWaitingArea(){
+		command = Command.GoToSeat;
+	}
+	
+	public void LeaveMarket(){
+		command = Command.GoToSeat;
+	}
 
     public boolean isPresent() {
         return true;

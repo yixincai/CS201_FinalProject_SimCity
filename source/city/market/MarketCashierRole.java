@@ -1,7 +1,9 @@
 package city.market;
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
+import city.market.gui.MarketCashierGui;
 import city.market.interfaces.MarketCashier;
 import city.market.interfaces.MarketCustomer;
 import city.restaurant.Restaurant;
@@ -11,16 +13,21 @@ import utilities.LoggedEvent;
 
 public class MarketCashierRole extends Role implements MarketCashier{
 
+	public MarketCashierGui gui;
+	
 	public EventLog log = new EventLog();
 	public Map<String, Good> inventory = new HashMap<String, Good>();
 	public List<CustomerOrder> customers = new ArrayList<CustomerOrder>(); 
 	public List<RestaurantOrder> restaurantOrders = new ArrayList<RestaurantOrder>();
+	
 	Market market;
 	double moneyInHand, moneyInBank;
 	enum RoleState{WantToLeave,none}
 	RoleState role_state = RoleState.none;
 	enum MoneyState{OrderedFromBank, none}
 	MoneyState money_state = MoneyState.none;
+	
+	private Semaphore atDestination = new Semaphore(0,true);
 	
 	public MarketCashierRole(PersonAgent person, Market m){
 		super(person);
@@ -31,6 +38,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		inventory.put("Pizza", new Good("Pizza", 4, 1000));
 		inventory.put("Car", new Good("Car", 200, 100));
 		inventory.put("Meal", new Good("Meal", 5, 1000));		
+	}
+	
+	public void msgAnimationFinished() {
+		//from animation
+		atDestination.release();
+		stateChanged();
 	}
 	
 	@Override
@@ -125,14 +138,14 @@ public class MarketCashierRole extends Role implements MarketCashier{
 				restaurantOrders.remove(order);
 				return true;
 			}
-		}
+		}/*
 		if (moneyInHand > 200 && money_state == MoneyState.none){
 			//Bank.bankCashierRole.msg();
 			money_state = MoneyState.OrderedFromBank;
 			return true;
-		}
+		}*/
 		if (restaurantOrders.size() == 0 && customers.size() == 0 && role_state == RoleState.WantToLeave){
-			//DoLeave();
+			LeaveMarket();
 			role_state = RoleState.none;
 			return true;
 		}
@@ -185,14 +198,18 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			price_list.put(item.name, inventory.get(item.name).price);
 		}
 		market.MarketEmployee.msgPickOrder(customer);
-		//customer.r.RestaurantCashier.msgHereIsBill(customer.bill, price_list);
+		customer.r.Cashier.msgHereIsTheBill(market, customer.bill, price_list);
 		customer.state = RestaurantOrder.State.none;
 	}
 	
 	public void makeChange(RestaurantOrder customer){
 		moneyInHand += customer.bill;
-		//customer.r.RestaurantCashier.msgHereIsChange(customer.payment ¨C customer.bill)
+		customer.r.Cashier.msgHereIsTheChange(market, customer.payment - customer.bill);
 		customer.state = RestaurantOrder.State.none;
+	}
+	
+	public void LeaveMarket(){
+		gui.LeaveMarket();
 	}
 
 	class Good {
