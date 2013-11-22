@@ -90,7 +90,7 @@ public class TruckAgent {
 		aPackage.pState = packageState.delivering;
 		gui.goToDestination(aPackage._restaurant);
 		isMoving.acquire();
-		aPackage.cook.msgOrderDelivered(aPackage._items, _market);
+		aPackage._restaurant.Cook.msgOrderFulfillment(_market, aPackage._items);
 	}
 
 	public void RemoveFromList(Package aPackage){
