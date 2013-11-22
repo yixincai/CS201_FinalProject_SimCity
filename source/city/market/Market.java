@@ -1,5 +1,6 @@
 package city.market;
 
+import city.PersonAgent;
 import city.Place;
 import city.market.interfaces.MarketCashier;
 import city.market.interfaces.MarketEmployee;
@@ -21,5 +22,9 @@ public class Market extends Place{
 			open = false;
 		else
 			open = true;
+	}
+	
+	public MarketCustomerRole generateCustomerRole(PersonAgent p){
+		return (new MarketCustomerRole(p,this));
 	}
 }
