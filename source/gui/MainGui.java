@@ -73,8 +73,8 @@ public class MainGui extends JFrame
 	
 	 public void displayBuildingPanel(BuildingPanel bp ) {
          System.out.println( bp.getName() );
-         cPanel.displayCurrentBuildingInfo(bp);
          cardLayout.show( buildingPanels, bp.getName() );
+         cPanel.updateBuildingInfo(bp);
 	 }
 	
 	/**
