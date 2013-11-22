@@ -17,8 +17,8 @@ public abstract class Restaurant extends Place {
 	public Cuisine cuisine() { return _cuisine; }
 	public Upscaleness upscaleness() { return _upscaleness; }
 	
-	
-	
+	public RestaurantCashierRole Cashier;
+	public RestaurantCookRole Cook;
 	// --------------------------------- CORRESPONDENCE ----------------------------------
 	
 	//Do we need this?
