@@ -17,14 +17,6 @@ public class YixinCookGui extends JPanel implements Gui{
 	private YixinCookRole agent;
     private ImageIcon i = new ImageIcon("image/cook.jpg");
     private Image image = i.getImage();
-    private ImageIcon ifridge = new ImageIcon("image/fridge.png");
-    private Image fridgeimage = ifridge.getImage();
-    private ImageIcon i2 = new ImageIcon("image/host.png");
-    private Image plateimage = i2.getImage();
-    private ImageIcon igrill = new ImageIcon("image/grill.jpg");
-    private Image grillimage = igrill.getImage();
-    private ImageIcon irevolving = new ImageIcon("image/revolvingStand.jpg");
-    private Image standimage = irevolving.getImage();
     private String food = "";
     private boolean show_food = false;
     
@@ -92,10 +84,6 @@ public class YixinCookGui extends JPanel implements Gui{
     public void draw(Graphics2D g) {
     	g.setColor(Color.BLUE);
     	g.drawImage(image, xPos, yPos, xGap, yGap, this);
-    	g.drawImage(plateimage, xPlate - xGap, yPos-40, xGap, yGap, this);
-    	g.drawImage(standimage, xPlate - 2*xGap, yPos-40, xGap, yGap, this);
-    	g.drawImage(grillimage, xCooking, yPos-40, xGap, yGap, this);
-    	g.drawImage(fridgeimage, xFridge + 30, yPos-40, xGap, yGap, this);
     	if (show_food)
     		g.drawString(food, xCooking, yPos - 50);
     }

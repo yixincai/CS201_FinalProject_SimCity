@@ -12,8 +12,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public MarketEmployeeGui gui;
 	
 	Market market;
-	List<CustomerOrder> pickUpOrders;
-	List<RestaurantOrder> deliverOrders;
+	List<CustomerOrder> pickUpOrders = new ArrayList<CustomerOrder>();
+	List<RestaurantOrder> deliverOrders = new ArrayList<RestaurantOrder>();
 	enum RoleState{WantToLeave,none}
 	RoleState role_state = RoleState.none;
 	

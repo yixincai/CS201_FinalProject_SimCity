@@ -9,8 +9,8 @@ import city.transportation.TruckAgent;
 public class Market extends Place{
 	
 	boolean open;
-	public MarketCashier MarketCashier;
-	public MarketEmployee MarketEmployee;
+	public MarketCashierRole MarketCashier;
+	public MarketEmployeeRole MarketEmployee;
 	public TruckAgent truck;
 	
 	public Market(){
