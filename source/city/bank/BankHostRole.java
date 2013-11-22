@@ -9,12 +9,15 @@ import city.bank.gui.BankHostRoleGui;
 
 public class BankHostRole extends Role {
 
-	public BankHostRole(PersonAgent person) {
+	public BankHostRole(PersonAgent person, Bank bank, List<BankTellerRole> tellers) {
 		super(person);
+		this.bank = bank;
+		this.tellers = tellers;
 		command = Command.None;
 	}
 
 	//Data
+	Bank bank;
 	List<BankTellerRole> tellers;
 	private List<BankCustomerRole> waitingCustomers;
 	BankHostRoleGui gui;

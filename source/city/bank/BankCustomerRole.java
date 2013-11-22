@@ -21,14 +21,17 @@ public class BankCustomerRole extends Role {
 	Event event;
 	Semaphore bankCustSem;
 	BankCustomerRoleGui gui;
+	Bank bank;
 	 
 	enum State {Robber, DoingNothing, Waiting, AtTeller, GaveRequest, 
 		TransactionComplete, TransactionDenied, LeaveBank };
 	enum Event {None, CalledToDesk, GivenRequestPermission, WantsAnotherRequest, ApprovedTransaction, DeniedTransaction};
 	
-	public BankCustomerRole(PersonAgent person, int accountNumber){
+	public BankCustomerRole(PersonAgent person, int accountNumber, Bank bank){
 		super(person);
+		//person.getAccountNumber() = accountNumber;
 		this.accountNumber = accountNumber;
+		this.bank = bank;
 		//set values above through personAgent, possible
 		
 		state = State.DoingNothing;
