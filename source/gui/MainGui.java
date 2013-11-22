@@ -21,8 +21,7 @@ public class MainGui extends JFrame
 	private static int FRAMEX = 1024;
 	private static int FRAMEY = 720;
 	
-	 JPanel buildingPanels;
-     CardLayout cardLayout;
+     BuildingWindow buildingWindow;
      ControlPanel cPanel;
 	/**
 	 * Constructor for the MainGui window
@@ -38,12 +37,7 @@ public class MainGui extends JFrame
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.X_AXIS));
 		
 		//Building View
-		cardLayout = new CardLayout();
-		buildingPanels = new JPanel();
-	    buildingPanels.setLayout( cardLayout ); 
-	    //buildingPanels.setBackground(Color.YELLOW);
-	    buildingPanels.setPreferredSize(new Dimension(2048/3, 720/2));
-	    buildingPanels.setBorder(BorderFactory.createTitledBorder("Building"));
+		buildingWindow = new BuildingWindow();
 	    
 	    //World View
 	    WorldView worldView = new WorldView();
@@ -53,7 +47,7 @@ public class MainGui extends JFrame
 		guiArea.setLayout(new BoxLayout(guiArea, BoxLayout.Y_AXIS));
 		guiArea.setPreferredSize(new Dimension(2048/3, 720));
 		guiArea.add(worldView);
-		guiArea.add(buildingPanels);
+		guiArea.add(buildingWindow);
 		this.add(guiArea, Component.LEFT_ALIGNMENT);
         
         //Create the BuildingPanel for each Building object
@@ -62,7 +56,7 @@ public class MainGui extends JFrame
                 Building b = buildings.get(i);
                 BuildingPanel bp = new BuildingPanel(this,b,i);
                 b.setBuildingPanel( bp );
-                buildingPanels.add( bp, "Building " + i );
+                buildingWindow.add( bp, "Building " + i );
         }
         
       //The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
@@ -75,7 +69,7 @@ public class MainGui extends JFrame
 	
 	 public void displayBuildingPanel(BuildingPanel bp ) {
          System.out.println( bp.getName() );
-         cardLayout.show( buildingPanels, bp.getName() );
+         ((CardLayout) buildingWindow.getLayout()).show(buildingWindow, bp.getName());
          cPanel.updateBuildingInfo(bp);
 	 }
 	
