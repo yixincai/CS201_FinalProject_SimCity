@@ -21,6 +21,9 @@ import city.restaurant.yixin.gui.AnimationPanel;
 
 public class BuildingPanel extends JPanel implements ActionListener
 {
+	
+	private static final int PANELX = 1024 * 2 /3;
+	private static final int PANELY = 720 / 2;
 	MainGui gui;
 	
 	Rectangle2D myRectangle;
@@ -32,12 +35,12 @@ public class BuildingPanel extends JPanel implements ActionListener
 		this.gui = mgui;
 		this.myName = "Building " + i;
 		this.myRectangle = r;
-		
+		this.setPreferredSize(new Dimension(PANELX, PANELY));
 		this.setLayout(new BorderLayout());
 		List<JButton> buildingList = new ArrayList<JButton>();
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
-		buttonPanel.setBorder(BorderFactory.createTitledBorder("Building"));
+		//buttonPanel.setBorder(BorderFactory.createTitledBorder("Building"));
 		JPanel view = new JPanel();
 		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
 		buttonPanel.add(new AnimationPanel());

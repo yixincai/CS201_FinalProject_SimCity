@@ -22,7 +22,7 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		this.setLayout(new BorderLayout());
 		List<JButton> buildingList = new ArrayList<JButton>();
 		JPanel infoPanel = new JPanel();
-		infoPanel.setPreferredSize(new Dimension(1024/3, 720/2 - 15));
+		infoPanel.setPreferredSize(new Dimension(1024/3, 720/2));
 		infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 		infoPanel.add(new JLabel("Person Name:")); //TODO Add getter for the current person's name

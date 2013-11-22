@@ -27,7 +27,7 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 			List<JButton> buildingList = new ArrayList<JButton>();
 			
 			infoPanel = new JPanel();
-			infoPanel.setPreferredSize(new Dimension(1024/3, 720/2 - 15));
+			infoPanel.setPreferredSize(new Dimension(1024/3, 720/2));
 			setBackground( Color.LIGHT_GRAY );
 			infoPanel.setBorder(BorderFactory.createTitledBorder("Current Building"));
 			infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));

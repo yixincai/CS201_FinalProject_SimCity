@@ -41,7 +41,9 @@ public class MainGui extends JFrame
 		cardLayout = new CardLayout();
 		buildingPanels = new JPanel();
 	    buildingPanels.setLayout( cardLayout ); 
-	    buildingPanels.setBackground(Color.YELLOW);
+	    //buildingPanels.setBackground(Color.YELLOW);
+	    buildingPanels.setPreferredSize(new Dimension(2048/3, 720/2));
+	    buildingPanels.setBorder(BorderFactory.createTitledBorder("Building"));
 	    
 	    //World View
 	    WorldView worldView = new WorldView();
@@ -52,7 +54,7 @@ public class MainGui extends JFrame
 		guiArea.setPreferredSize(new Dimension(2048/3, 720));
 		guiArea.add(worldView);
 		guiArea.add(buildingPanels);
-		this.add(guiArea, Component.RIGHT_ALIGNMENT);
+		this.add(guiArea, Component.LEFT_ALIGNMENT);
         
         //Create the BuildingPanel for each Building object
         ArrayList<Building> buildings = worldView.getBuildings();
@@ -65,7 +67,7 @@ public class MainGui extends JFrame
         
       //The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
   	  cPanel = new ControlPanel();
-  	  this.add(cPanel, Component.LEFT_ALIGNMENT);
+  	  this.add(cPanel, Component.RIGHT_ALIGNMENT);
   	  		
   	  this.setVisible(true);
 	
