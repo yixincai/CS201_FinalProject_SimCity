@@ -17,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import city.restaurant.yixin.gui.AnimationPanel;
+
 public class BuildingPanel extends JPanel implements ActionListener
 {
 	MainGui gui;
@@ -38,9 +40,7 @@ public class BuildingPanel extends JPanel implements ActionListener
 		buttonPanel.setBorder(BorderFactory.createTitledBorder("Building"));
 		JPanel view = new JPanel();
 		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
-		JScrollPane buildingButtons = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		buildingButtons.setViewportView(view);
-		buttonPanel.add(buildingButtons, BorderLayout.CENTER);
+		buttonPanel.add(new AnimationPanel());
 		this.add(buttonPanel, BorderLayout.CENTER);
 	}
 

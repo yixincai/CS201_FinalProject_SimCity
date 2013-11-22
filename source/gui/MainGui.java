@@ -60,7 +60,7 @@ public class MainGui extends JFrame
                 Building b = buildings.get(i);
                 BuildingPanel bp = new BuildingPanel(this,b,i);
                 b.setBuildingPanel( bp );
-                buildingPanels.add( bp, "" + i );
+                buildingPanels.add( bp, "Building " + i );
         }
         
       //The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
