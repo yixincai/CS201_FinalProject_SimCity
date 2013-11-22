@@ -210,6 +210,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	
 	public void LeaveMarket(){
 		gui.LeaveMarket();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	class Good {

@@ -123,13 +123,31 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	public void DoGoToCashier(){
 		gui.GoToCashier();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void DoGoToWaitingArea(){
 		gui.GoToWaitingArea();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void DoLeaveMarket(){
 		gui.LeaveMarket();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

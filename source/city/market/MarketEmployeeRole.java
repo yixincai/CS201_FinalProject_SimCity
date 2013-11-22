@@ -77,22 +77,46 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			DoPickUp(item.name);
 		}
 		DoGoToTruck();
-		//Transportation.Truck.msgDeliverToCook(mc.r, mc.orderFulfillment);
+		market.truck.msgDeliverToCook(mc.orderFulfillment, mc.r);
 	}
 	
 	public void DoPickUp(String item){
 		gui.PickUp(item);
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void DoGoToCashier(){
 		gui.GoToCashier();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void DoGoToTruck(){
 		gui.GoToTruck();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void DoGoHome(){
 		gui.GoHome();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
