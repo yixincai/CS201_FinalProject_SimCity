@@ -35,9 +35,11 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 	JLabel nameLabel = new JLabel("Name:");
 	JLabel moneyLabel = new JLabel("Money:");
 	JSlider moneySlider = new JSlider(JSlider.HORIZONTAL, 0, 1000, 0);
+	ControlPanel cPanel;
 	
-	public CreatePersonPanel()
+	public CreatePersonPanel(ControlPanel cp)
 	{
+		cPanel = cp;
 		SpringLayout layout = new SpringLayout();
 		this.setLayout(layout);
 		this.setBorder(BorderFactory.createTitledBorder("Create New Person"));
@@ -91,13 +93,16 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 	}
 		
 
+	
 	//This is the listener for the button
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		System.out.println("Button clicked");
-		// TODO Implement function to create a new person
-		
+		cPanel.addPerson(nameField.getText(), moneySlider.getValue(), (String)occupationBox.getSelectedItem());
+		nameField.setText("");
+		occupationBox.setSelectedIndex(0);
+		moneySlider.setValue(0);
+		moneyField.setText("$0.00");
 	}
 
 
