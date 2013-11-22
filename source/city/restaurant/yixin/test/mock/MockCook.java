@@ -25,4 +25,9 @@ public class MockCook extends Mock implements YixinCook{
 	public void msgOrderFulfillment(Market m, List<Item> order) {
 		log.add(new LoggedEvent("Received OrderFulfillment from market"));		
 	}
+
+	@Override
+	public void msgOrderFinished() {
+		log.add(new LoggedEvent("Received OrderFinished from cashier"));				
+	}
 }
