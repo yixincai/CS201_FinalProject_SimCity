@@ -25,9 +25,11 @@ public class BankTellerRole extends Role {
 	PersonAgent person;
 	
 	BankTellerRoleGui gui;
+	Bank bank;
 	 
-	BankTellerRole(PersonAgent person){
+	public BankTellerRole(PersonAgent person, Bank bank){
 		super(person);
+		this.bank = bank;
 		command = Command.None;
 	}
 	
