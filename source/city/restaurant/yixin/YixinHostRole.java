@@ -1,18 +1,19 @@
 package city.restaurant.yixin;
 
-import agent.Agent;
-import restaurant.WaiterAgent;
-import restaurant.gui.HostGui;
-import restaurant.interfaces.*;
-import restaurant.test.mock.EventLog;
+import agent.Role;
 
 import java.util.*;
+
+import city.PersonAgent;
+import city.restaurant.yixin.gui.YixinHostGui;
+import utilities.EventLog;
 
 /**
  * Restaurant Host Agent
  */
 
-public class HostAgent extends Agent implements Host{
+public class YixinHostRole extends Role {//implements Host{
+	public YixinRestaurant restaurant;
 	public EventLog log = new EventLog();
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
@@ -26,11 +27,11 @@ public class HostAgent extends Agent implements Host{
 	private String name;
 	int waiterNumber = 0;
 
-	public HostGui hostGui = null;
+	public YixinHostGui hostGui = null;
 
-	public HostAgent(String name) {
-		super();
-
+	public YixinHostRole(PersonAgent p, YixinRestaurant r, String name) {
+		super(p);
+		this.restaurant = r;
 		this.name = name;
 		// make some tables
 		tables = Collections.synchronizedList(new ArrayList<Table>(NTABLES));
@@ -39,7 +40,7 @@ public class HostAgent extends Agent implements Host{
 		}
 	}
 	
-	public void addWaiter(WaiterAgent w){
+	public void addWaiter(YixinWaiterRole w){
 		waiters.add(new MyWaiter(w));
 		stateChanged();
 	}
@@ -54,15 +55,15 @@ public class HostAgent extends Agent implements Host{
 
 	// Messages
 
-	public void msgIWantFood(Customer cust, int count) {
+	public void msgIWantFood(YixinCustomerRole cust, int count) {
 		synchronized(waitingCustomers){
 			waitingCustomers.add(new MyCustomer(cust, count));
-			Do("Got customer " + waitingCustomers.size());
+			print("Got customer " + waitingCustomers.size());
 			stateChanged();
 		}
 	}
 
-	public void msgIAmLeaving(Customer cust) {
+	public void msgIAmLeaving(YixinCustomerRole cust) {
 		synchronized(waitingCustomers){
 			for (MyCustomer customer : waitingCustomers) {
 				if (customer.customer == cust) {
@@ -75,7 +76,7 @@ public class HostAgent extends Agent implements Host{
 		}
 	}
 	
-	public void msgIWantToStay(Customer cust) {
+	public void msgIWantToStay(YixinCustomerRole cust) {
 		synchronized(waitingCustomers){
 			for (MyCustomer customer : waitingCustomers) {
 				if (customer.customer == cust) {
@@ -88,7 +89,7 @@ public class HostAgent extends Agent implements Host{
 		}
 	}
 
-	public void msgTableIsFree(Customer cust, int tablenumber) {
+	public void msgTableIsFree(YixinCustomerRole cust, int tablenumber) {
 		synchronized(tables){
 			for (Table table : tables) {
 				if (table.tableNumber == tablenumber) {
@@ -101,7 +102,7 @@ public class HostAgent extends Agent implements Host{
 		}
 	}
 	
-	public void msgWantToBreak(Waiter w){
+	public void msgWantToBreak(YixinWaiterRole w){
 		synchronized(waiters){
 			for (MyWaiter waiter : waiters) {
 				if (waiter.w == w) {
@@ -113,7 +114,7 @@ public class HostAgent extends Agent implements Host{
 		}
 	}
 	
-	public void msgWantToComeBack(Waiter w){
+	public void msgWantToComeBack(YixinWaiterRole w){
 		synchronized(waiters){
 			waiters.add(new MyWaiter(w));
 			stateChanged();
@@ -128,7 +129,7 @@ public class HostAgent extends Agent implements Host{
 			synchronized(waiters){
 				for (MyWaiter waiter : waiters) {
 					if (waiter.state == MyWaiter.WaiterState.askingForBreak && waiters.size() > 1) {
-						Do("Break granted");
+						print("Break granted");
 						waiter.w.msgBreakGranted();
 						waiters.remove(waiter);
 						return true;
@@ -179,35 +180,35 @@ public class HostAgent extends Agent implements Host{
 
 	// Actions
 
-	private void seatCustomer(Customer customer, Table table, int count) {
+	private void seatCustomer(YixinCustomerRole customer, Table table, int count) {
 		if (waiterNumber < waiters.size() - 1)
 			waiterNumber++;
 		else
 			waiterNumber = 0;
-		Do("Telling waiter " + waiterNumber + " " + waiters.get(waiterNumber).w + " to seat customer");
+		print("Telling waiter " + waiterNumber + " " + waiters.get(waiterNumber).w + " to seat customer");
 		waiters.get(waiterNumber).w.msgSitAtTable(customer, table.tableNumber, count);
 		table.setOccupant(customer);
 	}
 
 	//utilities
 
-	public void setGui(HostGui gui) {
+	public void setGui(YixinHostGui gui) {
 		hostGui = gui;
 	}
 
-	public HostGui getGui() {
+	public YixinHostGui getGui() {
 		return hostGui;
 	}
 
 	private class Table {
-		Customer occupiedBy;
+		YixinCustomerRole occupiedBy;
 		int tableNumber;
 
 		Table(int tableNumber) {
 			this.tableNumber = tableNumber;
 		}
 
-		void setOccupant(Customer cust) {
+		void setOccupant(YixinCustomerRole cust) {
 			occupiedBy = cust;
 		}
 
@@ -225,27 +226,33 @@ public class HostAgent extends Agent implements Host{
 	}
 	
 	public static class MyWaiter{
-		Waiter w;
+		YixinWaiterRole w;
 		public enum WaiterState
 		{none, askingForBreak};
 		private WaiterState state = WaiterState.none;
 		
-		MyWaiter(Waiter w){
+		MyWaiter(YixinWaiterRole w){
 			this.w = w;
 		}
 	}
 	
 	public static class MyCustomer{
-		Customer customer;
+		YixinCustomerRole customer;
 		public enum CustomerState
 		{waiting, deciding, staying};
 		private CustomerState state;
 		int count;
-		MyCustomer(Customer cust, int count){
+		MyCustomer(YixinCustomerRole cust, int count){
 			this.customer = cust;
 			this.state = CustomerState.waiting;
 			this.count = count;
 		}
+	}
+
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

@@ -17,7 +17,7 @@ public class TruckAgent {
 
 	class Package{
 	    List<Item> items;
-	    CookAgent cook;
+	    YixinCookRole cook;
 	    int orderId;
 	    double bill;
 	    packageState pState = packageState.inTruck;
@@ -32,7 +32,7 @@ public class TruckAgent {
 		this.marketCashier = marketCashier;
 	}
 	
-	public void msgHereAreGoodsForDelivery(int order_id, List<Item> items, CookAgent cook, double bill){
+	public void msgHereAreGoodsForDelivery(int order_id, List<Item> items, YixinCookRole cook, double bill){
 	    items.add(new Package(items, cook, order_id, bill));
 	}
 	

@@ -1,13 +1,16 @@
 package city.restaurant.yixin.gui;
 
-import restaurant.CashierAgent;
+import gui.Gui;
 
 import java.awt.*;
+
 import javax.swing.*;
 
-public class CashierGui extends JPanel implements Gui {
+import city.restaurant.yixin.YixinCashierRole;
 
-    private CashierAgent agent = null;
+public class YixinCashierGui extends JPanel implements Gui {
+
+    private YixinCashierRole agent = null;
 
     private int xPos = 300, yPos = 30;//default waiter position
     public static int xGap = 40;
@@ -15,7 +18,7 @@ public class CashierGui extends JPanel implements Gui {
     
     private ImageIcon i = new ImageIcon("image/cashier.jpg");
     private Image image = i.getImage();
-    public CashierGui(CashierAgent agent) {
+    public YixinCashierGui(YixinCashierRole agent) {
         this.agent = agent;
     }
 
@@ -36,15 +39,5 @@ public class CashierGui extends JPanel implements Gui {
 
     public int getYPos() {
         return yPos;
-    }
-    
-    public void pauseThread(){
-    	if (agent != null)
-    		agent.pauseThread();
-    }
-    
-    public void resumeThread(){
-    	if (agent != null)
-    		agent.resumeThread();
     }
 }

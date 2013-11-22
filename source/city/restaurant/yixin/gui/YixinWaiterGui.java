@@ -1,14 +1,16 @@
 package city.restaurant.yixin.gui;
 
-import restaurant.WaiterAgent ;
+import gui.Gui;
 
 import java.awt.*;
 
 import javax.swing.*;
 
-public class WaiterGui extends JPanel implements Gui {
+import city.restaurant.yixin.YixinWaiterRole;
 
-    private WaiterAgent agent = null;
+public class YixinWaiterGui extends JPanel implements Gui {
+
+    private YixinWaiterRole agent = null;
     private boolean show_choice = false;
     private String food;
 	public static final int xTable1 = 200, xTable2 = 300, xTable3 = 100;
@@ -23,15 +25,12 @@ public class WaiterGui extends JPanel implements Gui {
     int count;
     private ImageIcon i = new ImageIcon("image/waiter.png");
     private Image image = i.getImage();
-    
-    RestaurantGui gui;
-    
+        
 	private enum Command {noCommand, GoToSeat};
 	private Command command=Command.noCommand;
     
-    public WaiterGui(WaiterAgent  agent, RestaurantGui gui, int count) {
+    public YixinWaiterGui(YixinWaiterRole  agent, int count) {
         this.agent = agent;
-        this.gui = gui;
         this.count = count;
         xPlace = 100 + count*50;
         xPos = xPlace;
@@ -63,10 +62,6 @@ public class WaiterGui extends JPanel implements Gui {
 
     public boolean isPresent() {
         return true;
-    }
-
-    public void setButtonEnabled(){
-    	gui.setWaiterEnabled(agent);
     }
     
     public void DoGoToTable(int table_number) {
@@ -138,14 +133,5 @@ public class WaiterGui extends JPanel implements Gui {
     public int getYPos() {
         return yPos;
     }
-    
-    public void pauseThread(){
-    	if (agent != null)
-    		agent.pauseThread();
-    }
-    
-    public void resumeThread(){
-    	if (agent != null)
-    		agent.resumeThread();
-    }
+
 }

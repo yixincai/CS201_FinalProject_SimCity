@@ -13,30 +13,44 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	double money, payment, debt;
 	enum CustomerState {wantToBuy, needPay, pickUpItems, payNextTime, none}
-	CustomerState state = CustomerState.wantToBuy;
+	CustomerState state = CustomerState.none;
 
 	public MarketCustomerRole(PersonAgent person, Market m){
 		super(person);
 		this.market = m;
 	}
 	
+	//command from person
+	public void cmdBuyFood(int meals){
+		order.add(new Item("Meal", 3));
+		state = CustomerState.wantToBuy;
+		stateChanged();
+	}
+	
+	public void cmdFinishAndLeave() {
+	}
+	
+	//message
 	public void msgHereIsBill(double payment, Map<String, Double> price_list, List<Item> orderFulfillment){
 		this.payment = payment;
 		this.price_list = price_list;
 		this.orderFulfillment = orderFulfillment;
 		state = CustomerState.needPay;
+		stateChanged();
 	}
 	
 	public void msgHereIsGoodAndChange(List<Item> orderFulfillment, double change){
 		this.orderFulfillment = orderFulfillment;
 		money += change;
 		state = CustomerState.pickUpItems;
+		stateChanged();
 	}
 	
 	public void msgHereIsGoodAndDebt(List<Item> orderFulfillment, double debt){
 		this.orderFulfillment = orderFulfillment;
 		this.debt = debt;
 		state = CustomerState.payNextTime;
+		stateChanged();
 	}
 
 	public boolean pickAndExecuteAnAction(){
@@ -59,7 +73,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		if (state == CustomerState.payNextTime && money>0){
 			payBackMarket();
 			state = CustomerState.none;
-			finishAndLeaveCommand();
 			return true;
 		}
 		return false;
@@ -95,8 +108,5 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		//DoLeaveMarket();
 		//Active = false;
 	}
-	protected void finishAndLeaveCommand() {
-		//gui.DoLeaveMarket();
-		active = false;
-	}
+
 }

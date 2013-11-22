@@ -1,14 +1,16 @@
 package city.restaurant.yixin.gui;
 
-import restaurant.HostAgent;
+import gui.Gui;
 
 import java.awt.*;
 
 import javax.swing.*;
 
-public class HostGui extends JPanel implements Gui {
+import city.restaurant.yixin.YixinHostRole;
 
-    private HostAgent agent = null;
+public class YixinHostGui extends JPanel implements Gui {
+
+    private YixinHostRole agent = null;
 
     private int xPos = 50, yPos = 20;//default waiter position
     public static int xGap = 40;
@@ -17,7 +19,7 @@ public class HostGui extends JPanel implements Gui {
     
     //private ImageIcon i = new ImageIcon("image/host.png");
     //private Image image = i.getImage();
-    public HostGui(HostAgent agent) {
+    public YixinHostGui(YixinHostRole agent) {
         this.agent = agent;
     }
 
@@ -40,14 +42,5 @@ public class HostGui extends JPanel implements Gui {
     public int getYPos() {
         return yPos;
     }
-    
-    public void pauseThread(){
-    	if (agent != null)
-    		agent.pauseThread();
-    }
-    
-    public void resumeThread(){
-    	if (agent != null)
-    		agent.resumeThread();
-    }
+
 }

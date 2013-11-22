@@ -1,27 +1,28 @@
 package city.restaurant.yixin;
 
-import restaurant.gui.CustomerGui;
-import agent.Agent;
-import restaurant.interfaces.*;
-import restaurant.test.mock.EventLog;
-
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import city.PersonAgent;
+import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.yixin.gui.YixinCustomerGui;
+import utilities.EventLog;
 
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Agent implements Customer{
+public class YixinCustomerRole extends RestaurantCustomerRole{// implements Customer{
+	public YixinRestaurant restaurant;
 	public EventLog log = new EventLog();
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
-	private CustomerGui customerGui;
+	private YixinCustomerGui customerGui;
 	private Semaphore atTable = new Semaphore(0,true);
 	// agent correspondents
-	private HostAgent host;
-	private WaiterAgent waiter;
-	private CashierAgent cashier = null;
+	private YixinHostRole host;
+	private YixinWaiterRole waiter;
+	private YixinCashierRole cashier = null;
 	private Menu menu = null;
 	private String choice;
 	private double money, check, debt = 0;
@@ -46,8 +47,8 @@ public class CustomerAgent extends Agent implements Customer{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent(String name, int count){
-		super();
+	public YixinCustomerRole(PersonAgent p, YixinRestaurant r, String name, int count){
+		super(p);
 		this.money = 0;
 		this.name = name;
 		this.count = count;
@@ -56,11 +57,11 @@ public class CustomerAgent extends Agent implements Customer{
 	/**
 	 * hack to establish connection to Host agent.
 	 */
-	public void setHost(HostAgent host) {
+	public void setHost(YixinHostRole host) {
 		this.host = host;
 	}
 	
-	public void setWaiter(WaiterAgent w) {
+	public void setWaiter(YixinWaiterRole w) {
 		this.waiter = w;
 	}
 	
@@ -69,7 +70,7 @@ public class CustomerAgent extends Agent implements Customer{
 	}
 	// Messages
 
-	public void gotHungry() {//from animation
+	public void cmdGotHungry() {//from PersonAgent
 		print("I'm hungry");
 		if (name.equals("5"))
 			money = 5;
@@ -81,7 +82,7 @@ public class CustomerAgent extends Agent implements Customer{
 			money = 20;
 		else
 			money += r.nextInt(20);
-		Do("I have " + this.money + " dollars.");
+		print("I have " + this.money + " dollars.");
 		event = AgentEvent.gotHungry;
 		stateChanged();
 	}
@@ -92,10 +93,10 @@ public class CustomerAgent extends Agent implements Customer{
 		stateChanged();
 	}
 
-	public void msgFollowMe(Waiter w, int tablenumber, Menu menu) {
-		if (w instanceof WaiterAgent){
+	public void msgFollowMe(YixinWaiterRole w, int tablenumber, Menu menu) {
+		if (w instanceof YixinWaiterRole){
 			print("Received msgSitAtTable");
-			this.waiter = (WaiterAgent)w;
+			this.waiter = (YixinWaiterRole)w;
 			this.menu = menu;
 			seatnumber = tablenumber;
 			event = AgentEvent.followHost;
@@ -122,11 +123,11 @@ public class CustomerAgent extends Agent implements Customer{
 		stateChanged();
 	}
 	
-	public void msgHereIsTheCheck(double money, Cashier cashier){
-		if (cashier instanceof CashierAgent){
+	public void msgHereIsTheCheck(double money, YixinCashierRole cashier){
+		if (cashier instanceof YixinCashierRole){
 			print("Received check of " + money);
 			event = AgentEvent.billArrived;
-			this.cashier = (CashierAgent) cashier;
+			this.cashier = (YixinCashierRole) cashier;
 			this.check = money;
 			stateChanged();
 		}
@@ -142,7 +143,7 @@ public class CustomerAgent extends Agent implements Customer{
 	public void msgYouDoNotHaveEnoughMoney(double debt){
 		this.money = 0;
 		this.debt += debt;
-		Do("My debt is " + this.debt);
+		print("My debt is " + this.debt);
 		event = AgentEvent.badLuck;
 		stateChanged();
 	}
@@ -257,7 +258,7 @@ public class CustomerAgent extends Agent implements Customer{
 	// Actions
 
 	private void goToRestaurant() {
-		Do("Going to restaurant");
+		print("Going to restaurant");
 		customerGui.DoGoWaiting();
 		try {
 			atTable.acquire();
@@ -268,37 +269,37 @@ public class CustomerAgent extends Agent implements Customer{
 	}
 	
 	private void ThinkAboutLeaving(){
-		Do("Think about whether to stay waiting or to leave.");
+		print("Think about whether to stay waiting or to leave.");
 		int choice = r.nextInt(2);
-		Do("The random number is " + choice);
+		print("The random number is " + choice);
 		if (choice == 0){
-			Do("I want to leave the restaurant");
+			print("I want to leave the restaurant");
 			host.msgIAmLeaving(this);
-			Do("I want to leave the restaurant");
+			print("I want to leave the restaurant");
 			state = AgentState.Leaving;
 			leaveRestaurant();
 		}
 		else{
 			host.msgIWantToStay(this);
-			Do("I want to stay in the restaurant");
+			print("I want to stay in the restaurant");
 			state = AgentState.StillWaitingInRestaurant;
 		}
 	}
 
 	private void AskWaiterToPickUpOrder() {
-		Do("I'm ready to order");
+		print("I'm ready to order");
 		waiter.msgReadyToOrder(this);//send our instance, so he can respond to us
 	}
 	
 	private void ThinkAboutMenu() {
-		Do("Thinking about Food");
+		print("Thinking about Food");
 		boolean hasAffordableFood = false;
 		for(int i=0; i<menu.menu.size(); i++){
 			if (menu.menu.get(i).price <= money)
 				hasAffordableFood = true;
 		}
 		int choice = r.nextInt(2);
-		Do("The choice to stay/leave is " + choice);
+		print("The choice to stay/leave is " + choice);
 		if(!hasAffordableFood && choice == 1){
 			waiter.msgNoMoneyAndLeaving(this);
 			event = AgentEvent.noMoney;
@@ -324,10 +325,10 @@ public class CustomerAgent extends Agent implements Customer{
 	}
 	
 	private void RethinkAboutMenu() {
-		Do("Thinking about Food");
+		print("Thinking about Food");
 		boolean hasAffordableFood = false;
 		for(int i=0; i<menu.menu.size(); i++){
-			Do("The size of new menu is " + menu.menu.size());
+			print("The size of new menu is " + menu.menu.size());
 			if (menu.menu.get(i).price <= money)
 				hasAffordableFood = true;
 		}
@@ -354,19 +355,19 @@ public class CustomerAgent extends Agent implements Customer{
 	}
 	
 	private void GiveOrder() {
-		Do("Here is my order");
+		print("Here is my order");
 		customerGui.showOrderFood(this.choice);
 		waiter.msgHereIsTheChoice(this, this.choice);//send our instance, so he can respond to us
 	}
 	
 	private void SitDown() {
-		Do("Being seated. Going to table");
+		print("Being seated. Going to table");
 		customerGui.DoGoToSeat(seatnumber);//hack; only one table
 	}
 
 	private void EatFood() {
 		customerGui.eatFood(this.choice);
-		Do("Eating Food");
+		print("Eating Food");
 		//This next complicated line creates and starts a timer thread.
 		//We schedule a deadline of getHungerLevel()*1000 milliseconds.
 		//When that time elapses, it will call back to the run routine
@@ -388,12 +389,12 @@ public class CustomerAgent extends Agent implements Customer{
 	}
 
 	private void askForBill() {
-		Do("Asking for bill");
+		print("Asking for bill");
 		waiter.msgDoneEating(this);
 	}
 	
 	private void askForChange() {
-		Do("Leaving and Asking for change with money " + money);
+		print("Leaving and Asking for change with money " + money);
 		waiter.msgLeavingRestaurant(this);
 		customerGui.DoGoToCashier();
 		try {
@@ -405,7 +406,7 @@ public class CustomerAgent extends Agent implements Customer{
 	}
 	
 	private void leaveRestaurant() {
-		Do("Leaving restaurant");
+		print("Leaving restaurant");
 		customerGui.DoExitRestaurant();
 	}
 
@@ -429,12 +430,18 @@ public class CustomerAgent extends Agent implements Customer{
 		return "customer " + getName();
 	}
 
-	public void setGui(CustomerGui g) {
+	public void setGui(YixinCustomerGui g) {
 		customerGui = g;
 	}
 
-	public CustomerGui getGui() {
+	public YixinCustomerGui getGui() {
 		return customerGui;
+	}
+
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

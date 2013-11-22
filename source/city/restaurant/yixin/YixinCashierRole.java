@@ -1,28 +1,31 @@
 package city.restaurant.yixin;
 
-import agent.Agent;
-import restaurant.gui.*;
-import restaurant.interfaces.*;
-import restaurant.test.mock.EventLog;
-import restaurant.test.mock.LoggedEvent;
-
 import java.util.*;
 
-public class CashierAgent extends Agent implements Cashier{
+import utilities.EventLog;
+import utilities.LoggedEvent;
+import city.*;
+import city.market.*;
+import city.restaurant.RestaurantCashierRole;
+import city.restaurant.yixin.gui.YixinCashierGui;
+
+public class YixinCashierRole extends RestaurantCashierRole{// implements Cashier{
+	public YixinRestaurant restaurant;
 	public EventLog log = new EventLog();
     private String name = "Cashier";
 	public List<CustomerBill> bills = Collections.synchronizedList(new ArrayList<CustomerBill>());
 	public List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 	public static Menu menu = new Menu();
-	public CashierGui cashierGui = null;
+	public YixinCashierGui cashierGui = null;
 	public double money;
 	
-	public CashierAgent() {
-		super();
+	public YixinCashierRole(PersonAgent p, YixinRestaurant r) {
+		super(p);
+		this.restaurant = r;
 		money = 130.0;
 	}
 	
-	public void setGui(CashierGui g) {
+	public void setGui(YixinCashierGui g) {
 		cashierGui = g;
 	}
 	
@@ -31,16 +34,16 @@ public class CashierAgent extends Agent implements Cashier{
 	}
 	
 	// Messages
-	public void msgComputeBill(Waiter w, Customer c, String choice) {
+	public void msgComputeBill(YixinWaiterRole w, YixinCustomerRole c, String choice) {
 		log.add(new LoggedEvent("Received ComputeBill from waiter. Choice = "+ choice));
-		Do("Bill Request received");
+		print("Bill Request received");
 		bills.add(new CustomerBill(w,c,choice));
 		stateChanged();
 	}
 	
-	public void msgHereIsThePayment(Customer c, double check, double cash) {
+	public void msgHereIsThePayment(YixinCustomerRole c, double check, double cash) {
 		log.add(new LoggedEvent("Received HereIsTheCheck from customer. Check = "+ check + " Payment = "+ cash));
-		Do("Payment received");
+		print("Payment received");
 		for (CustomerBill bill : bills)
 			if (bill.customer == c){
 				bill.cash = cash;
@@ -52,7 +55,7 @@ public class CashierAgent extends Agent implements Cashier{
 	
 	public void msgHereIsTheBill(Market m, double bill){
 		log.add(new LoggedEvent("Received HereIsTheBill from market. Bill = "+ bill));
-		Do("Market bill received with amount of " + bill);
+		print("Market bill received with amount of " + bill);
 		marketBills.add(new MarketBill(m,bill));
 		stateChanged();
 	}
@@ -104,46 +107,46 @@ public class CashierAgent extends Agent implements Cashier{
 	// Actions
 
 	private void computeBill(CustomerBill bill) {
-		Do("The Bills is computed.");
+		print("The Bills is computed.");
 		bill.state = CustomerBill.BillState.None;
 		bill.waiter.msgHereIsTheCheck(bill.price, bill.customer);
 	}
 
 	private void makeChange(CustomerBill bill) {
 		if(bill.cash - bill.price < 0){
-			Do("Customer DO NOT HAVE ENOUGH MONEY.");
+			print("Customer DO NOT HAVE ENOUGH MONEY.");
 			bill.customer.msgYouDoNotHaveEnoughMoney(bill.price - bill.cash);
 			money += bill.cash;
-			Do("Remaining money is " + money);
+			print("Remaining money is " + money);
 			return;
 		}
-		Do("Giving change to customer");
+		print("Giving change to customer");
 		money += bill.price;
-		Do("Remaining money is " + money);
+		print("Remaining money is " + money);
 		bill.customer.msgHereIsTheChange(bill.cash - bill.price);
 	}
 	
 	private void payMarketBill(MarketBill bill){
-		Do("Paying Market Bill");
+		print("Paying Market Bill");
 		if (money >= bill.balance){
 			money -= bill.balance;
-			Do("Remaining money is " + money);
-			bill.market.msgHereIsThePayment(bill.balance);
+			print("Remaining money is " + money);
+			bill.market.MarketCashier.msgHereIsPayment(restaurant, bill.balance);
 			marketBills.remove(0);
 		}
 		else {
 			marketBills.get(0).balance -= money;
-			bill.market.msgHereIsThePayment(money);
+			bill.market.MarketCashier.msgHereIsPayment(restaurant, money);
 			money = 0;
-			Do("Do not have enough money with " + bill.balance +" debt");
+			print("Do not have enough money with " + bill.balance +" debt");
 		}
 	}
 
 	//utilities
 
 	public static class CustomerBill {
-		public Waiter waiter;
-		public Customer customer;
+		public YixinWaiterRole waiter;
+		public YixinCustomerRole customer;
 		public String choice;
 		public double price;
 		public double cash;
@@ -152,7 +155,7 @@ public class CashierAgent extends Agent implements Cashier{
 		{None, NotComputed, ReturnedFromCustomer};
 		public BillState state = BillState.None;
 		
-		CustomerBill(Waiter waiter, Customer customer, String choice){
+		CustomerBill(YixinWaiterRole waiter, YixinCustomerRole customer, String choice){
 			this.choice = choice;
 			this.waiter = waiter;
 			this.customer = customer;
@@ -170,5 +173,11 @@ public class CashierAgent extends Agent implements Cashier{
 			this.market = market;
 			invoice_received = false;
 		}
+	}
+
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,26 +1,22 @@
 package city.restaurant.yixin;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.ConcurrentModificationException;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import restaurant.HostAgent;
-import restaurant.Menu;
-import restaurant.gui.*;
-import agent.Agent;
-import restaurant.interfaces.*;
-import restaurant.test.mock.EventLog;
+import agent.Role;
+import city.PersonAgent;
+import city.restaurant.yixin.gui.YixinWaiterGui;
+import utilities.EventLog;
 
-public abstract class WaiterAgent extends Agent implements Waiter{
-	public Restaurant r;
+
+public abstract class YixinWaiterRole extends Role {//implements Waiter{
+	public YixinRestaurant restaurant;
 	public EventLog log = new EventLog();
 	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
-	public Cook cook = null;
-	public Host host = null;
-	public Cashier cashier = null;
-	public WaiterGui waiterGui = null;
+	public YixinCookRole cook = null;
+	public YixinHostRole host = null;
+	public YixinCashierRole cashier = null;
+	public YixinWaiterGui waiterGui = null;
 	private Semaphore atTable = new Semaphore(0,true);
 	//The four booleans below are for Gui purposes, they have NOTHING to do with agent design
 	boolean breakRequest = false, backRequest = false;//Two booleans from gui to tell whether to go on break or to 
@@ -28,8 +24,9 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 
 	private String name;
 
-	public WaiterAgent(String name) {
-		super();
+	public YixinWaiterRole(PersonAgent p, YixinRestaurant r, String name) {
+		super(p);
+		this.restaurant = r;
 		this.name = name;
 	}
 
@@ -45,15 +42,15 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 		return breakEnabled;
 	}
 
-	public void setHost(HostAgent h){
+	public void setHost(YixinHostRole h){
 		this.host = h;
 	}
 
-	public void setCook(CookAgent c){
+	public void setCook(YixinCookRole c){
 		this.cook = c;
 	}
 
-	public void setCashier(CashierAgent c){
+	public void setCashier(YixinCashierRole c){
 		this.cashier = c;
 	}
 
@@ -64,12 +61,12 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 
 	// Messages
 
-	public void msgSitAtTable(Customer cust, int tablenumber, int count) {
+	public void msgSitAtTable(YixinCustomerRole cust, int tablenumber, int count) {
 		customers.add(new MyCustomer(cust, tablenumber, MyCustomer.CustomerState.waiting, count));
 		stateChanged();
 	}
 
-	public void msgNoMoneyAndLeaving(Customer cust){
+	public void msgNoMoneyAndLeaving(YixinCustomerRole cust){
 		for (MyCustomer c: customers) {
 			if (c.c == cust) {
 				c.state = MyCustomer.CustomerState.noMoney;
@@ -78,7 +75,7 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 		}
 	}
 
-	public void msgReadyToOrder(Customer cust) {
+	public void msgReadyToOrder(YixinCustomerRole cust) {
 		for (MyCustomer c: customers) {
 			if (c.c == cust) {
 				c.state = MyCustomer.CustomerState.readyToOrder;
@@ -87,7 +84,7 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 		}
 	}
 
-	public void msgHereIsTheChoice(Customer cust, String choice) {
+	public void msgHereIsTheChoice(YixinCustomerRole cust, String choice) {
 		for (MyCustomer c: customers) {
 			if (c.c == cust) {
 				c.choice = choice;
@@ -111,14 +108,14 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 	public void msgFoodRunsOut(String choice, int tableNumber) {
 		for (MyCustomer c: customers) {
 			if (c.tableNumber == tableNumber) {
-				Do("Got msg " + choice + " is running out.");
+				print("Got msg " + choice + " is running out.");
 				c.state = MyCustomer.CustomerState.noFood;
 				stateChanged();
 			}
 		}
 	}
 
-	public void msgDoneEating(Customer cust) {
+	public void msgDoneEating(YixinCustomerRole cust) {
 		for (MyCustomer c: customers) {
 			if (c.c == cust) {
 				c.state = MyCustomer.CustomerState.finishedEating;
@@ -127,7 +124,7 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 		}
 	}
 
-	public void msgHereIsTheCheck(double money, Customer cust){
+	public void msgHereIsTheCheck(double money, YixinCustomerRole cust){
 		for (MyCustomer c: customers) {
 			if (c.c == cust) {
 				c.state = MyCustomer.CustomerState.checkComputed;
@@ -137,7 +134,7 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 		}
 	}
 
-	public void msgLeavingRestaurant(Customer cust){
+	public void msgLeavingRestaurant(YixinCustomerRole cust){
 		for (MyCustomer c: customers) {
 			if (c.c == cust) {
 				c.state = MyCustomer.CustomerState.leaving;
@@ -155,8 +152,7 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 
 	public void msgBreakGranted(){
 		breakEnabled = true;//for gui purpose
-		Do("Break request granted.");
-		waiterGui.setButtonEnabled();
+		print("Break request granted.");
 		stateChanged();
 	}
 
@@ -172,13 +168,13 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 	public boolean pickAndExecuteAnAction() {
 		try{
 			if (breakRequest){
-				Do("Tell host to break");
+				print("Tell host to break");
 				host.msgWantToBreak(this);
 				breakRequest = false;
 				return true;
 			}
 			if (backRequest){
-				Do("Tell host I'm coming back");
+				print("Tell host I'm coming back");
 				host.msgWantToComeBack(this);
 				backRequest = false;
 				return true;
@@ -274,7 +270,7 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 	}
 
 	private void giveNewMenu(MyCustomer customer){
-		Do("give new menu");
+		print("give new menu");
 		DoGoToCustomer(customer.c, customer.tableNumber);
 		customer.state = MyCustomer.CustomerState.none;
 		Menu m = new Menu();
@@ -286,31 +282,31 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 
 	private void giveOrderToCustomer(MyCustomer customer){
 		DoFetchPlate();
-		Do("Give order to customer");
+		print("Give order to customer");
 		customer.state = MyCustomer.CustomerState.none;
 		DoGiveFoodToCustomer(customer.c, customer.tableNumber, customer.choice);
 		customer.c.msgHereIsYourFood(customer.choice);
 	}
 
 	private void computeBill(MyCustomer customer){
-		Do("Ask Cashier to compute bill");
+		print("Ask Cashier to compute bill");
 		cashier.msgComputeBill(this, customer.c, customer.choice);
 		customer.state = MyCustomer.CustomerState.none;
 	}
 
 	private void giveCheck(MyCustomer customer){
-		Do("Give Customer the bill");
+		print("Give Customer the bill");
 		customer.c.msgHereIsTheCheck(customer.check, cashier);
 		customer.state = MyCustomer.CustomerState.none;
 	}
 
 	private void clearCustomer(MyCustomer customer){
-		Do("Clear customer");
+		print("Clear customer");
 		host.msgTableIsFree(customer.c, customer.tableNumber);
 		customers.remove(customer);
 	}
 
-	private void DoSeatCustomer(Customer customer, int table){
+	private void DoSeatCustomer(YixinCustomerRole customer, int table){
 		print("Seating " + customer + " at " + table);
 		waiterGui.DoGoToTable(table);
 		try {
@@ -320,7 +316,7 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 		}
 	}
 
-	private void DoGoToCustomer(Customer customer, int table){
+	private void DoGoToCustomer(YixinCustomerRole customer, int table){
 		print("Going to " + customer + " at " + table);
 		waiterGui.DoGoToTable(table);
 		try {
@@ -364,7 +360,7 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 		}
 	}
 	
-	private void DoGiveFoodToCustomer(Customer customer, int table, String food){
+	private void DoGiveFoodToCustomer(YixinCustomerRole customer, int table, String food){
 		print("Giving food to " + customer + " at " + table);
 		waiterGui.DoBringFood(table, food);
 		try {
@@ -376,16 +372,16 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 
 	//utilities
 
-	public void setGui(WaiterGui gui) {
+	public void setGui(YixinWaiterGui gui) {
 		waiterGui = gui;
 	}
 
-	public WaiterGui getGui() {
+	public YixinWaiterGui getGui() {
 		return waiterGui;
 	}
 
 	protected static class MyCustomer {
-		Customer c;
+		YixinCustomerRole c;
 		int tableNumber, count;
 		String choice = "";
 		double check = 0;
@@ -394,7 +390,7 @@ public abstract class WaiterAgent extends Agent implements Waiter{
 			orderGiven, orderReady, noFood, finishedEating, checkComputed, leaving};
 		public CustomerState state = CustomerState.none;
 
-			MyCustomer(Customer c, int tableNumber, CustomerState s, int count) {
+			MyCustomer(YixinCustomerRole c, int tableNumber, CustomerState s, int count) {
 				this.c = c;
 				this.tableNumber = tableNumber;
 				this.state = s;
