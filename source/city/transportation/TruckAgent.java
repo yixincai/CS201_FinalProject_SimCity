@@ -5,50 +5,45 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import city.Place;
+import city.market.Market;
 import city.market.MarketCashierRole;
+import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCookRole;
 import city.restaurant.yixin.YixinCookRole;
 import city.transportation.gui.BusAgentGui;
-import agent.PersonAgent;
+import city.market.Item;
 
 public class TruckAgent {
 	List<Package> packages;
 	Semaphore isMoving;
-	MarketCashierRole marketCashier;
-	Place _market;
+	Market _market;
 	BusAgentGui gui;
 	Boolean out = false;
 
 	enum packageState{inTruck, delivering, unloaded, done};
 
 	class Package{
-	    List<Item> items;
-	    RestaurantCookRole cook;
+	    List<Item> _items;
+	    Restaurant _restaurant;
 	    int orderId;
 	    double bill;
 	    packageState pState = packageState.inTruck;
 	    
-	    Package(List<Item> items, RestaurantCookRole cook, int id, double bill){
-	    	this.orderId = id;
-	    	this.items=items;
-	    	this.cook = cook;
-	    	this.bill = bill;
+	    Package(List<Item> items, Restaurant restaurant){
+	    	_items=items;
+	    	_restaurant = restaurant;
+	    	
 	    }
-	}
-
-	class Item{
-	    String stock;
-	    int amount;
 	}
 	
 	//Constructor
-	TruckAgent(MarketCashierRole marketCashier){
-		this.marketCashier = marketCashier;
+	TruckAgent(Market market){
+		_market = market;
 	}
 	
 	//----------------------------------------------Messages------------------------------------------
-	public void msgHereAreGoodsForDelivery(int order_id, List<Item> items, RestaurantCookRole cook, double bill){
-	    packages.add(new Package(items, cook, order_id, bill));
+	public void msgHereAreGoodsForDelivery(List<Item> items, Restaurant restaurant){
+	    packages.add(new Package(items, restaurant));
 	}
 	
 	public void msgAtDestination(){
@@ -93,9 +88,9 @@ public class TruckAgent {
 	public void DeliverToDestination(Package aPackage){
 		out = true;
 		aPackage.pState = packageState.delivering;
-		gui.goToDestination(cook);
+		gui.goToDestination(aPackage._restaurant);
 		isMoving.acquire();
-		aPackage.cook.msgOrderDelivered(aPackage.items, aPackage.orderId);
+		aPackage.cook.msgOrderDelivered(aPackage._items, _market);
 	}
 
 	public void RemoveFromList(Package aPackage){
@@ -106,6 +101,6 @@ public class TruckAgent {
 	    out = false;
 	    gui.goToMarket(_market);
 	    isMoving.acquire();
-	    marketCashier.msgBackFromRun(this);
+	    _market.MarketCashier.msgBackFromRun(this);
 	}
 }
