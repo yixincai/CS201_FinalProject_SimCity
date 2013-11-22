@@ -38,9 +38,7 @@ public class BuildingPanel extends JPanel implements ActionListener
 		buttonPanel.setBorder(BorderFactory.createTitledBorder("Building"));
 		JPanel view = new JPanel();
 		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
-		JScrollPane buildingButtons = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		buildingButtons.setViewportView(view);
-		buttonPanel.add(buildingButtons, BorderLayout.CENTER);
+		buttonPanel.add(new JLabel("TEST" + myName));
 		this.add(buttonPanel, BorderLayout.CENTER);
 	}
 
