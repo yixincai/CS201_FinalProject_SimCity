@@ -21,7 +21,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	public YixinCookGui cookGui = null;
 	boolean lowInFood = true;
 	
-	enum CookState{ableToOrder,OrderReceived,none};
+	enum CookState{ableToOrder,OrderReceived,waitingToCheckout,none};
 	CookState state = CookState.ableToOrder;
 	enum CheckState{notChecked,Checked};
 	CheckState check_state = CheckState.notChecked;	
@@ -72,6 +72,10 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	public void msgDone(Order o){
 		o.state = Order.OrderState.Cooked;
 		stateChanged();
+	}
+	
+	public void msgOrderFinished(){
+		state = CookState.ableToOrder;
 	}
 
 	public void msgOrderFulfillment(Market m, List<Item> orderFulfillment){
@@ -128,7 +132,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 			}
 			if(state == CookState.OrderReceived){
 				giveInvoice();
-				state =  CookState.ableToOrder;
+				state =  CookState.waitingToCheckout;
 				return true;
 			}
 			if(lowInFood && state == CookState.ableToOrder){

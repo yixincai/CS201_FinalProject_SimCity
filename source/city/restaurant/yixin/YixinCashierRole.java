@@ -11,6 +11,8 @@ import city.restaurant.yixin.gui.YixinCashierGui;
 
 public class YixinCashierRole extends RestaurantCashierRole{// implements Cashier{
 	public YixinRestaurant restaurant;
+	public YixinCookRole cook;
+
 	public EventLog log = new EventLog();
     private String name = "Cashier";
 	public List<CustomerBill> bills = Collections.synchronizedList(new ArrayList<CustomerBill>());
@@ -64,6 +66,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		log.add(new LoggedEvent("Received HereIsTheChange from market. Bill = "+ change));
 		print("Market change received with amount of " + change);
 		money += change;
+		cook.msgOrderFinished();
 		stateChanged();
 	}
 	

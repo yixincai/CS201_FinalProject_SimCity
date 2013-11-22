@@ -81,18 +81,18 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 	
 	public void DoPickUp(String item){
-		//gui.PickUp(item);
+		gui.PickUp(item);
 	}
 	
 	public void DoGoToCashier(){
-		//gui.GoToCashier();
+		gui.GoToCashier();
 	}
 	
 	public void DoGoToTruck(){
-		//gui.GoToCook();
+		gui.GoToTruck();
 	}
 	
 	public void DoGoHome(){
-		//gui.GoHome();
+		gui.GoHome();
 	}
 }

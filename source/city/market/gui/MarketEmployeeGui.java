@@ -78,7 +78,7 @@ public class MarketEmployeeGui extends JPanel implements Gui {
 		command=Command.GoToSeat;
 	}
 	
-	public void DoGoHome(){
+	public void GoHome(){
 		//xDestination = ??;
 	}
 

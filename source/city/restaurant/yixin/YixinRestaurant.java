@@ -16,7 +16,7 @@ public class YixinRestaurant extends Restaurant{
 	public YixinRestaurant(){
 		super();
 		Cashier = new YixinCashierRole(null,this);
-		Host = new YixinHostRole(null,this,"Fiona");
+		Host = new YixinHostRole(null,this,"Host");
 		Cook = new YixinCookRole(null,this);
 	}
 		
