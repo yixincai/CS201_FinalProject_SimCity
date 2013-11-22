@@ -50,7 +50,7 @@ public class BusAgent {
 	    bState = BusState.atDestination;
 	}
 
-	public void msgGotOff(PersonAgent passenger){
+	public void msgGotOff(CommuterRole passenger){
 	    passengers.remove(passenger); //Fix this
 	    numPeople--;
 	}
@@ -86,7 +86,7 @@ public class BusAgent {
 	    bState = BusState.droppingoff;
 	    for(MyCommuter commuter: passengers){
 	        if(commuter.destination == currentDestination){
-	        	commuter.commuter.msgGetOffBus();
+	        	commuter.commuter.msgGetOffBus(currentDestination);
 	            expectedPeople--;
 	        }
 	    }
@@ -97,7 +97,7 @@ public class BusAgent {
 		bState = BusState.pickingup;
 	    while(expectedPeople <= capacity){
 	    	for(CommuterRole comm: currentBusStopList){
-	    		comm.msgGetOnBus(fare);
+	    		comm.msgGetOnBus(fare, this);
 	            expectedPeople++;
 	        }
 	    }
