@@ -30,7 +30,7 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 
          for ( int i=0; i<2; i++ ) {
                  for ( int j=0; j<5; j++ ) {
-                         Building b = new Building( i*40+ 50, j*40 + 50, 20, 20 );
+                         Building b = new Building( i*60 + 50, j*60 + 50, 30, 30 );
                          buildings.add( b );
                  }
          }
