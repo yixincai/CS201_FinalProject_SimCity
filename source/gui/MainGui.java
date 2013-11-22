@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 public class MainGui extends JFrame 
 {
 	private static int FRAMEX = 1024;
-	private static int FRAMEY = 1024;
+	private static int FRAMEY = 720;
 	
 	 JPanel buildingPanels;
      CardLayout cardLayout;
@@ -30,7 +30,7 @@ public class MainGui extends JFrame
 	public MainGui()
 	{
 		//The code below is for setting up the default window settings
-		this.setSize(1024, 720);
+		this.setSize(FRAMEX, FRAMEY);
 		this.setLocationRelativeTo(null);
 		this.setTitle("SimCity201 - Team 18");
 		this.setResizable(false);

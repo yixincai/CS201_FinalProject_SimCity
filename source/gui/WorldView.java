@@ -17,8 +17,8 @@ import java.util.ArrayList;
 
 public class WorldView extends JPanel implements MouseListener 
 {
-	private static int WINDOWX = 682;
-	private static int WINDOWY = 432;
+	private static int WINDOWX = 1024 * 2 /3;
+	private static int WINDOWY = 720 / 2;
 	
 	ArrayList<Building> buildings;
 	

@@ -56,6 +56,6 @@ public class BuildingPanel extends JPanel implements ActionListener
     
     public String getName() {
         return myName;
-}
+    }	
 
 }
