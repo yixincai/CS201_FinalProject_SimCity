@@ -21,6 +21,7 @@ public abstract class HomeRole extends Role
 	
 	// --------------------------- CONSTRUCTOR & PROPERTIES --------------------------
 	public HomeRole(PersonAgent person) { super(person); }
+	public abstract boolean haveHome(); // return false if you don't have a home; if you don't have a home, the first thing your scheduler should do is try to buy a home.
 	public boolean sleeping() { return state == State.SLEEPING; }
 	public boolean cooking() { return state == State.COOKING; }
 	public boolean haveFood() { return _mealCount > 0; } //TODO implement _mealCount;

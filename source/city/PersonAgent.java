@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import city.bank.BankCustomerRole;
+import city.home.HomeBuyingRole;
 import city.home.HomeRole;
 import city.market.Market;
 import city.market.MarketCustomerRole;
@@ -26,12 +27,13 @@ public class PersonAgent extends Agent
 	private Role _currentRole; // this should never be null
 	private boolean _sentCmdFinishAndLeave = false;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
-	private CommuterRole _commuterRole = new CommuterRole(this, null); //TODO null should be a Place
+	private CommuterRole _commuterRole = new CommuterRole(this, null); //TODO null should be the current Place
 	private Role _occupation;
 	private double _occupationStartTime;
 	private double _occupationEndTime;
 	private boolean _weekday_notWeekend;
-	HomeRole _homeRole;
+	private HomeRole _homeRole;
+	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house
 	
 	// State data:
 	public double _money;
