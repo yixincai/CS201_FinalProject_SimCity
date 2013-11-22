@@ -48,5 +48,6 @@ public class ControlPanel extends JTabbedPane {
 	public void addPerson(String name, int money, String occupation) 
 	{
 		currentPersonPanel.addPerson(name);
+		// TODO this is where we should actually create the new Person agent.  We should discuss how we want to handle the agents.
 	}
 }

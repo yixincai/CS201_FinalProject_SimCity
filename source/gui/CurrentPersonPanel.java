@@ -65,11 +65,16 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		
 	}
 	
+	public void updateInfo(JButton selected)
+	{
+		//TODO we will need to actually display the relevant information to the agent, not just the name
+		nameField.setText("Person Name: " + selected.getText());
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		// TODO Auto-generated method stub
-
+		updateInfo((JButton) e.getSource());
 	}
 
 }
