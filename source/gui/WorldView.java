@@ -17,24 +17,25 @@ import java.util.ArrayList;
 
 public class WorldView extends JPanel implements MouseListener 
 {
-	private static int WINDOWX = 1024 * 2 /3;
+	private static int WINDOWX = 1024 * 2 / 3;
 	private static int WINDOWY = 720 / 2;
 	
 	ArrayList<Building> buildings;
 	
 	public WorldView()
 	{
-		this.setBorder(BorderFactory.createTitledBorder("World View"));
-		this.setPreferredSize(new Dimension(WINDOWX, WINDOWY));
 		
+		this.setPreferredSize(new Dimension(WINDOWX, WINDOWY));
+		this.setBorder(BorderFactory.createTitledBorder("World View"));
 		 buildings = new ArrayList<Building>();
 
          for ( int i=0; i<2; i++ ) {
                  for ( int j=0; j<5; j++ ) {
-                         Building b = new Building( i*40+ 10, j*40 + 10, 20, 20 );
+                         Building b = new Building( i*40+ 50, j*40 + 50, 20, 20 );
                          buildings.add( b );
                  }
          }
+		 
 
          addMouseListener( this );
 	}

@@ -68,7 +68,7 @@ public class MainGui extends JFrame
       //The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
   	  cPanel = new ControlPanel();
   	  this.add(cPanel, Component.RIGHT_ALIGNMENT);
-  	  		
+  	  this.pack();		
   	  this.setVisible(true);
 	
 	}

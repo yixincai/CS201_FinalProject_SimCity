@@ -19,7 +19,7 @@ public class BuildingWindow extends JPanel
 	public BuildingWindow()
 	{
 		this.setLayout(new CardLayout());
-		this.setBorder(BorderFactory.createTitledBorder("Building"));
+		//this.setBorder(BorderFactory.createTitledBorder("Building"));
 		this.setPreferredSize(new Dimension(PANELX, PANELY));
 	}
 
