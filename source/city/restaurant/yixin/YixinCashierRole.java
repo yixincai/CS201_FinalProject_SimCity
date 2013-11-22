@@ -53,10 +53,17 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			}
 	}
 	
-	public void msgHereIsTheBill(Market m, double bill){
+	public void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list){
 		log.add(new LoggedEvent("Received HereIsTheBill from market. Bill = "+ bill));
 		print("Market bill received with amount of " + bill);
-		marketBills.add(new MarketBill(m,bill));
+		marketBills.add(new MarketBill(m, bill, price_list));
+		stateChanged();
+	}
+	
+	public void msgHereIsTheChange(Market m, double change){
+		log.add(new LoggedEvent("Received HereIsTheChange from market. Bill = "+ change));
+		print("Market change received with amount of " + change);
+		money += change;
 		stateChanged();
 	}
 	
@@ -168,10 +175,12 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		public double balance;
 		public Market market;
 		public boolean invoice_received;
-		MarketBill(Market market, double money){
+		public Map<String, Double> price_list;
+		MarketBill(Market market, double money, Map<String, Double> price_list){
 			this.balance = money;
 			this.market = market;
 			invoice_received = false;
+			this.price_list = price_list;
 		}
 	}
 

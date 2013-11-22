@@ -6,11 +6,11 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import city.market.MarketCashierRole;
+import city.market.*;
 
-public class MarketCashierGui extends JPanel implements Gui {
+public class MarketEmployeeGui extends JPanel implements Gui {
 
-    private MarketCashierRole role = null;
+    private MarketEmployeeRole role = null;
 
     private int xPos = 300, yPos = 30;//default waiter position
     public static int xGap = 40;
@@ -18,11 +18,11 @@ public class MarketCashierGui extends JPanel implements Gui {
     private int xDestination = 300, yDestination = 30;//default waiter position
 	private enum Command {noCommand, GoToSeat};
 	private Command command=Command.noCommand;
-	
-    private ImageIcon i = new ImageIcon("image/cashier.jpg");
-    private Image image = i.getImage();
     
-    public MarketCashierGui(MarketCashierRole agent) {
+    private ImageIcon i = new ImageIcon("image/cashier.jpg");
+    private Image image = i.getImage();  
+    
+    public MarketEmployeeGui(MarketEmployeeRole agent) {
         this.role = agent;
     }
 

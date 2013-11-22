@@ -1,11 +1,15 @@
 package city.market;
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
+import city.market.gui.*;
 import city.market.interfaces.MarketCustomer;
 import agent.Role;
 
 public class MarketCustomerRole extends Role implements MarketCustomer{
+	public MarketCustomerGui gui;
+	
 	Market market;
 	List<Item> order;
 	List<Item> orderFulfillment;
@@ -15,9 +19,17 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	enum CustomerState {wantToBuy, needPay, pickUpItems, payNextTime, none}
 	CustomerState state = CustomerState.none;
 
+	private Semaphore atDestination = new Semaphore(0,true);
+	
 	public MarketCustomerRole(PersonAgent person, Market m){
 		super(person);
 		this.market = m;
+	}
+	
+	public void msgAnimationFinished() {
+		//from animation
+		atDestination.release();
+		stateChanged();
 	}
 	
 	//command from person
@@ -85,28 +97,39 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		if (Math.abs(bill - payment) > 0.02)
 			System.out.println("Incorrect bill calculation by market");
 		*/
-		//DoGoToCashier();
+		DoGoToCashier();
 		market.MarketCashier.msgPay(this, money);
-		//DoGoToWaitingArea();
+		DoGoToWaitingArea();
 		money = 0;
 	}
 	
 	public void buyFromMarket(){
-		//DoGoToWaitingArea();
+		DoGoToWaitingArea();
 		market.MarketCashier.msgPlaceOrder(this, order);
 	}
 	
 	public void payBackMarket(){
-		//DoGoToCashier();
+		DoGoToCashier();
 		market.MarketCashier.msgPay(this, money);
-		//DoGoToWaitingArea();
+		DoGoToWaitingArea();
 		money = 0;
 	}
 	
 	public void pickUpItems(){
-		//DoGoToCashier();
-		//DoLeaveMarket();
+		DoGoToCashier();
+		DoLeaveMarket();
 		//Active = false;
 	}
+	
+	public void DoGoToCashier(){
+		//gui.GoToCashier();
+	}
 
+	public void DoGoToWaitingArea(){
+		//gui.GoToWaitingArea();
+	}
+	
+	public void DoLeaveMarket(){
+		//gui.LeaveMarket();
+	}
 }

@@ -10,9 +10,7 @@ public class YixinRestaurant extends Restaurant{
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
 	int count = -1;
 	boolean open;
-	public YixinCashierRole Cashier;
 	public YixinHostRole Host;
-	public YixinCookRole Cook;
 	public List<YixinWaiterRole> Waiters = new ArrayList<YixinWaiterRole>();
 	
 	public YixinRestaurant(){
