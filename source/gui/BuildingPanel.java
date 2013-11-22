@@ -43,7 +43,7 @@ public class BuildingPanel extends JPanel implements ActionListener
 		//buttonPanel.setBorder(BorderFactory.createTitledBorder("Building"));
 		JPanel view = new JPanel();
 		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
-		buttonPanel.add(new AnimationPanel());
+		buttonPanel.add(new AnimationPanel(i));
 		this.add(buttonPanel, BorderLayout.CENTER);
 	}
 

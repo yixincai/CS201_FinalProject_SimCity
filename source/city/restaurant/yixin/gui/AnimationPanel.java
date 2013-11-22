@@ -30,9 +30,10 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private Image grillimage = igrill.getImage();
     private ImageIcon irevolving = new ImageIcon("image/revolvingStand.jpg");
     private Image standimage = irevolving.getImage();
-
+    int testNumber; //to make sure card layout is working
     
-    public AnimationPanel() {
+    public AnimationPanel(int i) {
+    	testNumber = i;
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
  
@@ -52,8 +53,47 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
 
         //Here is the table
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(TABLEX1, TABLEY, GAPX, GAPY);
+
+        Color randomColor = new Color(0);
+        if(testNumber == 0)
+        {
+        	randomColor = Color.blue;
+        }
+        else if(testNumber == 1)
+        {
+        	randomColor = Color.black;
+        }
+        else if(testNumber == 2)
+        {
+        	randomColor = Color.green;
+        }
+        else if(testNumber == 3)
+        {
+        	randomColor = Color.cyan;
+        }
+        else if(testNumber == 4)
+        {
+        	randomColor = Color.magenta;
+        }
+        else if(testNumber == 5)
+        {
+        	randomColor = Color.orange;
+        }
+        else if(testNumber == 6)
+        {
+        	randomColor = Color.pink;
+        }
+        else if(testNumber == 7)
+        {
+        	randomColor = Color.white;
+        }
+        else if(testNumber == 8)
+        {
+        	randomColor = Color.yellow;
+        }
+        g2.setColor(randomColor);
+        g2.fillRect(TABLEX1, TABLEY, GAPX, GAPY);//200 and 250 need to be table params
+
         g2.fillRect(TABLEX2, TABLEY, GAPX, GAPY);
         g2.fillRect(TABLEX3, TABLEY, GAPX, GAPY);
         //here is the cooking area 
