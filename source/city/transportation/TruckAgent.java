@@ -4,23 +4,36 @@ import java.awt.Dimension;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import city.Place;
 import city.market.MarketCashierRole;
+import city.restaurant.RestaurantCookRole;
+import city.restaurant.yixin.YixinCookRole;
+import city.transportation.gui.BusAgentGui;
 import agent.PersonAgent;
 
 public class TruckAgent {
 	List<Package> packages;
 	Semaphore isMoving;
 	MarketCashierRole marketCashier;
+	Place _market;
+	BusAgentGui gui;
 	Boolean out = false;
 
 	enum packageState{inTruck, delivering, unloaded, done};
 
 	class Package{
 	    List<Item> items;
-	    YixinCookRole cook;
+	    RestaurantCookRole cook;
 	    int orderId;
 	    double bill;
 	    packageState pState = packageState.inTruck;
+	    
+	    Package(List<Item> items, RestaurantCookRole cook, int id, double bill){
+	    	this.orderId = id;
+	    	this.items=items;
+	    	this.cook = cook;
+	    	this.bill = bill;
+	    }
 	}
 
 	class Item{
@@ -28,12 +41,14 @@ public class TruckAgent {
 	    int amount;
 	}
 	
+	//Constructor
 	TruckAgent(MarketCashierRole marketCashier){
 		this.marketCashier = marketCashier;
 	}
 	
-	public void msgHereAreGoodsForDelivery(int order_id, List<Item> items, YixinCookRole cook, double bill){
-	    items.add(new Package(items, cook, order_id, bill));
+	//----------------------------------------------Messages------------------------------------------
+	public void msgHereAreGoodsForDelivery(int order_id, List<Item> items, RestaurantCookRole cook, double bill){
+	    packages.add(new Package(items, cook, order_id, bill));
 	}
 	
 	public void msgAtDestination(){
@@ -51,15 +66,16 @@ public class TruckAgent {
 	    isMoving.release();
 	}
 	
+	//----------------------------------------------Scheduler------------------------------------------
 	public boolean pickAndExecuteAnAction(){
 		for(Package temp: packages){
-			if(temp.pState == packageState.inTruck){
-				DeliverToDestination(temp);
+			if(temp.pState == packageState.unloaded){
+				RemoveFromList(temp);
 				return true;
 			}
 			
-			if(temp.pState == packageState.unloaded){
-				RemoveFromList(temp);
+			if(temp.pState == packageState.inTruck){
+				DeliverToDestination(temp);
 				return true;
 			}
 			
@@ -73,10 +89,11 @@ public class TruckAgent {
 		return false;
 	}
 	
+	//----------------------------------------------Actions------------------------------------------
 	public void DeliverToDestination(Package aPackage){
 		out = true;
 		aPackage.pState = packageState.delivering;
-		Gui.goToDestination(cook);
+		gui.goToDestination(cook);
 		isMoving.acquire();
 		aPackage.cook.msgOrderDelivered(aPackage.items, aPackage.orderId);
 	}
@@ -87,7 +104,7 @@ public class TruckAgent {
 
 	public void GoBackToMarket(){
 	    out = false;
-	    Gui.goToMarket();
+	    gui.goToMarket(_market);
 	    isMoving.acquire();
 	    marketCashier.msgBackFromRun(this);
 	}

@@ -182,10 +182,11 @@ public class CommuterRole extends Role {
 		_bus.msgGettingOnBoard(this, _destination, _fare);
 	}
 	public void actGetOffBus(){
-		gui.getOffBus();
 		_tState = travelState.gettingOffBus;
+		gui.getOffBus();
 		_bus.msgGotOff(this);
 		_bus = null;
+		actWalking(); //Calls this function here because after you get off of the bus stop you walk to the destination
 	}
 
 	//Driving

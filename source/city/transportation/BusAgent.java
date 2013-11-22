@@ -51,7 +51,7 @@ public class BusAgent {
 	}
 
 	public void msgGotOff(CommuterRole passenger){
-	    passengers.remove(passenger); //Fix this
+	    passengers.remove(findCommuter(passenger)); //Fix this
 	    numPeople--;
 	}
 
@@ -106,6 +106,18 @@ public class BusAgent {
 	public void Leave(){
 	    bState = BusState.moving;
 	    _gui.moveToNextDestination();
+	}
+	
+	//-----------------------------------------Utilities-----------------------------------------
+	public MyCommuter findCommuter(CommuterRole commuter){
+		synchronized(passengers){
+			for(MyCommuter passenger: passengers){
+				if(passenger.commuter == commuter){
+					return passenger;
+				}
+			}
+			return null;
+		}
 	}
 	
 }
