@@ -50,8 +50,8 @@ public class BusAgent {
 	    bState = BusState.atDestination;
 	}
 
-	public void msgGotOff(PersonAgent passenger){
-	    passengers.remove(passenger); //Fix this
+	public void msgGotOff(CommuterRole passenger){
+	    passengers.remove(findCommuter(passenger)); //Fix this
 	    numPeople--;
 	}
 
@@ -86,7 +86,7 @@ public class BusAgent {
 	    bState = BusState.droppingoff;
 	    for(MyCommuter commuter: passengers){
 	        if(commuter.destination == currentDestination){
-	        	commuter.commuter.msgGetOffBus();
+	        	commuter.commuter.msgGetOffBus(currentDestination);
 	            expectedPeople--;
 	        }
 	    }
@@ -97,7 +97,7 @@ public class BusAgent {
 		bState = BusState.pickingup;
 	    while(expectedPeople <= capacity){
 	    	for(CommuterRole comm: currentBusStopList){
-	    		comm.msgGetOnBus(fare);
+	    		comm.msgGetOnBus(fare, this);
 	            expectedPeople++;
 	        }
 	    }
@@ -106,6 +106,18 @@ public class BusAgent {
 	public void Leave(){
 	    bState = BusState.moving;
 	    _gui.moveToNextDestination();
+	}
+	
+	//-----------------------------------------Utilities-----------------------------------------
+	public MyCommuter findCommuter(CommuterRole commuter){
+		synchronized(passengers){
+			for(MyCommuter passenger: passengers){
+				if(passenger.commuter == commuter){
+					return passenger;
+				}
+			}
+			return null;
+		}
 	}
 	
 }

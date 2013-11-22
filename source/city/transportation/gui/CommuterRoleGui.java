@@ -47,6 +47,14 @@ public class CommuterRoleGui implements Gui {
 		tUsed = transportUsed.none;
 	}
 	
+	public void getOnBus(){
+		
+	}
+	
+	public void getOffBus(){
+		
+	}
+	
 	
 	//------------------------------------------Animation---------------------------------------
 	@Override

@@ -77,7 +77,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			DoPickUp(item.name);
 		}
 		DoGoToTruck();
-		//Transportation.Truck.msgDeliverToCook(mc.r, mc.orderFulfillment, mc.bill);
+		//Transportation.Truck.msgDeliverToCook(mc.r, mc.orderFulfillment);
 	}
 	
 	public void DoPickUp(String item){

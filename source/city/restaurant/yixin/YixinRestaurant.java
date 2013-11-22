@@ -48,7 +48,6 @@ public class YixinRestaurant extends Restaurant{
 
 	@Override
 	public Role getHostRole() {
-		// TODO Auto-generated method stub
 		return Host;
 	}
 }
