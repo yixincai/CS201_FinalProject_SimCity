@@ -1,17 +1,14 @@
 package city.restaurant.yixin;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import agent.Role;
 import city.PersonAgent;
-import city.restaurant.Restaurant;
-import city.restaurant.RestaurantCustomerRole;
-
+import city.restaurant.*;
 
 public class YixinRestaurant extends Restaurant{
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
-	
+	int count = -1;
 	boolean open;
 	public YixinCashierRole Cashier;
 	public YixinHostRole Host;
@@ -35,18 +32,25 @@ public class YixinRestaurant extends Restaurant{
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
 		//TODO make a new customer that is initialized with a PersonAgent of person
-		return null;
+		count++;
+		if (count > 10){
+			count = 1;
+		}
+		return (new YixinCustomerRole(person, this, person.name(), count-1));
 	}
 
 	@Override
 	public Role generateWaiterRole() {
-		// TODO Auto-generated method stub
-		return null;
+		int i = (new Random()).nextInt(2);
+		if (i == 0)
+			return (new YixinNormalWaiterRole(null, this, ""));
+		else
+			return (new YixinSharedDataWaiterRole(null, this, ""));
 	}
 
 	@Override
 	public Role getHostRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return Host;
 	}
 }

@@ -21,14 +21,17 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	
 	public void cmdFinishAndLeave() {
 		role_state = RoleState.WantToLeave;
+		stateChanged();
 	}
 
 	public void msgPickOrder(CustomerOrder mc){
-		pickUpOrders.add(mc);
+		pickUpOrders.add(mc);		
+		stateChanged();
 	}
 
 	public void msgPickOrder(RestaurantOrder rc){
 		deliverOrders.add(rc);
+		stateChanged();
 	}
 
 	public boolean pickAndExecuteAnAction(){

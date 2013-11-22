@@ -5,7 +5,6 @@ import city.PersonAgent;
 import city.market.interfaces.MarketCashier;
 import city.market.interfaces.MarketCustomer;
 import city.restaurant.Restaurant;
-import city.restaurant.yixin.Menu.Food;
 import agent.Role;
 import utilities.EventLog;
 import utilities.LoggedEvent;
@@ -31,12 +30,13 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		inventory.put("Salad", new Good("Salad", 3, 1000));
 		inventory.put("Pizza", new Good("Pizza", 4, 1000));
 		inventory.put("Car", new Good("Car", 200, 100));
-		inventory.put("Meal", new Good("Meal", 6, 1000));		
+		inventory.put("Meal", new Good("Meal", 5, 1000));		
 	}
 	
 	@Override
 	public void cmdFinishAndLeave() {
 		role_state = RoleState.WantToLeave;
+		stateChanged();
 	}
 
 	//customer messages
@@ -50,10 +50,10 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		for (CustomerOrder customer : customers){
 			if(customer == mc){
 				customer.state = CustomerOrder.customerState.collected;
+				stateChanged();
 				return;
 			}
 		}
-		//person.stateChanged();
 	}
 
 	public void msgPay(MarketCustomer mc, double payment){
@@ -62,6 +62,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			if( customer.mc == mc){
 				customer.payment = payment;
 				customer.state = CustomerOrder.customerState.paid;
+				stateChanged();
 				return;
 			}
 		}
@@ -71,6 +72,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public void msgPlaceOrder(Restaurant r, List<Item> order){
 		log.add(new LoggedEvent("Received PlaceOrder from restaurant."));
 		restaurantOrders.add(new RestaurantOrder(r,order,RestaurantOrder.State.placedBill));
+		stateChanged();
 	}
 
 	public void msgHereIsPayment(Restaurant r, double payment){
@@ -79,15 +81,17 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			if( order.r == r){
 				order.payment = payment;
 				order.state = RestaurantOrder.State.paid;
+				stateChanged();
 				return;
 			}
 		}
 	}
 	
 	//bank messages
+	/*
 	public void msgSuccessTransaction(){
 		money_state = MoneyState.none;
-	}
+	}*/
 
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){

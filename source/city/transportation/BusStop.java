@@ -2,20 +2,20 @@ package city.transportation;
 
 import java.util.List;
 
-import agent.PersonAgent;
+import city.Place;
 
-public class BusStop {
-	List<PersonAgent> _waitList;
+public class BusStop extends Place {
+	List<CommuterRole> _waitList;
 	
-	public void addPerson(PersonAgent person){
+	public void addPerson(CommuterRole person){
 		_waitList.add(person);
 	}
 	
-	public void removePerson(PersonAgent person){
+	public void removePerson(CommuterRole person){
 		_waitList.remove(person);
 	}
 	
-	public List getList(BusAgent bus){
+	public List getList(){
 		return _waitList;
 	}
 }

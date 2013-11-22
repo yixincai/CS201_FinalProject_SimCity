@@ -3,15 +3,15 @@ package city.restaurant.yixin;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import agent.Role;
 import city.PersonAgent;
+import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.yixin.gui.YixinCustomerGui;
 import utilities.EventLog;
 
 /**
  * Restaurant customer agent.
  */
-public class YixinCustomerRole extends Role{// implements Customer{
+public class YixinCustomerRole extends RestaurantCustomerRole{// implements Customer{
 	public YixinRestaurant restaurant;
 	public EventLog log = new EventLog();
 	private String name;

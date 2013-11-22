@@ -1,17 +1,15 @@
 package city.restaurant.yixin;
 
-import agent.Role;
-
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import city.PersonAgent;
-import city.market.Item;
-import city.market.Market;
+import city.*;
+import city.market.*;
+import city.restaurant.*;
 import city.restaurant.yixin.gui.YixinCookGui;
 import utilities.EventLog;
 
-public class YixinCookRole extends Role {//implements Cook{
+public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	public YixinRestaurant restaurant;
 	public YixinCashierRole cashier;
 	
