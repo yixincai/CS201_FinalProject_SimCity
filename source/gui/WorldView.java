@@ -15,7 +15,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
-public class WorldView extends JPanel implements MouseListener 
+public class WorldView extends JPanel implements MouseListener, ActionListener 
 {
 	private static int WINDOWX = 1024 * 2 / 3;
 	private static int WINDOWY = 720 / 2;
@@ -24,7 +24,6 @@ public class WorldView extends JPanel implements MouseListener
 	
 	public WorldView()
 	{
-		
 		this.setPreferredSize(new Dimension(WINDOWX, WINDOWY));
 		this.setBorder(BorderFactory.createTitledBorder("World View"));
 		 buildings = new ArrayList<Building>();
@@ -35,8 +34,7 @@ public class WorldView extends JPanel implements MouseListener
                          buildings.add( b );
                  }
          }
-		 
-
+         
          addMouseListener( this );
 	}
 
@@ -50,6 +48,7 @@ public class WorldView extends JPanel implements MouseListener
 			Building b = buildings.get(i);
 		    g2.fill( b );
 		}
+		
 	}
 	
 	public ArrayList<Building> getBuildings() {
@@ -90,5 +89,12 @@ public class WorldView extends JPanel implements MouseListener
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		System.out.println("Road image clicked");
+		
+	
 	}
 }
