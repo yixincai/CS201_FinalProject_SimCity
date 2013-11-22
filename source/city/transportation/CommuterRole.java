@@ -101,7 +101,7 @@ public class CommuterRole extends Role {
 		if(_tState == travelState.atBusStop){
 			actAtBusStop();
 		}
-		if(_tState == travelState.busIsHere && _bus != null && _person.money >= _fare){
+		if(_tState == travelState.busIsHere && _bus != null && _person._money >= _fare){
 			actGetOnBus();
 		}
 		

@@ -34,7 +34,7 @@ public class PersonAgent extends Agent
 	HomeRole _homeRole;
 	
 	// State data:
-	private double _money;
+	public double _money;
 	enum WealthState { RICH, NORMAL, BROKE, POOR } // the word "deadbeat" courtesy of Wilczynski lol
 	boolean _deadbeat = false; // if true, means this person doesn't pay loans
 	enum NourishmentState { HUNGRY, FULL }

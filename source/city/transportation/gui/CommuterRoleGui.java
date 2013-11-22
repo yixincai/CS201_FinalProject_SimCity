@@ -19,22 +19,28 @@ public class CommuterRoleGui implements Gui {
 	enum transportUsed{walking, driving, ridingBus, none};
 	transportUsed tUsed = transportUsed.none;
 	
+	//Constructor
 	public CommuterRoleGui(CommuterRole commuter){
 		_commuter = commuter;
 	}
 	
+	//Walking gui
 	public void walkToLocation(Place destination){
 		tUsed = transportUsed.walking;
 	}
 	
+	//Bus gui
 	public void goToBusStop(BusStop busstop){
 		tUsed = transportUsed.ridingBus;
 	}
 	
+	//Car gui
 	public void goToCar(CarObject car, Place destination){
 		tUsed = transportUsed.driving;
 	}
 	
+	
+	//at destination message
 	public void atDestination(){
 		
 		_commuter.msgAtDestination(_destination);
