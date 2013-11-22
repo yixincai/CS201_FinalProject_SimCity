@@ -32,7 +32,6 @@ public class MockCashier extends Mock implements YixinCashier{
 
 	@Override
 	public void msgHereIsTheInvoice(Market m, List<Item> invoice) {
-		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("Invoice received"));
 	}
 }

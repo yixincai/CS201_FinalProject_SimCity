@@ -1,9 +1,9 @@
 package city.restaurant.yixin.test;
 
-import restaurant.CashierAgent;
-import restaurant.test.mock.*;
-
 import java.util.*;
+
+import city.restaurant.yixin.YixinCashierRole;
+import city.restaurant.yixin.test.mock.*;
 
 import junit.framework.*;
 

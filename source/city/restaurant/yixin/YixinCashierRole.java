@@ -1,17 +1,15 @@
 package city.restaurant.yixin;
 
-import agent.Role;
-
 import java.util.*;
 
 import utilities.EventLog;
 import utilities.LoggedEvent;
-import city.PersonAgent;
-import city.market.Item;
-import city.market.Market;
+import city.*;
+import city.market.*;
+import city.restaurant.RestaurantCashierRole;
 import city.restaurant.yixin.gui.YixinCashierGui;
 
-public class YixinCashierRole extends Role{// implements Cashier{
+public class YixinCashierRole extends RestaurantCashierRole{// implements Cashier{
 	public YixinRestaurant restaurant;
 	public EventLog log = new EventLog();
     private String name = "Cashier";
