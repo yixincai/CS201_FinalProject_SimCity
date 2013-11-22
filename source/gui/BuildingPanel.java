@@ -17,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import city.restaurant.yixin.gui.AnimationPanel;
+
 public class BuildingPanel extends JPanel implements ActionListener
 {
 	MainGui gui;
@@ -38,7 +40,7 @@ public class BuildingPanel extends JPanel implements ActionListener
 		buttonPanel.setBorder(BorderFactory.createTitledBorder("Building"));
 		JPanel view = new JPanel();
 		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
-		buttonPanel.add(new JLabel("TEST" + myName));
+		buttonPanel.add(new AnimationPanel());
 		this.add(buttonPanel, BorderLayout.CENTER);
 	}
 
