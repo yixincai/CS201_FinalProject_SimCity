@@ -210,6 +210,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	
 	public void LeaveMarket(){
 		gui.LeaveMarket();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	class Good {
@@ -228,12 +234,13 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			this.mc = mc;
 			this.state = state;
 			this.order = order;
+			this.orderFulfillment = new ArrayList<Item>();
 		}
-		MarketCustomer mc;
-		List<Item> order, orderFulfillment;
-		double bill, payment;
-		enum customerState{placedBill, collected, paid, none};
-		customerState state;
+		public MarketCustomer mc;
+		public List<Item> order, orderFulfillment;
+		public double bill, payment;
+		public enum customerState{placedBill, collected, paid, none};
+		public customerState state;
 	}
 
 	public static class RestaurantOrder {
@@ -241,6 +248,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			this.r = r;
 			this.state = state;
 			this.order = order;
+			this.orderFulfillment = new ArrayList<Item>();
 		}
 		Restaurant r;
 		List<Item> order, orderFulfillment;

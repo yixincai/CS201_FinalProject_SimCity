@@ -13,14 +13,25 @@ import java.util.ArrayList;
 public class AnimationPanel extends JPanel implements ActionListener {
     private final int TABLEX1 = 200;
     private final int TABLEX2 = 300;
+    private final int TABLEX3 = 100;
     private final int TABLEY = 150;
     private final int GAPX = 50;
     private final int GAPY = 50;
+    private final int ICON_X = 30;
+    private final int ICON_Y = 30;    
     private final int WINDOWX = 450;
     private final int WINDOWY = 350;
     private List<Gui> guis = new ArrayList<Gui>();
+    private ImageIcon ifridge = new ImageIcon("image/fridge.png");
+    private Image fridgeimage = ifridge.getImage();
+    private ImageIcon i2 = new ImageIcon("image/host.png");
+    private Image plateimage = i2.getImage();
+    private ImageIcon igrill = new ImageIcon("image/grill.jpg");
+    private Image grillimage = igrill.getImage();
+    private ImageIcon irevolving = new ImageIcon("image/revolvingStand.jpg");
+    private Image standimage = irevolving.getImage();
 
-    private int TABLEX3 = 100, TABLEY3 = 150;
+    
     public AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
@@ -42,10 +53,14 @@ public class AnimationPanel extends JPanel implements ActionListener {
 
         //Here is the table
         g2.setColor(Color.ORANGE);
-        g2.fillRect(TABLEX1, TABLEY, GAPX, GAPY);//200 and 250 need to be table params
-
+        g2.fillRect(TABLEX1, TABLEY, GAPX, GAPY);
         g2.fillRect(TABLEX2, TABLEY, GAPX, GAPY);
-        g2.fillRect(TABLEX3, TABLEY3, GAPX, GAPY);        
+        g2.fillRect(TABLEX3, TABLEY, GAPX, GAPY);
+        //here is the cooking area 
+    	g.drawImage(plateimage, 70, 250, ICON_X, ICON_Y, this);
+    	g.drawImage(standimage, 40, 250, ICON_X, ICON_Y, this);
+    	g.drawImage(grillimage, 200, 250, ICON_X, ICON_Y, this);
+    	g.drawImage(fridgeimage, 330, 250, ICON_X, ICON_Y, this);
         for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.updatePosition();
