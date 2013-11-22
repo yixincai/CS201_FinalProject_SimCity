@@ -23,8 +23,8 @@ public class BuildingPanel extends JPanel implements ActionListener
 	
 	Rectangle2D myRectangle;
     String myName;
-    JPanel infoPanel;
     
+    //View for the inside of a building
 	public BuildingPanel(MainGui mgui, Rectangle2D r, int i)
 	{
 		this.gui = mgui;
@@ -33,14 +33,6 @@ public class BuildingPanel extends JPanel implements ActionListener
 		
 		this.setLayout(new BorderLayout());
 		List<JButton> buildingList = new ArrayList<JButton>();
-		infoPanel = new JPanel();
-		infoPanel.setPreferredSize(new Dimension(1024/3, 720/2 - 15));
-		setBackground( Color.LIGHT_GRAY );
-		infoPanel.setBorder(BorderFactory.createTitledBorder("Current Building"));
-		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-		infoPanel.add(new JLabel("Building Name:")); //TODO Add getter for the current building's name
-		infoPanel.add(new JLabel("Bulding Money: ")); //TODO Add getter for the current building's money
-		this.add(infoPanel, BorderLayout.NORTH);
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
 		buttonPanel.setBorder(BorderFactory.createTitledBorder("Building"));
@@ -60,6 +52,19 @@ public class BuildingPanel extends JPanel implements ActionListener
 
     public void displayBuildingPanel() {
             gui.displayBuildingPanel( this ); 
+    }
+    
+    public JPanel showInfo(){
+    	JPanel infoPanel = new JPanel();
+		infoPanel.setPreferredSize(new Dimension(1024/3, 720/2 - 15));
+		setBackground( Color.LIGHT_GRAY );
+		infoPanel.setBorder(BorderFactory.createTitledBorder("Current Building"));
+		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+		infoPanel.add(new JLabel("Building Name:")); //TODO Add getter for the current building's name
+		infoPanel.add(new JLabel("Bulding Money: ")); //TODO Add getter for the current building's money
+		this.add(infoPanel, BorderLayout.NORTH);
+		
+		return infoPanel;
     }
     
     public String getName() {

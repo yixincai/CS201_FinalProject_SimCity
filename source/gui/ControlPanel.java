@@ -31,9 +31,9 @@ public class ControlPanel extends JTabbedPane {
 		this.addTab("New Person", null, newPersonPanel, "Create a new citizen of SimCity201.");
 		this.setPreferredSize(new Dimension(1024/3, 720));
 	}
-
-	public void displayCurrentBuildingInfo(BuildingPanel bp){
-		this.currentBuildingPanel = bp;
-		//set current building info
+	
+	public void displayCurrentBuildingInfo(BuildingPanel currentBuildingPanel){
+		this.currentBuildingPanel = currentBuildingPanel;
+		
 	}
 }
