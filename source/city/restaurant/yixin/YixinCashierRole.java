@@ -127,23 +127,19 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 				}
 			if (money_state == MoneyState.none){
 				if (money > 200 && bankDebt > 0){
-					//payLoan();
-					money_state = MoneyState.OrderedFromBank;
+					PayLoan();
 					return true;
 				}
 				else if (money > 200){
-					//deposit();
-					money_state = MoneyState.OrderedFromBank;
+					Deposit();
 					return true;
 				}
 				else if (money < 0 && bankBalance > 0){
-					//withdraw();
-					money_state = MoneyState.OrderedFromBank;
+					Withdraw();
 					return true;
 				}
 				else if (money < 0 && bankBalance <= 0){
-					//askForLoan();
-					money_state = MoneyState.OrderedFromBank;
+					AskForLoan();
 					return true;
 				}
 			}
@@ -159,7 +155,30 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	}
 
 	// Actions
-
+	//Bank
+	private void PayLoan(){
+		double amount = Math.min(money-150, bankDebt);
+		bankTeller.msgWiredTransaction(restaurant, account_number, amount, "Pay Loan");
+		money_state = MoneyState.OrderedFromBank;
+	}
+	
+	private void Withdraw(){
+		double amount = Math.min(50-money, bankBalance);
+		bankTeller.msgWiredTransaction(restaurant, account_number, amount, "Withdraw");
+		money_state = MoneyState.OrderedFromBank;		
+	}
+	
+	private void AskForLoan(){
+		bankTeller.msgWiredTransaction(restaurant, account_number, 50-money, "Withdraw Loan");
+		money_state = MoneyState.OrderedFromBank;
+	}
+	
+	private void Deposit(){
+		bankTeller.msgWiredTransaction(restaurant, account_number, money/2, "Deposit");
+		money_state = MoneyState.OrderedFromBank;
+	}
+	
+	//Customer Bill
 	private void computeBill(CustomerBill bill) {
 		print("The Bills is computed.");
 		bill.state = CustomerBill.BillState.None;
