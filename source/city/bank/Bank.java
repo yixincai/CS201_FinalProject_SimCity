@@ -25,22 +25,16 @@ public class Bank extends Place {
 		
 		BankHostRole host = new BankHostRole(null,this, tellers);
 	}
-	
-	//TODO Correct Bank Constructor
-	public Bank(String name) 
-	{
-		super(name);
-	}
 		
 	public void updateBankStatus(){
-		if (tellers.isEmpty() || host == null)
+		if (tellers.isEmpty() || !host.active)
 			open = false;
 		else
 			open = true;
 	}
 	
 	public BankCustomerRole generateCustomerRole(PersonAgent p){
-		return (new BankCustomerRole(p, p.accountNumber, this));
+		return (new BankCustomerRole(p, p.getAccountNumber(), this));
 	}
 	
 	public void addTeller(PersonAgent p){ //

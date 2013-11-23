@@ -18,7 +18,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public MarketCashierGui gui;
 	
 	public BankTellerRole bankTeller;
-	int accountNumber = -1;
 	
 	public EventLog log = new EventLog();
 	public Map<String, Good> inventory = new HashMap<String, Good>();
@@ -118,7 +117,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	
 	//bank messages
 	
-	public void msgTransactionComplete(double amount, Double balance, Double debt){
+	public void msgTransactionComplete(double amount, Double balance, Double debt, int newAccountNumber){
+		market.updateAccountNumber(newAccountNumber);
 		money_state = MoneyState.none;
 		moneyInHand -= amount;
 		moneyInBank = balance;
@@ -226,7 +226,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 	
 	public void DepositMoney(){
-		bankTeller.msgWiredTransaction(market, accountNumber, moneyInHand / 2, "Desposit");
+		bankTeller.msgWiredTransaction(market, market.getAccountNumber(), moneyInHand / 2, "Desposit");
 		money_state = MoneyState.OrderedFromBank;
 	}
 	

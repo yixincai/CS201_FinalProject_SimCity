@@ -43,6 +43,7 @@ public class PersonAgent extends Agent
 	private boolean _weekday_notWeekend;
 	private HomeRole _homeRole;
 	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house
+	private int bankAccountNumber = -1;
 	
 	// State data:
 	public double _money;
@@ -105,6 +106,8 @@ public class PersonAgent extends Agent
 	public PersonAgent(String name, double money, String initOccupation) {_name = name; _money = money; setOccupation(initOccupation);}
 	public String getName() { return _name; }
 	public double money() { return _money; }
+	public int getAccountNumber() { return bankAccountNumber; }
+	public void setAccountNumber(int newAccntNum) { this.bankAccountNumber = newAccntNum;} 
 	public void changeMoney(double delta) { _money += delta; }
 	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
 	public void setOccupation(String occupation) 
