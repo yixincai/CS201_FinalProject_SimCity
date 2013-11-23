@@ -48,7 +48,7 @@ public class BuildingInteriorAnimationPanel extends JPanel implements ActionList
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		
+
 	}
 
     public void displayBuildingPanel() {

@@ -83,7 +83,7 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	
 	public void setBuildingPanel(BuildingInteriorAnimationPanel bp){
 		this.currentBuildingPanel = bp;
-		//buildingName.setText("Building Name: " + bp.getName());
+		buildingName.setText("Building Name: " + bp.getName());
 	}
 
 	@Override
