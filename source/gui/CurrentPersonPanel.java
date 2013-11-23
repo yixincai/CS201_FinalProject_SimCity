@@ -62,6 +62,8 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		newPerson.addActionListener(this);
 		buildingList.add(newPerson);
 		view.add(newPerson);
+		this.updateInfo(newPerson);
+		newPerson.setSelected(true);
 		
 	}
 	
