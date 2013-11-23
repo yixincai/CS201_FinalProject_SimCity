@@ -9,4 +9,11 @@ import gui.BuildingInteriorAnimationPanel;
  */
 public abstract class Place {
 	
+	public Place(String name)
+	{
+		_name = name;
+	}
+	public String _name;
+	public String getName() { return _name; }
+	public void setName(String name) { _name = name; } 
 }

@@ -21,7 +21,7 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 {
 	JPanel view;
 	JPanel buttonPanel;
-	List<JButton> buildingList;
+	JPanel infoPanel;
 	JLabel nameField;
 	JLabel moneyField;
 	JLabel currentRoleField;
@@ -32,8 +32,7 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 	{
 		cPanel = cp;
 		this.setLayout(new BorderLayout());
-		buildingList = new ArrayList<JButton>();
-		JPanel infoPanel = new JPanel();
+		infoPanel = new JPanel();
 		infoPanel.setPreferredSize(new Dimension(1024/3, 720/2));
 		infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
@@ -64,11 +63,9 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		newPerson.setMinimumSize(new Dimension(paneSize.width, paneSize.height/10));
 		newPerson.setMaximumSize(new Dimension(paneSize.width, paneSize.height/10));
 		newPerson.addActionListener(this);
-		buildingList.add(newPerson);
 		view.add(newPerson);
 		this.updateInfo(newPerson);
 		newPerson.setSelected(true);
-		
 	}
 	
 	public void updateInfo(JButton selected)

@@ -21,6 +21,12 @@ public class Bank extends Place {
 		
 		BankHostRole host = new BankHostRole(null,this, tellers);
 	}
+	
+	//TODO Correct Bank Constructor
+	public Bank(String name) 
+	{
+		super(name);
+	}
 		
 	public void updateBankStatus(){
 		if (tellers.isEmpty() || host == null)

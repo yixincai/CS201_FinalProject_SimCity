@@ -13,8 +13,8 @@ public class Market extends Place{
 	public MarketEmployeeRole MarketEmployee;
 	public TruckAgent truck;
 	
-	public Market(){
-		super();
+	public Market(String name){
+		super(name);
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
 		truck = new TruckAgent(this);
