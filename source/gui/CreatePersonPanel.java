@@ -33,6 +33,7 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 								"Bank Teller", "Bank Host", "Market Cashier", "Market Employee"};
 	String[] shifts = {"Morning", "Afternoon", "Evening"};
 	JComboBox shiftBox = new JComboBox(shifts);
+	JLabel shiftLabel = new JLabel("Shift:");
 	JComboBox occupationBox = new JComboBox(occupations);
 	JLabel moneyField = new JLabel("$0.00");
 	JTextField nameField = new JTextField(15);
@@ -72,6 +73,8 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 		this.add(weekends);
 		this.add(weekdays);
 		this.add(workSchedule);
+		this.add(shiftBox);
+		this.add(shiftLabel);
 		//Position NameLabel
 		layout.putConstraint(SpringLayout.WEST, nameLabel, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, this);
@@ -103,6 +106,12 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 		//Position WorkSchedule Label
 		layout.putConstraint(SpringLayout.NORTH, workSchedule, 32, SpringLayout.SOUTH, occupationLabel);
 		layout.putConstraint(SpringLayout.WEST, workSchedule, 5, SpringLayout.WEST, this);
+		//Position Shift Label
+		layout.putConstraint(SpringLayout.NORTH, shiftLabel, 40, SpringLayout.SOUTH, workSchedule);
+		layout.putConstraint(SpringLayout.WEST, shiftLabel, 5, SpringLayout.WEST, this);
+		//Position Shift combo box
+		layout.putConstraint(SpringLayout.NORTH, shiftBox, 15, SpringLayout.SOUTH, weekdays);
+		layout.putConstraint(SpringLayout.EAST, shiftBox, -5, SpringLayout.EAST, this);
 		
 		
 		JButton addButton = new JButton("Add");
