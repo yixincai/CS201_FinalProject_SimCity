@@ -8,7 +8,7 @@ public class Order {
 	{None, NotCooked, Cooking, Cooked, Delivered};
 	public OrderState state = OrderState.None;
 
-	Order(YixinWaiterRole w, String choice, int tableNumber, OrderState state) {
+	public Order(YixinWaiterRole w, String choice, int tableNumber, OrderState state) {
 		this.choice = choice;
 		this.tableNumber = tableNumber;
 		this.w = w;
