@@ -17,14 +17,11 @@ public class CommuterRole extends Role implements Commuter{
 	public PersonAgent _person;
 	public Place _destination;
 	public Place _currentPlace;
+	BusStopObject _busStop;
 	CarObject _car = new CarObject();
 	BusAgent _bus;
 	int _fare;
 	CommuterGui gui = new CommuterGui(this, null);
-	
-	//Probably won't need -> not 100% sure though
-	enum CarState{noCar, hasCar, usingCar};
-	CarState _cState = CarState.noCar; 
 	
 	public enum TravelState{choosing, 
 		choseCar, driving, 
@@ -39,14 +36,30 @@ public class CommuterRole extends Role implements Commuter{
 	enum PrefTransport{none, legs, bus, car};
 	PrefTransport pTransport = PrefTransport.none;
 	
+	//Probably won't need -> not 100% sure though
+	enum CarState{noCar, hasCar, usingCar};
+	CarState _cState = CarState.noCar; 
 	
-	//----------------------------------------------Constructor----------------------------------------
+	
+	//----------------------------------------------CONSTRUCTOR & PROPERTIES----------------------------------------
 	public CommuterRole(PersonAgent person, Place place){
 		super(person);
 		_person = person;
 		_currentPlace = place;
+		_car = null;
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void setCar(CarObject car){_car = car;}
+	
+	public Place destination() { return _destination; }
+	public void setDestination(Place place) { _destination = place; }
+	
+	public Place currentPlace() { return _currentPlace; }
+
+	public Place place() { return currentPlace(); }
+	
+	public void setBusStop(BusStopObject busStop){_busStop = busStop;}
 	
 	//----------------------------------------------Command---------------------------------------------
 	
@@ -177,19 +190,15 @@ public class CommuterRole extends Role implements Commuter{
 	
 	//Bus
 	public void actGoToBusStop(){
-		BusStopObject busStop;
-
 		_tState = TravelState.goingToBusStop;
-		busStop = Directory.getNearestBusStop(_currentPlace);
-		gui.goToBusStop(busStop);
+		_busStop = Directory.getNearestBusStop(_currentPlace); //Unit Testing will skip this for now
+		gui.goToBusStop(_busStop);
 	}
 	public void actAtBusStop(){
-		BusStopObject busStop;
-
 		_tState = TravelState.waitingAtBusStop;
-		busStop = Directory.getNearestBusStop(_currentPlace);
+		_busStop = Directory.getNearestBusStop(_currentPlace);
 		
-		busStop.addPerson(this);
+		_busStop.addPerson(this);
 	}
 	public void actGetOnBus(){
 		_tState = TravelState.ridingBus;
@@ -240,15 +249,5 @@ public class CommuterRole extends Role implements Commuter{
 		
 		
 	}
-	
-	
-	//----------------------------------------------Setter----------------------------------------
-	public void setCar(CarObject car){_car = car;}
-	
-	public Place destination() { return _destination; }
-	public void setDestination(Place place) { _destination = place; }
-	
-	public Place currentPlace() { return _currentPlace; }
-	
 
 }

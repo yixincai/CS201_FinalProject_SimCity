@@ -1,5 +1,7 @@
 package city.restaurant.yixin;
 
+import gui.WorldViewBuilding;
+
 import java.util.*;
 
 import agent.Role;
@@ -16,7 +18,9 @@ public class YixinRestaurant extends Restaurant{
 	private YixinAnimationPanel _animationPanel;
 	
 	public YixinRestaurant(gui.BuildingInteriorAnimationPanel animationPanel, String name){
-		super(name);
+		super(name, null);}
+	public YixinRestaurant(gui.BuildingInteriorAnimationPanel animationPanel, WorldViewBuilding _worldViewBuilding){
+		super("Yixin's Restaurant", _worldViewBuilding);
 		this._animationPanel = (YixinAnimationPanel)animationPanel.getBuildingAnimation();
 		
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
@@ -31,8 +35,13 @@ public class YixinRestaurant extends Restaurant{
 		((YixinCookRole)Cook).cashier = (YixinCashierRole)Cashier;
 	}
 	
+<<<<<<< HEAD
 	public YixinRestaurant(String name){
 		super(name);		
+=======
+	public YixinRestaurant(){
+		super("Yixin's Restaurant", null);		
+>>>>>>> develop
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
 		Cashier = new YixinCashierRole(null,this);
 		Host = new YixinHostRole(null,this,"Host");
@@ -59,7 +68,7 @@ public class YixinRestaurant extends Restaurant{
 		if (count > 10){
 			count = 1;
 		}
-		return (new YixinCustomerRole(person, this, person.name(), count-1));
+		return (new YixinCustomerRole(person, this, person.getName(), count-1));
 	}
 
 	@Override
@@ -76,5 +85,4 @@ public class YixinRestaurant extends Restaurant{
 		return Host;
 	}
 	
-
 }

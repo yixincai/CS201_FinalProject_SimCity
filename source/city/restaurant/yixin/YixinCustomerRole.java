@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
+import city.Place;
 import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.yixin.gui.YixinCustomerGui;
 import utilities.EventLog;
@@ -442,6 +443,11 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 	public void cmdFinishAndLeave() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Place place() {
+		// TODO Auto-generated method stub
+		return restaurant;
 	}
 }
 
