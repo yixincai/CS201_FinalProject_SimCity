@@ -77,6 +77,7 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 			{
 				buildingName.setText("Building Name: " + Directory.places().get(i)._name);
 				buildingMoney.setText("Building Money: Need a money field in places");
+				tempPlace.getBuilding().displayBuilding();
 			}
 		}
 	}
@@ -90,7 +91,6 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e)
 	{
 		updateInfo((JButton)e.getSource());
-
 	}
 
 }

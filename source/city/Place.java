@@ -19,4 +19,5 @@ public abstract class Place {
 	public String getName() { return _name; }
 	public int xPosition() { return _worldViewBuilding.xPosition(); }
 	public int yPosition() { return _worldViewBuilding.yPosition(); }
+	public WorldViewBuilding getBuilding() {return _worldViewBuilding; }
 }
