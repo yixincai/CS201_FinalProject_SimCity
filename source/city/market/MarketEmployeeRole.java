@@ -11,9 +11,9 @@ import agent.Role;
 public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public MarketEmployeeGui gui;
 	
-	Market market;
-	List<CustomerOrder> pickUpOrders = new ArrayList<CustomerOrder>();
-	List<RestaurantOrder> deliverOrders = new ArrayList<RestaurantOrder>();
+	public Market market;
+	public List<CustomerOrder> pickUpOrders = new ArrayList<CustomerOrder>();
+	public List<RestaurantOrder> deliverOrders = new ArrayList<RestaurantOrder>();
 	enum RoleState{WantToLeave,none}
 	RoleState role_state = RoleState.none;
 	

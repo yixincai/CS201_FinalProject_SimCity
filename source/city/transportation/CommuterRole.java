@@ -6,7 +6,7 @@ import agent.Role;
 import city.Directory;
 import city.PersonAgent;
 import city.Place;
-import city.transportation.gui.CommuterRoleGui;
+import city.transportation.gui.CommuterGui;
 import city.transportation.interfaces.Commuter;
 
 /**
@@ -21,7 +21,7 @@ public class CommuterRole extends Role implements Commuter{
 	CarObject _car = new CarObject();
 	BusAgent _bus;
 	int _fare;
-	CommuterRoleGui gui = new CommuterRoleGui(this);
+	CommuterGui gui = new CommuterGui(this, null);
 	
 	public enum TravelState{choosing, 
 		choseCar, driving, 
@@ -41,7 +41,7 @@ public class CommuterRole extends Role implements Commuter{
 	CarState _cState = CarState.noCar; 
 	
 	
-	//----------------------------------------------Constructor----------------------------------------
+	//----------------------------------------------CONSTRUCTOR & PROPERTIES----------------------------------------
 	public CommuterRole(PersonAgent person, Place place){
 		super(person);
 		_person = person;
@@ -49,6 +49,17 @@ public class CommuterRole extends Role implements Commuter{
 		_car = null;
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void setCar(CarObject car){_car = car;}
+	
+	public Place destination() { return _destination; }
+	public void setDestination(Place place) { _destination = place; }
+	
+	public Place currentPlace() { return _currentPlace; }
+
+	public Place place() { return currentPlace(); }
+	
+	public void setBusStop(BusStopObject busStop){_busStop = busStop;}
 	
 	//----------------------------------------------Command---------------------------------------------
 	
@@ -238,16 +249,5 @@ public class CommuterRole extends Role implements Commuter{
 		
 		
 	}
-	
-	
-	//----------------------------------------------Setter----------------------------------------
-	public void setCar(CarObject car){_car = car;}
-	
-	public Place getDestination() { return _destination; }
-	public void setDestination(Place place) { _destination = place; }
-	
-	public Place currentPlace() { return _currentPlace; }
-	
-	public void setBusStop(BusStopObject busStop){_busStop = busStop;}
 
 }

@@ -15,6 +15,7 @@ public class Directory {
 	// Add location data for each place somehow.
 	
 	private static List<Place> _places = Collections.synchronizedList(new ArrayList<Place>());
+	private static List<PersonAgent> _personAgents = Collections.synchronizedList(new ArrayList<PersonAgent>());
 	
 	
 	
@@ -23,9 +24,12 @@ public class Directory {
 	public static List<Place> places()
 	{
 		List<Place> newList = new ArrayList<Place>();
-		for(Place p : _places)
+		synchronized(_places)
 		{
-			newList.add(p);
+			for(Place p : _places)
+			{
+				newList.add(p);
+			}
 		}
 		return newList;
 	}
@@ -33,9 +37,12 @@ public class Directory {
 	public static List<Place> markets()
 	{
 		List<Place> newList = new ArrayList<Place>();
-		for(Place p : _places)
+		synchronized(_places)
 		{
-			if(p instanceof Market) newList.add(p);
+			for(Place p : _places)
+			{
+				if(p instanceof Market) newList.add(p);
+			}
 		}
 		return newList;
 	}
@@ -43,9 +50,12 @@ public class Directory {
 	public static List<Place> restaurants()
 	{
 		List<Place> newList = new ArrayList<Place>();
-		for(Place p : _places)
+		synchronized(_places)
 		{
-			if(p instanceof Restaurant) newList.add(p);
+			for(Place p : _places)
+			{
+				if(p instanceof Restaurant) newList.add(p);
+			}
 		}
 		return newList;
 	}
@@ -53,9 +63,12 @@ public class Directory {
 	public static List<Place> banks()
 	{
 		List<Place> newList = new ArrayList<Place>();
-		for(Place p : _places)
+		synchronized(_places)
 		{
-			if(p instanceof Bank) newList.add(p);
+			for(Place p : _places)
+			{
+				if(p instanceof Bank) newList.add(p);
+			}
 		}
 		return newList;
 	}
@@ -63,20 +76,39 @@ public class Directory {
 	public static List<Place> apartmentBuildings()
 	{
 		List<Place> newList = new ArrayList<Place>();
-		for(Place p : _places)
+		synchronized(_places)
 		{
-			if(p instanceof ApartmentBuilding) newList.add(p);
+			for(Place p : _places)
+			{
+				if(p instanceof ApartmentBuilding) newList.add(p);
+			}
+		}
+		return newList;
+	}
+	
+	public static List<PersonAgent> personAgents()
+	{
+		List<PersonAgent> newList = new ArrayList<PersonAgent>();
+		synchronized(_personAgents)
+		{
+			for(PersonAgent p : _personAgents)
+			{
+				newList.add(p);
+			}
 		}
 		return newList;
 	}
 	
 	
 	
-	//TODO add accessor for the list; accessor will use a synchronized(_places) { } block
-	
 	public static void addPlace(Place place)
 	{
 		_places.add(place);
+	}
+	
+	public static void addPerson(PersonAgent personAgent)
+	{
+		_personAgents.add(personAgent);
 	}
 	
 	
@@ -87,7 +119,7 @@ public class Directory {
 		{
 			if(p instanceof BusStopObject)
 			{
-				
+				return (BusStopObject)p;
 			}
 		}
 		return null;

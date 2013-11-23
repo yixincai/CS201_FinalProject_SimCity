@@ -20,7 +20,7 @@ public class YixinCookGui extends JPanel implements Gui{
     private String food = "";
     private boolean show_food = false;
     
-	YixinCookGui(YixinCookRole c){
+	public YixinCookGui(YixinCookRole c){
 		this.agent = c;
 	}
 

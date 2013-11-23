@@ -1,7 +1,6 @@
 package city;
 
 import gui.WorldViewBuilding;
-import gui.BuildingInteriorAnimationPanel;
 
 /**
  * This class embodies a logical location; it could be a restaurant, a bank, a market, a house, an apartment building, a city park, etc.
@@ -9,4 +8,15 @@ import gui.BuildingInteriorAnimationPanel;
  */
 public abstract class Place {
 	
+	WorldViewBuilding _worldViewBuilding;
+	private String _name;
+	
+	// ------------------------------------ CONSTRUCTOR & PROPERTIES -----------------------------------
+	public Place(String name, WorldViewBuilding worldViewBuilding) {
+		_name = name;
+		_worldViewBuilding = worldViewBuilding;
+	}
+	public String getName() { return _name; }
+	public int xPosition() { return _worldViewBuilding.xPosition(); }
+	public int yPosition() { return _worldViewBuilding.yPosition(); }
 }

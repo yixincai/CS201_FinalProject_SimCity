@@ -8,20 +8,16 @@ package gui;
  * @author Tanner Zigrang
  */
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 
+import city.Directory;
 import city.PersonAgent;
+import city.transportation.CommuterRole;
+import city.transportation.gui.CommuterGui;
 
 public class ControlPanel extends JTabbedPane {
 	
@@ -29,7 +25,6 @@ public class ControlPanel extends JTabbedPane {
 	CurrentPersonPanel currentPersonPanel;
 	CurrentBuildingPanel currentBuildingPanel;
 	MainGui mainGui;
-	public List<PersonAgent> people = new ArrayList<PersonAgent>();
 	
 	public ControlPanel(MainGui mGui)
 	{
@@ -49,13 +44,17 @@ public class ControlPanel extends JTabbedPane {
 		this.setSelectedComponent(currentBuildingPanel);
 	}
 
-	public void addPerson(String name, double money, String occupation, boolean weekday_Notweekend, String shift) 
+	public void addPerson(String name, double money, String occupation, boolean weekday_notWeekend, String shift) 
 	{
 		
 		currentPersonPanel.addPerson(name);
 		PersonAgent newPerson = new PersonAgent(name, money, occupation);
-		newPerson.setShift(shift, weekday_Notweekend);
-		people.add(newPerson);
+		newPerson.setShift(shift, weekday_notWeekend);
+		CommuterRole newCommuterRole = new CommuterRole(newPerson, null);
+		newPerson.setCommuterRole(newCommuterRole);
+		CommuterGui newCommuterGui = new CommuterGui(newCommuterRole, null);
+		Directory.addPerson(newPerson);
+		mainGui.getWorldView().addGui(newCommuterGui);
 		this.setSelectedComponent(currentPersonPanel);
 		// TODO this is where we should actually create the new Person agent.  We should discuss how we want to handle the agents.
 	}
