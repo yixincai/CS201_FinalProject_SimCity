@@ -44,7 +44,7 @@ public class ControlPanel extends JTabbedPane {
 		this.setPreferredSize(new Dimension(1024/3, 720));
 	}
 	
-	public void updateBuildingInfo(BuildingAnimationPanel bp){
+	public void updateBuildingInfo(BuildingInteriorAnimationPanel bp){
 		currentBuildingPanel.setBuildingPanel(bp);
 		this.setSelectedComponent(currentBuildingPanel);
 	}

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import city.bank.Bank;
+import city.home.ApartmentBuilding;
 import city.market.Market;
 import city.restaurant.Restaurant;
 import city.transportation.BusStop;
@@ -58,7 +59,16 @@ public class Directory {
 		}
 		return newList;
 	}
-	//TODO add more accessors like these for House and ApartmentBuilding
+	/** Returns a list of places that are apartment buildings */
+	public static List<Place> apartmentBuildings()
+	{
+		List<Place> newList = new ArrayList<Place>();
+		for(Place p : _places)
+		{
+			if(p instanceof ApartmentBuilding) newList.add(p);
+		}
+		return newList;
+	}
 	
 	
 	

@@ -11,12 +11,12 @@ import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-public class BuildingWindow extends JPanel 
+public class BuildingCardLayoutPanel extends JPanel 
 {
 	private static final int PANELX = 1024 * 2 / 3;
 	private static final int PANELY = 720 / 2;
 	
-	public BuildingWindow()
+	public BuildingCardLayoutPanel()
 	{
 		CardLayout cardLayout = new CardLayout();
 		this.setLayout(cardLayout);

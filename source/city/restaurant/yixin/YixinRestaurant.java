@@ -5,6 +5,7 @@ import java.util.*;
 import agent.Role;
 import city.PersonAgent;
 import city.restaurant.*;
+import city.restaurant.yixin.gui.YixinAnimationPanel;
 
 public class YixinRestaurant extends Restaurant{
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
@@ -12,9 +13,13 @@ public class YixinRestaurant extends Restaurant{
 	boolean open;
 	public YixinHostRole Host;
 	public List<YixinWaiterRole> Waiters = new ArrayList<YixinWaiterRole>();
+	private YixinAnimationPanel _animationPanel;
 	
-	public YixinRestaurant(){
+	public YixinRestaurant(gui.BuildingInteriorAnimationPanel animationPanel){
 		super();
+		this._animationPanel = (YixinAnimationPanel)animationPanel.getBuildingAnimation();
+		
+		// The animation object for these will be instantiated when a person enters the building and takes the role.
 		Cashier = new YixinCashierRole(null,this);
 		Host = new YixinHostRole(null,this,"Host");
 		Cook = new YixinCookRole(null,this);
