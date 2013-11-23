@@ -3,7 +3,7 @@ package city.home;
 import city.PersonAgent;
 import agent.Role;
 
-public abstract class HomeRole extends Role
+public class HomeRole extends Role
 {
 	//private List<Food> _groceries;
 
@@ -53,6 +53,6 @@ public abstract class HomeRole extends Role
 	
 	
 	
-	public abstract boolean pickAndExecuteAnAction();
+	public boolean pickAndExecuteAnAction();
 	//TODO if cmdGoToBed, set wakeTime to 7
 }

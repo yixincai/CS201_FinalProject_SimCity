@@ -20,38 +20,37 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 	private static int WINDOWX = 1024 * 2 / 3;
 	private static int WINDOWY = 720 / 2;
 	
-	ArrayList<Building> buildings;
+	ArrayList<WorldViewBuilding> buildings;
 	
 	public WorldView()
 	{
 		this.setPreferredSize(new Dimension(WINDOWX, WINDOWY));
 		this.setBorder(BorderFactory.createTitledBorder("World View"));
-		 buildings = new ArrayList<Building>();
-
-         for ( int i=0; i<2; i++ ) {
-                 for ( int j=0; j<5; j++ ) {
-                         Building b = new Building( i*60 + 50, j*60 + 50, 30, 30 );
-                         buildings.add( b );
-                 }
-         }
+		 buildings = new ArrayList<WorldViewBuilding>();
          
          addMouseListener( this );
 	}
+	
+	public WorldViewBuilding addBuilding(int x, int y, int dim)
+	{
+		 WorldViewBuilding b = new WorldViewBuilding( x, y, dim );
+		 buildings.add( b );
+		 return b;
+	}
 
 	public void paintComponent( Graphics g ) {
-		System.out.println("hello1");
 		
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setColor( Color.black );
 		                        
 		for ( int i=0; i<buildings.size(); i++ ) {
-			Building b = buildings.get(i);
+			WorldViewBuilding b = buildings.get(i);
 		    g2.fill( b );
 		}
 		
 	}
 	
-	public ArrayList<Building> getBuildings() {
+	public ArrayList<WorldViewBuilding> getBuildings() {
 		return buildings;
 	}
 
@@ -60,7 +59,7 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		System.out.println("Mouse Clicked in WorldView");
 
         for ( int i=0; i<buildings.size(); i++ ) {
-                Building b = buildings.get(i);
+                WorldViewBuilding b = buildings.get(i);
                 if ( b.contains( e.getX(), e.getY() ) ) {
                         b.displayBuilding();
                 }

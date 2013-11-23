@@ -1,7 +1,7 @@
 package city;
 
-import gui.Building;
-import gui.BuildingAnimationPanel;
+import gui.WorldViewBuilding;
+import gui.BuildingInteriorAnimationPanel;
 
 /**
  * This class embodies a logical location; it could be a restaurant, a bank, a market, a house, an apartment building, a city park, etc.
@@ -9,13 +9,4 @@ import gui.BuildingAnimationPanel;
  */
 public abstract class Place {
 	
-	String type;
-	Building building;
-	BuildingAnimationPanel buildingPanel;
-	
-	public Place(String type, Building building, BuildingAnimationPanel buildingPanel){
-		this.type = type;
-		this.building = building;
-		this.buildingPanel = buildingPanel;
-	}
 }
