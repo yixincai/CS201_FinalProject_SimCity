@@ -1,5 +1,6 @@
 package city.bank;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -36,11 +37,22 @@ public class BankTellerRole extends Role implements BankTeller {
 		super(person);
 		this.bank = bank;
 		command = Command.None;
+		this.myBusinessCustomers = new ArrayList<MyBusinessCustomer>();
+		this.myCustomers = new ArrayList<MyCustomer>();		
+	}
+	
+	public void makeDatabase(){
+		database = new AccountDatabase();
 	}
 	
 	private static class AccountDatabase{
 	      Hashtable<Integer, Double> funds;
 	      Hashtable<Integer, Double> amountOwed;
+	      
+	      public AccountDatabase(){
+	    	  funds = new Hashtable();
+	    	  amountOwed = new Hashtable();
+	      }
 	//given Account Number, gets funds or amount owed
 	}
 	private class MyCustomer{

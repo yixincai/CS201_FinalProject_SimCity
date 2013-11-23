@@ -41,7 +41,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		inventory.put("Salad", new Good("Salad", 3, 1000));
 		inventory.put("Pizza", new Good("Pizza", 4, 1000));
 		inventory.put("Car", new Good("Car", 200, 100));
-		inventory.put("Meal", new Good("Meal", 5, 1000));		
+		inventory.put("Meal", new Good("Meal", 5, 1000));
+		moneyInHand = 50;
+	}
+	
+	public void setBankTeller(BankTellerRole b){
+		bankTeller = b;
 	}
 	
 	public void msgAnimationFinished() {

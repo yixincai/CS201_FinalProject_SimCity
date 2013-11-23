@@ -30,6 +30,20 @@ public class YixinRestaurant extends Restaurant{
         */
 		((YixinCookRole)Cook).cashier = (YixinCashierRole)Cashier;
 	}
+	
+	public YixinRestaurant(){
+		super();		
+		// The animation object for these will be instantiated when a person enters the building and takes the role.
+		Cashier = new YixinCashierRole(null,this);
+		Host = new YixinHostRole(null,this,"Host");
+		Cook = new YixinCookRole(null,this);
+        /*
+        Cook.addMarket(market1);
+        Cook.addMarket(market2);
+        Cook.addMarket(market3);
+        */
+		((YixinCookRole)Cook).cashier = (YixinCashierRole)Cashier;
+	}
 		
 	public void updateMarketStatus(){
 		if (Cashier == null || Host == null || Cook == null || Waiters.size()==0)
