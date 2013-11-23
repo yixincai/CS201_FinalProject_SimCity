@@ -83,8 +83,10 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 
 	public void msgHereIsTheInvoice(Market m, List<Item> invoice) {
 		for (MarketBill bill : marketBills){
-			if (bill.market == m)
+			if (bill.market == m){
 				bill.state = MarketBill.BillState.invoiceReceived;
+				bill.invoice = invoice;
+			}
 		}
 		stateChanged();		
 	}
@@ -207,7 +209,13 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	}
 
 	private void payMarketBill(MarketBill bill){
-		print("Paying Market Bill");
+		double amount = 0;
+		for (Item item : bill.invoice)
+			amount += (item.amount * bill.price_list.get(item.name));
+		if (Math.abs(bill.balance - amount) > 0.02)
+			print("Incorrect bill calculation by market");
+		else 
+			print("Correct bill calculation by market. Paying Market Bill");
 		if (money >= bill.balance){
 			money -= bill.balance;
 			print("Remaining money is " + money);
@@ -260,6 +268,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		enum BillState{none, invoiceReceived, changeReceived}
 		public BillState state;
 		public Map<String, Double> price_list;
+		public List<Item> invoice;
 		MarketBill(Market market, double money, Map<String, Double> price_list){
 			this.balance = money;
 			this.market = market;

@@ -36,7 +36,7 @@ public class PersonAgent extends Agent
 	private Role _currentRole; // this should never be null
 	private boolean _sentCmdFinishAndLeave = false;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
-	private CommuterRole _commuterRole = new CommuterRole(this, null); //TODO null should be the current Place
+	private CommuterRole _commuterRole = null;
 	private Role _occupation;
 	private double _occupationStartTime;
 	private double _occupationEndTime;
@@ -102,12 +102,12 @@ public class PersonAgent extends Agent
 	
 	// -------------------------------- CONSTRUCTORS & PROPERTIES ------------------------------------
 	public PersonAgent(String name) { _name = name; }
-	public PersonAgent(String name, double money, String initOccupation) 
-	{_name = name; _money = money; this.setOccupation(initOccupation);}
+	public PersonAgent(String name, double money, String initOccupation) {_name = name; _money = money; setOccupation(initOccupation);}
 	// public PersonAgent(String name, Role r) { _name = name; ... }
 	public String name() { return _name; }
 	public double money() { return _money; }
 	public void changeMoney(double delta) { _money += delta; }
+	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
 	public void setOccupation(String occupation) 
 	{
 		/*switch(occupation)

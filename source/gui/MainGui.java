@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -26,6 +27,8 @@ public class MainGui extends JFrame
 	
      BuildingCardLayoutPanel _buildingCardLayoutPanel;
      ControlPanel cPanel;
+     
+     List<BuildingInteriorAnimationPanel> _buildingInteriorAnimationPanels = new ArrayList<BuildingInteriorAnimationPanel>();
      
      WorldView _worldView;
 	/**
@@ -63,6 +66,7 @@ public class MainGui extends JFrame
 		YixinRestaurant yr = new YixinRestaurant(bp);
 		Directory.addPlace(yr);
         _buildingCardLayoutPanel.add( bp, bp.getName() );
+        _buildingInteriorAnimationPanels.add(bp);
         
         
         /*
