@@ -21,7 +21,8 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	//The four booleans below are for Gui purposes, they have NOTHING to do with agent design
 	boolean breakRequest = false, backRequest = false;//Two booleans from gui to tell whether to go on break or to 
 	boolean	OnBreak = false, breakEnabled = true; //Two booleans to tell gui what to show and whether to enable
-
+	enum RoleState{WantToLeave,none}
+	RoleState role_state = RoleState.none;
 	private String name;
 
 	public YixinWaiterRole(PersonAgent p, YixinRestaurant r, String name) {
@@ -233,6 +234,11 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 					return true;
 				}
 			}
+			if (customers.size() == 0 && role_state == RoleState.WantToLeave){
+				LeaveRestaurant();
+				role_state = RoleState.none;
+				return true;
+			}
 		}
 		catch(ConcurrentModificationException e){
 			return false;
@@ -366,6 +372,16 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void LeaveRestaurant(){
+		waiterGui.LeaveRestaurant();
+		try{
+			atTable.acquire();
+		}
+		catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

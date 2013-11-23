@@ -23,7 +23,9 @@ public class YixinHostRole extends Role {//implements Host{
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>()); 
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
-
+	enum RoleState{WantToLeave,none}
+	RoleState role_state = RoleState.none;
+	
 	private String name;
 	int waiterNumber = 0;
 
@@ -167,6 +169,11 @@ public class YixinHostRole extends Role {//implements Host{
 					}
 				}
 			}
+			if (waitingCustomers.size() == 0 && role_state == RoleState.WantToLeave){
+				LeaveRestaurant();
+				role_state = RoleState.none;
+				return true;
+			}
 		}
 		catch(ConcurrentModificationException e){
 			return false;
@@ -188,6 +195,10 @@ public class YixinHostRole extends Role {//implements Host{
 		print("Telling waiter " + waiterNumber + " " + waiters.get(waiterNumber).w + " to seat customer");
 		waiters.get(waiterNumber).w.msgSitAtTable(customer, table.tableNumber, count);
 		table.setOccupant(customer);
+	}
+	
+	public void LeaveRestaurant(){
+		hostGui.LeaveRestaurant();
 	}
 
 	//utilities
@@ -251,8 +262,8 @@ public class YixinHostRole extends Role {//implements Host{
 
 	@Override
 	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-		
+		role_state = RoleState.WantToLeave;
+		stateChanged();		
 	}
 }
 

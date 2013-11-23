@@ -20,8 +20,8 @@ public class YixinSharedDataWaiterRole extends YixinWaiterRole{
 
 	@Override
 	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-		
+		role_state = RoleState.WantToLeave;
+		stateChanged();		
 	}
 }
 

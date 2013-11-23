@@ -25,6 +25,8 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	public int account_number;
 	enum MoneyState{OrderedFromBank, none}
 	MoneyState money_state = MoneyState.none;
+	enum RoleState{WantToLeave,none}
+	RoleState role_state = RoleState.none;
 
 	public YixinCashierRole(PersonAgent p, YixinRestaurant r) {
 		super(p);
@@ -143,6 +145,11 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 					return true;
 				}
 			}
+			if (marketBills.size() == 0 && bills.size() == 0 && role_state == RoleState.WantToLeave){
+				LeaveRestaurant();
+				role_state = RoleState.none;
+				return true;
+			}
 		}
 		catch(ConcurrentModificationException e){
 			return false;
@@ -214,6 +221,16 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			print("Do not have enough money with " + bill.balance +" debt");
 		}
 	}
+	
+	public void LeaveRestaurant(){
+		cashierGui.LeaveRestaurant();
+		/*try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}*/
+	}
 
 	//utilities
 
@@ -253,7 +270,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 
 	@Override
 	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-
+		role_state = RoleState.WantToLeave;
+		stateChanged();
 	}
 }

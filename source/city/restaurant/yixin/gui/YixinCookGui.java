@@ -65,6 +65,12 @@ public class YixinCookGui extends JPanel implements Gui{
     	xDestination = xCooking;
 	}
 	
+    public void LeaveRestaurant(){
+    	xDestination = 0;
+    	yDestination = 0;
+        command = Command.GoToSeat;
+    }
+	
     public void updatePosition() {
         if (xPos < xDestination)
             xPos++;

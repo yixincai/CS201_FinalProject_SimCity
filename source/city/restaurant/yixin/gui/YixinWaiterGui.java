@@ -125,6 +125,12 @@ public class YixinWaiterGui extends JPanel implements Gui {
 		yDestination = count*30+15 + yGap;
         command = Command.GoToSeat;
     }
+    
+    public void LeaveRestaurant(){
+    	xDestination = 0;
+    	yDestination = 0;
+        command = Command.GoToSeat;
+    }
 
     public int getXPos() {
         return xPos;
