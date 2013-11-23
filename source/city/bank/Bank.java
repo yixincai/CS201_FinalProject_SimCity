@@ -1,6 +1,6 @@
 package city.bank;
 import gui.Building;
-import gui.BuildingPanel;
+import gui.BuildingAnimationPanel;
 
 import java.util.*;
 

@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 
 public class CurrentBuildingPanel extends JPanel implements ActionListener {
 		
-	BuildingPanel currentBuildingPanel = null;
+	BuildingAnimationPanel currentBuildingPanel = null;
 	JPanel infoPanel;
 	JLabel buildingName = new JLabel("Building Name: ");
 	JLabel buildingMoney = new JLabel("Building Money: ");
@@ -46,7 +46,7 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 			this.add(buttonPanel, BorderLayout.CENTER);
 	}
 	
-	public void setBuildingPanel(BuildingPanel bp){
+	public void setBuildingPanel(BuildingAnimationPanel bp){
 		this.currentBuildingPanel = bp;
 		buildingName.setText("Building Name: " + bp.getName());
 	}

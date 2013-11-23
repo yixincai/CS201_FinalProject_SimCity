@@ -54,7 +54,7 @@ public class MainGui extends JFrame
         ArrayList<Building> buildings = worldView.getBuildings();
         for ( int i=0; i<buildings.size(); i++ ) {
                 Building b = buildings.get(i);
-                BuildingPanel bp = new BuildingPanel(this,b,i);
+                BuildingAnimationPanel bp = new BuildingAnimationPanel(this,b,i);
                 b.setBuildingPanel( bp );
                 buildingWindow.add( bp, "Building " + i );
         }
@@ -67,7 +67,7 @@ public class MainGui extends JFrame
 	
 	}
 	
-	 public void displayBuildingPanel(BuildingPanel bp ) {
+	 public void displayBuildingPanel(BuildingAnimationPanel bp ) {
          System.out.println( bp.getName() );
          ((CardLayout) buildingWindow.getLayout()).show(buildingWindow, bp.getName());
          cPanel.updateBuildingInfo(bp);
