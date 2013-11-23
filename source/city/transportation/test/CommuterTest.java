@@ -21,8 +21,7 @@ public class CommuterTest extends TestCase{
 		/*person = new PersonAgent("Person 1"); //WHY PERSONAGENT NO WORK?
 		person.changeMoney(100);*/
 		commuter = new CommuterRole(null, null);
-		
-		busStop = new BusStopObject();
+		busStop = new BusStopObject("bus stop", null);
 		mockBus = new MockBus("MockBus");
 		mockBus.setFare(1);
 	}
@@ -61,7 +60,7 @@ public class CommuterTest extends TestCase{
 		assertFalse("Scheduler returns false", commuter.pickAndExecuteAnAction());
 		
 		commuter.msgAtBusStop(busStop); //Sent by gui
-		
+		commuter.setBusStop(busStop); //IMPORTANT - Recheck getting the busstop methods
 		assertTrue("Scheduler returns true", commuter.pickAndExecuteAnAction()); 
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.goingToBusStop);
 		
