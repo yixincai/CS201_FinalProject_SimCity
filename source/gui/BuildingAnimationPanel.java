@@ -17,30 +17,32 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class BuildingPanel extends JPanel implements ActionListener
+import city.restaurant.yixin.gui.AnimationPanel;
+
+@SuppressWarnings("serial")
+public class BuildingAnimationPanel extends JPanel implements ActionListener
 {
+	
+	private static final int PANELX = 1024 * 2 /3;
+	private static final int PANELY = 720 / 2;
 	MainGui gui;
 	
 	Rectangle2D myRectangle;
     String myName;
     
     //View for the inside of a building
-	public BuildingPanel(MainGui mgui, Rectangle2D r, int i)
+	public BuildingAnimationPanel(MainGui mgui, Rectangle2D r, int i)
 	{
 		this.gui = mgui;
 		this.myName = "Building " + i;
 		this.myRectangle = r;
-		
+		this.setPreferredSize(new Dimension(PANELX, PANELY));
 		this.setLayout(new BorderLayout());
-		List<JButton> buildingList = new ArrayList<JButton>();
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
-		buttonPanel.setBorder(BorderFactory.createTitledBorder("Building"));
 		JPanel view = new JPanel();
 		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
-		JScrollPane buildingButtons = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		buildingButtons.setViewportView(view);
-		buttonPanel.add(buildingButtons, BorderLayout.CENTER);
+		buttonPanel.add(new AnimationPanel(i));
 		this.add(buttonPanel, BorderLayout.CENTER);
 	}
 
@@ -56,6 +58,6 @@ public class BuildingPanel extends JPanel implements ActionListener
     
     public String getName() {
         return myName;
-}
+    }	
 
 }

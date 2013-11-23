@@ -11,23 +11,27 @@ import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCookRole;
 import city.restaurant.yixin.YixinCookRole;
 import city.transportation.gui.BusAgentGui;
+import city.transportation.gui.TruckAgentGui;
 import city.market.Item;
 
 public class TruckAgent {
 	List<Package> packages;
 	Semaphore isMoving;
 	Market _market;
-	BusAgentGui gui;
+	TruckAgentGui gui;
 	Boolean out = false;
-
-	enum packageState{inTruck, delivering, unloaded, done};
+	
+	enum truckState{parkingLot, docking, drivingtoRestaurant, atRestaurant, drivingtoMarket};
+	truckState trState = truckState.parkingLot;
+	
+	enum packageState{atMarket, inTruck, delivering, unloaded, done};
 
 	class Package{
 	    List<Item> _items;
 	    Restaurant _restaurant;
 	    int orderId;
 	    double bill;
-	    packageState pState = packageState.inTruck;
+	    packageState pState = packageState.atMarket;
 	    
 	    Package(List<Item> items, Restaurant restaurant){
 	    	_items=items;
@@ -37,12 +41,12 @@ public class TruckAgent {
 	}
 	
 	//Constructor
-	TruckAgent(Market market){
+	public TruckAgent(Market market){
 		_market = market;
 	}
 	
 	//----------------------------------------------Messages------------------------------------------
-	public void msgHereAreGoodsForDelivery(List<Item> items, Restaurant restaurant){
+	public void msgDeliverToCook(List<Item> items, Restaurant restaurant){
 	    packages.add(new Package(items, restaurant));
 	}
 	
@@ -64,16 +68,18 @@ public class TruckAgent {
 	//----------------------------------------------Scheduler------------------------------------------
 	public boolean pickAndExecuteAnAction(){
 		for(Package temp: packages){
-			if(temp.pState == packageState.unloaded){
-				RemoveFromList(temp);
-				return true;
-			}
-			
-			if(temp.pState == packageState.inTruck){
+			if(temp.pState == packageState.inTruck && trState == truckState.docking){
 				DeliverToDestination(temp);
 				return true;
 			}
-			
+			if(temp.pState == packageState.atMarket && trState == truckState.parkingLot){
+				PickFromDock(temp);
+				return true;
+			}
+			if(temp.pState == packageState.atMarket && trState == truckState.atRestaurant){
+				PickFromDock(temp);
+				return true;
+			}
 		}
 		
 		if(packages.isEmpty() && out == true){
@@ -85,15 +91,22 @@ public class TruckAgent {
 	}
 	
 	//----------------------------------------------Actions------------------------------------------
-	public void DeliverToDestination(Package aPackage){
+	public void PickFromDock(Package aPackage){
+		trState = truckState.docking;
 		out = true;
-		aPackage.pState = packageState.delivering;
+		gui.goToDock();
+		isMoving.acquire();
+		_market.();
+		aPackage.pState = packageState.inTruck;
+		
+	}
+	
+	public void DeliverToDestination(Package aPackage){
+		trState = truckState.drivingtoRestaurant;
 		gui.goToDestination(aPackage._restaurant);
 		isMoving.acquire();
-		aPackage._restaurant.Cook.msgOrderFulfillment(_market, aPackage._items);
-	}
-
-	public void RemoveFromList(Package aPackage){
+		aPackage._restaurant.Cook.msgOrderFulfillment(_market, aPackage._items); //Make sure GUI shows that it's dropped off !important!
+		trState = truckState.atRestaurant;
 		packages.remove(aPackage);
 	}
 
