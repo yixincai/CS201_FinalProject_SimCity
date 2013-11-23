@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import city.Directory;
 import city.PersonAgent;
 
 public class CurrentPersonPanel extends JPanel implements ActionListener
@@ -33,6 +34,7 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		cPanel = cp;
 		this.setLayout(new BorderLayout());
 		infoPanel = new JPanel();
+		JPanel infoPanel = new JPanel();
 		infoPanel.setPreferredSize(new Dimension(1024/3, 720/2));
 		infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
@@ -56,30 +58,30 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 
 	public void addPerson(String name)
 	{
-		JButton newPerson = new JButton(name);
-		newPerson.setBackground(Color.white);
+		JButton newPersonButton = new JButton(name);
+		newPersonButton.setBackground(Color.white);
 		Dimension paneSize = peopleButtons.getSize();
-		newPerson.setPreferredSize(new Dimension(paneSize.width, paneSize.height/10));
-		newPerson.setMinimumSize(new Dimension(paneSize.width, paneSize.height/10));
-		newPerson.setMaximumSize(new Dimension(paneSize.width, paneSize.height/10));
-		newPerson.addActionListener(this);
-		view.add(newPerson);
-		this.updateInfo(newPerson);
-		newPerson.setSelected(true);
+		newPersonButton.setPreferredSize(new Dimension(paneSize.width, paneSize.height/10));
+		newPersonButton.setMinimumSize(new Dimension(paneSize.width, paneSize.height/10));
+		newPersonButton.setMaximumSize(new Dimension(paneSize.width, paneSize.height/10));
+		newPersonButton.addActionListener(this);
+		// personButtonList.add(newPersonButton);
+		view.add(newPersonButton);
+		this.updateInfo(newPersonButton);
+		newPersonButton.setSelected(true);
 	}
 	
 	public void updateInfo(JButton selected)
 	{
 		//TODO we will need to actually display the relevant information to the agent, not just the name
 		//nameField.setText("Person Name: " + selected.getText());
-		for(int i = 0; i < cPanel.people.size(); i++)
+		for(PersonAgent tempPerson : Directory.personAgents())
 		{
-			PersonAgent tempPerson = cPanel.people.get(i);
 			if(tempPerson.name() == selected.getText())
 			{
 				nameField.setText("Person Name: " + tempPerson.name());
 				moneyField.setText("Person Money: " + tempPerson.money() + "0");
-				currentRoleField.setText("Need to implement toString() for the different roles.");
+				currentRoleField.setText("Current Role: Need to implement toString() for the different roles.");
 			}
 		}
 	}
@@ -87,6 +89,8 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		// note: this method is called when you click a button in the list of people.
+		
 		updateInfo((JButton) e.getSource());
 	}
 

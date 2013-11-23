@@ -6,12 +6,13 @@ import agent.Role;
 import city.Directory;
 import city.PersonAgent;
 import city.Place;
-import city.transportation.gui.CommuterRoleGui;
+import city.transportation.gui.CommuterGui;
+import city.transportation.interfaces.Commuter;
 
 /**
  * There is one CommuterRole per person, and the CommuterRole is the one that 
  */
-public class CommuterRole extends Role {
+public class CommuterRole extends Role implements Commuter{
 	// This is set by PersonAgent, and it is CommuterRole's responsibility to get to that location, then set its active to false.
 	public PersonAgent _person;
 	public Place _destination;
@@ -19,20 +20,25 @@ public class CommuterRole extends Role {
 	CarObject _car = new CarObject();
 	BusAgent _bus;
 	int _fare;
-	CommuterRoleGui gui = new CommuterRoleGui(this);
+	CommuterGui gui = new CommuterGui(this, null);
 	
 	//Probably won't need -> not 100% sure though
-	enum carState{noCar, hasCar, usingCar};
-	carState _cState = carState.noCar; 
+	enum CarState{noCar, hasCar, usingCar};
+	CarState _cState = CarState.noCar; 
 	
-	enum travelState{choosing, 
+	public enum TravelState{choosing, 
 		choseCar, driving, 
 		choseWalking, walking, 
 		choseBus, goingToBusStop, atBusStop, waitingAtBusStop, busIsHere, ridingBus, busIsAtDestination, gettingOffBus,
 			atDestination, done, none};
-	travelState _tState = travelState.done;
+	public TravelState _tState = TravelState.none;
 	
 	Random _generator = new Random();
+	
+	//Transportation Hacks
+	enum PrefTransport{none, legs, bus, car};
+	PrefTransport pTransport = PrefTransport.none;
+	
 	
 	//----------------------------------------------Constructor----------------------------------------
 	public CommuterRole(PersonAgent person, Place place){
@@ -46,78 +52,78 @@ public class CommuterRole extends Role {
 	
 	//----------------------------------------------Messages------------------------------------------
 	public void msgGoToDestination(Place place){ //Command to go to destination
-		_tState = travelState.atBusStop;
+		_tState = TravelState.choosing;
 		_destination = place;
 	}
 	
 	//Bus Transportation messages
-	public void msgAtBusStop(BusStop busstop){ //GUI message
-		_tState = travelState.atBusStop;
+	public void msgAtBusStop(BusStopObject busstop){ //GUI message
+		_tState = TravelState.atBusStop;
 		_currentPlace = busstop;
 	}
 	public void msgGetOnBus(int fare, BusAgent bus){
-		_tState = travelState.busIsHere;
+		_tState = TravelState.busIsHere;
 		_bus = bus;
 		_fare = fare;
 	}
 	public void msgGetOffBus(Place place){
-		_tState = travelState.busIsAtDestination;
+		_tState = TravelState.busIsAtDestination;
 		_currentPlace = place;
 	}
 	
 	//Msg At Destination from GUI
 	public void msgAtDestination(Place place){
-		_tState = travelState.atDestination;
+		_tState = TravelState.atDestination;
 		_currentPlace = place;
 	}
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
 		//At Destination
-		if(_destination == _currentPlace && _tState == travelState.atDestination){
+		if(_destination == _currentPlace && _tState == TravelState.atDestination){
 			actAtDestination();
 			return true;
 		}
-		if(_destination != _currentPlace && _tState == travelState.atDestination){
+		if(_destination != _currentPlace && _tState == TravelState.atDestination){
 			actChooseTransportation();
 			return true;
 		}
 		
 		//Choosing
-		if(_tState == travelState.choosing){
+		if(_tState == TravelState.choosing){
 			actChooseTransportation();
 			return true;
 		}
 		
 		//Walking
-		if(_tState == travelState.choseWalking){
+		if(_tState == TravelState.choseWalking){
 			actWalking();
 			return true;
 		}
 		
 		//Riding Bus
-		if(_tState == travelState.choseBus){
+		if(_tState == TravelState.choseBus){
 			actGoToBusStop();
 			return true;
 		}
-		if(_tState == travelState.atBusStop){
+		if(_tState == TravelState.atBusStop){
 			actAtBusStop();
 			return true;
 		}
-		if(_tState == travelState.busIsHere && _bus != null && _person._money >= _fare){
+		if(_tState == TravelState.busIsHere && _bus != null && _person._money >= _fare){
 			actGetOnBus();
 			return true;
 		}
-		if(_tState == travelState.busIsHere && _bus != null && _person._money <= _fare){
+		if(_tState == TravelState.busIsHere && _bus != null && _person._money <= _fare){
 			actChooseNewTransportation();
 			return true;
 		}
-		if(_tState == travelState.busIsAtDestination){
+		if(_tState == TravelState.busIsAtDestination){
 			actGetOffBus();
 			return true;
 		}
 		
 		//Driving
-		if(_tState == travelState.choseCar){
+		if(_tState == TravelState.choseCar){
 			actDriving();
 			return true;
 		}
@@ -133,56 +139,66 @@ public class CommuterRole extends Role {
 		int choice = 0;
 		
 		if(_car == null){
-			choice = _generator.nextInt(3);
+			choice = _generator.nextInt(2);
+			if(pTransport == PrefTransport.legs){
+				choice = 0;
+			}
+			else if(pTransport == PrefTransport.bus){
+				choice = 1;
+			}
 		}
 		else if(_car != null){
-			choice = _generator.nextInt(2);
+			choice = _generator.nextInt(3);
+			if(pTransport == PrefTransport.car){
+				choice = 2;
+			}
 		}
 		
 		if(choice == 0){
-			_tState = travelState.choseWalking;
+			_tState = TravelState.choseWalking;
 		}
 		if(choice == 1){
-			_tState = travelState.choseBus;
+			_tState = TravelState.choseBus;
 		}
 		if(choice == 2){
-			_tState = travelState.choseCar;
-		}	
+			_tState = TravelState.choseCar;
+		}
+
 	}
 	public void actChooseNewTransportation(){ //Choosing when previous form of transportation doesn't work (Mostly for bus)
-		_tState = travelState.none;
+		_tState = TravelState.none;
 	}
 	
 	//Walking
 	public void actWalking(){
-		_tState = travelState.walking;
+		_tState = TravelState.walking;
 		gui.walkToLocation(_destination);
 	}
 	
 	//Bus
 	public void actGoToBusStop(){
-		BusStop busStop;
+		BusStopObject busStop;
 
-		_tState = travelState.goingToBusStop;
+		_tState = TravelState.goingToBusStop;
 		busStop = Directory.getNearestBusStop(_currentPlace);
 		gui.goToBusStop(busStop);
 	}
 	public void actAtBusStop(){
-		BusStop busStop;
+		BusStopObject busStop;
 
-		_tState = travelState.waitingAtBusStop;
+		_tState = TravelState.waitingAtBusStop;
 		busStop = Directory.getNearestBusStop(_currentPlace);
 		
 		busStop.addPerson(this);
 	}
 	public void actGetOnBus(){
-		_tState = travelState.ridingBus;
+		_tState = TravelState.ridingBus;
 		_person._money -= _fare;
 		gui.getOnBus();
 		_bus.msgGettingOnBoard(this, _destination, _fare);
 	}
 	public void actGetOffBus(){
-		_tState = travelState.gettingOffBus;
+		_tState = TravelState.gettingOffBus;
 		gui.getOffBus();
 		_bus.msgGotOff(this);
 		_bus = null;
@@ -191,12 +207,12 @@ public class CommuterRole extends Role {
 
 	//Driving
 	public void actDriving(){
-		_tState = travelState.driving;
+		_tState = TravelState.driving;
 		gui.goToCar(_car, _destination);
 	}
 	
 	public void actAtDestination(){
-		_tState = travelState.done;
+		_tState = TravelState.done;
 	}
 	
 	@Override
@@ -206,6 +222,25 @@ public class CommuterRole extends Role {
 		active = false;
 		
 	}
+	
+	//----------------------------------------------Hacks----------------------------------------
+	public void chooseTransportation(int choice){
+		if(choice == 0){
+			pTransport = PrefTransport.legs;
+		}
+		else if(choice == 1){
+			pTransport = PrefTransport.bus;
+		}
+		else if(choice == 2){
+			pTransport = PrefTransport.car;
+		}
+		else{
+			pTransport = PrefTransport.none;
+		}
+		
+		
+	}
+	
 	
 	//----------------------------------------------Setter----------------------------------------
 	public void setCar(CarObject car){_car = car;}

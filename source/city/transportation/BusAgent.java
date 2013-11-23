@@ -5,19 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import agent.Agent;
 import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.BusAgentGui;
+import city.transportation.interfaces.Bus;
 
-public class BusAgent {
+public class BusAgent extends Agent implements Bus{
+	String _name;
+	
 	List<MyCommuter> passengers = new ArrayList<MyCommuter>();
 	BusAgentGui _gui = new BusAgentGui();
 	
-	BusStop currentDestination;
+	BusStopObject currentDestination;
 	List<CommuterRole> currentBusStopList = new ArrayList<CommuterRole>();
 	
-	static int fare;
-	int register;
+	static int _fare;
+	int _register;
 
 	static int capacity;
 	int numPeople = 0;
@@ -39,12 +43,18 @@ public class BusAgent {
 	    }
 	}
 	
-	public BusAgent(){
-		
+	public BusAgent(String name, int fare){
+		_name = name;
+		_fare = fare;
+	}
+	
+	public BusAgent(String name){
+		_name = name;
+		_fare = 1;
 	}
 	
 	//----------------------------------------------Messages----------------------------------------
-	public void msgAtDestination(BusStop busstop){
+	public void msgAtDestination(BusStopObject busstop){
 	    currentDestination = busstop;
 	    
 	    bState = BusState.atDestination;
@@ -55,8 +65,9 @@ public class BusAgent {
 	    numPeople--;
 	}
 
-	public void msgGettingOnBoard(CommuterRole person, Place destination, int payment){
+	public void msgGettingOnBoard(CommuterRole person, Place destination, int payment){ //Check if payment is correct?
 	    passengers.add(new MyCommuter(person, destination));
+	    _register += payment;
 	    numPeople++; //Fix this
 	}
 	
@@ -97,7 +108,7 @@ public class BusAgent {
 		bState = BusState.pickingup;
 	    while(expectedPeople <= capacity){
 	    	for(CommuterRole comm: currentBusStopList){
-	    		comm.msgGetOnBus(fare, this);
+	    		comm.msgGetOnBus(_fare, this);
 	            expectedPeople++;
 	        }
 	    }
@@ -118,6 +129,15 @@ public class BusAgent {
 			}
 			return null;
 		}
+	}
+	
+	public String getName(){
+		return _name;
+	}
+
+	@Override
+	public void setFare(int fare) {
+		_fare = fare;
 	}
 	
 }

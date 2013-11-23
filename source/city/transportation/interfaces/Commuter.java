@@ -1,0 +1,21 @@
+package city.transportation.interfaces;
+
+import city.Place;
+import city.transportation.BusAgent;
+import city.transportation.BusStopObject;
+
+public interface Commuter {
+	
+	public void msgGoToDestination(Place place);
+	
+	//Bus Transportation messages
+	public void msgAtBusStop(BusStopObject busstop);
+	
+	public void msgGetOnBus(int fare, BusAgent bus);
+	
+	public void msgGetOffBus(Place place);
+	
+	//Msg At Destination from GUI
+	public void msgAtDestination(Place place);
+
+}
