@@ -34,4 +34,8 @@ public class Market extends Place{
 	public MarketCustomerRole generateCustomerRole(PersonAgent p){
 		return (new MarketCustomerRole(p,this));
 	}
+	
+	public MarketCashierRole getCashier(){
+		return MarketCashier;
+	}
 }

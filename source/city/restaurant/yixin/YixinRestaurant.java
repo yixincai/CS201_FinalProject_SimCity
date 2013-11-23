@@ -56,4 +56,6 @@ public class YixinRestaurant extends Restaurant{
 	public Role getHostRole() {
 		return Host;
 	}
+	
+
 }

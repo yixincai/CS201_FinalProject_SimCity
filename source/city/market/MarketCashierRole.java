@@ -106,9 +106,10 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	
 	//bank messages
 	
-	public void msgTransactionSucceeded(){
+	public void msgTransactionComplete(double amount, Double balance, Double debt){
 		money_state = MoneyState.none;
-		moneyInHand /=2;
+		moneyInHand -= amount;
+		moneyInBank = balance;
 	}
 
 	//Scheduler
