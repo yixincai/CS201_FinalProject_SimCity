@@ -21,7 +21,7 @@ public class CommuterRole extends Role implements Commuter{
 	CarObject _car = new CarObject();
 	BusAgent _bus;
 	int _fare;
-	CommuterGui gui = new CommuterGui(this, null);
+	CommuterGui _gui;
 	
 	public enum TravelState{choosing, 
 		choseCar, driving, 
@@ -49,6 +49,8 @@ public class CommuterRole extends Role implements Commuter{
 		_car = null;
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void setGui(CommuterGui gui) { _gui = gui; }
 	
 	public void setCar(CarObject car){_car = car;}
 	
@@ -185,14 +187,14 @@ public class CommuterRole extends Role implements Commuter{
 	//Walking
 	public void actWalking(){
 		_tState = TravelState.walking;
-		gui.walkToLocation(_destination);
+		_gui.walkToLocation(_destination);
 	}
 	
 	//Bus
 	public void actGoToBusStop(){
 		_tState = TravelState.goingToBusStop;
 		_busStop = Directory.getNearestBusStop(_currentPlace); //Unit Testing will skip this for now
-		gui.goToBusStop(_busStop);
+		_gui.goToBusStop(_busStop);
 	}
 	public void actAtBusStop(){
 		_tState = TravelState.waitingAtBusStop;
@@ -203,12 +205,12 @@ public class CommuterRole extends Role implements Commuter{
 	public void actGetOnBus(){
 		_tState = TravelState.ridingBus;
 		_person._money -= _fare;
-		gui.getOnBus();
+		_gui.getOnBus();
 		_bus.msgGettingOnBoard(this, _destination, _fare);
 	}
 	public void actGetOffBus(){
 		_tState = TravelState.gettingOffBus;
-		gui.getOffBus();
+		_gui.getOffBus();
 		_bus.msgGotOff(this);
 		_bus = null;
 		actWalking(); //Calls this function here because after you get off of the bus stop you walk to the destination
@@ -217,7 +219,7 @@ public class CommuterRole extends Role implements Commuter{
 	//Driving
 	public void actDriving(){
 		_tState = TravelState.driving;
-		gui.goToCar(_car, _destination);
+		_gui.goToCar(_car, _destination);
 	}
 	
 	public void actAtDestination(){

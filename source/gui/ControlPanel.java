@@ -53,6 +53,7 @@ public class ControlPanel extends JTabbedPane {
 		CommuterRole newCommuterRole = new CommuterRole(newPerson, null);
 		newPerson.setCommuterRole(newCommuterRole);
 		CommuterGui newCommuterGui = new CommuterGui(newCommuterRole, null);
+		newCommuterRole.setGui(newCommuterGui);
 		Directory.addPerson(newPerson);
 		mainGui.getWorldView().addGui(newCommuterGui);
 		this.setSelectedComponent(currentPersonPanel);

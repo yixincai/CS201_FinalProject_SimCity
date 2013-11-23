@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import city.Directory;
+import city.Time;
 import city.restaurant.yixin.YixinRestaurant;
 
 public class MainGui extends JFrame 
@@ -63,9 +64,9 @@ public class MainGui extends JFrame
 		WorldViewBuilding b = _worldView.addBuilding(0, 1, 30);
 		BuildingInteriorAnimationPanel bp = new BuildingInteriorAnimationPanel(this, "Yixin's Restaurant", new city.restaurant.yixin.gui.YixinAnimationPanel());
 		b.setBuildingPanel(bp);
-		YixinRestaurant yr = new YixinRestaurant(bp);
+		YixinRestaurant yr = new YixinRestaurant("Yixin's Restaurant", b, bp);
 		Directory.addPlace(yr);
-        _buildingCardLayoutPanel.add( bp, bp.getName() );
+		_buildingCardLayoutPanel.add( bp, bp.getName() );
         _buildingInteriorAnimationPanels.add(bp);
         
         
@@ -102,6 +103,7 @@ public class MainGui extends JFrame
   	  this.pack();		
   	  this.setVisible(true);
 	
+  	  Time.startTimer();
 	}
 	
 	public WorldView getWorldView() { return _worldView; }

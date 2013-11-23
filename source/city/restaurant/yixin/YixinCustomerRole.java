@@ -45,7 +45,7 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 	 * Constructor for CustomerAgent class
 	 *
 	 * @param name name of the customer
-	 * @param gui  reference to the customergui so the customer can send it messages
+	 * @param _gui  reference to the customergui so the customer can send it messages
 	 */
 	public YixinCustomerRole(PersonAgent p, YixinRestaurant r, String name, int count){
 		super(p);
