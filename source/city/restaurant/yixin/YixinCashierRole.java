@@ -5,6 +5,7 @@ import java.util.*;
 import utilities.EventLog;
 import utilities.LoggedEvent;
 import city.*;
+import city.bank.BankTellerRole;
 import city.market.*;
 import city.restaurant.RestaurantCashierRole;
 import city.restaurant.yixin.gui.YixinCashierGui;
@@ -12,19 +13,25 @@ import city.restaurant.yixin.gui.YixinCashierGui;
 public class YixinCashierRole extends RestaurantCashierRole{// implements Cashier{
 	public YixinRestaurant restaurant;
 	public YixinCookRole cook;
-
+	public BankTellerRole bankTeller;
+	
 	public EventLog log = new EventLog();
     private String name = "Cashier";
 	public List<CustomerBill> bills = Collections.synchronizedList(new ArrayList<CustomerBill>());
 	public List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 	public static Menu menu = new Menu();
 	public YixinCashierGui cashierGui = null;
-	public double money;
+	public double money, bankBalance, bankDebt;
+	public int account_number;
+	enum MoneyState{OrderedFromBank, none}
+	MoneyState money_state = MoneyState.none;
 	
 	public YixinCashierRole(PersonAgent p, YixinRestaurant r) {
 		super(p);
 		this.restaurant = r;
 		money = 130.0;
+		bankBalance = 0;
+		bankDebt = 0;
 	}
 	
 	public void setGui(YixinCashierGui g) {
@@ -111,6 +118,14 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 					marketBills.remove(bill);
 					return true;
 				}
+			if (money > 0 && bankDebt > 0){
+				
+				return true;
+			}
+			else if (money < 0){
+				bankTeller.msgWiredTransaction(c, request, amount);
+			}
+				
 		}
 		catch(ConcurrentModificationException e){
 			return false;
