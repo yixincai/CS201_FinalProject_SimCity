@@ -22,7 +22,7 @@ public class CommuterRole extends Role implements Commuter{
 	public Place _destination;
 	public Place _currentPlace;
 	BusStopObject _busStop;
-	CarObject _car = new CarObject();
+	public CarObject _car = new CarObject();
 	public Bus _bus;
 	public int _fare;
 	CommuterGui gui = new CommuterGui(this, null);

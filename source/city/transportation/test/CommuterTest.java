@@ -2,6 +2,7 @@ package city.transportation.test;
 
 import city.PersonAgent;
 import city.transportation.BusStopObject;
+import city.transportation.CarObject;
 import city.transportation.CommuterRole;
 import city.transportation.CommuterRole.TravelState;
 import city.transportation.mock.MockBus;
@@ -10,25 +11,30 @@ import junit.framework.TestCase;
 public class CommuterTest extends TestCase{
 	
 	PersonAgent person;
-	BusStopObject busStop;
-	BusStopObject busStop1;
 	CommuterRole commuter;
+	
 	MockBus mockBus;
 	TravelState tState;
+	
+	BusStopObject busStop;
+	BusStopObject busStop1;
+	CarObject car;
 	
 	public void setUp() throws Exception{
 		super.setUp();
 		
-		person = new PersonAgent("Person 1"); //WHY PERSONAGENT NO WORK?
+		person = new PersonAgent("Person 1"); 
 		person.changeMoney(100);
 		commuter = new CommuterRole(person, null);
 		
+		mockBus = new MockBus("MockBus");
+		
 		busStop = new BusStopObject("bus stop", null);
 		busStop1 = new BusStopObject("bus stop 1", null);
-		
-		mockBus = new MockBus("MockBus");
-		mockBus.setFare(1);
+		car = new CarObject();
 	}
+	
+	//Remember to use event logs
 	
 	public void testZeroNormalCommuterScenario(){
 		//Nothing should happen
@@ -118,7 +124,57 @@ public class CommuterTest extends TestCase{
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.done);
 	}
 	
-	public void testTwoNormalBusCommuterScenario(){
+	public void testTwoNormalWalkingCommuterScenario(){
+		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.none);
+		
+		//Set Up Message to go to Bus
+		commuter.msgGoToDestination(null);
+		commuter.chooseTransportation(0);
+		
+		//Check if it received correctly (Choosing to go to Bus Stop)
+		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.choosing);
+		
+		//Check if Scheduler executed correctly
+		assertTrue("Scheduler returns true", commuter.pickAndExecuteAnAction());
+		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.choseWalking);
+		
+		//message
+		commuter.msgAtDestination(null); //Check later on with real places instead of null
+		
+		//Check if it received correctly (Bus is at destination)
+		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.atDestination);
+		
+		//Check if Scheduler executed correctly
+		assertTrue("Scheduler returns true", commuter.pickAndExecuteAnAction()); //Commented out code relating to gui
+		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.done);
+	}
+	
+	public void testThreeNormalCarCommuterScenario(){
+		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.none);
+		assertEquals("Car should be null", commuter._car, null);
+		
+		//Set Up Message to go to Bus
+		commuter.msgGoToDestination(null);
+		commuter.setCar(car);
+		commuter.chooseTransportation(2);
+		
+		//Check if it received correctly (Choosing to go to Bus Stop)
+		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.choosing);
+		assertEquals("Car should be null", commuter._car, car);
+		
+		//Check if Scheduler executed correctly
+		assertTrue("Scheduler returns true", commuter.pickAndExecuteAnAction());
+		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.choseCar);
+		
+		//message
+		commuter.msgAtDestination(null); //Check later on with real places instead of null
+		
+		//Check if it received correctly (Bus is at destination)
+		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.atDestination);
+		
+		//Check if Scheduler executed correctly
+		assertTrue("Scheduler returns true", commuter.pickAndExecuteAnAction()); //Commented out code relating to gui
+		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.done);
 		
 	}
 }
