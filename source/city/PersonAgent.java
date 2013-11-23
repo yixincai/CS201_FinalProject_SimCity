@@ -353,6 +353,7 @@ public class PersonAgent extends Agent
 	{
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
+		_commuterRole.msgGoToDestination(nextRole.place());
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
 	}
