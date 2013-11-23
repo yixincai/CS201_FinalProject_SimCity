@@ -308,4 +308,10 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 		stateChanged();		
 	}
 
+	@Override
+	public Place place() {
+		// TODO Auto-generated method stub
+		return restaurant;
+	}
+
 }

@@ -5,6 +5,7 @@ import agent.Role;
 import java.util.*;
 
 import city.PersonAgent;
+import city.Place;
 import city.restaurant.yixin.gui.YixinHostGui;
 import utilities.EventLog;
 
@@ -264,6 +265,11 @@ public class YixinHostRole extends Role {//implements Host{
 	public void cmdFinishAndLeave() {
 		role_state = RoleState.WantToLeave;
 		stateChanged();		
+	}
+	
+	public Place place() {
+		// TODO Auto-generated method stub
+		return restaurant;
 	}
 }
 

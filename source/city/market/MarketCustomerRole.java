@@ -3,6 +3,7 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
+import city.Place;
 import city.market.gui.*;
 import city.market.interfaces.MarketCustomer;
 import agent.Role;
@@ -155,5 +156,10 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public Place place() {
+		return market;
 	}
 }

@@ -1,5 +1,6 @@
 package city.market;
 
+import gui.WorldViewBuilding;
 import city.PersonAgent;
 import city.Place;
 import city.market.interfaces.MarketCashier;
@@ -13,8 +14,15 @@ public class Market extends Place{
 	public MarketEmployeeRole MarketEmployee;
 	public TruckAgent truck;
 	
+	public Market(String s, WorldViewBuilding _worldViewBuilding){
+		super("Market", _worldViewBuilding);
+		MarketCashier = new MarketCashierRole(null,this);
+		MarketEmployee = new MarketEmployeeRole(null,this);
+		truck = new TruckAgent(this);
+	}
+	
 	public Market(){
-		super();
+		super("Market", null);
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
 		truck = new TruckAgent(this);

@@ -49,7 +49,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	@Override
 	public Place place() {
 		// TODO Auto-generated method stub
-		return null;
+		return market;
 	}
 	
 	public void setBankTeller(BankTellerRole b){
