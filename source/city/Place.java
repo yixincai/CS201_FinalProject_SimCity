@@ -9,11 +9,14 @@ import gui.WorldViewBuilding;
 public abstract class Place {
 	
 	WorldViewBuilding _worldViewBuilding;
+	private String _name;
 	
-	// ------------------------------------ CONSTRUCTOR -----------------------------------
-	public Place(String name, WorldViewBuilding worldViewBuilding)
-	{
+	// ------------------------------------ CONSTRUCTOR & PROPERTIES -----------------------------------
+	public Place(String name, WorldViewBuilding worldViewBuilding) {
 		_name = name;
 		_worldViewBuilding = worldViewBuilding;
 	}
+	public String getName() { return _name; }
+	public int xPosition() { return _worldViewBuilding.xPosition(); }
+	public int yPosition() { return _worldViewBuilding.yPosition(); }
 }

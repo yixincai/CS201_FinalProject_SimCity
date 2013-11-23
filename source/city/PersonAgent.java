@@ -103,8 +103,7 @@ public class PersonAgent extends Agent
 	// -------------------------------- CONSTRUCTORS & PROPERTIES ------------------------------------
 	public PersonAgent(String name) { _name = name; }
 	public PersonAgent(String name, double money, String initOccupation) {_name = name; _money = money; setOccupation(initOccupation);}
-	// public PersonAgent(String name, Role r) { _name = name; ... }
-	public String name() { return _name; }
+	public String getName() { return _name; }
 	public double money() { return _money; }
 	public void changeMoney(double delta) { _money += delta; }
 	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
@@ -324,7 +323,8 @@ public class PersonAgent extends Agent
 	// (Peanut gallery)
 	private void actTellLongStory()
 	{
-		print("When I was a young programmer, my boss was skeptical of my design.  I proved him wrong.");
+		print("When I was a young programmer, my boss was skeptical of my design.  I proved him wrong. \n"
+				+ "Some of my students placed me in a giant hamster ball and dropped me in the middle of the Pacific Ocean, and I had to find my way back.");
 	}
 	private void actIWhale()
 	{

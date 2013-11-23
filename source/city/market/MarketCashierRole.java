@@ -3,6 +3,7 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
+import city.Place;
 import city.bank.BankTellerRole;
 import city.market.gui.MarketCashierGui;
 import city.market.interfaces.MarketCashier;
@@ -43,6 +44,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		inventory.put("Car", new Good("Car", 200, 100));
 		inventory.put("Meal", new Good("Meal", 5, 1000));
 		moneyInHand = 50;
+	}
+
+	@Override
+	public Place place() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	public void setBankTeller(BankTellerRole b){

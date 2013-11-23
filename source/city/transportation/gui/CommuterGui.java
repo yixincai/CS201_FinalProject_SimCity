@@ -1,5 +1,6 @@
 package city.transportation.gui;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import gui.Gui;
@@ -30,7 +31,8 @@ public class CommuterGui implements Gui {
 	public void walkToLocation(Place destination){
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
-		// set destination x & y to the destination that was passed in
+		_xDestination = destination.xPosition();
+		_yDestination = destination.yPosition();
 		_transportationType = TransportationType.walking;
 	}
 	
@@ -76,8 +78,8 @@ public class CommuterGui implements Gui {
 
 	@Override
 	public void draw(Graphics2D g) {
-		// TODO Auto-generated method stub
-		
+		g.setColor(Color.GREEN);
+		g.fillRect(_xPos, _yPos, 5, 5);
 	}
 
 	@Override
