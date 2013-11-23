@@ -5,6 +5,8 @@ import agent.Role;
 import city.PersonAgent;
 
 =======
+import city.Place;
+
 import java.util.List;
 
 import agent.Role;
@@ -55,11 +57,16 @@ public class ApartmentRenterRole extends HomeBuyingRole
 	// ---------------------------------- ACTIONS ----------------------------------
 	private void actStartARental()
 	{
-		List<ApartmentBuilding> apartmentbuildings = Directory.apartmentBuildings();
+		List<Place> apartmentBuildings = Directory.apartmentBuildings();
 		
-		for(ApartmentBuilding ab : apartmentBuildings)
+		for(Place p : apartmentBuildings)
 		{
-			
+			ApartmentBuilding ab = (ApartmentBuilding)p;
+			if(!ab.full())
+			{
+				_apartmentBuilding = ab;
+				break;
+			}
 		}
 		
 		landlord = myApartmentBuilding.landlord;

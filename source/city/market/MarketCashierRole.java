@@ -28,7 +28,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	double moneyInHand, moneyInBank;
 	enum RoleState{WantToLeave,none}
 	RoleState role_state = RoleState.none;
-	enum MoneyState{OrderedFromBank, none}
+	public enum MoneyState{OrderedFromBank, none}
 	MoneyState money_state = MoneyState.none;
 	
 	private Semaphore atDestination = new Semaphore(0,true);
