@@ -8,10 +8,8 @@ import gui.WorldViewBuilding;
  */
 public abstract class Place {
 	public String _name;
-	public String getName() { return _name; }
 	public void setName(String name) { _name = name; } 
 	WorldViewBuilding _worldViewBuilding;
-	private String _name;
 	
 	// ------------------------------------ CONSTRUCTOR & PROPERTIES -----------------------------------
 	public Place(String name, WorldViewBuilding worldViewBuilding) {

@@ -18,7 +18,9 @@ public class YixinRestaurant extends Restaurant{
 	private YixinAnimationPanel _animationPanel;
 	
 	public YixinRestaurant(gui.BuildingInteriorAnimationPanel animationPanel, String name){
-		super(name, null);}
+		super(name, null);
+	}
+	
 	public YixinRestaurant(gui.BuildingInteriorAnimationPanel animationPanel, WorldViewBuilding _worldViewBuilding){
 		super("Yixin's Restaurant", _worldViewBuilding);
 		this._animationPanel = (YixinAnimationPanel)animationPanel.getBuildingAnimation();
@@ -35,13 +37,8 @@ public class YixinRestaurant extends Restaurant{
 		((YixinCookRole)Cook).cashier = (YixinCashierRole)Cashier;
 	}
 	
-<<<<<<< HEAD
-	public YixinRestaurant(String name){
-		super(name);		
-=======
 	public YixinRestaurant(){
 		super("Yixin's Restaurant", null);		
->>>>>>> develop
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
 		Cashier = new YixinCashierRole(null,this);
 		Host = new YixinHostRole(null,this,"Host");
