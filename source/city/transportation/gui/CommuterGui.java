@@ -24,11 +24,9 @@ public class CommuterGui implements Gui {
 	public CommuterGui(CommuterRole commuter, Place startingPlace) {
 		System.out.println("Created CommuterGui");
 		_xPos = 300;
-		_yPos = 300;
+		_yPos = 0; 
 		_commuter = commuter;
 	}
-	
-	
 	
 	//Walking gui
 	public void walkToLocation(Place destination){

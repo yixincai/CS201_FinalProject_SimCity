@@ -14,6 +14,7 @@ public class YixinRestaurant extends Restaurant{
 	int count = -1;
 	boolean open;
 	public YixinHostRole Host;
+	private int businessAccountNumber = -1;
 	public List<YixinWaiterRole> Waiters = new ArrayList<YixinWaiterRole>();
 	private YixinAnimationPanel _animationPanel;
 	
@@ -60,6 +61,14 @@ public class YixinRestaurant extends Restaurant{
 			return (new YixinNormalWaiterRole(null, this, ""));
 		else
 			return (new YixinSharedDataWaiterRole(null, this, ""));
+	}
+	
+	public void updateAccountNumber(int newAccountNumber){
+		this.businessAccountNumber = newAccountNumber;
+	}
+	
+	public int getAccountNumber(){
+		return this.businessAccountNumber;
 	}
 
 	@Override

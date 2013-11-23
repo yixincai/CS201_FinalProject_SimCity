@@ -54,11 +54,13 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		peopleButtons.setViewportView(view);
 		buttonPanel.add(peopleButtons, BorderLayout.CENTER);
 		this.add(buttonPanel, BorderLayout.CENTER);
+		this.validate();
 	}
 
 	public void addPerson(String name)
 	{
 		JButton newPersonButton = new JButton(name);
+		System.out.println("newPersonButton Size before setting size: " + newPersonButton.getPreferredSize());
 		newPersonButton.setBackground(Color.white);
 		Dimension paneSize = peopleButtons.getSize();
 		newPersonButton.setPreferredSize(new Dimension(paneSize.width, paneSize.height/10));
@@ -73,8 +75,6 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 	
 	public void updateInfo(JButton selected)
 	{
-		//TODO we will need to actually display the relevant information to the agent, not just the name
-		//nameField.setText("Person Name: " + selected.getText());
 		for(PersonAgent tempPerson : Directory.personAgents())
 		{
 			if(tempPerson.getName() == selected.getText())

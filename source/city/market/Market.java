@@ -13,6 +13,7 @@ public class Market extends Place{
 	public MarketCashierRole MarketCashier;
 	public MarketEmployeeRole MarketEmployee;
 	public TruckAgent truck;
+	private int businessAccountNumber = -1;
 
 	public Market(String s, WorldViewBuilding _worldViewBuilding){
 		super("Market", _worldViewBuilding);
@@ -45,5 +46,13 @@ public class Market extends Place{
 	
 	public MarketCashierRole getCashier(){
 		return MarketCashier;
+	}
+
+	public void updateAccountNumber(int newAccountNumber) {
+		this.businessAccountNumber = newAccountNumber;
+	}
+	
+	public int getAccountNumber(){
+		return this.businessAccountNumber;
 	}
 }

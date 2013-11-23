@@ -4,6 +4,7 @@ import java.util.concurrent.Semaphore;
 
 import agent.Role;
 import city.PersonAgent;
+import city.Place;
 import city.bank.gui.BankCustomerRoleGui;
 import city.bank.interfaces.BankCustomer;
 
@@ -85,7 +86,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		  this.teller = teller;
 		  stateChanged();
 	}
-	public void msgHereIsInfoPickARequest(double funds, double amountOwed){
+	public void msgHereIsInfoPickARequest(double funds, double amountOwed, int newAccountNumber){
+		  this.accountNumber = newAccountNumber;
 		  this.accountFunds = funds;
 		  this.amountOwed = amountOwed;
 		  event = Event.GivenRequestPermission;
@@ -199,5 +201,10 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		//teller.msgGiveMeAllYourMoney();
 		state = State.Robber;
 		 // stateChanged();
+	}
+
+	@Override
+	public Place place() {
+		return bank;
 	}
 }
