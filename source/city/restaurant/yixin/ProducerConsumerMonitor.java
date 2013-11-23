@@ -2,10 +2,14 @@ package city.restaurant.yixin;
 
 import java.util.Vector;
 
-class ProducerConsumerMonitor extends Object {
+public class ProducerConsumerMonitor extends Object {
     private final int N = 50000;
     private int count = 0;
     private Vector<Order> theData = new Vector<Order>();
+    
+    public int getSize(){
+    	return count;
+    }
     
     synchronized public void insert(Order data) {
         while (count == N) {

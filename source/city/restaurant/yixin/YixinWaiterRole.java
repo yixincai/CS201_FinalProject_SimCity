@@ -12,7 +12,7 @@ import utilities.EventLog;
 public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	public YixinRestaurant restaurant;
 	public EventLog log = new EventLog();
-	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
+	public List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	public YixinCookRole cook = null;
 	public YixinHostRole host = null;
 	public YixinCashierRole cashier = null;
@@ -34,11 +34,11 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	public String getName() {
 		return name;
 	}
-	
+
 	public boolean getBreakStatus(){
 		return OnBreak;
 	}
-	
+
 	public boolean getBreakEnable(){
 		return breakEnabled;
 	}
@@ -331,7 +331,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void DoGoHome(){
 		waiterGui.DoLeaveCustomer();
 	}
@@ -365,7 +365,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void DoGiveFoodToCustomer(YixinCustomerRole customer, int table, String food){
 		print("Giving food to " + customer + " at " + table);
 		waiterGui.DoBringFood(table, food);
@@ -375,7 +375,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void LeaveRestaurant(){
 		waiterGui.LeaveRestaurant();
 		try{
@@ -396,26 +396,25 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 		return waiterGui;
 	}
 
-	protected static class MyCustomer {
+	public static class MyCustomer {
 		YixinCustomerRole c;
 		int tableNumber, count;
 		String choice = "";
 		double check = 0;
-		public enum CustomerState
-		{none, waiting, noMoney, readyToOrder, 
-			orderGiven, orderReady, noFood, finishedEating, checkComputed, leaving};
+		public enum CustomerState{none, waiting, noMoney, readyToOrder, 
+			orderGiven, orderReady, noFood, finishedEating, checkComputed, leaving}
 		public CustomerState state = CustomerState.none;
 
-			MyCustomer(YixinCustomerRole c, int tableNumber, CustomerState s, int count) {
-				this.c = c;
-				this.tableNumber = tableNumber;
-				this.state = s;
-				this.count = count;
-			}
+		public MyCustomer(YixinCustomerRole c, int tableNumber, CustomerState s, int count) {
+			this.c = c;
+			this.tableNumber = tableNumber;
+			this.state = s;
+			this.count = count;
+		}
 
-			public String toString() {
-				return "table " + tableNumber;
-			}
+		public String toString() {
+			return "table " + tableNumber;
+		}
 	}
 }
 
