@@ -252,7 +252,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 
 	public static class CustomerOrder {
-		CustomerOrder(MarketCustomer mc, List<Item> order, CustomerOrder.customerState state){
+		public CustomerOrder(MarketCustomer mc, List<Item> order, CustomerOrder.customerState state){
 			this.mc = mc;
 			this.state = state;
 			this.order = order;
@@ -266,7 +266,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 
 	public static class RestaurantOrder {
-		RestaurantOrder(Restaurant r, List<Item> order, RestaurantOrder.State state){
+		public RestaurantOrder(Restaurant r, List<Item> order, RestaurantOrder.State state){
 			this.r = r;
 			this.state = state;
 			this.order = order;
