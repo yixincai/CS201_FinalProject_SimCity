@@ -11,6 +11,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -19,19 +21,22 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import city.PersonAgent;
+
 public class ControlPanel extends JTabbedPane {
 	
 	CreatePersonPanel newPersonPanel;
 	CurrentPersonPanel currentPersonPanel;
 	CurrentBuildingPanel currentBuildingPanel;
 	MainGui mainGui;
+	public List<PersonAgent> people = new ArrayList<PersonAgent>();
 	
 	public ControlPanel(MainGui mGui)
 	{
 		mainGui = mGui;
 		//This is all placeholder code just to get the panels into tabs.  Each tab will have its own class eventually.
 		newPersonPanel = new CreatePersonPanel(this);
-		currentPersonPanel = new CurrentPersonPanel();
+		currentPersonPanel = new CurrentPersonPanel(this);
 		currentBuildingPanel = new CurrentBuildingPanel();
 		this.addTab("Current Person", null, currentPersonPanel, "Info about the currently selected person.");
 		this.addTab("Current Building", null, currentBuildingPanel, "Info about the currently selected building.");
@@ -44,9 +49,13 @@ public class ControlPanel extends JTabbedPane {
 		this.setSelectedComponent(currentBuildingPanel);
 	}
 
-	public void addPerson(String name, double money, String occupation) 
+	public void addPerson(String name, double money, String occupation, boolean weekday_Notweekend, String shift) 
 	{
+		
 		currentPersonPanel.addPerson(name);
+		PersonAgent newPerson = new PersonAgent(name, money, occupation);
+		newPerson.setShift(shift, weekday_Notweekend);
+		people.add(newPerson);
 		this.setSelectedComponent(currentPersonPanel);
 		// TODO this is where we should actually create the new Person agent.  We should discuss how we want to handle the agents.
 	}
