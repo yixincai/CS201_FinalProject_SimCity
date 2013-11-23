@@ -6,7 +6,7 @@ import agent.Role;
 import city.Directory;
 import city.PersonAgent;
 import city.Place;
-import city.transportation.gui.CommuterRoleGui;
+import city.transportation.gui.CommuterGui;
 
 /**
  * There is one CommuterRole per person, and the CommuterRole is the one that 
@@ -19,7 +19,7 @@ public class CommuterRole extends Role {
 	CarObject _car = new CarObject();
 	BusAgent _bus;
 	int _fare;
-	CommuterRoleGui gui = new CommuterRoleGui(this);
+	CommuterGui gui = new CommuterGui(this);
 	
 	//Probably won't need -> not 100% sure though
 	enum carState{noCar, hasCar, usingCar};
