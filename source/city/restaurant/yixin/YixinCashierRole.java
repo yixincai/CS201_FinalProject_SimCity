@@ -63,17 +63,19 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	}
 	
 	public void msgHereIsTheChange(Market m, double change){
-		log.add(new LoggedEvent("Received HereIsTheChange from market. Bill = "+ change));
 		print("Market change received with amount of " + change);
 		money += change;
-		cook.msgOrderFinished();
+		for (MarketBill bill : marketBills){
+			if (bill.market == m)
+				bill.state = MarketBill.BillState.changeReceived;
+		}
 		stateChanged();
 	}
 	
 	public void msgHereIsTheInvoice(Market m, List<Item> invoice) {
 		for (MarketBill bill : marketBills){
 			if (bill.market == m)
-				bill.invoice_received = true;
+				bill.state = MarketBill.BillState.invoiceReceived;
 		}
 		stateChanged();		
 	}
@@ -98,11 +100,17 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			}
 			if (money > 0){
 				for (MarketBill bill : marketBills)
-					if (bill.invoice_received){
+					if (bill.state == MarketBill.BillState.invoiceReceived){
 						payMarketBill(marketBills.get(0));
 						return true;
 					}
 			}
+			for (MarketBill bill : marketBills)
+				if (bill.state == MarketBill.BillState.changeReceived){
+					cook.msgOrderFinished();
+					marketBills.remove(bill);
+					return true;
+				}
 		}
 		catch(ConcurrentModificationException e){
 			return false;
@@ -142,7 +150,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			money -= bill.balance;
 			print("Remaining money is " + money);
 			bill.market.MarketCashier.msgHereIsPayment(restaurant, bill.balance);
-			marketBills.remove(0);
+			bill.state = MarketBill.BillState.none;
 		}
 		else {
 			marketBills.get(0).balance -= money;
@@ -177,12 +185,13 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	public static class MarketBill {
 		public double balance;
 		public Market market;
-		public boolean invoice_received;
+		enum BillState{none, invoiceReceived, changeReceived}
+		public BillState state;
 		public Map<String, Double> price_list;
 		MarketBill(Market market, double money, Map<String, Double> price_list){
 			this.balance = money;
 			this.market = market;
-			invoice_received = false;
+			this.state = BillState.none;
 			this.price_list = price_list;
 		}
 	}

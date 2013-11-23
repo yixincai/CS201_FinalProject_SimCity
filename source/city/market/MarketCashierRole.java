@@ -250,11 +250,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			this.order = order;
 			this.orderFulfillment = new ArrayList<Item>();
 		}
-		Restaurant r;
-		List<Item> order, orderFulfillment;
-		double bill, payment;
-		enum State{placedBill, paid, none}
-		State state;
+		public Restaurant r;
+		public List<Item> order, orderFulfillment;
+		public double bill, payment;
+		public enum State{placedBill, paid, none}
+		public State state;
 	}
 
 }
