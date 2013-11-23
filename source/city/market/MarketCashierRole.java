@@ -3,6 +3,7 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
+import city.bank.BankTellerRole;
 import city.market.gui.MarketCashierGui;
 import city.market.interfaces.MarketCashier;
 import city.market.interfaces.MarketCustomer;
@@ -14,6 +15,9 @@ import utilities.LoggedEvent;
 public class MarketCashierRole extends Role implements MarketCashier{
 
 	public MarketCashierGui gui;
+	
+	public BankTellerRole bankTeller;
+	int accountNumber = -1;
 	
 	public EventLog log = new EventLog();
 	public Map<String, Good> inventory = new HashMap<String, Good>();
@@ -101,10 +105,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 	
 	//bank messages
-	/*
-	public void msgSuccessTransaction(){
+	
+	public void msgTransactionComplete(double amount, Double balance, Double debt){
 		money_state = MoneyState.none;
-	}*/
+		moneyInHand -= amount;
+		moneyInBank = balance;
+	}
 
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
@@ -138,12 +144,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 				restaurantOrders.remove(order);
 				return true;
 			}
-		}/*
+		}
 		if (moneyInHand > 200 && money_state == MoneyState.none){
-			//Bank.bankCashierRole.msg();
-			money_state = MoneyState.OrderedFromBank;
+			DepositMoney();
 			return true;
-		}*/
+		}
 		if (restaurantOrders.size() == 0 && customers.size() == 0 && role_state == RoleState.WantToLeave){
 			LeaveMarket();
 			role_state = RoleState.none;
@@ -208,8 +213,19 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		customer.state = RestaurantOrder.State.none;
 	}
 	
+	public void DepositMoney(){
+		bankTeller.msgWiredTransaction(market, accountNumber, moneyInHand / 2, "Desposit");
+		money_state = MoneyState.OrderedFromBank;
+	}
+	
 	public void LeaveMarket(){
 		gui.LeaveMarket();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	class Good {
@@ -228,12 +244,13 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			this.mc = mc;
 			this.state = state;
 			this.order = order;
+			this.orderFulfillment = new ArrayList<Item>();
 		}
-		MarketCustomer mc;
-		List<Item> order, orderFulfillment;
-		double bill, payment;
-		enum customerState{placedBill, collected, paid, none};
-		customerState state;
+		public MarketCustomer mc;
+		public List<Item> order, orderFulfillment;
+		public double bill, payment;
+		public enum customerState{placedBill, collected, paid, none};
+		public customerState state;
 	}
 
 	public static class RestaurantOrder {
@@ -241,12 +258,13 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			this.r = r;
 			this.state = state;
 			this.order = order;
+			this.orderFulfillment = new ArrayList<Item>();
 		}
-		Restaurant r;
-		List<Item> order, orderFulfillment;
-		double bill, payment;
-		enum State{placedBill, paid, none}
-		State state;
+		public Restaurant r;
+		public List<Item> order, orderFulfillment;
+		public double bill, payment;
+		public enum State{placedBill, paid, none}
+		public State state;
 	}
 
 }

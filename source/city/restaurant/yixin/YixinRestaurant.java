@@ -18,6 +18,12 @@ public class YixinRestaurant extends Restaurant{
 		Cashier = new YixinCashierRole(null,this);
 		Host = new YixinHostRole(null,this,"Host");
 		Cook = new YixinCookRole(null,this);
+        /*
+        Cook.addMarket(market1);
+        Cook.addMarket(market2);
+        Cook.addMarket(market3);
+        */
+		((YixinCookRole)Cook).cashier = (YixinCashierRole)Cashier;
 	}
 		
 	public void updateMarketStatus(){
@@ -50,4 +56,6 @@ public class YixinRestaurant extends Restaurant{
 	public Role getHostRole() {
 		return Host;
 	}
+	
+
 }

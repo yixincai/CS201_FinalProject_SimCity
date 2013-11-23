@@ -11,13 +11,13 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	public MarketCustomerGui gui;
 	
 	Market market;
-	List<Item> order;
+	List<Item> order = new ArrayList<Item>();
 	List<Item> orderFulfillment;
 	Map<String, Double> price_list;
 	
 	double money, payment, debt;
-	enum CustomerState {wantToBuy, needPay, pickUpItems, payNextTime, none}
-	CustomerState state = CustomerState.none;
+	public enum CustomerState {wantToBuy, needPay, pickUpItems, payNextTime, none}
+	public CustomerState state = CustomerState.none;
 
 	private Semaphore atDestination = new Semaphore(0,true);
 	
@@ -34,7 +34,13 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	//command from person
 	public void cmdBuyFood(int meals){
-		order.add(new Item("Meal", 3));
+		order.add(new Item("Meal", meals));
+		state = CustomerState.wantToBuy;
+		stateChanged();
+	}
+	
+	public void cmdBuyCar(){
+		order.add(new Item("Car", 1));
 		state = CustomerState.wantToBuy;
 		stateChanged();
 	}
@@ -123,13 +129,31 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	public void DoGoToCashier(){
 		gui.GoToCashier();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void DoGoToWaitingArea(){
 		gui.GoToWaitingArea();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void DoLeaveMarket(){
 		gui.LeaveMarket();
+		try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
