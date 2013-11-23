@@ -11,7 +11,6 @@ public abstract class Restaurant extends Place {
 	
 	public Restaurant(String name, WorldViewBuilding worldViewBuilding) {
 		super(name, worldViewBuilding);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public enum Cuisine { BREAKFAST, NORMAL }
