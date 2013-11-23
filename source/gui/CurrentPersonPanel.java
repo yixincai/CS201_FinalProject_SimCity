@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import city.PersonAgent;
+
 public class CurrentPersonPanel extends JPanel implements ActionListener
 {
 	JPanel view;
@@ -24,9 +26,11 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 	JLabel moneyField;
 	JLabel currentRoleField;
 	JScrollPane peopleButtons;
+	ControlPanel cPanel;
 	
-	public CurrentPersonPanel()
+	public CurrentPersonPanel(ControlPanel cp)
 	{
+		cPanel = cp;
 		this.setLayout(new BorderLayout());
 		buildingList = new ArrayList<JButton>();
 		JPanel infoPanel = new JPanel();
@@ -62,13 +66,25 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		newPerson.addActionListener(this);
 		buildingList.add(newPerson);
 		view.add(newPerson);
+		this.updateInfo(newPerson);
+		newPerson.setSelected(true);
 		
 	}
 	
 	public void updateInfo(JButton selected)
 	{
 		//TODO we will need to actually display the relevant information to the agent, not just the name
-		nameField.setText("Person Name: " + selected.getText());
+		//nameField.setText("Person Name: " + selected.getText());
+		for(int i = 0; i < cPanel.people.size(); i++)
+		{
+			PersonAgent tempPerson = cPanel.people.get(i);
+			if(tempPerson.name() == selected.getText())
+			{
+				nameField.setText("Person Name: " + tempPerson.name());
+				moneyField.setText("Person Money: " + tempPerson.money() + "0");
+				currentRoleField.setText("Need to implement toString() for the different roles.");
+			}
+		}
 	}
 	
 	@Override

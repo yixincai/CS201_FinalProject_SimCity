@@ -16,13 +16,18 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import city.Directory;
+import city.restaurant.yixin.YixinRestaurant;
+
 public class MainGui extends JFrame 
 {
 	private static int FRAMEX = 1024;
 	private static int FRAMEY = 720;
 	
-     BuildingWindow buildingWindow;
+     BuildingCardLayoutPanel _buildingCardLayoutPanel;
      ControlPanel cPanel;
+     
+     WorldView _worldView;
 	/**
 	 * Constructor for the MainGui window
 	 */
@@ -37,27 +42,55 @@ public class MainGui extends JFrame
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.X_AXIS));
 		
 		//Building View
-		buildingWindow = new BuildingWindow();
+		_buildingCardLayoutPanel = new BuildingCardLayoutPanel();
 	    
 	    //World View
-	    WorldView worldView = new WorldView();
+	    _worldView = new WorldView();
 	        
 		//The code below will add an area for the two gui areas to go. BuildingView + WorldView
-		JPanel guiArea = new JPanel();
-		guiArea.setLayout(new BoxLayout(guiArea, BoxLayout.Y_AXIS));
-		guiArea.setPreferredSize(new Dimension(2048/3, 720));
-		guiArea.add(worldView);
-		guiArea.add(buildingWindow);
-		this.add(guiArea, Component.LEFT_ALIGNMENT);
+		JPanel animationArea = new JPanel();
+		animationArea.setLayout(new BoxLayout(animationArea, BoxLayout.Y_AXIS));
+		animationArea.setPreferredSize(new Dimension(2048/3, 720));
+		animationArea.add(_worldView);
+		animationArea.add(_buildingCardLayoutPanel);
+		this.add(animationArea, Component.LEFT_ALIGNMENT);
+		
+		// Hard-coded instantiation of all the buildings in the city:
+		// Yixin's Restaurant:
+		WorldViewBuilding b = _worldView.addBuilding(0, 1, 30);
+		BuildingInteriorAnimationPanel bp = new BuildingInteriorAnimationPanel(this, "Yixin's Restaurant", new city.restaurant.yixin.gui.YixinAnimationPanel());
+		b.setBuildingPanel(bp);
+		YixinRestaurant yr = new YixinRestaurant(bp);
+		Directory.addPlace(yr);
+        _buildingCardLayoutPanel.add( bp, bp.getName() );
         
+        
+        /*
         //Create the BuildingPanel for each Building object
-        ArrayList<Building> buildings = worldView.getBuildings();
-        for ( int i=0; i<buildings.size(); i++ ) {
-                Building b = buildings.get(i);
-                BuildingPanel bp = new BuildingPanel(this,b,i);
+        ArrayList<WorldViewBuilding> worldViewBuildings = _worldView.getBuildings();
+        for ( int i=0; i<worldViewBuildings.size(); i++ )
+        {
+                WorldViewBuilding b = worldViewBuildings.get(i);
+                BuildingInteriorAnimationPanel bp = new BuildingInteriorAnimationPanel(this,i);
                 b.setBuildingPanel( bp );
-                buildingWindow.add( bp, "Building " + i );
+                _buildingCardLayoutPanel.add( bp, "Building " + i );
         }
+        
+        
+		 for (int i = 3; i < 6; i++) {
+			WorldViewBuilding b = new WorldViewBuilding( i, 1, 40 );
+			
+			worldViewBuildings.add( b );
+		 }
+		 for ( int i=0; i<2; i++ ) {
+			 for ( int j=0; j<5; j++ ) {
+				 if(i == 1 && j == 2) continue;
+				 WorldViewBuilding b = new WorldViewBuilding( i, j, 30 );
+				 
+				 worldViewBuildings.add( b );
+			 }
+		 }
+		 */
         
       //The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
   	  cPanel = new ControlPanel(this);
@@ -67,9 +100,9 @@ public class MainGui extends JFrame
 	
 	}
 	
-	 public void displayBuildingPanel(BuildingPanel bp ) {
+	 public void displayBuildingPanel(BuildingInteriorAnimationPanel bp ) {
          System.out.println( bp.getName() );
-         ((CardLayout) buildingWindow.getLayout()).show(buildingWindow, bp.getName());
+         ((CardLayout) _buildingCardLayoutPanel.getLayout()).show(_buildingCardLayoutPanel, bp.getName());
          cPanel.updateBuildingInfo(bp);
 	 }
 	

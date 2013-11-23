@@ -7,7 +7,6 @@ public abstract class RestaurantCustomerRole extends Role {
 
 	public RestaurantCustomerRole(PersonAgent person) {
 		super(person);
-		// TODO Auto-generated constructor stub
 	}
 
 	public abstract void cmdGotHungry();

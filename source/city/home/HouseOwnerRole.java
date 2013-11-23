@@ -2,23 +2,27 @@ package city.home;
 
 import city.PersonAgent;
 
-public class HouseOwnerRole extends HomeRole {
+public class HouseOwnerRole extends HomeBuyingRole
+{
+	// ---------------------------------- DATA ------------------------------------
+	private House _house;
+	
+	// ------------------------ CONSTRUCTOR & PROPERTIES --------------------------
+	public HouseOwnerRole(PersonAgent person) { super(person); }
 
-	public HouseOwnerRole(PersonAgent person) {
-		super(person);
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
 	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
+		if(_house == null)
+		{
+			// buy a house
+		}
+		else
+		{
+			active = false;
+			return true;
+		}
 		return false;
 	}
 
-	@Override
-	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void cmdFinishAndLeave() { } // do nothing
 
 }

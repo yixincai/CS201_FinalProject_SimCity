@@ -22,7 +22,11 @@ public class YixinHostGui extends JPanel implements Gui {
     public YixinHostGui(YixinHostRole agent) {
         this.agent = agent;
     }
+    
+    public void LeaveRestaurant(){
 
+    }
+    
     public void updatePosition() {
     }
 

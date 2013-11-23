@@ -3,7 +3,7 @@ package city.home;
 import city.PersonAgent;
 import agent.Role;
 
-public abstract class HomeRole extends Role
+public class HomeRole extends Role
 {
 	//private List<Food> _groceries;
 
@@ -21,6 +21,7 @@ public abstract class HomeRole extends Role
 	
 	// --------------------------- CONSTRUCTOR & PROPERTIES --------------------------
 	public HomeRole(PersonAgent person) { super(person); }
+	public abstract boolean haveHome(); // return false if you don't have a home; if you don't have a home, the first thing your scheduler should do is try to buy a home.
 	public boolean sleeping() { return state == State.SLEEPING; }
 	public boolean cooking() { return state == State.COOKING; }
 	public boolean haveFood() { return _mealCount > 0; } //TODO implement _mealCount;
@@ -52,6 +53,6 @@ public abstract class HomeRole extends Role
 	
 	
 	
-	public abstract boolean pickAndExecuteAnAction();
+	public boolean pickAndExecuteAnAction();
 	//TODO if cmdGoToBed, set wakeTime to 7
 }

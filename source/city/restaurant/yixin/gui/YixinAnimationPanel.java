@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class AnimationPanel extends JPanel implements ActionListener {
+public class YixinAnimationPanel extends JPanel implements ActionListener {
     private final int TABLEX1 = 200;
     private final int TABLEX2 = 300;
     private final int TABLEX3 = 100;
@@ -19,8 +19,8 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private final int GAPY = 50;
     private final int ICON_X = 30;
     private final int ICON_Y = 30;    
-    private final int WINDOWX = 450;
-    private final int WINDOWY = 350;
+    private final int WINDOWX = 682;
+    private final int WINDOWY = 360;
     private List<Gui> guis = new ArrayList<Gui>();
     private ImageIcon ifridge = new ImageIcon("image/fridge.png");
     private Image fridgeimage = ifridge.getImage();
@@ -30,9 +30,9 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private Image grillimage = igrill.getImage();
     private ImageIcon irevolving = new ImageIcon("image/revolvingStand.jpg");
     private Image standimage = irevolving.getImage();
-
     
-    public AnimationPanel() {
+    public YixinAnimationPanel()
+    {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
  
@@ -52,8 +52,10 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
 
         //Here is the table
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(TABLEX1, TABLEY, GAPX, GAPY);
+
+        g2.setColor(Color.red);
+        g2.fillRect(TABLEX1, TABLEY, GAPX, GAPY);//200 and 250 need to be table params
+
         g2.fillRect(TABLEX2, TABLEY, GAPX, GAPY);
         g2.fillRect(TABLEX3, TABLEY, GAPX, GAPY);
         //here is the cooking area 

@@ -1,17 +1,23 @@
 package city.bank;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import agent.Role;
 import city.PersonAgent;
+import city.Place;
 import city.bank.gui.BankTellerRoleGui;
+import city.bank.interfaces.BankTeller;
+import city.market.Market;
+import city.restaurant.Restaurant;
 
-public class BankTellerRole extends Role {
+public class BankTellerRole extends Role implements BankTeller {
 	
 	//Data
 	List<MyCustomer> myCustomers;
+	List<MyBusinessCustomer> myBusinessCustomers;
 	BankHostRole host;
 	boolean occupied;
 	String name;
@@ -31,11 +37,22 @@ public class BankTellerRole extends Role {
 		super(person);
 		this.bank = bank;
 		command = Command.None;
+		this.myBusinessCustomers = new ArrayList<MyBusinessCustomer>();
+		this.myCustomers = new ArrayList<MyCustomer>();		
+	}
+	
+	public void makeDatabase(){
+		database = new AccountDatabase();
 	}
 	
 	private static class AccountDatabase{
 	      Hashtable<Integer, Double> funds;
 	      Hashtable<Integer, Double> amountOwed;
+	      
+	      public AccountDatabase(){
+	    	  funds = new Hashtable();
+	    	  amountOwed = new Hashtable();
+	      }
 	//given Account Number, gets funds or amount owed
 	}
 	private class MyCustomer{
@@ -51,6 +68,20 @@ public class BankTellerRole extends Role {
 	      int amount;
 	      
 	      CustomerState customerState;
+	}
+	
+	private class MyBusinessCustomer{
+		Place place;
+		int accountNumber;
+		double amount;
+		String request;
+		
+		MyBusinessCustomer(Place place, int accountNumber, double amount, String request){
+			this.place = place;
+			this.accountNumber = accountNumber;
+			this.amount = amount;
+			this.request = request;
+		}
 	}
 	
 	enum CustomerState { None, Arrived, GivingRequest, GivenRequest};
@@ -84,8 +115,31 @@ public class BankTellerRole extends Role {
 		  }
 	}
 	
+	//FOR CASHIERS OF RESTAURANTS AND CASHIERS OF MARKETS
+	public void msgWiredTransaction(Place place, int accountNumber, double amount, String request){
+		int newAccntNum;
+		if(accountNumber == -1){  //means it doesn't exist yet
+			   newAccntNum = (int)(Math.random()*20000) + 10000; //open account from 20k to 10k for businesses
+			   while(database.funds.containsKey(newAccntNum)){
+				   newAccntNum = (int)(Math.random()*20000) + 10000;
+			   }
+		} else{
+				newAccntNum = accountNumber;		//existing account
+		}
+		
+		database.funds.put(newAccntNum, 0.0);
+		database.amountOwed.put(newAccntNum, 0.0);
+		MyBusinessCustomer businessCustomer = new MyBusinessCustomer(place, newAccntNum, amount, request);
+		myBusinessCustomers.add(businessCustomer);
+		stateChanged();
+	}
+	
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
+		for(MyBusinessCustomer mb: myBusinessCustomers){
+			actProcessWireRequest(mb);
+			return true;
+		}
 		for(MyCustomer m: myCustomers){
 			if(m.customerState == CustomerState.Arrived){
 				actAskForARequest(m);
@@ -154,6 +208,48 @@ public class BankTellerRole extends Role {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private void actProcessWireRequest(MyBusinessCustomer m){
+		if(m.place instanceof Market){
+			if(m.request.equalsIgnoreCase("Deposit")){ //not checked
+				double currentFunds = database.funds.remove(m.accountNumber);
+				database.funds.put(m.accountNumber, currentFunds + m.amount);
+				((Market)(m.place)).getCashier().msgTransactionComplete(-m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber)); // negative m.amount because I'm taking money from the customer
+			} else if(m.request.equalsIgnoreCase("Withdraw")){ //checked
+					double currentFunds = database.funds.remove(m.accountNumber);
+					database.funds.put(m.accountNumber, currentFunds - m.amount);
+					((Market)(m.place)).getCashier().msgTransactionComplete(m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
+			} else if(m.request.equalsIgnoreCase("Withdraw Loan")){ // checked a bit
+					double currentAmountOwed = database.amountOwed.remove(m.accountNumber);
+					database.amountOwed.put(m.accountNumber, currentAmountOwed + m.amount);
+					((Market)(m.place)).getCashier().msgTransactionComplete(m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
+			} else if(m.request.equalsIgnoreCase("Pay Loan")){ // not checked
+				double currentAmountOwed = database.amountOwed.remove(m.accountNumber);
+				database.amountOwed.put(m.accountNumber, currentAmountOwed - m.amount);
+				((Market)m.place).getCashier().msgTransactionComplete(-m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
+			} 
+		} else if(m.place instanceof Restaurant){
+			if(m.request.equalsIgnoreCase("Deposit")){ //not checked
+				double currentFunds = database.funds.remove(m.accountNumber);
+				database.funds.put(m.accountNumber, currentFunds + m.amount);
+				((Restaurant)m.place).getCashier().msgTransactionComplete(-m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber)); // negative m.amount because I'm taking money from the customer
+			} else if(m.request.equalsIgnoreCase("Withdraw")){ //checked
+					double currentFunds = database.funds.remove(m.accountNumber);
+					database.funds.put(m.accountNumber, currentFunds - m.amount);
+					((Restaurant)(m.place)).getCashier().msgTransactionComplete(m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
+			} else if(m.request.equalsIgnoreCase("Withdraw Loan")){ // checked a bit
+					double currentAmountOwed = database.amountOwed.remove(m.accountNumber);
+					database.amountOwed.put(m.accountNumber, currentAmountOwed + m.amount);
+					((Restaurant)(m.place)).getCashier().msgTransactionComplete(m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
+			} else if(m.request.equalsIgnoreCase("Pay Loan")){ // not checked
+				double currentAmountOwed = database.amountOwed.remove(m.accountNumber);
+				database.amountOwed.put(m.accountNumber, currentAmountOwed - m.amount);
+				((Restaurant)(m.place)).getCashier().msgTransactionComplete(-m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
+			} 
+		}
+		myBusinessCustomers.remove(m);
+		stateChanged();
 	}
 	
 	private void actLeaveBank(){

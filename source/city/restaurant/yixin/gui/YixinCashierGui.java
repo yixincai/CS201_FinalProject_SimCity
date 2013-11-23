@@ -40,4 +40,8 @@ public class YixinCashierGui extends JPanel implements Gui {
     public int getYPos() {
         return yPos;
     }
+    
+    public void LeaveRestaurant(){
+    	
+    }
 }

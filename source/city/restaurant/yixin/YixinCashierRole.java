@@ -5,6 +5,7 @@ import java.util.*;
 import utilities.EventLog;
 import utilities.LoggedEvent;
 import city.*;
+import city.bank.BankTellerRole;
 import city.market.*;
 import city.restaurant.RestaurantCashierRole;
 import city.restaurant.yixin.gui.YixinCashierGui;
@@ -12,29 +13,37 @@ import city.restaurant.yixin.gui.YixinCashierGui;
 public class YixinCashierRole extends RestaurantCashierRole{// implements Cashier{
 	public YixinRestaurant restaurant;
 	public YixinCookRole cook;
+	public BankTellerRole bankTeller;
 
 	public EventLog log = new EventLog();
-    private String name = "Cashier";
+	private String name = "Cashier";
 	public List<CustomerBill> bills = Collections.synchronizedList(new ArrayList<CustomerBill>());
 	public List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 	public static Menu menu = new Menu();
 	public YixinCashierGui cashierGui = null;
-	public double money;
-	
+	public double money, bankBalance, bankDebt;
+	public int account_number;
+	enum MoneyState{OrderedFromBank, none}
+	MoneyState money_state = MoneyState.none;
+	enum RoleState{WantToLeave,none}
+	RoleState role_state = RoleState.none;
+
 	public YixinCashierRole(PersonAgent p, YixinRestaurant r) {
 		super(p);
 		this.restaurant = r;
 		money = 130.0;
+		bankBalance = 0;
+		bankDebt = 0;
 	}
-	
+
 	public void setGui(YixinCashierGui g) {
 		cashierGui = g;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	// Messages
 	public void msgComputeBill(YixinWaiterRole w, YixinCustomerRole c, String choice) {
 		log.add(new LoggedEvent("Received ComputeBill from waiter. Choice = "+ choice));
@@ -42,7 +51,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		bills.add(new CustomerBill(w,c,choice));
 		stateChanged();
 	}
-	
+
 	public void msgHereIsThePayment(YixinCustomerRole c, double check, double cash) {
 		log.add(new LoggedEvent("Received HereIsTheCheck from customer. Check = "+ check + " Payment = "+ cash));
 		print("Payment received");
@@ -54,28 +63,37 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 				stateChanged();
 			}
 	}
-	
+
 	public void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list){
 		log.add(new LoggedEvent("Received HereIsTheBill from market. Bill = "+ bill));
 		print("Market bill received with amount of " + bill);
 		marketBills.add(new MarketBill(m, bill, price_list));
 		stateChanged();
 	}
-	
+
 	public void msgHereIsTheChange(Market m, double change){
-		log.add(new LoggedEvent("Received HereIsTheChange from market. Bill = "+ change));
 		print("Market change received with amount of " + change);
 		money += change;
-		cook.msgOrderFinished();
+		for (MarketBill bill : marketBills){
+			if (bill.market == m)
+				bill.state = MarketBill.BillState.changeReceived;
+		}
 		stateChanged();
 	}
-	
+
 	public void msgHereIsTheInvoice(Market m, List<Item> invoice) {
 		for (MarketBill bill : marketBills){
 			if (bill.market == m)
-				bill.invoice_received = true;
+				bill.state = MarketBill.BillState.invoiceReceived;
 		}
 		stateChanged();		
+	}
+	
+	public void msgTransactionComplete(double amount, Double balance, Double debt){
+		money_state = MoneyState.none;
+		money = amount;
+		bankBalance = balance;
+		bankDebt = debt;
 	}
 
 	/**
@@ -98,10 +116,39 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			}
 			if (money > 0){
 				for (MarketBill bill : marketBills)
-					if (bill.invoice_received){
+					if (bill.state == MarketBill.BillState.invoiceReceived){
 						payMarketBill(marketBills.get(0));
 						return true;
 					}
+			}
+			for (MarketBill bill : marketBills)
+				if (bill.state == MarketBill.BillState.changeReceived){
+					cook.msgOrderFinished();
+					marketBills.remove(bill);
+					return true;
+				}
+			if (money_state == MoneyState.none){
+				if (money > 200 && bankDebt > 0){
+					PayLoan();
+					return true;
+				}
+				else if (money > 200){
+					Deposit();
+					return true;
+				}
+				else if (money < 0 && bankBalance > 0){
+					Withdraw();
+					return true;
+				}
+				else if (money < 0 && bankBalance <= 0){
+					AskForLoan();
+					return true;
+				}
+			}
+			if (marketBills.size() == 0 && bills.size() == 0 && role_state == RoleState.WantToLeave){
+				LeaveRestaurant();
+				role_state = RoleState.none;
+				return true;
 			}
 		}
 		catch(ConcurrentModificationException e){
@@ -115,7 +162,30 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	}
 
 	// Actions
-
+	//Bank
+	private void PayLoan(){
+		double amount = Math.min(money-150, bankDebt);
+		bankTeller.msgWiredTransaction(restaurant, account_number, amount, "Pay Loan");
+		money_state = MoneyState.OrderedFromBank;
+	}
+	
+	private void Withdraw(){
+		double amount = Math.min(50-money, bankBalance);
+		bankTeller.msgWiredTransaction(restaurant, account_number, amount, "Withdraw");
+		money_state = MoneyState.OrderedFromBank;		
+	}
+	
+	private void AskForLoan(){
+		bankTeller.msgWiredTransaction(restaurant, account_number, 50-money, "Withdraw Loan");
+		money_state = MoneyState.OrderedFromBank;
+	}
+	
+	private void Deposit(){
+		bankTeller.msgWiredTransaction(restaurant, account_number, money/2, "Deposit");
+		money_state = MoneyState.OrderedFromBank;
+	}
+	
+	//Customer Bill
 	private void computeBill(CustomerBill bill) {
 		print("The Bills is computed.");
 		bill.state = CustomerBill.BillState.None;
@@ -135,14 +205,14 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		print("Remaining money is " + money);
 		bill.customer.msgHereIsTheChange(bill.cash - bill.price);
 	}
-	
+
 	private void payMarketBill(MarketBill bill){
 		print("Paying Market Bill");
 		if (money >= bill.balance){
 			money -= bill.balance;
 			print("Remaining money is " + money);
 			bill.market.MarketCashier.msgHereIsPayment(restaurant, bill.balance);
-			marketBills.remove(0);
+			bill.state = MarketBill.BillState.none;
 		}
 		else {
 			marketBills.get(0).balance -= money;
@@ -150,6 +220,16 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			money = 0;
 			print("Do not have enough money with " + bill.balance +" debt");
 		}
+	}
+	
+	public void LeaveRestaurant(){
+		cashierGui.LeaveRestaurant();
+		/*try{
+			atDestination.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}*/
 	}
 
 	//utilities
@@ -164,7 +244,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		public enum BillState
 		{None, NotComputed, ReturnedFromCustomer};
 		public BillState state = BillState.None;
-		
+
 		CustomerBill(YixinWaiterRole waiter, YixinCustomerRole customer, String choice){
 			this.choice = choice;
 			this.waiter = waiter;
@@ -173,23 +253,24 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			state = BillState.NotComputed;
 		}
 	}
-	
+
 	public static class MarketBill {
 		public double balance;
 		public Market market;
-		public boolean invoice_received;
+		enum BillState{none, invoiceReceived, changeReceived}
+		public BillState state;
 		public Map<String, Double> price_list;
 		MarketBill(Market market, double money, Map<String, Double> price_list){
 			this.balance = money;
 			this.market = market;
-			invoice_received = false;
+			this.state = BillState.none;
 			this.price_list = price_list;
 		}
 	}
 
 	@Override
 	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-		
+		role_state = RoleState.WantToLeave;
+		stateChanged();
 	}
 }

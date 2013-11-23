@@ -15,4 +15,6 @@ public abstract class RestaurantCashierRole extends Role{
 	public abstract void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list);
 
 	public abstract void msgHereIsTheChange(Market m, double change);
+	
+	public abstract void msgTransactionComplete(double amount, Double balance, Double debt);
 }

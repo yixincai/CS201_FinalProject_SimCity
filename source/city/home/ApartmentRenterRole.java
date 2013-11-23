@@ -1,11 +1,19 @@
 package city.home;
 
+<<<<<<< HEAD
+import agent.Role;
+import city.PersonAgent;
+
+=======
+import city.Place;
+
 import java.util.List;
 
 import agent.Role;
 import city.Directory;
 import city.PersonAgent;
 
+>>>>>>> develop
 public class ApartmentRenterRole extends HomeBuyingRole
 {
 	// ---------------------------------- DATA -------------------------------------
@@ -49,13 +57,17 @@ public class ApartmentRenterRole extends HomeBuyingRole
 	// ---------------------------------- ACTIONS ----------------------------------
 	private void actStartARental()
 	{
-		List<ApartmentBuilding> apartmentbuildings = Directory.apartmentBuildings();
+		List<Place> apartmentBuildings = Directory.apartmentBuildings();
 		
-		for(ApartmentBuilding ab : apartmentBuildings)
+		for(Place p : apartmentBuildings)
 		{
-			
+			ApartmentBuilding ab = (ApartmentBuilding)p;
+			if(!ab.full())
+			{
+				_apartmentBuilding = ab;
+				break;
+			}
 		}
-		
 		
 		landlord = myApartmentBuilding.landlord;
 		landlord.msgIWouldLikeToStartRenting(this, myApartmentBuilding);

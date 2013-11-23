@@ -1,4 +1,7 @@
 package city.bank;
+import gui.WorldViewBuilding;
+import gui.BuildingInteriorAnimationPanel;
+
 import java.util.*;
 
 import city.PersonAgent;
@@ -11,8 +14,8 @@ public class Bank extends Place {
 	public List<BankTellerRole> tellers;
 	public BankHostRole host;
 	
-	public Bank(){
-		super();
+	public Bank(BuildingInteriorAnimationPanel bp){
+		super(bp);
 		BankTellerRole teller = new BankTellerRole(null,this);
 		tellers.add(teller); //
 		

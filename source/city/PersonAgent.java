@@ -4,13 +4,23 @@ import java.util.List;
 import java.util.Random;
 
 import city.bank.BankCustomerRole;
+import city.home.HomeBuyingRole;
+import city.bank.BankHostRole;
+import city.bank.BankTellerRole;
 import city.home.HomeRole;
 import city.market.Market;
+import city.market.MarketCashierRole;
 import city.market.MarketCustomerRole;
+import city.market.MarketEmployeeRole;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.yixin.YixinCashierRole;
+import city.restaurant.yixin.YixinCookRole;
 import city.restaurant.yixin.YixinCustomerRole;
+import city.restaurant.yixin.YixinHostRole;
+import city.restaurant.yixin.YixinNormalWaiterRole;
 import city.restaurant.yixin.YixinRestaurant;
+import city.restaurant.yixin.YixinWaiterRole;
 import city.transportation.CommuterRole;
 import agent.Agent;
 import agent.Role;
@@ -26,12 +36,13 @@ public class PersonAgent extends Agent
 	private Role _currentRole; // this should never be null
 	private boolean _sentCmdFinishAndLeave = false;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
-	private CommuterRole _commuterRole = new CommuterRole(this, null); //TODO null should be a Place
+	private CommuterRole _commuterRole = new CommuterRole(this, null); //TODO null should be the current Place
 	private Role _occupation;
 	private double _occupationStartTime;
 	private double _occupationEndTime;
 	private boolean _weekday_notWeekend;
-	HomeRole _homeRole;
+	private HomeRole _homeRole;
+	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house
 	
 	// State data:
 	public double _money;
@@ -91,10 +102,42 @@ public class PersonAgent extends Agent
 	
 	// -------------------------------- CONSTRUCTORS & PROPERTIES ------------------------------------
 	public PersonAgent(String name) { _name = name; }
+	public PersonAgent(String name, double money, String initOccupation) 
+	{_name = name; _money = money; this.setOccupation(initOccupation);}
 	// public PersonAgent(String name, Role r) { _name = name; ... }
 	public String name() { return _name; }
 	public double money() { return _money; }
 	public void changeMoney(double delta) { _money += delta; }
+	public void setOccupation(String occupation) 
+	{
+		/*switch(occupation)
+		{
+			case "Waiter":
+				_occupation = new YixinNormalWaiterRole(this, null restaurant ,this._name);
+				break;
+			case "Restaurant Cashier":
+				_occupation = new YixinCashierRole(this, null restaurant);
+				break;
+			case "Cook":
+				_occupation = new YixinCookRole(this, null restaurant);
+				break;
+			case "Restaurant Host":
+				_occupation = new YixinHostRole(this, null restaurant, this._name);
+				break;
+			case "Bank Teller":
+				_occupation = new BankTellerRole(this);
+				break;
+			case "Bank Host":
+				_occupation = new BankHostRole(this);
+				break;
+			case "Market Cashier":
+				_occupation = new MarketCashierRole(this, null market);
+				break;
+			case "Market Employee":
+				_occupation = new MarketEmployeeRole(this, null market);
+				break;
+		}*/
+	}
 	public void setOccupationStartTime(double occupationStartTime) { _occupationStartTime = occupationStartTime; }
 	public void setOccupationEndTime(double occupationEndTime) { _occupationEndTime = occupationEndTime; }
 	/** Shortcut for setting the occupation start and end times

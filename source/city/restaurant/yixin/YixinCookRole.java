@@ -12,7 +12,7 @@ import utilities.EventLog;
 public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	public YixinRestaurant restaurant;
 	public YixinCashierRole cashier;
-	
+
 	public EventLog log = new EventLog();
 	private String name = "TheBestCook";
 	public List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
@@ -20,17 +20,20 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	Timer timer = new Timer(), timer2 = new Timer();
 	public YixinCookGui cookGui = null;
 	boolean lowInFood = true;
-	
+
 	enum CookState{ableToOrder,OrderReceived,waitingToCheckout,none};
 	CookState state = CookState.ableToOrder;
 	enum CheckState{notChecked,Checked};
 	CheckState check_state = CheckState.notChecked;	
 	private Semaphore atTable = new Semaphore(0,true);
-	
+
 	public List<Item> invoice;	
 	public List<Market> markets = new ArrayList<Market>();
 	int market_count = 0;//switch to the next market if one cannot fulfill
 	Market current_market;
+
+	enum RoleState{WantToLeave,none}
+	RoleState role_state = RoleState.none;
 
 	public YixinCookRole(PersonAgent p, YixinRestaurant r) {
 		super(p);
@@ -73,7 +76,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 		o.state = Order.OrderState.Cooked;
 		stateChanged();
 	}
-	
+
 	public void msgOrderFinished(){
 		state = CookState.ableToOrder;
 	}
@@ -141,18 +144,23 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 				lowInFood = false;
 				return true;
 			}
-			if (check_state == CheckState.notChecked){
-				timer2.schedule(new TimerTask() {
-					public void run() {
-						print("Notify the cook to check revolving stand");
-						notifyCook();
-					}
-				}, 10000);
-				check_state = CheckState.Checked;
+			if (orders.size() == 0 && state == CookState.none && role_state == RoleState.WantToLeave){
+				LeaveRestaurant();
+				role_state = RoleState.none;
+				return true;
 			}
 		}
 		catch(ConcurrentModificationException e){
 			return false;
+		}
+		if (check_state == CheckState.notChecked){
+			timer2.schedule(new TimerTask() {
+				public void run() {
+					print("Notify the cook to check revolving stand");
+					notifyCook();
+				}
+			}, 10000);
+			check_state = CheckState.Checked;
 		}
 		GoHome();
 		return false;
@@ -162,7 +170,16 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	}
 
 	// Actions
-
+	public void LeaveRestaurant(){
+		cookGui.LeaveRestaurant();
+		try{
+			atTable.acquire();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void askForSupply(Market market){
 		print("Buy food from market.");
 		List<Item> order = new ArrayList<Item>();
@@ -209,7 +226,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 		order.w.msgOrderIsReady(order.choice, order.tableNumber);
 		orders.remove(order);
 	}
-	
+
 	private void giveInvoice(){
 		print("Giving invoice to cashier");
 		cashier.msgHereIsTheInvoice(current_market, invoice);
@@ -287,8 +304,8 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 
 	@Override
 	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-		
+		role_state = RoleState.WantToLeave;
+		stateChanged();		
 	}
 
 }

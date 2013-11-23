@@ -32,4 +32,8 @@ public abstract class Restaurant extends Place {
 	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // Make a new CustomerRole, which is initialized with a pointer to the HostRole.
 	public abstract Role generateWaiterRole();
 	public abstract Role getHostRole();
+	public RestaurantCashierRole getCashier(){
+		return Cashier;
+	}
+
 }
