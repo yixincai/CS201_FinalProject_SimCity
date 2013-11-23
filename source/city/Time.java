@@ -30,7 +30,7 @@ public class Time {
 		}
 	}
 	
-	private static double time = 0.0;
+	private static double time = 7.9; //0.0;
 	private static double counter = 0.1;
 	private static double timeFactor = 1.0;
 	
@@ -54,6 +54,7 @@ public class Time {
 			time = 0;
 			incrementDay();
 		}
+		if((double)((int)time) == time) { System.out.println("time: " + time); }
 	}
 	
 	public static void setTimeFactor(int newTimeFactor){

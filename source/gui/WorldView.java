@@ -10,12 +10,15 @@ import java.awt.GridLayout;
 
 import javax.swing.*;
 
+import city.transportation.gui.CommuterGui;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class WorldView extends JPanel implements MouseListener, ActionListener 
 {
 	private static int WINDOWX = 1024 * 2 / 3;
@@ -37,15 +40,22 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
      	timer.start();
 	}
 	
+    public void addGui(CommuterGui gui)
+    {
+       guis.add(gui);
+    }
+	
 	public WorldViewBuilding addBuilding(int x, int y, int dim)
 	{
 		 WorldViewBuilding b = new WorldViewBuilding( x, y, dim );
 		 buildings.add( b );
 		 return b;
 	}
+	
+	
 
 	public void paintComponent( Graphics g ) {
-		
+		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setColor( Color.black );
 		                        
@@ -68,7 +78,7 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
             {
                 gui.draw(g2);
             }
-        }
+        } 
 	}
 	
 	public ArrayList<WorldViewBuilding> getBuildings() {
@@ -113,7 +123,6 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-	
+		repaint(); // will call paintComponent
 	}
 }

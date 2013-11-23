@@ -13,7 +13,7 @@ public class Market extends Place{
 	public MarketCashierRole MarketCashier;
 	public MarketEmployeeRole MarketEmployee;
 	public TruckAgent truck;
-	
+
 	public Market(String s, WorldViewBuilding _worldViewBuilding){
 		super("Market", _worldViewBuilding);
 		MarketCashier = new MarketCashierRole(null,this);

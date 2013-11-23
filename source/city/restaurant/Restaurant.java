@@ -9,10 +9,14 @@ public abstract class Restaurant extends Place {
 	
 	// ------------------------------------ TYPE ------------------------------------------
 	
+
+	public Restaurant(String name) {
+		super(name, null);
+	}
+
 	public Restaurant(String name, WorldViewBuilding worldViewBuilding) {
 		super(name, worldViewBuilding);
 	}
-	
 	public enum Cuisine { BREAKFAST, NORMAL }
 	public enum Upscaleness { UPSCALE, NORMAL, CHEAP }
 	

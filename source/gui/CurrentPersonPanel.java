@@ -22,7 +22,7 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 {
 	JPanel view;
 	JPanel buttonPanel;
-	// List<JButton> personButtonList; // not currently used, may be needed though
+	JPanel infoPanel;
 	JLabel nameField;
 	JLabel moneyField;
 	JLabel currentRoleField;
@@ -33,7 +33,7 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 	{
 		cPanel = cp;
 		this.setLayout(new BorderLayout());
-		// personButtonList = new ArrayList<JButton>();
+		infoPanel = new JPanel();
 		JPanel infoPanel = new JPanel();
 		infoPanel.setPreferredSize(new Dimension(1024/3, 720/2));
 		infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
@@ -41,9 +41,9 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		nameField = new JLabel("Person Name:");
 		moneyField = new JLabel("Person Money:");
 		currentRoleField = new JLabel("Person Current Role:");
-		infoPanel.add(nameField); //TODO Add getter for the current person's name
-		infoPanel.add(moneyField); //TODO Add getter for the current person's money
-		infoPanel.add(currentRoleField); //TODO Add getter for current person's role
+		infoPanel.add(nameField); 
+		infoPanel.add(moneyField); 
+		infoPanel.add(currentRoleField); 
 		this.add(infoPanel, BorderLayout.NORTH);
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
@@ -69,7 +69,6 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		view.add(newPersonButton);
 		this.updateInfo(newPersonButton);
 		newPersonButton.setSelected(true);
-		
 	}
 	
 	public void updateInfo(JButton selected)
@@ -78,9 +77,9 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		//nameField.setText("Person Name: " + selected.getText());
 		for(PersonAgent tempPerson : Directory.personAgents())
 		{
-			if(tempPerson.name() == selected.getText())
+			if(tempPerson.getName() == selected.getText())
 			{
-				nameField.setText("Person Name: " + tempPerson.name());
+				nameField.setText("Person Name: " + tempPerson.getName());
 				moneyField.setText("Person Money: " + tempPerson.money() + "0");
 				currentRoleField.setText("Current Role: Need to implement toString() for the different roles.");
 			}

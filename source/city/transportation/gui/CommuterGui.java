@@ -22,6 +22,9 @@ public class CommuterGui implements Gui {
 	
 	//Constructor
 	public CommuterGui(CommuterRole commuter, Place startingPlace) {
+		System.out.println("Created CommuterGui");
+		_xPos = 300;
+		_yPos = 300;
 		_commuter = commuter;
 	}
 	
@@ -84,7 +87,7 @@ public class CommuterGui implements Gui {
 
 	@Override
 	public boolean isPresent() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
+		// TODO put a boolean data member
 	}
 }
