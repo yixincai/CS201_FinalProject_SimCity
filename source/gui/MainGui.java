@@ -70,7 +70,7 @@ public class MainGui extends JFrame
 		YixinRestaurant yr = new YixinRestaurant("Yixin's Restaurant", b, bp);
 		Directory.addPlace(yr);
 		_buildingCardLayoutPanel.add( bp, bp.getName() );
-		//cPanel.currentBuildingPanel.addBuilding(yr.getName()); // unsure if this is needed or not; I deleted it earlier
+		cPanel.currentBuildingPanel.addBuilding(yr.getName()); // unsure if this is needed or not; I deleted it earlier
         _buildingInteriorAnimationPanels.add(bp);
         
         
