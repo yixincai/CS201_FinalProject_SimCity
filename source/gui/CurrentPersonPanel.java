@@ -40,9 +40,9 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		nameField = new JLabel("Person Name:");
 		moneyField = new JLabel("Person Money:");
 		currentRoleField = new JLabel("Person Current Role:");
-		infoPanel.add(nameField); //TODO Add getter for the current person's name
-		infoPanel.add(moneyField); //TODO Add getter for the current person's money
-		infoPanel.add(currentRoleField); //TODO Add getter for current person's role
+		infoPanel.add(nameField); 
+		infoPanel.add(moneyField); 
+		infoPanel.add(currentRoleField); 
 		this.add(infoPanel, BorderLayout.NORTH);
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
