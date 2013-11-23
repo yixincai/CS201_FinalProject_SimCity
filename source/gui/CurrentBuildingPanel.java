@@ -38,33 +38,34 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 			infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 			buildingName = new JLabel("Building Name: ");
 			buildingMoney = new JLabel("Building Money: ");
-			infoPanel.add(buildingName); //Gives current building name
-			infoPanel.add(buildingMoney); //TODO Add getter for the current building's money
+			infoPanel.add(buildingName); 
+			infoPanel.add(buildingMoney); 
 			this.add(infoPanel, BorderLayout.NORTH);
 			buttonPanel = new JPanel();
 			buttonPanel.setLayout(new BorderLayout());
+			buttonPanel.setPreferredSize(new Dimension(1024/3, 720/2));
 			buttonPanel.setBorder(BorderFactory.createTitledBorder("Buildings"));
 			view = new JPanel();
 			view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
 			buildingButtons = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			buildingButtons.setViewportView(view);
 			buttonPanel.add(buildingButtons, BorderLayout.CENTER);
+			buttonPanel.validate();
 			this.add(buttonPanel, BorderLayout.CENTER);
 	}
 	
 	public void addBuilding(String name)
 	{
-		System.out.println(name + " BUTTON WHY ARENT YOU PRINTING!!");
-		JButton newBuilding = new JButton(name);
-		newBuilding.setBackground(Color.white);
-		Dimension paneSize = buildingButtons.getSize();
-		newBuilding.setPreferredSize(new Dimension(paneSize.width, paneSize.height/10));
-		newBuilding.setMinimumSize(new Dimension(paneSize.width, paneSize.height/10));
-		newBuilding.setMaximumSize(new Dimension(paneSize.width, paneSize.height/10));
-		newBuilding.addActionListener(this);
-		view.add(newBuilding);
-		this.updateInfo(newBuilding);
-		newBuilding.setSelected(true);
+		JButton newBuildingButton = new JButton(name);
+		newBuildingButton.setBackground(Color.white);
+		Dimension paneSize = new Dimension(1024/3, 720/2);
+		newBuildingButton.setPreferredSize(new Dimension(paneSize.width, paneSize.height/10));
+		newBuildingButton.setMinimumSize(new Dimension(paneSize.width, paneSize.height/10));
+		newBuildingButton.setMaximumSize(new Dimension(paneSize.width, paneSize.height/10));
+		newBuildingButton.addActionListener(this);
+		view.add(newBuildingButton);
+		this.updateInfo(newBuildingButton);
+		newBuildingButton.setSelected(true);
 	}
 	
 	public void updateInfo(JButton selected)
@@ -74,9 +75,9 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 			Place tempPlace = Directory.places().get(i);
 			if(tempPlace.getName() == selected.getText())
 			{
-				System.out.println(("Proof!!"));
 				buildingName.setText("Building Name: " + Directory.places().get(i)._name);
 				buildingMoney.setText("Building Money: Need a money field in places");
+				tempPlace.getBuilding().displayBuilding();
 			}
 		}
 	}
@@ -90,7 +91,6 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e)
 	{
 		updateInfo((JButton)e.getSource());
-
 	}
 
 }
