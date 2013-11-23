@@ -7,6 +7,7 @@ import city.Directory;
 import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.CommuterGui;
+import city.transportation.interfaces.Bus;
 import city.transportation.interfaces.Commuter;
 
 /**
@@ -19,8 +20,8 @@ public class CommuterRole extends Role implements Commuter{
 	public Place _currentPlace;
 	BusStopObject _busStop;
 	CarObject _car = new CarObject();
-	BusAgent _bus;
-	int _fare;
+	Bus _bus;
+	public int _fare;
 	CommuterGui gui = new CommuterGui(this, null);
 	
 	public enum TravelState{choosing, 
@@ -39,7 +40,6 @@ public class CommuterRole extends Role implements Commuter{
 	//Probably won't need -> not 100% sure though
 	enum CarState{noCar, hasCar, usingCar};
 	CarState _cState = CarState.noCar; 
-	
 	
 	//----------------------------------------------CONSTRUCTOR & PROPERTIES----------------------------------------
 	public CommuterRole(PersonAgent person, Place place){
@@ -74,7 +74,7 @@ public class CommuterRole extends Role implements Commuter{
 		_tState = TravelState.atBusStop;
 		_currentPlace = busstop;
 	}
-	public void msgGetOnBus(int fare, BusAgent bus){
+	public void msgGetOnBus(int fare, Bus bus){
 		_tState = TravelState.busIsHere;
 		_bus = bus;
 		_fare = fare;
@@ -196,7 +196,7 @@ public class CommuterRole extends Role implements Commuter{
 	}
 	public void actAtBusStop(){
 		_tState = TravelState.waitingAtBusStop;
-		_busStop = Directory.getNearestBusStop(_currentPlace);
+		//_busStop = Directory.getNearestBusStop(_currentPlace); (Remove comment when implemented)
 		
 		_busStop.addPerson(this);
 	}

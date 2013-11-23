@@ -11,7 +11,7 @@ public interface Commuter {
 	//Bus Transportation messages
 	public void msgAtBusStop(BusStopObject busstop);
 	
-	public void msgGetOnBus(int fare, BusAgent bus);
+	public void msgGetOnBus(int fare, Bus bus);
 	
 	public void msgGetOffBus(Place place);
 	
