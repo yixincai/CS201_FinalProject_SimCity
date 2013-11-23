@@ -11,6 +11,8 @@ import city.Place;
 import city.transportation.gui.BusAgentGui;
 import city.transportation.interfaces.Bus;
 
+//NOTES when taking bus, must decide who finds which busstop is nearest to destination (commuter role or busagent)
+
 public class BusAgent extends Agent implements Bus{
 	String _name;
 	

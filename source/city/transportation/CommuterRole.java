@@ -13,6 +13,9 @@ import city.transportation.interfaces.Commuter;
 /**
  * There is one CommuterRole per person, and the CommuterRole is the one that 
  */
+
+//NOTES when taking bus, must decide who finds which busstop is nearest to destination (commuter role or busagent)
+
 public class CommuterRole extends Role implements Commuter{
 	// This is set by PersonAgent, and it is CommuterRole's responsibility to get to that location, then set its active to false.
 	public PersonAgent _person;
@@ -20,7 +23,7 @@ public class CommuterRole extends Role implements Commuter{
 	public Place _currentPlace;
 	BusStopObject _busStop;
 	CarObject _car = new CarObject();
-	Bus _bus;
+	public Bus _bus;
 	public int _fare;
 	CommuterGui gui = new CommuterGui(this, null);
 	
@@ -185,7 +188,7 @@ public class CommuterRole extends Role implements Commuter{
 	//Walking
 	public void actWalking(){
 		_tState = TravelState.walking;
-		gui.walkToLocation(_destination);
+		//gui.walkToLocation(_destination);
 	}
 	
 	//Bus

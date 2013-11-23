@@ -3,6 +3,7 @@ package city.transportation.mock;
 import city.Place;
 import city.transportation.BusAgent;
 import city.transportation.BusStopObject;
+import city.transportation.interfaces.Bus;
 import city.transportation.interfaces.Commuter;
 
 public class MockCommuter extends Mock implements Commuter{
