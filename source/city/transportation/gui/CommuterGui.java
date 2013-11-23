@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 
 import gui.Gui;
 import city.Place;
-import city.transportation.BusStop;
+import city.transportation.BusStopObject;
 import city.transportation.CarObject;
 import city.transportation.CommuterRole;
 
@@ -35,7 +35,7 @@ public class CommuterGui implements Gui {
 	}
 	
 	//Bus gui
-	public void goToBusStop(BusStop busstop){
+	public void goToBusStop(BusStopObject busstop){
 		_transportationType = TransportationType.ridingBus;
 	}
 	
