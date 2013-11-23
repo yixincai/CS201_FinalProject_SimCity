@@ -7,7 +7,6 @@ import utilities.LoggedEvent;
 import city.*;
 import city.bank.BankTellerRole;
 import city.market.*;
-import city.market.MarketCashierRole.MoneyState;
 import city.restaurant.RestaurantCashierRole;
 import city.restaurant.yixin.gui.YixinCashierGui;
 
