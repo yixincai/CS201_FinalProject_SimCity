@@ -20,8 +20,8 @@ public class BusAgent extends Agent implements Bus{
 	BusStopObject currentDestination;
 	List<CommuterRole> currentBusStopList = new ArrayList<CommuterRole>();
 	
-	static int fare;
-	int register;
+	static int _fare;
+	int _register;
 
 	static int capacity;
 	int numPeople = 0;
@@ -43,8 +43,14 @@ public class BusAgent extends Agent implements Bus{
 	    }
 	}
 	
-	public BusAgent(){
-		
+	public BusAgent(String name, int fare){
+		_name = name;
+		_fare = fare;
+	}
+	
+	public BusAgent(String name){
+		_name = name;
+		_fare = 1;
 	}
 	
 	//----------------------------------------------Messages----------------------------------------
@@ -59,8 +65,9 @@ public class BusAgent extends Agent implements Bus{
 	    numPeople--;
 	}
 
-	public void msgGettingOnBoard(CommuterRole person, Place destination, int payment){
+	public void msgGettingOnBoard(CommuterRole person, Place destination, int payment){ //Check if payment is correct?
 	    passengers.add(new MyCommuter(person, destination));
+	    _register += payment;
 	    numPeople++; //Fix this
 	}
 	
@@ -101,7 +108,7 @@ public class BusAgent extends Agent implements Bus{
 		bState = BusState.pickingup;
 	    while(expectedPeople <= capacity){
 	    	for(CommuterRole comm: currentBusStopList){
-	    		comm.msgGetOnBus(fare, this);
+	    		comm.msgGetOnBus(_fare, this);
 	            expectedPeople++;
 	        }
 	    }
@@ -126,6 +133,11 @@ public class BusAgent extends Agent implements Bus{
 	
 	public String getName(){
 		return _name;
+	}
+
+	@Override
+	public void setFare(int fare) {
+		_fare = fare;
 	}
 	
 }

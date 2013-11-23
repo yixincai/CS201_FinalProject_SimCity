@@ -31,4 +31,10 @@ public class MockBus extends Mock implements Bus{
 		
 	}
 
+	@Override
+	public void setFare(int fare) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

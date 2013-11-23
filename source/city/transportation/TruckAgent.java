@@ -1,6 +1,7 @@
 package city.transportation;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
@@ -17,7 +18,7 @@ import city.transportation.interfaces.Truck;
 import city.market.Item;
 
 public class TruckAgent extends Agent implements Truck{
-	List<Package> packages;
+	List<Package> packages = new ArrayList<Package>();
 	Semaphore isMoving;
 	Market _market;
 	TruckAgentGui gui;
