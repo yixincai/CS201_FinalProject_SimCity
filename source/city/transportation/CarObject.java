@@ -1,7 +1,11 @@
 package city.transportation;
 
-public class CarObject {
+import city.Place;
 
+public class CarObject {
+	
+	public Place location;
+	
 	//Position
 	int _xPos;
 	int _yPos;

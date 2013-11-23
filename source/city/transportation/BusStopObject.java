@@ -4,7 +4,7 @@ import java.util.List;
 
 import city.Place;
 
-public class BusStop extends Place {
+public class BusStopObject extends Place {
 	List<CommuterRole> _waitList;
 	
 	public void addPerson(CommuterRole person){
