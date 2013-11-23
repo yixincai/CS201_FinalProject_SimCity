@@ -1,5 +1,7 @@
 package city.restaurant.yixin;
 
+import gui.WorldViewBuilding;
+
 import java.util.*;
 
 import agent.Role;
@@ -15,8 +17,11 @@ public class YixinRestaurant extends Restaurant{
 	public List<YixinWaiterRole> Waiters = new ArrayList<YixinWaiterRole>();
 	private YixinAnimationPanel _animationPanel;
 	
+	
+	
 	public YixinRestaurant(String name, gui.WorldViewBuilding worldViewBuilding, gui.BuildingInteriorAnimationPanel animationPanel){
 		super(name, worldViewBuilding);
+		
 		this._animationPanel = (YixinAnimationPanel)animationPanel.getBuildingAnimation();
 		
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
@@ -62,5 +67,4 @@ public class YixinRestaurant extends Restaurant{
 		return Host;
 	}
 	
-
 }

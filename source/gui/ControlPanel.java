@@ -23,7 +23,7 @@ public class ControlPanel extends JTabbedPane {
 	
 	CreatePersonPanel newPersonPanel;
 	CurrentPersonPanel currentPersonPanel;
-	CurrentBuildingPanel currentBuildingPanel;
+	public CurrentBuildingPanel currentBuildingPanel;
 	MainGui mainGui;
 	
 	public ControlPanel(MainGui mGui)
@@ -32,7 +32,7 @@ public class ControlPanel extends JTabbedPane {
 		//This is all placeholder code just to get the panels into tabs.  Each tab will have its own class eventually.
 		newPersonPanel = new CreatePersonPanel(this);
 		currentPersonPanel = new CurrentPersonPanel(this);
-		currentBuildingPanel = new CurrentBuildingPanel();
+		currentBuildingPanel = new CurrentBuildingPanel(this);
 		this.addTab("Current Person", null, currentPersonPanel, "Info about the currently selected person.");
 		this.addTab("Current Building", null, currentBuildingPanel, "Info about the currently selected building.");
 		this.addTab("New Person", null, newPersonPanel, "Create a new citizen of SimCity201.");

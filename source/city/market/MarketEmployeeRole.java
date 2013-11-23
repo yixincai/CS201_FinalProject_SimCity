@@ -3,6 +3,7 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
+import city.Place;
 import city.market.MarketCashierRole.*;
 import city.market.gui.*;
 import city.market.interfaces.MarketEmployee;
@@ -118,5 +119,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public Place place() {
+		// TODO Auto-generated method stub
+		return market;
 	}
 }

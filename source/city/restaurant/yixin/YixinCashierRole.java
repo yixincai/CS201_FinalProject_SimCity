@@ -282,4 +282,10 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		role_state = RoleState.WantToLeave;
 		stateChanged();
 	}
+
+	@Override
+	public Place place() {
+		// TODO Auto-generated method stub
+		return restaurant;
+	}
 }

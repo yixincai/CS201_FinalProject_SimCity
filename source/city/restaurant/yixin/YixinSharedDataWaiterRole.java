@@ -1,6 +1,7 @@
 package city.restaurant.yixin;
 
 import city.PersonAgent;
+import city.Place;
 
 public class YixinSharedDataWaiterRole extends YixinWaiterRole{
 	public YixinSharedDataWaiterRole(PersonAgent person, YixinRestaurant r, String name) {
@@ -22,6 +23,10 @@ public class YixinSharedDataWaiterRole extends YixinWaiterRole{
 	public void cmdFinishAndLeave() {
 		role_state = RoleState.WantToLeave;
 		stateChanged();		
+	}
+	public Place place() {
+		// TODO Auto-generated method stub
+		return restaurant;
 	}
 }
 

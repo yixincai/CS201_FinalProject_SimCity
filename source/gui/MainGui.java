@@ -50,6 +50,9 @@ public class MainGui extends JFrame
 	    
 	    //World View
 	    _worldView = new WorldView();
+	    
+	    //Control Panel
+	    cPanel = new ControlPanel(this);
 	        
 		//The code below will add an area for the two gui areas to go. BuildingView + WorldView
 		JPanel animationArea = new JPanel();
@@ -67,7 +70,9 @@ public class MainGui extends JFrame
 		YixinRestaurant yr = new YixinRestaurant("Yixin's Restaurant", b, bp);
 		Directory.addPlace(yr);
 		_buildingCardLayoutPanel.add( bp, bp.getName() );
+		//cPanel.currentBuildingPanel.addBuilding(yr.getName()); // unsure if this is needed or not; I deleted it earlier
         _buildingInteriorAnimationPanels.add(bp);
+        
         
         
         /*
@@ -98,7 +103,7 @@ public class MainGui extends JFrame
 		 */
         
       //The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
-  	  cPanel = new ControlPanel(this);
+  	  
   	  this.add(cPanel, Component.RIGHT_ALIGNMENT);
   	  this.pack();		
   	  this.setVisible(true);
