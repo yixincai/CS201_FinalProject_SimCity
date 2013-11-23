@@ -6,6 +6,7 @@ import java.util.concurrent.Semaphore;
 
 import agent.Role;
 import city.PersonAgent;
+import city.Place;
 import city.bank.gui.BankTellerRoleGui;
 import city.bank.interfaces.BankTeller;
 
@@ -13,6 +14,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	
 	//Data
 	List<MyCustomer> myCustomers;
+	List<MyBusinessCustomer> myBusinessCustomers;
 	BankHostRole host;
 	boolean occupied;
 	String name;
@@ -54,6 +56,18 @@ public class BankTellerRole extends Role implements BankTeller {
 	      CustomerState customerState;
 	}
 	
+	private class MyBusinessCustomer{
+		Place place;
+		int accountNumber;
+		double amount;
+		
+		MyBusinessCustomer(Place place, int accountNumber, double amount){
+			this.place = place;
+			this.accountNumber = accountNumber;
+			this.amount = amount;
+		}
+	}
+	
 	enum CustomerState { None, Arrived, GivingRequest, GivenRequest};
 	
 	//Messages
@@ -85,8 +99,30 @@ public class BankTellerRole extends Role implements BankTeller {
 		  }
 	}
 	
+	//FOR CASHIERS OF RESTAURANTS AND CASHIERS OF MARKETS
+	public void msgDeposit(Place place, int accountNumber, double amount){
+		int newAccntNum;
+		if(accountNumber == -1){  //means it doesn't exist yet
+			   newAccntNum = (int)(Math.random()*20000) + 10000; //open account from 20k to 10k for businesses
+			   while(database.funds.containsKey(newAccntNum)){
+				   newAccntNum = (int)(Math.random()*20000) + 10000;
+			   }
+		} else{
+				newAccntNum = accountNumber;		//existing account
+		}
+		
+		database.funds.put(newAccntNum, 0.0);
+		database.amountOwed.put(newAccntNum, 0.0);
+		MyBusinessCustomer businessCustomer = new MyBusinessCustomer(place, newAccntNum, amount);
+		myBusinessCustomers.add(businessCustomer);
+		stateChanged();
+	}
+	
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
+		for(MyBusinessCustomer mb: myBusinessCustomers){
+			
+		}
 		for(MyCustomer m: myCustomers){
 			if(m.customerState == CustomerState.Arrived){
 				actAskForARequest(m);
