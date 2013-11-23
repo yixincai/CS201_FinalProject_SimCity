@@ -7,11 +7,12 @@ import city.Directory;
 import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.CommuterRoleGui;
+import city.transportation.interfaces.Commuter;
 
 /**
  * There is one CommuterRole per person, and the CommuterRole is the one that 
  */
-public class CommuterRole extends Role {
+public class CommuterRole extends Role implements Commuter{
 	// This is set by PersonAgent, and it is CommuterRole's responsibility to get to that location, then set its active to false.
 	public PersonAgent _person;
 	public Place _destination;
@@ -51,7 +52,7 @@ public class CommuterRole extends Role {
 	}
 	
 	//Bus Transportation messages
-	public void msgAtBusStop(BusStop busstop){ //GUI message
+	public void msgAtBusStop(BusStopObject busstop){ //GUI message
 		_tState = travelState.atBusStop;
 		_currentPlace = busstop;
 	}
@@ -161,14 +162,14 @@ public class CommuterRole extends Role {
 	
 	//Bus
 	public void actGoToBusStop(){
-		BusStop busStop;
+		BusStopObject busStop;
 
 		_tState = travelState.goingToBusStop;
 		busStop = Directory.getNearestBusStop(_currentPlace);
 		gui.goToBusStop(busStop);
 	}
 	public void actAtBusStop(){
-		BusStop busStop;
+		BusStopObject busStop;
 
 		_tState = travelState.waitingAtBusStop;
 		busStop = Directory.getNearestBusStop(_currentPlace);

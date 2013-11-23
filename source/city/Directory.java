@@ -7,7 +7,7 @@ import java.util.List;
 import city.bank.Bank;
 import city.market.Market;
 import city.restaurant.Restaurant;
-import city.transportation.BusStop;
+import city.transportation.BusStopObject;
 
 public class Directory {
 	
@@ -71,11 +71,11 @@ public class Directory {
 	
 	
 	
-	public static BusStop getNearestBusStop(Place fromPlace)
+	public static BusStopObject getNearestBusStop(Place fromPlace)
 	{
 		for(Place p : _places)
 		{
-			if(p instanceof BusStop)
+			if(p instanceof BusStopObject)
 			{
 				
 			}

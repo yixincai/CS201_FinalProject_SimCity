@@ -5,15 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import agent.Agent;
 import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.BusAgentGui;
+import city.transportation.interfaces.Bus;
 
-public class BusAgent {
+public class BusAgent extends Agent implements Bus{
+	String _name;
+	
 	List<MyCommuter> passengers = new ArrayList<MyCommuter>();
 	BusAgentGui _gui = new BusAgentGui();
 	
-	BusStop currentDestination;
+	BusStopObject currentDestination;
 	List<CommuterRole> currentBusStopList = new ArrayList<CommuterRole>();
 	
 	static int fare;
@@ -44,7 +48,7 @@ public class BusAgent {
 	}
 	
 	//----------------------------------------------Messages----------------------------------------
-	public void msgAtDestination(BusStop busstop){
+	public void msgAtDestination(BusStopObject busstop){
 	    currentDestination = busstop;
 	    
 	    bState = BusState.atDestination;
@@ -118,6 +122,10 @@ public class BusAgent {
 			}
 			return null;
 		}
+	}
+	
+	public String getName(){
+		return _name;
 	}
 	
 }

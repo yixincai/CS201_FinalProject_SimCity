@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import agent.Agent;
 import city.Place;
 import city.market.Market;
 import city.market.MarketCashierRole;
@@ -12,9 +13,10 @@ import city.restaurant.RestaurantCookRole;
 import city.restaurant.yixin.YixinCookRole;
 import city.transportation.gui.BusAgentGui;
 import city.transportation.gui.TruckAgentGui;
+import city.transportation.interfaces.Truck;
 import city.market.Item;
 
-public class TruckAgent {
+public class TruckAgent extends Agent implements Truck{
 	List<Package> packages;
 	Semaphore isMoving;
 	Market _market;
@@ -94,9 +96,9 @@ public class TruckAgent {
 	public void PickFromDock(Package aPackage){
 		trState = truckState.docking;
 		out = true;
-		gui.goToDock();
-		isMoving.acquire();
-		_market.();
+		gui.goToDock(_market);
+		//isMoving.acquire();
+		_market.msgPickUpItems();
 		aPackage.pState = packageState.inTruck;
 		
 	}
@@ -104,7 +106,7 @@ public class TruckAgent {
 	public void DeliverToDestination(Package aPackage){
 		trState = truckState.drivingtoRestaurant;
 		gui.goToDestination(aPackage._restaurant);
-		isMoving.acquire();
+		//isMoving.acquire();
 		aPackage._restaurant.Cook.msgOrderFulfillment(_market, aPackage._items); //Make sure GUI shows that it's dropped off !important!
 		trState = truckState.atRestaurant;
 		packages.remove(aPackage);
@@ -112,8 +114,8 @@ public class TruckAgent {
 
 	public void GoBackToMarket(){
 	    out = false;
-	    gui.goToMarket(_market);
-	    isMoving.acquire();
-	    _market.MarketCashier.msgBackFromRun(this);
+	    gui.goToMarketParkingLot(_market);
+	    //isMoving.acquire();
+	    trState = truckState.parkingLot;
 	}
 }
