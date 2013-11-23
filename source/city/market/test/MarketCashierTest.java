@@ -48,7 +48,7 @@ public class MarketCashierTest  extends TestCase {
 
 		//run scheduler
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
-		assertEquals("Cashier should have 1 market bill after the sceduler has been run. It doesn't.",cashier.customers.size(), 1);
+		assertEquals("Cashier should have 1 customer bill after the sceduler has been run. It doesn't.",cashier.customers.size(), 1);
 		assertEquals("Bill should have the correct state. It doesn't.",cashier.customers.get(0).state,
 				MarketCashierRole.CustomerOrder.customerState.none);
 		
@@ -60,10 +60,19 @@ public class MarketCashierTest  extends TestCase {
 				MarketCashierRole.CustomerOrder.customerState.collected);
 
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
-		assertEquals("Cashier should have 1 market bill after the sceduler has been run. It doesn't.",cashier.customers.size(), 1);
+		assertEquals("Cashier should have 1 customer bill after the sceduler has been run. It doesn't.",cashier.customers.size(), 1);
 		
 		assertFalse("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 		
+		cashier.msgPay(customer, 250);
+		assertEquals("Cashier should have 1 customer bill in it. It doesn't.",cashier.customers.size(), 1);	
+		assertEquals("Bill should have the correct state. It doesn't.",cashier.customers.get(0).state, 
+				MarketCashierRole.CustomerOrder.customerState.paid);
+
+		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
+		assertEquals("Cashier should have 0 customer bill after the sceduler has been run. It doesn't.",cashier.customers.size(), 0);
+		
+		assertFalse("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 	}
 	
 	public void testOneNormalRestaurantScenario(){
