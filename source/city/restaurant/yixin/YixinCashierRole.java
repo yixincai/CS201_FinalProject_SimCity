@@ -5,6 +5,7 @@ import java.util.*;
 import utilities.EventLog;
 import utilities.LoggedEvent;
 import city.*;
+import city.bank.BankTellerRole;
 import city.market.*;
 import city.restaurant.RestaurantCashierRole;
 import city.restaurant.yixin.gui.YixinCashierGui;
@@ -12,19 +13,25 @@ import city.restaurant.yixin.gui.YixinCashierGui;
 public class YixinCashierRole extends RestaurantCashierRole{// implements Cashier{
 	public YixinRestaurant restaurant;
 	public YixinCookRole cook;
-
+	public BankTellerRole bankTeller;
+	
 	public EventLog log = new EventLog();
     private String name = "Cashier";
 	public List<CustomerBill> bills = Collections.synchronizedList(new ArrayList<CustomerBill>());
 	public List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 	public static Menu menu = new Menu();
 	public YixinCashierGui cashierGui = null;
-	public double money;
+	public double money, bankBalance, bankDebt;
+	public int account_number;
+	enum MoneyState{OrderedFromBank, none}
+	MoneyState money_state = MoneyState.none;
 	
 	public YixinCashierRole(PersonAgent p, YixinRestaurant r) {
 		super(p);
 		this.restaurant = r;
 		money = 130.0;
+		bankBalance = 0;
+		bankDebt = 0;
 	}
 	
 	public void setGui(YixinCashierGui g) {
@@ -63,17 +70,19 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	}
 	
 	public void msgHereIsTheChange(Market m, double change){
-		log.add(new LoggedEvent("Received HereIsTheChange from market. Bill = "+ change));
 		print("Market change received with amount of " + change);
 		money += change;
-		cook.msgOrderFinished();
+		for (MarketBill bill : marketBills){
+			if (bill.market == m)
+				bill.state = MarketBill.BillState.changeReceived;
+		}
 		stateChanged();
 	}
 	
 	public void msgHereIsTheInvoice(Market m, List<Item> invoice) {
 		for (MarketBill bill : marketBills){
 			if (bill.market == m)
-				bill.invoice_received = true;
+				bill.state = MarketBill.BillState.invoiceReceived;
 		}
 		stateChanged();		
 	}
@@ -98,11 +107,25 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			}
 			if (money > 0){
 				for (MarketBill bill : marketBills)
-					if (bill.invoice_received){
+					if (bill.state == MarketBill.BillState.invoiceReceived){
 						payMarketBill(marketBills.get(0));
 						return true;
 					}
 			}
+			for (MarketBill bill : marketBills)
+				if (bill.state == MarketBill.BillState.changeReceived){
+					cook.msgOrderFinished();
+					marketBills.remove(bill);
+					return true;
+				}
+			if (money > 0 && bankDebt > 0){
+				
+				return true;
+			}
+			else if (money < 0){
+				bankTeller.msgWiredTransaction(c, request, amount);
+			}
+				
 		}
 		catch(ConcurrentModificationException e){
 			return false;
@@ -142,7 +165,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			money -= bill.balance;
 			print("Remaining money is " + money);
 			bill.market.MarketCashier.msgHereIsPayment(restaurant, bill.balance);
-			marketBills.remove(0);
+			bill.state = MarketBill.BillState.none;
 		}
 		else {
 			marketBills.get(0).balance -= money;
@@ -177,12 +200,13 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	public static class MarketBill {
 		public double balance;
 		public Market market;
-		public boolean invoice_received;
+		enum BillState{none, invoiceReceived, changeReceived}
+		public BillState state;
 		public Map<String, Double> price_list;
 		MarketBill(Market market, double money, Map<String, Double> price_list){
 			this.balance = money;
 			this.market = market;
-			invoice_received = false;
+			this.state = BillState.none;
 			this.price_list = price_list;
 		}
 	}
