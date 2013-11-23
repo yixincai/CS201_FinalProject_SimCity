@@ -40,13 +40,22 @@ public class CommuterRole extends Role implements Commuter{
 	PrefTransport pTransport = PrefTransport.none;
 	
 	
-	//----------------------------------------------Constructor----------------------------------------
+	//----------------------------------------------CONSTRUCTOR & PROPERTIES----------------------------------------
 	public CommuterRole(PersonAgent person, Place place){
 		super(person);
 		_person = person;
 		_currentPlace = place;
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void setCar(CarObject car){_car = car;}
+	
+	public Place destination() { return _destination; }
+	public void setDestination(Place place) { _destination = place; }
+	
+	public Place currentPlace() { return _currentPlace; }
+
+	public Place place() { return currentPlace(); }
 	
 	//----------------------------------------------Command---------------------------------------------
 	
@@ -240,15 +249,6 @@ public class CommuterRole extends Role implements Commuter{
 		
 		
 	}
-	
-	
-	//----------------------------------------------Setter----------------------------------------
-	public void setCar(CarObject car){_car = car;}
-	
-	public Place destination() { return _destination; }
-	public void setDestination(Place place) { _destination = place; }
-	
-	public Place currentPlace() { return _currentPlace; }
 	
 
 }

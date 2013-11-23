@@ -10,15 +10,20 @@ import java.awt.GridLayout;
 
 import javax.swing.*;
 
+import restaurant.gui.Gui;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class WorldView extends JPanel implements MouseListener, ActionListener 
 {
 	private static int WINDOWX = 1024 * 2 / 3;
 	private static int WINDOWY = 720 / 2;
+
+    private List<Gui> guis = new ArrayList<Gui>();
 	
 	ArrayList<WorldViewBuilding> buildings;
 	
@@ -95,5 +100,23 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		System.out.println("Road image clicked");
 		
 	
+	}
+	
+	public void paintComponent() {
+        for(Gui gui : guis)
+        {
+            if (gui.isPresent())
+            {
+                gui.updatePosition();
+            }
+        }
+
+        for(Gui gui : guis)
+        {
+            if (gui.isPresent())
+            {
+                gui.draw(graphicsDrawing);
+            }
+        }
 	}
 }

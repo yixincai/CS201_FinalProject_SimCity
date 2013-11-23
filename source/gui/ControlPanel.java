@@ -17,6 +17,7 @@ import javax.swing.JTabbedPane;
 import city.Directory;
 import city.PersonAgent;
 import city.transportation.CommuterRole;
+import city.transportation.gui.CommuterGui;
 
 public class ControlPanel extends JTabbedPane {
 	
@@ -48,9 +49,12 @@ public class ControlPanel extends JTabbedPane {
 		
 		currentPersonPanel.addPerson(name);
 		PersonAgent newPerson = new PersonAgent(name, money, occupation);
-		newPerson.setCommuterRole(new CommuterRole(newPerson, null));
 		newPerson.setShift(shift, weekday_notWeekend);
+		CommuterRole newCommuterRole = new CommuterRole(newPerson, null);
+		newPerson.setCommuterRole(newCommuterRole);
+		CommuterGui newCommuterGui = new CommuterGui(newCommuterRole, null);
 		Directory.addPerson(newPerson);
+		mainGui.getWorldView().addGui(newCommuterGui);
 		this.setSelectedComponent(currentPersonPanel);
 		// TODO this is where we should actually create the new Person agent.  We should discuss how we want to handle the agents.
 	}

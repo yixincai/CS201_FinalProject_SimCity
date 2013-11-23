@@ -119,7 +119,7 @@ public class Directory {
 		{
 			if(p instanceof BusStopObject)
 			{
-				
+				return (BusStopObject)p;
 			}
 		}
 		return null;
