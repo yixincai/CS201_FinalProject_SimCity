@@ -36,7 +36,7 @@ public class ControlPanel extends JTabbedPane {
 		mainGui = mGui;
 		//This is all placeholder code just to get the panels into tabs.  Each tab will have its own class eventually.
 		newPersonPanel = new CreatePersonPanel(this);
-		currentPersonPanel = new CurrentPersonPanel();
+		currentPersonPanel = new CurrentPersonPanel(this);
 		currentBuildingPanel = new CurrentBuildingPanel();
 		this.addTab("Current Person", null, currentPersonPanel, "Info about the currently selected person.");
 		this.addTab("Current Building", null, currentBuildingPanel, "Info about the currently selected building.");
