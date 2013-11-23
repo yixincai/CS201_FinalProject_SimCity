@@ -7,8 +7,9 @@ import java.util.concurrent.Semaphore;
 import agent.Role;
 import city.PersonAgent;
 import city.bank.gui.BankTellerRoleGui;
+import city.bank.interfaces.BankTeller;
 
-public class BankTellerRole extends Role {
+public class BankTellerRole extends Role implements BankTeller {
 	
 	//Data
 	List<MyCustomer> myCustomers;

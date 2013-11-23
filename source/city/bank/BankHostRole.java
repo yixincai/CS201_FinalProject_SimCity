@@ -6,8 +6,9 @@ import java.util.concurrent.Semaphore;
 import agent.Role;
 import city.PersonAgent;
 import city.bank.gui.BankHostRoleGui;
+import city.bank.interfaces.BankHost;
 
-public class BankHostRole extends Role {
+public class BankHostRole extends Role implements BankHost {
 
 	public BankHostRole(PersonAgent person, Bank bank, List<BankTellerRole> tellers) {
 		super(person);
