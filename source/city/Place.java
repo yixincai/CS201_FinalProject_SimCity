@@ -13,10 +13,6 @@ public abstract class Place {
 	Building building;
 	BuildingPanel buildingPanel;
 	
-	public Place(String type){
-		this.type = type;
-	}
-	
 	public Place(String type, Building building, BuildingPanel buildingPanel){
 		this.type = type;
 		this.building = building;

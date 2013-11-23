@@ -40,7 +40,6 @@ public class ControlPanel extends JTabbedPane {
 	}
 	
 	public void updateBuildingInfo(BuildingPanel bp){
-		System.out.println("HERE");
 		currentBuildingPanel.setBuildingPanel(bp);
 		this.setSelectedComponent(currentBuildingPanel);
 	}
@@ -49,7 +48,6 @@ public class ControlPanel extends JTabbedPane {
 	{
 		currentPersonPanel.addPerson(name);
 		this.setSelectedComponent(currentPersonPanel);
-
 		// TODO this is where we should actually create the new Person agent.  We should discuss how we want to handle the agents.
 	}
 }
