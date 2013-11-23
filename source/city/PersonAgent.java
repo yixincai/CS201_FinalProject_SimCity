@@ -108,19 +108,19 @@ public class PersonAgent extends Agent
 	public void changeMoney(double delta) { _money += delta; }
 	public void setOccupation(String occupation) 
 	{
-		switch(occupation)
+		/*switch(occupation)
 		{
 			case "Waiter":
-				_occupation = new YixinNormalWaiterRole(this, null/*restaurant*/ ,this._name);
+				_occupation = new YixinNormalWaiterRole(this, null restaurant ,this._name);
 				break;
 			case "Restaurant Cashier":
-				_occupation = new YixinCashierRole(this, null /*restaurant*/);
+				_occupation = new YixinCashierRole(this, null restaurant);
 				break;
 			case "Cook":
-				_occupation = new YixinCookRole(this, null /*restaurant*/);
+				_occupation = new YixinCookRole(this, null restaurant);
 				break;
 			case "Restaurant Host":
-				_occupation = new YixinHostRole(this, null /*restaurant*/, this._name);
+				_occupation = new YixinHostRole(this, null restaurant, this._name);
 				break;
 			case "Bank Teller":
 				_occupation = new BankTellerRole(this);
@@ -129,12 +129,12 @@ public class PersonAgent extends Agent
 				_occupation = new BankHostRole(this);
 				break;
 			case "Market Cashier":
-				_occupation = new MarketCashierRole(this, null/*market*/);
+				_occupation = new MarketCashierRole(this, null market);
 				break;
 			case "Market Employee":
-				_occupation = new MarketEmployeeRole(this, null /*market*/);
+				_occupation = new MarketEmployeeRole(this, null market);
 				break;
-		}
+		}*/
 	}
 	public void setOccupationStartTime(double occupationStartTime) { _occupationStartTime = occupationStartTime; }
 	public void setOccupationEndTime(double occupationEndTime) { _occupationEndTime = occupationEndTime; }

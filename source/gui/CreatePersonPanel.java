@@ -31,7 +31,7 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 {
 	String[] occupations = {"None", "Waiter", "Restaurant Cashier", "Cook", "Restaurant Host", 
 								"Bank Teller", "Bank Host", "Market Cashier", "Market Employee"};
-	String[] shifts = {"Morning", "Afternoon", "Evening"};
+	String[] shifts = {"None", "Morning", "Afternoon", "Evening"};
 	JComboBox shiftBox = new JComboBox(shifts);
 	JLabel shiftLabel = new JLabel("Shift:");
 	JComboBox occupationBox = new JComboBox(occupations);
@@ -129,11 +129,14 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		cPanel.addPerson(nameField.getText(), moneySlider.getValue(), (String)occupationBox.getSelectedItem());
+		cPanel.addPerson(nameField.getText(), moneySlider.getValue(), (String)occupationBox.getSelectedItem(), weekdays.isSelected(), (String)shiftBox.getSelectedItem());
 		nameField.setText("");
 		occupationBox.setSelectedIndex(0);
 		moneySlider.setValue(0);
 		moneyField.setText("$0.00");
+		weekends.setSelected(false);
+		weekdays.setSelected(false);
+		shiftBox.setSelectedIndex(0);
 	}
 
 
