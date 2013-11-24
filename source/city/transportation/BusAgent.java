@@ -52,9 +52,9 @@ public class BusAgent extends Agent implements Bus{
 	
 	public BusAgent(String name){
 		_name = name;
-		_fare = Directory.getBusFare();
+		_fare = Directory.getFare();
 		_busStopNum = 0;
-		_busStops = Directory.busStops();
+		_busStops = Directory.getBusStopList();
 	}
 	
 	public void setBusAgentGui(BusAgentGui gui){
