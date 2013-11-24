@@ -23,6 +23,7 @@ import city.restaurant.yixin.YixinNormalWaiterRole;
 import city.restaurant.yixin.YixinRestaurant;
 import city.restaurant.yixin.YixinWaiterRole;
 import city.restaurant.yixin.gui.YixinCashierGui;
+import city.restaurant.yixin.gui.YixinWaiterGui;
 import city.transportation.CommuterRole;
 import agent.Agent;
 import agent.Role;
@@ -118,6 +119,9 @@ public class PersonAgent extends Agent
 		{
 			case "Waiter":
 				_occupation = new YixinNormalWaiterRole(this, (YixinRestaurant)Directory.restaurants().get(0) ,this._name);
+				YixinWaiterGui yixinWaiterGui = new YixinWaiterGui((YixinWaiterRole)_occupation, ((YixinRestaurant)_occupation.place()).Waiters.size());
+				((YixinNormalWaiterRole)_occupation).setGui(yixinWaiterGui);
+				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinWaiterGui);
 				break;
 			case "Restaurant Cashier":
 				_occupation = new YixinCashierRole(this, (YixinRestaurant)Directory.restaurants().get(0) );

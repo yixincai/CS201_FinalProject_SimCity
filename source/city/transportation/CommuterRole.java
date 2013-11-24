@@ -79,7 +79,7 @@ public class CommuterRole extends Role implements Commuter{
 		_destination = place;
 		//System.out.println(_destination.xPosition() + " " + _destination.yPosition());
 		stateChanged();
-		print("Told to go to place " + place._name);
+		print("Told to go to place " + place._name + " " + place.xPosition());
 	}
 	
 	//Bus Transportation messages
