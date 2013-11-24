@@ -1,6 +1,7 @@
 package city.transportation.test;
 
 import city.PersonAgent;
+import city.market.Market;
 import city.restaurant.Restaurant;
 import city.restaurant.yixin.YixinRestaurant;
 import city.transportation.BusStopObject;
@@ -18,8 +19,8 @@ public class CommuterTest extends TestCase{
 	MockBus mockBus;
 	TravelState tState;
 	
-	Restaurant restaurant;
-	Restaurant restaurant1;
+	Market market;
+	Market market1;
 	
 	BusStopObject busStop;
 	BusStopObject busStop1;
@@ -34,8 +35,8 @@ public class CommuterTest extends TestCase{
 		
 		mockBus = new MockBus("MockBus");
 		
-		restaurant = new YixinRestaurant("Restaurant", null, null);
-		restaurant1 = new YixinRestaurant("Restaurant 1", null, null);
+		market = new Market("Market");
+		market1 = new Market("Market 1");
 		
 		busStop = new BusStopObject("bus stop", null);
 		busStop1 = new BusStopObject("bus stop 1", null);
@@ -50,7 +51,7 @@ public class CommuterTest extends TestCase{
 		assertFalse("Scheduler returns false", commuter.pickAndExecuteAnAction());
 		
 		//Send Message
-		commuter.msgGoToDestination(null);
+		commuter.msgGoToDestination(market);
 		
 		//Check if it works
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.choosing);
@@ -62,7 +63,7 @@ public class CommuterTest extends TestCase{
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.none);
 		
 		//Set Up Message to go to Bus
-		commuter.msgGoToDestination(null);
+		commuter.msgGoToDestination(market);
 		commuter.chooseTransportation(1);
 		
 		//Check if it received correctly (Choosing to go to Bus Stop)
@@ -122,7 +123,7 @@ public class CommuterTest extends TestCase{
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.walking);
 		
 		//message
-		commuter.msgAtDestination(null); //Check later on with real places instead of null
+		commuter.msgAtDestination(market1); //Check later on with real places instead of null
 		
 		//Check if it received correctly (Bus is at destination)
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.atDestination);
@@ -136,7 +137,7 @@ public class CommuterTest extends TestCase{
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.none);
 		
 		//Set Up Message to go to Bus
-		commuter.msgGoToDestination(null);
+		commuter.msgGoToDestination(market);
 		commuter.chooseTransportation(0);
 		
 		//Check if it received correctly (Choosing to go to Bus Stop)
@@ -147,7 +148,7 @@ public class CommuterTest extends TestCase{
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.choseWalking);
 		
 		//message
-		commuter.msgAtDestination(null); //Check later on with real places instead of null
+		commuter.msgAtDestination(market1); //Check later on with real places instead of null
 		
 		//Check if it received correctly (Bus is at destination)
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.atDestination);
@@ -162,7 +163,7 @@ public class CommuterTest extends TestCase{
 		assertEquals("Car should be null", commuter._car, null);
 		
 		//Set Up Message to go to Bus
-		commuter.msgGoToDestination(null);
+		commuter.msgGoToDestination(market);
 		commuter.setCar(car);
 		commuter.chooseTransportation(2);
 		
@@ -175,7 +176,7 @@ public class CommuterTest extends TestCase{
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.choseCar);
 		
 		//message
-		commuter.msgAtDestination(null); //Check later on with real places instead of null
+		commuter.msgAtDestination(market1); //Check later on with real places instead of null
 		
 		//Check if it received correctly (Bus is at destination)
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.atDestination);
