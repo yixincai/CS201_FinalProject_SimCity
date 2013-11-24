@@ -33,8 +33,6 @@ public class PersonAgent extends Agent
 	private CommuterRole _commuterRole = null;
 	private String _occupationType; // this should be "RestaurantCashier", "Cook", etc. (not specific to any restaurant type or instantiation)
 	private Role _occupation;
-	private double _occupationStartTime;
-	private double _occupationEndTime;
 	private boolean _weekday_notWeekend;
 	private HomeRole _homeRole;
 	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house
@@ -120,7 +118,14 @@ public class PersonAgent extends Agent
 	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
 	public void acquireHome(String homeType)
 	{
-		
+		if(homeType.equalsIgnoreCase("apartment"))
+		{
+			_homeBuyingRole = new ApartmentRenterRole(this);
+		}
+		else
+		{
+			_homeBuyingRole = null;
+		}
 	}
 	/** Sets the value of _occupation to a role that is requested by occupationType if possible; else it sets _occupation to a new waiter role from a randomly chosen restaurant. */
 	public void setOccupation(String occupationType) 
@@ -188,9 +193,9 @@ public class PersonAgent extends Agent
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
-//						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui((BankTellerRole)_occupation);
-//						((BankTellerRole)_occupation).setGui(bankTellerRoleGui);
-//						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(bankTellerRoleGui);
+						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui((BankTellerRole)_occupation);
+						((BankTellerRole)_occupation).setGui(bankTellerRoleGui);
+						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(bankTellerRoleGui);
 						return;
 					}
 				}

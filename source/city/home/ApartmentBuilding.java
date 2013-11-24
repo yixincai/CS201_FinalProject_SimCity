@@ -2,6 +2,7 @@ package city.home;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import gui.WorldViewBuilding;
 import city.Place;
@@ -10,6 +11,8 @@ public class ApartmentBuilding extends Place {
 	
 	// ---------------------------------------- DATA ----------------------------------
 	private List<Apartment> _apartments = new ArrayList<Apartment>();
+	
+	private static Semaphore _landlordSemaphore = new Semaphore(1, true); //TODO make the tryacquire thingy
 
 	// ---------------------------- CONSTRUCTOR & PROPERTIES ------------------------------
 	public ApartmentBuilding(String name, WorldViewBuilding worldViewBuilding) {
