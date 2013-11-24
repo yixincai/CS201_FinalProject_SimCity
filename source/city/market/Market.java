@@ -3,8 +3,6 @@ package city.market;
 import gui.WorldViewBuilding;
 import city.PersonAgent;
 import city.Place;
-import city.market.interfaces.MarketCashier;
-import city.market.interfaces.MarketEmployee;
 import city.transportation.TruckAgent;
 
 public class Market extends Place{
