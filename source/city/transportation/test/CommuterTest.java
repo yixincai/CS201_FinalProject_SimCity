@@ -1,5 +1,6 @@
 package city.transportation.test;
 
+import gui.WorldViewBuilding;
 import city.PersonAgent;
 import city.market.Market;
 import city.restaurant.Restaurant;
@@ -19,7 +20,9 @@ public class CommuterTest extends TestCase{
 	MockBus mockBus;
 	TravelState tState;
 	
+	WorldViewBuilding WV;
 	Market market;
+	WorldViewBuilding WV1;
 	Market market1;
 	
 	BusStopObject busStop;
@@ -35,8 +38,10 @@ public class CommuterTest extends TestCase{
 		
 		mockBus = new MockBus("MockBus");
 		
-		market = new Market("Market");
-		market1 = new Market("Market 1");
+		WV = new WorldViewBuilding(1, 1, 10, 10);
+		market = new Market("Market", WV);
+		WV1 = new WorldViewBuilding(100, 100, 10, 10);
+		market1 = new Market("Market 1", WV1);
 		
 		busStop = new BusStopObject("bus stop", null);
 		busStop1 = new BusStopObject("bus stop 1", null);
