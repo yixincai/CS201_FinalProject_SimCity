@@ -139,7 +139,16 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		//cPanel.addPerson(nameField.getText(), moneySlider.getValue(), (String)occupationBox.getSelectedItem(), weekdays.isSelected());
+		String housingSelection;
+		if(house.isSelected())
+		{
+			housingSelection = new String("house");
+		}
+		else
+		{
+			housingSelection = new String("apartment");
+		}
+		cPanel.addPerson(nameField.getText(), moneySlider.getValue(), (String)occupationBox.getSelectedItem(), weekdays.isSelected(), housingSelection);
 		nameField.setText("");
 		occupationBox.setSelectedIndex(0);
 		moneySlider.setValue(0);
