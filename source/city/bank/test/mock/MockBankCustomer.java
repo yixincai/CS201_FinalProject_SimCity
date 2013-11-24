@@ -35,7 +35,6 @@ public class MockBankCustomer extends Mock implements BankCustomer
 		balance = funds;
 		this.amountOwed = amountOwed;
 		accNumber = newAccntNum;
-		
 	}
 
 	@Override

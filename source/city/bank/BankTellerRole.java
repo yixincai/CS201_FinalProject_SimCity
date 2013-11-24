@@ -24,7 +24,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	boolean occupied;
 	String name;
 	private int tellerNum;
-	static AccountDatabase database;
+	public static AccountDatabase database = new AccountDatabase();
 	
 	enum Command{None, Leave};
 	Command command;
@@ -47,9 +47,9 @@ public class BankTellerRole extends Role implements BankTeller {
 		database = new AccountDatabase();
 	}
 	
-	private static class AccountDatabase{
-	      Hashtable<Integer, Double> funds;
-	      Hashtable<Integer, Double> amountOwed;
+	public static class AccountDatabase{
+	      public Hashtable<Integer, Double> funds;
+	      public Hashtable<Integer, Double> amountOwed;
 	      
 	      public AccountDatabase(){
 	    	  funds = new Hashtable();
@@ -169,6 +169,7 @@ public class BankTellerRole extends Role implements BankTeller {
 		   while(database.funds.containsKey(newAccntNum)){
 			   newAccntNum = (int)(Math.random()*10000);
 		   }
+		   m.accountNumber = newAccntNum;
 		   database.funds.put(newAccntNum, 0.0);
 		   database.amountOwed.put(newAccntNum, 0.0);
 		} 
@@ -280,6 +281,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	public void setOccupied(boolean occupied){
 		this.occupied = occupied;
 	}
+	
 	
 	//-------commands--------
 	@Override
