@@ -25,7 +25,7 @@ public class Directory {
 	private static double _openingTime = 0;
 	private static double _closingTime = 24;
 	
-	private static Semaphore _landlordSemaphore = new Semaphore(1, true);
+	//private static Semaphore _landlordSemaphore = new Semaphore(1, true);
 	
 	
 	// ------------------------------------ PROPERTIES ---------------------------------------
