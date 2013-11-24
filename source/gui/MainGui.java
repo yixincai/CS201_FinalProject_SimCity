@@ -91,10 +91,10 @@ public class MainGui extends JFrame
         ArrayList<WorldViewBuilding> worldViewBuildings = _worldView.getBuildings();
         for ( int i=0; i<worldViewBuildings.size(); i++ )
         {
-                WorldViewBuilding b = worldViewBuildings.get(i);
-                BuildingInteriorAnimationPanel bp = new BuildingInteriorAnimationPanel(this,i);
-                b.setBuildingPanel( bp );
-                _buildingCardLayoutPanel.add( bp, "Building " + i );
+       WorldViewBuilding b = worldViewBuildings.get(i);
+       BuildingInteriorAnimationPanel bp = new BuildingInteriorAnimationPanel(this,i);
+       b.setBuildingPanel( bp );
+       _buildingCardLayoutPanel.add( bp, "Building " + i );
         }
         
         
@@ -114,21 +114,22 @@ public class MainGui extends JFrame
 		 */
         
       //The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
-  	  
-  	  this.add(cPanel, Component.RIGHT_ALIGNMENT);
-  	  this.pack();		
-  	  this.setVisible(true);
-	
-  	  Time.startTimer();
+		
+		this.add(cPanel, Component.RIGHT_ALIGNMENT);
+		this.pack();		
+		this.setVisible(true);
+		
+		// Start Time
+		Time.startTimer();
 	}
 	
 	public WorldView getWorldView() { return _worldView; }
 	
-	 public void displayBuildingPanel(BuildingInteriorAnimationPanel bp ) {
-         System.out.println( bp.getName() );
-         ((CardLayout) _buildingCardLayoutPanel.getLayout()).show(_buildingCardLayoutPanel, bp.getName());
-         cPanel.updateBuildingInfo(bp);
-	 }
+	public void displayBuildingPanel(BuildingInteriorAnimationPanel bp ) {
+		System.out.println( bp.getName() );
+		((CardLayout) _buildingCardLayoutPanel.getLayout()).show(_buildingCardLayoutPanel, bp.getName());
+		cPanel.updateBuildingInfo(bp);
+	}
 	
 	/**
 	 * Main routine to create an instance of the MainGui window
