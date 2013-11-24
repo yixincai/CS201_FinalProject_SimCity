@@ -19,8 +19,8 @@ public class YixinCustomerGui extends JPanel implements Gui{
 	private Command command=Command.noCommand;
 	private int count = 0;
 	
-	public static final int xTable1 = 200, xTable2 = 300, xTable3 = 100;
-	public static final int yTable = 150;
+	public static final int xTable1 = 450, xTable2 = 300, xTable3 = 150;
+	public static final int yTable = 100;
     private final int GAPX = 30;
     private final int GAPY = 30;
     private final int OriginX = -60;

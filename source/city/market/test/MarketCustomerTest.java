@@ -16,6 +16,7 @@ public class MarketCustomerTest  extends TestCase {
 		super.setUp();
 		p = new PersonAgent("Mike");
 		market = new Market();
+		market.MarketCashier.setPersonAgent(p);
 		customer = new MarketCustomerRole(p, market);
 		MarketCustomerGui gui = new MarketCustomerGui(customer);
 		customer.gui = gui;

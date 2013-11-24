@@ -5,6 +5,7 @@ import gui.Gui;
 import java.awt.Graphics2D;
 
 import city.bank.BankTellerRole;
+import city.bank.interfaces.BankTeller;
 
 public class BankHostRoleGui implements Gui {
 
@@ -26,7 +27,7 @@ public class BankHostRoleGui implements Gui {
 		return false;
 	}
 
-	public void DoCallTeller(BankTellerRole teller) {
+	public void DoCallTeller(BankTeller t) {
 		// TODO Auto-generated method stub
 		
 	}

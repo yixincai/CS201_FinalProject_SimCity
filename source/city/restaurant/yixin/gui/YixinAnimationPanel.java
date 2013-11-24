@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class YixinAnimationPanel extends JPanel implements ActionListener {
-    private final int TABLEX1 = 200;
+    private final int TABLEX1 = 450;
     private final int TABLEX2 = 300;
-    private final int TABLEX3 = 100;
-    private final int TABLEY = 150;
+    private final int TABLEX3 = 150;
+    private final int TABLEY = 100;
     private final int GAPX = 50;
     private final int GAPY = 50;
     private final int ICON_X = 30;
@@ -55,7 +55,6 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
 
         g2.setColor(Color.red);
         g2.fillRect(TABLEX1, TABLEY, GAPX, GAPY);//200 and 250 need to be table params
-
         g2.fillRect(TABLEX2, TABLEY, GAPX, GAPY);
         g2.fillRect(TABLEX3, TABLEY, GAPX, GAPY);
         //here is the cooking area 
@@ -65,10 +64,10 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     	g.drawImage(grillimage, 200, 250, ICON_X, ICON_Y, this);
     	g.drawImage(fridgeimage, 330, 250, ICON_X, ICON_Y, this);
     	*/
-    	g2.fillRect(70, 250, ICON_X, ICON_Y);
-    	g2.fillRect(40, 250, ICON_X, ICON_Y);
-    	g2.fillRect(200, 250, ICON_X, ICON_Y);
-    	g2.fillRect(330, 250, ICON_X, ICON_Y);
+    	g2.fillRect(170, 250, ICON_X, ICON_Y);
+    	g2.fillRect(140, 250, ICON_X, ICON_Y);
+    	g2.fillRect(300, 250, ICON_X, ICON_Y);
+    	g2.fillRect(430, 250, ICON_X, ICON_Y);
         for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.updatePosition();
