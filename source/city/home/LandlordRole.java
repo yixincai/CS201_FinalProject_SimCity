@@ -14,7 +14,6 @@ public class LandlordRole extends Role {
 	public enum MyApartmentState { VACANT, REQUESTED, ASKED_TENANT, READY_TO_LEASE, OCCUPIED }
 	class MyApartment {
 		Apartment apartment;
-		ApartmentBuilding apartmentBuilding;
 		
 		ApartmentRenterRole tenant = null;
 		double weeklyRate = 40; // hard-coded for now
@@ -49,7 +48,6 @@ public class LandlordRole extends Role {
 			{
 				MyApartment m = new MyApartment();
 				m.apartment = a;
-				m.apartmentBuilding = b;
 				_myApartments.add(m);
 			}
 		}
@@ -64,7 +62,7 @@ public class LandlordRole extends Role {
 		}
 	}
 	@Override
-	public Place place() { return null; }
+	public Place place() { return _person.homeRole().place(); }
 	
 	
 	
@@ -73,29 +71,40 @@ public class LandlordRole extends Role {
 	public void cmdFinishAndLeave() { } // do nothing
 	
 	// ------------------------------------- MESSAGES ---------------------------------
+	// -------------- STARTING A RENTAL ---------------
 	public void msgIWouldLikeToStartRenting(ApartmentRenterRole sender, ApartmentBuilding a)
 	{
 		for(MyApartment m : _myApartments)
 		{
-			
+			if(m.apartment.apartmentBuilding() == a)
+			{
+				if(m.state == MyApartmentState.VACANT)
+				{
+					m.state = MyApartmentState.REQUESTED;
+					m.tenant = sender;
+				}
+			}
 		}
-		
-//		MyApartment m = myApartments.findByBuilding(a);
-//		if(m.state is VACANT)
-//		{
-//			m.state = REQUESTED;
-//			m.tenant = sender;
-//		}
-//		stateChanged();
+		stateChanged();
 	}
 	public void msgIAcceptRate(ApartmentRenterRole sender)
 	{
-//		m.state = READY_TO_LEASE;
-//		stateChanged();
+		for(MyApartment m : _myApartments)
+		{
+			if(m.tenant == sender)
+			{
+				m.state = MyApartmentState.READY_TO_LEASE;
+			}
+		}
+		stateChanged();
 	}
 	
-
-
+	// -------------- RECEIVING RENT ---------------
+	
+	// -------------- SELLING A HOUSE ---------------
+	
+	
+	
 	// ------------------------------------ SCHEDULER --------------------------------
 	@Override
 	public boolean pickAndExecuteAnAction() {

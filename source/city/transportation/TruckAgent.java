@@ -108,7 +108,7 @@ public class TruckAgent extends Agent implements Truck{
 		trState = truckState.drivingtoRestaurant;
 		gui.goToDestination(aPackage._restaurant);
 		//isMoving.acquire();
-		aPackage._restaurant.Cook.msgOrderFulfillment(_market, aPackage._items); //Make sure GUI shows that it's dropped off !important!
+		aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); //Make sure GUI shows that it's dropped off !important!
 		trState = truckState.atRestaurant;
 		packages.remove(aPackage);
 	}

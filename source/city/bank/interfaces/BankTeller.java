@@ -8,4 +8,5 @@ public interface BankTeller {
 	public void msgLeavingBank(BankCustomerRole c);
 	public boolean isOccupied();
 	public void setOccupied(boolean b);
+	public int getTellerNum();
 }

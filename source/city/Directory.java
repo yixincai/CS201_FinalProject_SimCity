@@ -21,6 +21,9 @@ public class Directory {
 	//Bus Fare (initialize in constructor?)
 	private static double _busFare = 2;
 	
+	private static double _openingTime = 8;
+	private static double _closingTime = 20;
+	
 	
 	// ------------------------------------ PROPERTIES ---------------------------------------
 	/** Returns a new list of all places */

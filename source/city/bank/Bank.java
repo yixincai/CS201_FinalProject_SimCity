@@ -42,7 +42,7 @@ public class Bank extends Place {
 	}
 	
 	public void addTeller(PersonAgent p){ //
-		tellers.add(new BankTellerRole(p, this));
+		tellers.add(new BankTellerRole(p, this, tellers.size()));
 	}
 	
 	public List<BankTellerRole> getTellers(){

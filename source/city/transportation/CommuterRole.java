@@ -117,12 +117,7 @@ public class CommuterRole extends Role implements Commuter{
 			actAtDestination();
 			return true;
 		}
-		if(!(_destination.xPosition() == _gui.getX() && _destination.yPosition() == _gui.getY()) && _tState == TravelState.atDestination){
-			actChooseTransportation();
-			return true;
-		}
-	//	System.out.println(_gui.getX() + " " + _gui.getY());
-		
+	
 		//Choosing
 		if(_tState == TravelState.choosing){
 			actChooseTransportation();
@@ -149,7 +144,7 @@ public class CommuterRole extends Role implements Commuter{
 			return true;
 		}
 		if(_tState == TravelState.busIsHere && _bus != null && _person._money <= _fare){
-			actChooseNewTransportation();
+			actWalking();
 			return true;
 		}
 		if(_tState == TravelState.busIsAtDestination){
