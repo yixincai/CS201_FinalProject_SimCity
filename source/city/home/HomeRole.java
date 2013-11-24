@@ -1,30 +1,35 @@
 package city.home;
 
 import city.PersonAgent;
+import city.Place;
 import agent.Role;
 
 public class HomeRole extends Role
 {
-	//private List<Food> _groceries;
+	//private List<Meal> _meals;
 
 
 
-	protected enum Command { NONE, WATCH_TV, COOK_AND_EAT_FOOD, GO_TO_BED, WAKE_UP }
+	protected enum Command { NONE, WATCH_TV, COOK_AND_EAT_FOOD, GO_TO_BED, WAKE_UP, LEAVE }
 	protected Command _command;
 	
 	public enum State { IDLE, COOKING, SLEEPING }
 	public State state; //TODO fully implement these states
 	
 	private int _mealCount; //TODO
+
+	private Home _home;
 	
 	
 	
 	// --------------------------- CONSTRUCTOR & PROPERTIES --------------------------
 	public HomeRole(PersonAgent person) { super(person); }
-	public abstract boolean haveHome(); // return false if you don't have a home; if you don't have a home, the first thing your scheduler should do is try to buy a home.
+	public boolean haveHome() { return _home != null; } // return false if you don't have a home; if you don't have a home, the first thing your scheduler should do is try to buy a home.
 	public boolean sleeping() { return state == State.SLEEPING; }
 	public boolean cooking() { return state == State.COOKING; }
 	public boolean haveFood() { return _mealCount > 0; } //TODO implement _mealCount;
+	@Override
+	public Place place() { return _home.place(); }
 	
 	
 	
@@ -50,9 +55,15 @@ public class HomeRole extends Role
 		_command = Command.WAKE_UP;
 		stateChanged();
 	}
+	public void cmdFinishAndLeave() {
+		_command = Command.LEAVE;
+	}
 	
 	
 	
-	public boolean pickAndExecuteAnAction();
-	//TODO if cmdGoToBed, set wakeTime to 7
+	public boolean pickAndExecuteAnAction() {
+		//TODO if cmdGoToBed, set wakeTime to 7
+		return false;
+	}
+	
 }
