@@ -5,11 +5,13 @@ package gui;
  *
  */
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.*;
 
+import city.Time;
 import city.transportation.gui.CommuterGui;
 
 import java.awt.*;
@@ -27,12 +29,29 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
     private List<Gui> guis = new ArrayList<Gui>();
 	
 	ArrayList<WorldViewBuilding> buildings;
+	ArrayList<Lane> lanes;
 	
 	public WorldView()
 	{
 		this.setPreferredSize(new Dimension(WINDOWX, WINDOWY));
 		this.setBorder(BorderFactory.createTitledBorder("World View"));
 		 buildings = new ArrayList<WorldViewBuilding>();
+		 
+		lanes = new ArrayList<Lane>();
+		Lane l = new Lane(200, 10, 10, 310, 0, 1, false, Color.gray, Color.black );
+		lanes.add( l );
+		l = new Lane(210, 10, 10, 310, 0, 1, false, Color.gray, Color.black );
+		lanes.add( l );
+		
+		l = new Lane(420, 240, 180, 10, 1, 0, true, Color.green, Color.black );
+		lanes.add( l );
+		l = new Lane(420, 250, 180, 10, 1, 0, true, Color.green, Color.black );
+		lanes.add( l );
+		
+		/*if ( count % 40 == 0 ) {
+			Lane l = lanes.get(0);
+			l.addVehicle( new Vehicle( 15, 15, 16, 16) );
+		} */
          
          addMouseListener( this );
 
@@ -55,6 +74,18 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 	
 
 	public void paintComponent( Graphics g ) {
+		
+		 if ((int)(100*Time.getTime()) % 25 == 0) {
+				for ( int i=0; i<lanes.size(); i++ ) {
+					lanes.get(i).redLight();
+				}
+			}
+			if ((int)(100*Time.getTime()) % 50 == 0){
+				for ( int i=0; i<lanes.size(); i++ ) {
+					lanes.get(i).greenLight();
+				}
+		}
+			
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setColor( Color.black );
@@ -79,6 +110,11 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
                 gui.draw(g2);
             }
         } 
+        
+        for ( int i=0; i<lanes.size(); i++ ) {
+			Lane l = lanes.get(i);
+			l.draw( g2 );
+		}
 	}
 	
 	public ArrayList<WorldViewBuilding> getBuildings() {
