@@ -76,18 +76,22 @@ public class LandlordRole extends Role {
 	public void msgIWouldLikeToStartRenting(ApartmentRenterRole sender, ApartmentBuilding a)
 	{
 		for(MyApartment m : _myApartments)
-		MyApartment m = myApartments.findByBuilding(a);
-		if(m.state is VACANT)
 		{
-			m.state = REQUESTED;
-			m.tenant = sender;
+			
 		}
-		stateChanged();
+		
+//		MyApartment m = myApartments.findByBuilding(a);
+//		if(m.state is VACANT)
+//		{
+//			m.state = REQUESTED;
+//			m.tenant = sender;
+//		}
+//		stateChanged();
 	}
-	public void msgIAcceptRate(ApartmentRenter sender)
+	public void msgIAcceptRate(ApartmentRenterRole sender)
 	{
-		m.state = READY_TO_LEASE;
-		stateChanged();
+//		m.state = READY_TO_LEASE;
+//		stateChanged();
 	}
 	
 
