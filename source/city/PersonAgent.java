@@ -220,7 +220,7 @@ public class PersonAgent extends Agent
 						_occupation = newOccupation;
 						MarketCashierGui marketCashierGui = new MarketCashierGui((MarketCashierRole)_occupation);
 						((MarketCashierRole)_occupation).setGui(marketCashierGui);
-						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(marketCashierGui);
+						((Market)_occupation.place()).getAnimationPanel().addGui(marketCashierGui);
 						return;
 					}
 				}
@@ -235,7 +235,7 @@ public class PersonAgent extends Agent
 						_occupation = newOccupation;
 						MarketEmployeeGui marketEmployeeGui = new MarketEmployeeGui((MarketEmployeeRole)_occupation);
 						((MarketEmployeeRole)_occupation).setGui(marketEmployeeGui);
-						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(marketEmployeeGui);
+						((Market)_occupation.place()).getAnimationPanel().addGui(marketEmployeeGui);
 						return;
 					}
 				}
