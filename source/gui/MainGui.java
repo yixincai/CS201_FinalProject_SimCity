@@ -22,6 +22,7 @@ import city.Time;
 import city.bank.Bank;
 import city.market.Market;
 import city.restaurant.yixin.YixinRestaurant;
+import city.transportation.BusStopObject;
 
 public class MainGui extends JFrame 
 {
@@ -64,9 +65,23 @@ public class MainGui extends JFrame
 		animationArea.add(_buildingCardLayoutPanel);
 		this.add(animationArea, Component.LEFT_ALIGNMENT);
 		
+		//Bus Stops
+		WorldViewBuilding b5 = _worldView.addBuilding(0, 0, 30);
+		BusStopObject busStop0 = new BusStopObject("Bus Stop " + 0, b5);
+		Directory.addPlace(busStop0);
+		WorldViewBuilding b6 = _worldView.addBuilding(12, 0, 30);
+		BusStopObject busStop1 = new BusStopObject("Bus Stop " + 1, b5);
+		Directory.addPlace(busStop1);
+		WorldViewBuilding b7 = _worldView.addBuilding(12, 6, 30);
+		BusStopObject busStop2 = new BusStopObject("Bus Stop " + 2, b5);
+		Directory.addPlace(busStop2);
+		WorldViewBuilding b8 = _worldView.addBuilding(0, 6, 30);
+		BusStopObject busStop3 = new BusStopObject("Bus Stop " + 3, b5);
+		Directory.addPlace(busStop3);
+		
 		// Hard-coded instantiation of all the buildings in the city:
 		// Yixin's Restaurant:
-		WorldViewBuilding b = _worldView.addBuilding(5, 0, 40);
+		WorldViewBuilding b = _worldView.addBuilding(10, 1, 40);
 		BuildingInteriorAnimationPanel bp = new BuildingInteriorAnimationPanel(this, "Yixin's Restaurant", new city.restaurant.yixin.gui.YixinAnimationPanel());
 		b.setBuildingPanel(bp);
 		YixinRestaurant yr = new YixinRestaurant("Yixin's Restaurant", b, bp);
@@ -76,7 +91,7 @@ public class MainGui extends JFrame
         _buildingInteriorAnimationPanels.add(bp);
         
         //Bank
-        WorldViewBuilding b2 = _worldView.addBuilding(5, 2, 40);
+        WorldViewBuilding b2 = _worldView.addBuilding(10, 3, 40);
 		BuildingInteriorAnimationPanel bp2 = new BuildingInteriorAnimationPanel(this, "Bank", new city.bank.gui.BankAnimationPanel());
 		b2.setBuildingPanel(bp2);
 		Bank bank = new Bank("Bank", b2, bp2);
@@ -85,7 +100,7 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(bank.getName());
         _buildingInteriorAnimationPanels.add(bp2);
         
-        WorldViewBuilding b3 = _worldView.addBuilding(5, 4, 40);
+        WorldViewBuilding b3 = _worldView.addBuilding(10, 5, 40);
 		BuildingInteriorAnimationPanel bp3 = new BuildingInteriorAnimationPanel(this, "Market", new city.market.gui.MarketAnimationPanel());
 		b3.setBuildingPanel(bp3);
 		Market market = new Market("Market", b3, bp3);

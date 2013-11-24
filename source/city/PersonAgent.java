@@ -143,7 +143,7 @@ public class PersonAgent extends Agent
 				_occupation = new YixinHostRole(this, (YixinRestaurant)Directory.restaurants().get(0) , this._name);
 				break;
 			case "Bank Teller":
-				_occupation = new BankTellerRole(this, (Bank)Directory.banks().get(0));
+				_occupation = new BankTellerRole(this, (Bank)Directory.banks().get(0), 0); // fix
 				break;
 			case "Bank Host":
 				//_occupation = new BankHostRole(this, (Bank)Directory.banks().get(0), ((Bank)Directory.banks().get(0)).getTellers());
