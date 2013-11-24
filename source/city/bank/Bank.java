@@ -20,10 +20,10 @@ public class Bank extends Place {
 	public Bank(String name, WorldViewBuilding wvb, BuildingInteriorAnimationPanel bp){
 		super("Bank", wvb);
 		this._animationPanel = (BankAnimationPanel)bp.getBuildingAnimation();
-		BankTellerRole teller = new BankTellerRole(null,this);
+	/*	BankTellerRole teller = new BankTellerRole(null,this);
 		tellers.add(teller);
 		
-		BankHostRole host = new BankHostRole(null,this, tellers);
+		BankHostRole host = new BankHostRole(null,this, tellers); */
 	}
 		
 	public void updateBankStatus(){
@@ -39,5 +39,9 @@ public class Bank extends Place {
 	
 	public void addTeller(PersonAgent p){ //
 		tellers.add(new BankTellerRole(p, this));
+	}
+	
+	public List<BankTellerRole> getTellers(){
+		return tellers;
 	}
 }

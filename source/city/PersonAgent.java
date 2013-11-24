@@ -1,12 +1,14 @@
 package city;
 
 import java.util.List;
+
 import java.util.Random;
 
 import city.bank.BankCustomerRole;
 import city.home.HomeBuyingRole;
 import city.bank.BankHostRole;
 import city.bank.BankTellerRole;
+import city.bank.Bank;
 import city.home.HomeRole;
 import city.market.Market;
 import city.market.MarketCashierRole;
@@ -127,10 +129,10 @@ public class PersonAgent extends Agent
 				_occupation = new YixinHostRole(this, (YixinRestaurant)Directory.restaurants().get(0) , this._name);
 				break;
 			case "Bank Teller":
-		//		_occupation = new BankTellerRole(this, (Bank)Directory.banks().get(0));
+				_occupation = new BankTellerRole(this, (Bank)Directory.banks().get(0));
 				break;
 			case "Bank Host":
-		//		_occupation = new BankHostRole(this, (Bank)Directory.banks().get(0));
+				_occupation = new BankHostRole(this, (Bank)Directory.banks().get(0), ((Bank)Directory.banks().get(0)).getTellers());
 				break;
 			case "Market Cashier":
 			//	_occupation = new MarketCashierRole(this, market);

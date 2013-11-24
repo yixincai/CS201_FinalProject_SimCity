@@ -109,7 +109,6 @@ public class CommuterRole extends Role implements Commuter{
 		_currentPlace = place;
 		active = false;
 		stateChanged();
-	//	print("At destination " + place._name);
 	}
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
