@@ -51,7 +51,7 @@ public class BusAgent extends Agent implements Bus{
 	
 	public BusAgent(String name){
 		_name = name;
-		_fare = Directory.getFare();
+		_fare = Directory.getBusFare();
 	}
 	
 	//----------------------------------------------Messages----------------------------------------

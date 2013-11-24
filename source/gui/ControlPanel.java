@@ -48,7 +48,7 @@ public class ControlPanel extends JTabbedPane {
 	{
 		currentPersonPanel.addPerson(name);
 		PersonAgent newPerson = new PersonAgent(name, money, occupation);
-		newPerson.setShift(shift, weekday_notWeekend);
+		newPerson.setWorkDays(shift, weekday_notWeekend);
 		CommuterRole newCommuterRole = new CommuterRole(newPerson, null);
 		newPerson.setCommuterRole(newCommuterRole);
 		CommuterGui newCommuterGui = new CommuterGui(newCommuterRole, null);

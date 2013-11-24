@@ -1,5 +1,7 @@
 package city.restaurant;
 
+import java.util.concurrent.Semaphore;
+
 import gui.WorldViewBuilding;
 import agent.Role;
 import city.PersonAgent;
@@ -30,12 +32,20 @@ public abstract class Restaurant extends Place {
 	public RestaurantCashierRole cashier;
 	public RestaurantCookRole cook;
 	
+	private Semaphore _cookSemaphore = new Semaphore(1, true);
+	
 	
 	
 	// --------------------------------- PROPERTIES -----------------------------
 	public abstract Role getHostRole();
 	public RestaurantCashierRole getCashier(){
 		return cashier;
+	}
+	public RestaurantCookRole tryAcquireCook() {
+		if(_cookSemaphore.tryAcquire()) {
+			return cook;
+		}
+		else return null;
 	}
 	
 	

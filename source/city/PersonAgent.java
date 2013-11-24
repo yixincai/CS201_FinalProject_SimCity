@@ -40,6 +40,7 @@ public class PersonAgent extends Agent
 	private boolean _sentCmdFinishAndLeave = false;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
 	private CommuterRole _commuterRole = null;
+	private String _occupationType; // this should be "RestaurantCashier", "Cook", etc. (not specific to any restaurant type or instantiation)
 	private Role _occupation;
 	private double _occupationStartTime;
 	private double _occupationEndTime;
@@ -113,9 +114,49 @@ public class PersonAgent extends Agent
 	public void setAccountNumber(int newAccntNum) { this.bankAccountNumber = newAccntNum;} 
 	public void changeMoney(double delta) { _money += delta; }
 	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
-	public void setOccupation(String occupation) 
+	public void acquireHome(String homeType)
 	{
-		switch(occupation)
+		
+	}
+	public void setOccupation(String occupationType) 
+	{
+		_occupationType = occupationType;
+		switch(occupationType)
+		{
+			case "Waiter":
+				_occupation = Directory.restaurants().get(0).generateWaiterRole();
+				new YixinNormalWaiterRole(this, (YixinRestaurant)Directory.restaurants().get(0) ,this._name);
+				YixinWaiterGui yixinWaiterGui = new YixinWaiterGui((YixinWaiterRole)_occupation, ((YixinRestaurant)_occupation.place()).Waiters.size());
+				((YixinNormalWaiterRole)_occupation).setGui(yixinWaiterGui);
+				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinWaiterGui);
+				break;
+			case "Restaurant Cashier":
+				_occupation = new YixinCashierRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
+				YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)_occupation);
+				((YixinCashierRole)_occupation).setGui(yixinCashierGui);
+				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinCashierGui);
+				break;
+			case "Cook":
+				_occupation = new YixinCookRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
+				break;
+			case "Restaurant Host":
+				_occupation = new YixinHostRole(this, (YixinRestaurant)Directory.restaurants().get(0) , this._name);
+				break;
+			case "Bank Teller":
+				_occupation = new BankTellerRole(this, (Bank)Directory.banks().get(0));
+				break;
+			case "Bank Host":
+				//_occupation = new BankHostRole(this, (Bank)Directory.banks().get(0), ((Bank)Directory.banks().get(0)).getTellers());
+				break;
+			case "Market Cashier":
+			//	_occupation = new MarketCashierRole(this, market);
+				break;
+			case "Market Employee":
+			//	_occupation = new MarketEmployeeRole(this, market);
+				break;
+		}
+		/*
+		switch(occupationType)
 		{
 			case "Waiter":
 				_occupation = new YixinNormalWaiterRole(this, (YixinRestaurant)Directory.restaurants().get(0) ,this._name);
@@ -148,40 +189,10 @@ public class PersonAgent extends Agent
 			//	_occupation = new MarketEmployeeRole(this, market);
 				break;
 		}
+		*/
 	}
-	public void setOccupationStartTime(double occupationStartTime) { _occupationStartTime = occupationStartTime; }
-	public void setOccupationEndTime(double occupationEndTime) { _occupationEndTime = occupationEndTime; }
-	/** Shortcut for setting the occupation start and end times
-	 * @param shift Morning, Afternoon, or Evening; if weekday_notWeekend is false, only matters whether shift is Evening or not
-	 * @param weekday_notWeekend frue if weekday shift, false if weekend shift
-	 */
-	public void setShift(String shift, boolean weekday_notWeekend) {
-		if(weekday_notWeekend) {
-			switch(shift) {
-			case "Morning":
-				_occupationStartTime = 8;
-				_occupationEndTime = 12;
-				break;
-			case "Afternoon":
-				_occupationStartTime = 12;
-				_occupationEndTime = 16;
-				break;
-			case "Evening":
-				_occupationStartTime = 16;
-				_occupationEndTime = 20;
-				break;
-			}
-		}
-		else {
-			if(shift.equals("Evening")) {
-				_occupationStartTime = 18;
-				_occupationEndTime = 23;
-			}
-			else {
-				_occupationStartTime = 8;
-				_occupationEndTime = 18;
-			}
-		}
+	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
+	public void setWorkDays(boolean weekday_notWeekend) {
 		_weekday_notWeekend = weekday_notWeekend;
 	}
 	public HomeRole homeRole() { return _homeRole; }
@@ -247,8 +258,8 @@ public class PersonAgent extends Agent
 			
 			if(_currentRole == _commuterRole)
 			{
-				if(timeToBeAtWork()) setNextRole(_occupation);
-				// We must have just reached the destination
+				if(timeToBeAtWork()) setNextRole(_occupation); // do we need this?
+				// commuter role must have just reached the destination
 				_currentRole = _nextRole;
 				_currentRole.active = true;
 				return true;
@@ -360,8 +371,8 @@ public class PersonAgent extends Agent
 	}
 	private boolean timeToBeAtWork()
 	{
-		return _state.time() > _occupationStartTime - .5 && // .5 is half an hour
-				_state.time() < _occupationEndTime;
+		return _state.time() > Directory.openingTime() - .5 && // .5 is half an hour
+				_state.time() < Directory.closingTime();
 	}
 	private void finishAndLeaveCurrentRole()
 	{
