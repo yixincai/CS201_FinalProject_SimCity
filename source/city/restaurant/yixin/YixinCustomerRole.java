@@ -246,7 +246,7 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 			}
 			else if (state == AgentState.Leaving && event == AgentEvent.doneLeaving){
 				state = AgentState.DoingNothing;
-				//no action
+				active = false;
 				return true;
 			}
 		}
