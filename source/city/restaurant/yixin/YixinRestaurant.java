@@ -21,12 +21,6 @@ public class YixinRestaurant extends Restaurant{
 	public List<YixinWaiterRole> Waiters = new ArrayList<YixinWaiterRole>();
 	private YixinAnimationPanel _animationPanel;
 	
-	// Semaphores for the host, cashier, and cook
-	private Semaphore _hostSemaphore = new Semaphore(1, true);
-	private Semaphore _cookSemaphore = new Semaphore(1, true);
-	private Semaphore _cashierSemaphore = new Semaphore(1, true);
-	
-	
 	// ------------- CONSTRUCTOR & PROPERTIES
 	
 	public YixinRestaurant(String name, gui.WorldViewBuilding worldViewBuilding, gui.BuildingInteriorAnimationPanel animationPanel){

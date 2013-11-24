@@ -94,7 +94,7 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setColor( Color.black );
-		                        
+		
 		for ( int i=0; i<buildings.size(); i++ ) {
 			WorldViewBuilding b = buildings.get(i);
 		    g2.fill( b );

@@ -119,8 +119,8 @@ public class MainGui extends JFrame
         _buildingInteriorAnimationPanels.add(bp3);
         
         //Going to be houses
-        for(int i = 0; i < 4; i+=2){
-        	for(int j = 0; j < 5; j++){
+        for(int i = 2; i < 6; i+=2){
+        	for(int j = 1; j < 6; j++){
                 WorldViewBuilding b4 = _worldView.addBuilding(i, j, 20);
         		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "BankHouse", new city.bank.gui.BankAnimationPanel());
         		b4.setBuildingPanel(bp4);

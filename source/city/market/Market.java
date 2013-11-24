@@ -48,6 +48,13 @@ public class Market extends Place{
 		}
 		return null;
 	}
+
+	public MarketEmployeeRole tryAcquireEmloyee(){
+		if (_employeeSemaphore.tryAcquire()){
+			return MarketEmployee;
+		}
+		return null;
+	}
 	
 	public void msgPickUpItems(){
 		animationPanel.hideRestaurantOrder(0);

@@ -67,7 +67,7 @@ public class BusAgentGui implements Gui {
 	public void draw(Graphics2D g) {
 		if(isPresent){
 			g.setColor(Color.GREEN);
-			g.fillRect(_xPos, _yPos, 100, 100);
+			g.fillRect(_xPos, _yPos, 30, 30);
 		}
 	}
 	
