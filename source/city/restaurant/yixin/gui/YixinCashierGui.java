@@ -16,7 +16,7 @@ public class YixinCashierGui extends JPanel implements Gui {
     public static int xGap = 40;
     public static int yGap = 40;
     
-    private ImageIcon i = new ImageIcon("cashier.jpg");
+    private ImageIcon i = new ImageIcon("source/image/cashier.jpg");
     private Image image = i.getImage();
     public YixinCashierGui(YixinCashierRole agent) {
         this.agent = agent;
@@ -26,7 +26,8 @@ public class YixinCashierGui extends JPanel implements Gui {
     }
 
     public void draw(Graphics2D g) {
-    	g.drawImage(image, xPos, yPos, xGap, yGap, this);
+    	g.fillRect(xPos, yPos, xGap, yGap);    	
+    	//g.drawImage(image, xPos, yPos, xGap, yGap, this);
     }
 
     public boolean isPresent() {
