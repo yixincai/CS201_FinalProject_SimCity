@@ -39,7 +39,7 @@ public class Market extends Place{
 	}
 	
 	public void msgPickUpItems(){
-		//gui.removeFirstRestaurantOrder();
+		animationPanel.hideRestaurantOrder(0);
 	}
 		
 	public void updateMarketStatus(){
