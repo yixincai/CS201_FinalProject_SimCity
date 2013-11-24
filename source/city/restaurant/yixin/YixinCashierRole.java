@@ -22,7 +22,6 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	public static Menu menu = new Menu();
 	public YixinCashierGui cashierGui = null;
 	public double money, bankBalance, bankDebt;
-	public int account_number;
 	enum MoneyState{OrderedFromBank, none}
 	MoneyState money_state = MoneyState.none;
 	enum RoleState{WantToLeave,none}
@@ -34,6 +33,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		money = 130.0;
 		bankBalance = 0;
 		bankDebt = 0;
+		
 	}
 
 	public void setGui(YixinCashierGui g) {
@@ -91,7 +91,8 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		stateChanged();		
 	}
 	
-	public void msgTransactionComplete(double amount, Double balance, Double debt){
+	public void msgTransactionComplete(double amount, Double balance, Double debt, int newAccountNumber){
+		restaurant.updateAccountNumber(newAccountNumber);
 		money_state = MoneyState.none;
 		money = amount;
 		bankBalance = balance;
@@ -150,6 +151,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			if (marketBills.size() == 0 && bills.size() == 0 && role_state == RoleState.WantToLeave){
 				LeaveRestaurant();
 				role_state = RoleState.none;
+				active = false;
 				return true;
 			}
 		}
@@ -167,23 +169,23 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	//Bank
 	private void PayLoan(){
 		double amount = Math.min(money-150, bankDebt);
-		bankTeller.msgWiredTransaction(restaurant, account_number, amount, "Pay Loan");
+		bankTeller.msgWiredTransaction(restaurant, restaurant.getAccountNumber(), amount, "Pay Loan");
 		money_state = MoneyState.OrderedFromBank;
 	}
 	
 	private void Withdraw(){
 		double amount = Math.min(50-money, bankBalance);
-		bankTeller.msgWiredTransaction(restaurant, account_number, amount, "Withdraw");
+		bankTeller.msgWiredTransaction(restaurant, restaurant.getAccountNumber(), amount, "Withdraw");
 		money_state = MoneyState.OrderedFromBank;		
 	}
 	
 	private void AskForLoan(){
-		bankTeller.msgWiredTransaction(restaurant, account_number, 50-money, "Withdraw Loan");
+		bankTeller.msgWiredTransaction(restaurant, restaurant.getAccountNumber(), 50-money, "Withdraw Loan");
 		money_state = MoneyState.OrderedFromBank;
 	}
 	
 	private void Deposit(){
-		bankTeller.msgWiredTransaction(restaurant, account_number, money/2, "Deposit");
+		bankTeller.msgWiredTransaction(restaurant, restaurant.getAccountNumber(), money/2, "Deposit");
 		money_state = MoneyState.OrderedFromBank;
 	}
 	

@@ -10,7 +10,7 @@ public class CarObject {
 	int _xPos;
 	int _yPos;
 	
-	CarObject(){ }
+	public CarObject(){ }
 	
 	CarObject(int x, int y){
 		_xPos = x;

@@ -32,6 +32,7 @@ public class YixinHostGui extends JPanel implements Gui {
 
     public void draw(Graphics2D g) {
     	g.setColor(Color.BLUE);
+    	g.fillRect(xPos, yPos, xGap, yGap); 
     	g.drawString(WA, 30, 10);
     }
 

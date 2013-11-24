@@ -27,44 +27,53 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	JScrollPane buildingButtons;
 	ControlPanel cPanel;	
 	BuildingInteriorAnimationPanel currentBuildingPanel = null;
+	private static int WIDTH = 1024/3;
+	private static int HEIGHT = 720;
 	
 	public CurrentBuildingPanel(ControlPanel cp)
 	{
+			this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+			this.setMaximumSize(new Dimension(WIDTH, HEIGHT));
+			this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 			cPanel = cp;
 			this.setLayout(new BorderLayout());
 			infoPanel = new JPanel();
-			infoPanel.setPreferredSize(new Dimension(1024/3, 720/2));
+			infoPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT/2));
+			infoPanel.setMaximumSize(new Dimension(WIDTH, HEIGHT/2));
+			infoPanel.setMinimumSize(new Dimension(WIDTH, HEIGHT/2));
 			infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
 			infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 			buildingName = new JLabel("Building Name: ");
 			buildingMoney = new JLabel("Building Money: ");
-			infoPanel.add(buildingName); //Gives current building name
-			infoPanel.add(buildingMoney); //TODO Add getter for the current building's money
+			infoPanel.add(buildingName); 
+			infoPanel.add(buildingMoney); 
 			this.add(infoPanel, BorderLayout.NORTH);
 			buttonPanel = new JPanel();
 			buttonPanel.setLayout(new BorderLayout());
+			buttonPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT/2));
+			buttonPanel.setMaximumSize(new Dimension(WIDTH, HEIGHT/2));
+			buttonPanel.setMinimumSize(new Dimension(WIDTH, HEIGHT/2));
 			buttonPanel.setBorder(BorderFactory.createTitledBorder("Buildings"));
 			view = new JPanel();
 			view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
 			buildingButtons = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			buildingButtons.setViewportView(view);
 			buttonPanel.add(buildingButtons, BorderLayout.CENTER);
+			buttonPanel.validate();
 			this.add(buttonPanel, BorderLayout.CENTER);
 	}
 	
 	public void addBuilding(String name)
 	{
-		System.out.println(name + " BUTTON WHY ARENT YOU PRINTING!!");
-		JButton newBuilding = new JButton(name);
-		newBuilding.setBackground(Color.white);
-		Dimension paneSize = buildingButtons.getSize();
-		newBuilding.setPreferredSize(new Dimension(paneSize.width, paneSize.height/10));
-		newBuilding.setMinimumSize(new Dimension(paneSize.width, paneSize.height/10));
-		newBuilding.setMaximumSize(new Dimension(paneSize.width, paneSize.height/10));
-		newBuilding.addActionListener(this);
-		view.add(newBuilding);
-		this.updateInfo(newBuilding);
-		newBuilding.setSelected(true);
+		JButton newBuildingButton = new JButton(name);
+		newBuildingButton.setBackground(Color.white);
+		Dimension paneSize = buttonPanel.getPreferredSize();
+		newBuildingButton.setPreferredSize(new Dimension(paneSize.width, paneSize.height/10));
+		newBuildingButton.setMinimumSize(new Dimension(paneSize.width, paneSize.height/10));
+		newBuildingButton.setMaximumSize(new Dimension(paneSize.width, paneSize.height/10));
+		newBuildingButton.addActionListener(this);
+		view.add(newBuildingButton);
+		this.updateInfo(newBuildingButton);
 	}
 	
 	public void updateInfo(JButton selected)
@@ -74,9 +83,9 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 			Place tempPlace = Directory.places().get(i);
 			if(tempPlace.getName() == selected.getText())
 			{
-				System.out.println(("Proof!!"));
 				buildingName.setText("Building Name: " + Directory.places().get(i)._name);
 				buildingMoney.setText("Building Money: Need a money field in places");
+				tempPlace.getBuilding().displayBuilding();
 			}
 		}
 	}
@@ -90,7 +99,6 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e)
 	{
 		updateInfo((JButton)e.getSource());
-
 	}
 
 }

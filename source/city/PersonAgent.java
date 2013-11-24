@@ -7,6 +7,7 @@ import city.bank.BankCustomerRole;
 import city.home.HomeBuyingRole;
 import city.bank.BankHostRole;
 import city.bank.BankTellerRole;
+import city.bank.Bank;
 import city.home.HomeRole;
 import city.market.Market;
 import city.market.MarketCashierRole;
@@ -21,6 +22,7 @@ import city.restaurant.yixin.YixinHostRole;
 import city.restaurant.yixin.YixinNormalWaiterRole;
 import city.restaurant.yixin.YixinRestaurant;
 import city.restaurant.yixin.YixinWaiterRole;
+import city.restaurant.yixin.gui.YixinCashierGui;
 import city.transportation.CommuterRole;
 import agent.Agent;
 import agent.Role;
@@ -43,6 +45,7 @@ public class PersonAgent extends Agent
 	private boolean _weekday_notWeekend;
 	private HomeRole _homeRole;
 	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house
+	private int bankAccountNumber = -1;
 	
 	// State data:
 	public double _money;
@@ -105,37 +108,42 @@ public class PersonAgent extends Agent
 	public PersonAgent(String name, double money, String initOccupation) {_name = name; _money = money; setOccupation(initOccupation);}
 	public String getName() { return _name; }
 	public double money() { return _money; }
+	public int getAccountNumber() { return bankAccountNumber; }
+	public void setAccountNumber(int newAccntNum) { this.bankAccountNumber = newAccntNum;} 
 	public void changeMoney(double delta) { _money += delta; }
 	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
 	public void setOccupation(String occupation) 
 	{
-		/*switch(occupation)
+		switch(occupation)
 		{
 			case "Waiter":
-				_occupation = new YixinNormalWaiterRole(this, null restaurant ,this._name);
+				_occupation = new YixinNormalWaiterRole(this, (YixinRestaurant)Directory.restaurants().get(0) ,this._name);
 				break;
 			case "Restaurant Cashier":
-				_occupation = new YixinCashierRole(this, null restaurant);
+				_occupation = new YixinCashierRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
+				YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)_occupation);
+				((YixinCashierRole)_occupation).setGui(yixinCashierGui);
+				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinCashierGui);
 				break;
 			case "Cook":
-				_occupation = new YixinCookRole(this, null restaurant);
+				_occupation = new YixinCookRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
 				break;
 			case "Restaurant Host":
-				_occupation = new YixinHostRole(this, null restaurant, this._name);
+				_occupation = new YixinHostRole(this, (YixinRestaurant)Directory.restaurants().get(0) , this._name);
 				break;
 			case "Bank Teller":
-				_occupation = new BankTellerRole(this);
+				_occupation = new BankTellerRole(this, (Bank)Directory.banks().get(0));
 				break;
 			case "Bank Host":
-				_occupation = new BankHostRole(this);
+				_occupation = new BankHostRole(this, (Bank)Directory.banks().get(0), ((Bank)Directory.banks().get(0)).getTellers());
 				break;
 			case "Market Cashier":
-				_occupation = new MarketCashierRole(this, null market);
+			//	_occupation = new MarketCashierRole(this, market);
 				break;
 			case "Market Employee":
-				_occupation = new MarketEmployeeRole(this, null market);
+			//	_occupation = new MarketEmployeeRole(this, market);
 				break;
-		}*/
+		}
 	}
 	public void setOccupationStartTime(double occupationStartTime) { _occupationStartTime = occupationStartTime; }
 	public void setOccupationEndTime(double occupationEndTime) { _occupationEndTime = occupationEndTime; }
@@ -182,6 +190,7 @@ public class PersonAgent extends Agent
 		
 		if(_currentRole.active)
 		{
+			//System.out.println("Current Role Active");
 			// Finish role because you have to get to work:
 			if(workingToday() && !_sentCmdFinishAndLeave)
 			{
@@ -220,15 +229,20 @@ public class PersonAgent extends Agent
 			}
 			
 			// Call current role's scheduler
-			if(_currentRole.pickAndExecuteAnAction()) { return true; }
+			if(_currentRole.pickAndExecuteAnAction()) { 
+				System.out.println("Current Role Scheduler called");
+				return true; 
+			}
 		}
 		else // i.e. _currentRole.active == false
 		{
+			System.out.println("Here");
 			// note: if we get here, a role just finished leaving.
 			_sentCmdFinishAndLeave = false;
 			
 			if(_currentRole == _commuterRole)
 			{
+				if(timeToBeAtWork()) setNextRole(_occupation);
 				// We must have just reached the destination
 				_currentRole = _nextRole;
 				_currentRole.active = true;
@@ -346,15 +360,20 @@ public class PersonAgent extends Agent
 	}
 	private void finishAndLeaveCurrentRole()
 	{
+		if(_currentRole == _commuterRole) setNextRole(_occupation);
 		_sentCmdFinishAndLeave = true;
 		_currentRole.cmdFinishAndLeave();
+		stateChanged();
 	}
 	private void setNextRole(Role nextRole)
 	{
+		System.out.println("Role set");
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
+		_commuterRole.msgGoToDestination(nextRole.place());
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
+		stateChanged();
 	}
 	private boolean goToMarket(int meals)
 	{

@@ -3,6 +3,7 @@ package city.transportation.mock;
 import city.Place;
 import city.transportation.BusAgent;
 import city.transportation.BusStopObject;
+import city.transportation.interfaces.Bus;
 import city.transportation.interfaces.Commuter;
 
 public class MockCommuter extends Mock implements Commuter{
@@ -25,7 +26,7 @@ public class MockCommuter extends Mock implements Commuter{
 	}
 
 	@Override
-	public void msgGetOnBus(int fare, BusAgent bus) {
+	public void msgGetOnBus(int fare, Bus bus) {
 		// TODO Auto-generated method stub
 		
 	}

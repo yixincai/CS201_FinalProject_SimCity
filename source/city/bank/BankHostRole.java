@@ -5,6 +5,7 @@ import java.util.concurrent.Semaphore;
 
 import agent.Role;
 import city.PersonAgent;
+import city.Place;
 import city.bank.gui.BankHostRoleGui;
 import city.bank.interfaces.BankHost;
 
@@ -89,5 +90,9 @@ public class BankHostRole extends Role implements BankHost {
 	//Utilities
 	public boolean isWaitingCustomersEmpty(){
 		return waitingCustomers.isEmpty();
+	}
+	@Override
+	public Place place() {
+		return bank;
 	}
 }

@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 import city.Directory;
 import city.Time;
+import city.bank.Bank;
 import city.restaurant.yixin.YixinRestaurant;
 
 public class MainGui extends JFrame 
@@ -70,8 +71,18 @@ public class MainGui extends JFrame
 		YixinRestaurant yr = new YixinRestaurant("Yixin's Restaurant", b, bp);
 		Directory.addPlace(yr);
 		_buildingCardLayoutPanel.add( bp, bp.getName() );
-		//cPanel.currentBuildingPanel.addBuilding(yr.getName()); // unsure if this is needed or not; I deleted it earlier
+		cPanel.currentBuildingPanel.addBuilding(yr.getName()); // unsure if this is needed or not; I deleted it earlier
         _buildingInteriorAnimationPanels.add(bp);
+        
+        //Market
+        WorldViewBuilding b2 = _worldView.addBuilding(5, 1, 30);
+		BuildingInteriorAnimationPanel bp2 = new BuildingInteriorAnimationPanel(this, "Bank", new city.bank.gui.BankAnimationPanel());
+		b2.setBuildingPanel(bp2);
+		Bank bank = new Bank("Bank", b2, bp2);
+		Directory.addPlace(bank);
+		_buildingCardLayoutPanel.add( bp2, bp2.getName() );
+		cPanel.currentBuildingPanel.addBuilding(bank.getName()); // unsure if this is needed or not; I deleted it earlier
+        _buildingInteriorAnimationPanels.add(bp2);
         
         
         

@@ -46,7 +46,6 @@ public class ControlPanel extends JTabbedPane {
 
 	public void addPerson(String name, double money, String occupation, boolean weekday_notWeekend, String shift) 
 	{
-		
 		currentPersonPanel.addPerson(name);
 		PersonAgent newPerson = new PersonAgent(name, money, occupation);
 		newPerson.setShift(shift, weekday_notWeekend);
@@ -57,6 +56,7 @@ public class ControlPanel extends JTabbedPane {
 		Directory.addPerson(newPerson);
 		mainGui.getWorldView().addGui(newCommuterGui);
 		this.setSelectedComponent(currentPersonPanel);
+		newPerson.startThread();
 		// TODO this is where we should actually create the new Person agent.  We should discuss how we want to handle the agents.
 	}
 }

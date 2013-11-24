@@ -22,13 +22,13 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     private final int WINDOWX = 682;
     private final int WINDOWY = 360;
     private List<Gui> guis = new ArrayList<Gui>();
-    private ImageIcon ifridge = new ImageIcon("image/fridge.png");
+    private ImageIcon ifridge = new ImageIcon("source/image/fridge.png");
     private Image fridgeimage = ifridge.getImage();
-    private ImageIcon i2 = new ImageIcon("image/host.png");
+    private ImageIcon i2 = new ImageIcon("source/image/host.png");
     private Image plateimage = i2.getImage();
-    private ImageIcon igrill = new ImageIcon("image/grill.jpg");
+    private ImageIcon igrill = new ImageIcon("source/image/grill.jpg");
     private Image grillimage = igrill.getImage();
-    private ImageIcon irevolving = new ImageIcon("image/revolvingStand.jpg");
+    private ImageIcon irevolving = new ImageIcon("source/image/revolvingStand.jpg");
     private Image standimage = irevolving.getImage();
     
     public YixinAnimationPanel()
@@ -59,10 +59,16 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(TABLEX2, TABLEY, GAPX, GAPY);
         g2.fillRect(TABLEX3, TABLEY, GAPX, GAPY);
         //here is the cooking area 
+        /*
     	g.drawImage(plateimage, 70, 250, ICON_X, ICON_Y, this);
     	g.drawImage(standimage, 40, 250, ICON_X, ICON_Y, this);
     	g.drawImage(grillimage, 200, 250, ICON_X, ICON_Y, this);
     	g.drawImage(fridgeimage, 330, 250, ICON_X, ICON_Y, this);
+    	*/
+    	g2.fillRect(70, 250, ICON_X, ICON_Y);
+    	g2.fillRect(40, 250, ICON_X, ICON_Y);
+    	g2.fillRect(200, 250, ICON_X, ICON_Y);
+    	g2.fillRect(330, 250, ICON_X, ICON_Y);
         for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.updatePosition();

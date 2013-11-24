@@ -30,9 +30,9 @@ public class Time {
 		}
 	}
 	
-	private static double time = 7.9; //0.0;
-	private static double counter = 0.1;
-	private static double timeFactor = 1.0;
+	private static double time = 8.0; //0.0;
+	private static double counter = 0.25;
+	private static double timeFactor = 16.0;
 	
 	static Timer timer;
 	
@@ -54,7 +54,11 @@ public class Time {
 			time = 0;
 			incrementDay();
 		}
-		if((double)((int)time) == time) { System.out.println("time: " + time); }
+		System.out.printf("Time- %.0f:%.0f", (double)((int)(time)), 60.0*(time - ((int)time)));
+		if(60.0*(time - ((int)time)) == 0){
+			System.out.print("0");
+		}
+		System.out.println();
 	}
 	
 	public static void setTimeFactor(int newTimeFactor){

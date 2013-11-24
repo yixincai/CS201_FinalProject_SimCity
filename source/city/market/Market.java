@@ -3,8 +3,6 @@ package city.market;
 import gui.WorldViewBuilding;
 import city.PersonAgent;
 import city.Place;
-import city.market.interfaces.MarketCashier;
-import city.market.interfaces.MarketEmployee;
 import city.transportation.TruckAgent;
 
 public class Market extends Place{
@@ -13,6 +11,7 @@ public class Market extends Place{
 	public MarketCashierRole MarketCashier;
 	public MarketEmployeeRole MarketEmployee;
 	public TruckAgent truck;
+	private int businessAccountNumber = -1;
 
 	public Market(String s, WorldViewBuilding _worldViewBuilding){
 		super("Market", _worldViewBuilding);
@@ -23,6 +22,13 @@ public class Market extends Place{
 	
 	public Market(){
 		super("Market", null);
+		MarketCashier = new MarketCashierRole(null,this);
+		MarketEmployee = new MarketEmployeeRole(null,this);
+		truck = new TruckAgent(this);
+	}
+	
+	public Market(String name){
+		super(name, null);
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
 		truck = new TruckAgent(this);
@@ -45,5 +51,13 @@ public class Market extends Place{
 	
 	public MarketCashierRole getCashier(){
 		return MarketCashier;
+	}
+
+	public void updateAccountNumber(int newAccountNumber) {
+		this.businessAccountNumber = newAccountNumber;
+	}
+	
+	public int getAccountNumber(){
+		return this.businessAccountNumber;
 	}
 }

@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import agent.Agent;
+import city.Directory;
 import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.BusAgentGui;
 import city.transportation.interfaces.Bus;
+
+//NOTES when taking bus, must decide who finds which busstop is nearest to destination (commuter role or busagent)
 
 public class BusAgent extends Agent implements Bus{
 	String _name;
@@ -20,8 +23,8 @@ public class BusAgent extends Agent implements Bus{
 	BusStopObject currentDestination;
 	List<CommuterRole> currentBusStopList = new ArrayList<CommuterRole>();
 	
-	static int _fare;
-	int _register;
+	static double _fare;
+	double _register;
 
 	static int capacity;
 	int numPeople = 0;
@@ -43,14 +46,9 @@ public class BusAgent extends Agent implements Bus{
 	    }
 	}
 	
-	public BusAgent(String name, int fare){
-		_name = name;
-		_fare = fare;
-	}
-	
 	public BusAgent(String name){
 		_name = name;
-		_fare = 1;
+		_fare = Directory.getFare();
 	}
 	
 	//----------------------------------------------Messages----------------------------------------
@@ -65,7 +63,7 @@ public class BusAgent extends Agent implements Bus{
 	    numPeople--;
 	}
 
-	public void msgGettingOnBoard(CommuterRole person, Place destination, int payment){ //Check if payment is correct?
+	public void msgGettingOnBoard(CommuterRole person, Place destination, double payment){ //Check if payment is correct?
 	    passengers.add(new MyCommuter(person, destination));
 	    _register += payment;
 	    numPeople++; //Fix this
