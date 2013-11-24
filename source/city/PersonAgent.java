@@ -184,9 +184,10 @@ public class PersonAgent extends Agent
 		}
 		_weekday_notWeekend = weekday_notWeekend;
 	}
+	public HomeRole homeRole() { return _homeRole; }
 	
 	
-
+	
 	// --------------------------------------- SCHEDULER -------------------------------------
 	@Override
 	protected boolean pickAndExecuteAnAction() {
@@ -394,10 +395,9 @@ public class PersonAgent extends Agent
 			}
 		}
 		// note: we only get here if no MarketCustomerRole was found in _roles
-		List<Place> markets = Directory.markets();
-		for(Place p : markets)
+		List<Market> markets = Directory.markets();
+		for(Market m : markets)
 		{
-			Market m = (Market)p;
 			MarketCustomerRole mcr = m.generateCustomerRole(this);
 			mcr.cmdBuyFood(meals);
 			setNextRole(mcr);
@@ -421,10 +421,9 @@ public class PersonAgent extends Agent
 			}
 		}
 		// note: we only get here if no YixinCustomerRole was found in _roles
-		List<Place> restaurants = Directory.restaurants();
-		for(Place p : restaurants)
+		List<Restaurant> restaurants = Directory.restaurants();
+		for(Restaurant r : restaurants)
 		{
-			YixinRestaurant r = (YixinRestaurant)p;
 			RestaurantCustomerRole ycr = r.generateCustomerRole(this);
 			ycr.cmdGotHungry();
 			setNextRole(ycr);

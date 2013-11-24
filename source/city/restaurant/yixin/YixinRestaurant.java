@@ -3,6 +3,7 @@ package city.restaurant.yixin;
 import gui.WorldViewBuilding;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 import agent.Role;
 import city.PersonAgent;
@@ -14,44 +15,44 @@ public class YixinRestaurant extends Restaurant{
 	//count stands for the number of waiting list
 	int count = -1;
 	boolean open;
-	public YixinHostRole Host;
+	public YixinHostRole host;
 	private int businessAccountNumber = -1;
 	public List<YixinWaiterRole> Waiters = new ArrayList<YixinWaiterRole>();
 	private YixinAnimationPanel _animationPanel;
-
-
-
+	
+	// Semaphores for the host, cashier, and cook
+	private Semaphore _hostSemaphore = new Semaphore(1, true);
+	
+	
+	
+	// ------------- CONSTRUCTOR & PROPERTIES
+	
 	public YixinRestaurant(String name, gui.WorldViewBuilding worldViewBuilding, gui.BuildingInteriorAnimationPanel animationPanel){
 		super(name, worldViewBuilding);
 
 		this._animationPanel = (YixinAnimationPanel)animationPanel.getBuildingAnimation();
 
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
-		Cashier = new YixinCashierRole(null,this);
-		Host = new YixinHostRole(null,this,"Host");
-		Cook = new YixinCookRole(null,this);
-		/*
-        Cook.addMarket(market1);
-        Cook.addMarket(market2);
-        Cook.addMarket(market3);
-		 */
-		((YixinCookRole)Cook).cashier = (YixinCashierRole)Cashier;
+		cashier = new YixinCashierRole(null,this);
+		host = new YixinHostRole(null,this,"Host");
+		cook = new YixinCookRole(null,this);
+		((YixinCookRole)cook).cashier = (YixinCashierRole)cashier;
 	}
 
 	//default constructor for unit testing DO NOT DELETE
 	public YixinRestaurant(){
 		super("Yixin's Restaurant");    
-		Cashier = new YixinCashierRole(null,this);
-		Host = new YixinHostRole(null,this,"Host");
-		Cook = new YixinCookRole(null,this);
-		((YixinCookRole)Cook).cashier = (YixinCashierRole)Cashier;
+		cashier = new YixinCashierRole(null,this);
+		host = new YixinHostRole(null,this,"Host");
+		cook = new YixinCookRole(null,this);
+		((YixinCookRole)cook).cashier = (YixinCashierRole)cashier;
 	}
 
-	public void updateMarketStatus(){
-		if (Cashier == null || Host == null || Cook == null || Waiters.size()==0)
-			open = false;
+	public boolean isOpen(){
+		if (cashier.active && host.active && cook.active && Waiters.size()!=0)
+			return true;
 		else
-			open = true;
+			return false;
 	}
 
 	@Override
@@ -85,7 +86,7 @@ public class YixinRestaurant extends Restaurant{
 
 	@Override
 	public Role getHostRole() {
-		return Host;
+		return host;
 	}
 
 	public YixinAnimationPanel getAnimationPanel() {

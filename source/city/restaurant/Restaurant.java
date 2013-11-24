@@ -17,32 +17,31 @@ public abstract class Restaurant extends Place {
 	public Restaurant(String name, WorldViewBuilding worldViewBuilding) {
 		super(name, worldViewBuilding);
 	}
+	
+	// Type:
 	public enum Cuisine { BREAKFAST, NORMAL }
 	public enum Upscaleness { UPSCALE, NORMAL, CHEAP }
-	
 	protected Cuisine _cuisine;
 	protected Upscaleness _upscaleness;
-
 	public Cuisine cuisine() { return _cuisine; }
 	public Upscaleness upscaleness() { return _upscaleness; }
 	
-	public RestaurantCashierRole Cashier;
-	public RestaurantCookRole Cook;
-	// --------------------------------- CORRESPONDENCE ----------------------------------
+	// Correspondence for Markets:
+	public RestaurantCashierRole cashier;
+	public RestaurantCookRole cook;
 	
-	//Do we need this?
-	//private Host _host;
-	//protected void setHost(Host host) { _host = host; }
-	//public host() { return _host; }
+	
+	
+	// --------------------------------- PROPERTIES -----------------------------
+	public abstract Role getHostRole();
+	public RestaurantCashierRole getCashier(){
+		return cashier;
+	}
 	
 	
 	
 	// ------------------------------------ FACTORIES ---------------------------------------------
 	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // Make a new CustomerRole, which is initialized with a pointer to the HostRole.
 	public abstract Role generateWaiterRole();
-	public abstract Role getHostRole();
-	public RestaurantCashierRole getCashier(){
-		return Cashier;
-	}
 
 }

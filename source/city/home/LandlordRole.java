@@ -98,7 +98,7 @@ public class LandlordRole extends Role {
 		}
 		stateChanged();
 	}
-
+	
 	// -------------- RECEIVING RENT ---------------
 	
 	// -------------- SELLING A HOUSE ---------------

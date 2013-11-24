@@ -7,10 +7,10 @@ import city.Place;
 public abstract class Role
 {
 	// ----------------------------- DATA ------------------------------------
-	protected PersonAgent _person; // Not really sure if you even need this
+	protected PersonAgent _person;
 	public boolean active = false;
 	
-	// ----------------------------- CONSTRUCTOR & ACCESSORS ------------------------------------
+	// ----------------------------- CONSTRUCTOR & PROPERTIES ------------------------------------
 	public Role(PersonAgent person) { _person = person; }
 	public void setPersonAgent(PersonAgent person) { _person = person; }
 	public abstract Place place();
@@ -18,7 +18,7 @@ public abstract class Role
 	// ----------------------------- METHODS ------------------------------------
 	protected void stateChanged()
 	{
-		_person.stateChanged();
+		_person.stateChanged(); // it should be okay to perform extra scheduler calls in the person (since they all take place in one thread anyway)
 		//if(active) _person.stateChanged();
 	}
 	
