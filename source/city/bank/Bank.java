@@ -3,11 +3,14 @@ import gui.WorldViewBuilding;
 import gui.BuildingInteriorAnimationPanel;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
 import city.Place;
 import city.bank.gui.BankAnimationPanel;
-import city.bank.interfaces.BankTeller;
+import city.bank.interfaces.*;
+import city.market.MarketCashierRole;
+import city.market.MarketEmployeeRole;
 import city.restaurant.yixin.gui.YixinAnimationPanel;
 
 public class Bank extends Place {
@@ -16,6 +19,11 @@ public class Bank extends Place {
 	public List<BankTellerRole> tellers;
 	public BankHostRole host;
 	BankAnimationPanel _animationPanel;
+	
+	private BankTellerRole _bankTellerRole;
+	private BankHostRole _bankHostRole;
+	private Semaphore _tellerSemaphore = new Semaphore(1, true);
+	private Semaphore _hostSemaphore = new Semaphore(1, true);
 	
 	public Bank(String name, WorldViewBuilding wvb, BuildingInteriorAnimationPanel bp){
 		super("Bank", wvb);
@@ -47,5 +55,27 @@ public class Bank extends Place {
 	
 	public List<BankTellerRole> getTellers(){
 		return tellers;
+	}
+	
+	
+	
+	// -------------------- FACTORIES/TRY-ACQUIRES ------------------
+	
+	public BankTellerRole tryAcquireTeller(){
+		if (_tellerSemaphore.tryAcquire()){
+			return _bankTellerRole;
+		}
+		return null;
+	}
+
+	public BankHostRole tryAcquireHost(){
+		if (_hostSemaphore.tryAcquire()){
+			return _bankHostRole;
+		}
+		return null;
+	}
+	
+	public BankCustomerRole generateBankCustomerRole(PersonAgent person){
+		return new BankCustomerRole(person, -1, this);
 	}
 }
