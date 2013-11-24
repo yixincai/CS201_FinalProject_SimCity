@@ -32,9 +32,10 @@ public abstract class Restaurant extends Place {
 	public RestaurantCashierRole cashier;
 	public RestaurantCookRole cook;
 	
+	// Semaphores for the host, cashier, and cook
+	private Semaphore _hostSemaphore = new Semaphore(1, true);
 	private Semaphore _cookSemaphore = new Semaphore(1, true);
-	
-	
+	private Semaphore _cashierSemaphore = new Semaphore(1, true);
 	
 	// --------------------------------- PROPERTIES -----------------------------
 	public abstract Role getHostRole();
