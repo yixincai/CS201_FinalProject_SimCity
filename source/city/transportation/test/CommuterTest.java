@@ -1,6 +1,8 @@
 package city.transportation.test;
 
 import city.PersonAgent;
+import city.restaurant.Restaurant;
+import city.restaurant.yixin.YixinRestaurant;
 import city.transportation.BusStopObject;
 import city.transportation.CarObject;
 import city.transportation.CommuterRole;
@@ -16,6 +18,9 @@ public class CommuterTest extends TestCase{
 	MockBus mockBus;
 	TravelState tState;
 	
+	Restaurant restaurant;
+	Restaurant restaurant1;
+	
 	BusStopObject busStop;
 	BusStopObject busStop1;
 	CarObject car;
@@ -28,6 +33,9 @@ public class CommuterTest extends TestCase{
 		commuter = new CommuterRole(person, null);
 		
 		mockBus = new MockBus("MockBus");
+		
+		restaurant = new YixinRestaurant("Restaurant", null, null);
+		restaurant1 = new YixinRestaurant("Restaurant 1", null, null);
 		
 		busStop = new BusStopObject("bus stop", null);
 		busStop1 = new BusStopObject("bus stop 1", null);
