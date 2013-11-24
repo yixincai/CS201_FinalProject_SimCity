@@ -7,12 +7,14 @@ import city.PersonAgent;
 import city.Place;
 import city.bank.gui.BankCustomerRoleGui;
 import city.bank.interfaces.BankCustomer;
+import city.bank.interfaces.BankHost;
+import city.bank.interfaces.BankTeller;
 
 public class BankCustomerRole extends Role implements BankCustomer {
 
 	//Data
-	BankHostRole bankHost;
-	BankTellerRole teller;
+	BankHost bankHost;
+	BankTeller teller;
 	String request;
 	private double amount;
 	private double accountFunds;
@@ -81,7 +83,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
-	public void msgCalledToDesk(BankTellerRole teller){
+	public void msgCalledToDesk(BankTeller teller){
 		  event = Event.CalledToDesk;
 		  this.teller = teller;
 		  stateChanged();
