@@ -14,7 +14,7 @@ import city.interfaces.PlaceWithAnimation;
 public class Bank extends Place implements PlaceWithAnimation {
 
 	boolean open;
-	public List<BankTellerRole> tellers;
+	public List<BankTellerRole> tellers = new ArrayList<BankTellerRole>();
 	public BankHostRole host;
 	BankAnimationPanel _animationPanel;
 	

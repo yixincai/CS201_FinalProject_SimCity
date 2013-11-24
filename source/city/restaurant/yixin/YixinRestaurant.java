@@ -90,6 +90,10 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		return host;
 	}
 
+	public int waiterCount(){
+		return waiter_count;
+	}
+	
 	public YixinAnimationPanel getAnimationPanel() {
 		return this._animationPanel;
 	}
