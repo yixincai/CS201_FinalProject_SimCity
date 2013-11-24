@@ -28,10 +28,11 @@ public class Bank extends Place {
 	public Bank(String name, WorldViewBuilding wvb, BuildingInteriorAnimationPanel bp){
 		super("Bank", wvb);
 		this._animationPanel = (BankAnimationPanel)bp.getBuildingAnimation();
-	/*	BankTellerRole teller = new BankTellerRole(null,this);
+		List<BankTeller> tellers_for_host = new ArrayList<BankTeller>();
+		BankTellerRole teller = new BankTellerRole(null,this, 0);
 		tellers.add(teller);
-		
-		BankHostRole host = new BankHostRole(null,this, tellers); */
+		tellers_for_host.add(teller);
+		host = new BankHostRole(null,this, tellers_for_host);
 	}
 		
 	public Bank() {

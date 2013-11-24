@@ -24,8 +24,7 @@ public class Directory {
 	
 	private static double _openingTime = 0;
 	private static double _closingTime = 24;
-	
-	
+
 	// ------------------------------------ PROPERTIES ---------------------------------------
 	public static double openingTime() { return _openingTime; }
 	public static double closingTime() { return _closingTime; }
