@@ -97,4 +97,7 @@ public class BankHostRole extends Role implements BankHost {
 	public Place place() {
 		return bank;
 	}
+	public void setGui(BankHostRoleGui g) {
+		gui = g;
+	}
 }
