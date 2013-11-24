@@ -1,12 +1,14 @@
 package city;
 
 import java.util.List;
+
 import java.util.Random;
 
 import city.bank.BankCustomerRole;
 import city.home.HomeBuyingRole;
 import city.bank.BankHostRole;
 import city.bank.BankTellerRole;
+import city.bank.Bank;
 import city.home.HomeRole;
 import city.market.Market;
 import city.market.MarketCashierRole;
@@ -127,10 +129,10 @@ public class PersonAgent extends Agent
 				_occupation = new YixinHostRole(this, (YixinRestaurant)Directory.restaurants().get(0) , this._name);
 				break;
 			case "Bank Teller":
-		//		_occupation = new BankTellerRole(this, (Bank)Directory.banks().get(0));
+				_occupation = new BankTellerRole(this, (Bank)Directory.banks().get(0));
 				break;
 			case "Bank Host":
-		//		_occupation = new BankHostRole(this, (Bank)Directory.banks().get(0));
+				_occupation = new BankHostRole(this, (Bank)Directory.banks().get(0), ((Bank)Directory.banks().get(0)).getTellers());
 				break;
 			case "Market Cashier":
 			//	_occupation = new MarketCashierRole(this, market);
@@ -231,6 +233,7 @@ public class PersonAgent extends Agent
 		}
 		else // i.e. _currentRole.active == false
 		{
+			System.out.println("Here");
 			// note: if we get here, a role just finished leaving.
 			_sentCmdFinishAndLeave = false;
 			
@@ -354,17 +357,20 @@ public class PersonAgent extends Agent
 	}
 	private void finishAndLeaveCurrentRole()
 	{
+		if(_currentRole == _commuterRole) setNextRole(_occupation);
 		_sentCmdFinishAndLeave = true;
 		_currentRole.cmdFinishAndLeave();
+		stateChanged();
 	}
 	private void setNextRole(Role nextRole)
 	{
-		System.out.println("Set next Role");
+		System.out.println("Role set");
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
 		_commuterRole.msgGoToDestination(nextRole.place());
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
+		stateChanged();
 	}
 	private boolean goToMarket(int meals)
 	{

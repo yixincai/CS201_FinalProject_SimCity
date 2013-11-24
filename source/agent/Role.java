@@ -15,12 +15,11 @@ public abstract class Role
 	public void setPersonAgent(PersonAgent person) { _person = person; }
 	public abstract Place place();
 	
-	
-	
 	// ----------------------------- METHODS ------------------------------------
 	protected void stateChanged()
 	{
-		if(active) _person.stateChanged();
+		_person.stateChanged();
+		//if(active) _person.stateChanged();
 	}
 	
 	// --------- ABSTRACT ---------

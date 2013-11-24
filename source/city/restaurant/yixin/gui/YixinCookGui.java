@@ -15,7 +15,7 @@ import city.restaurant.yixin.YixinCookRole;
 public class YixinCookGui extends JPanel implements Gui{
 	
 	private YixinCookRole agent;
-    private ImageIcon i = new ImageIcon("image/cook.jpg");
+    private ImageIcon i = new ImageIcon("source/image/cook.jpg");
     private Image image = i.getImage();
     private String food = "";
     private boolean show_food = false;
@@ -89,7 +89,8 @@ public class YixinCookGui extends JPanel implements Gui{
 
     public void draw(Graphics2D g) {
     	g.setColor(Color.BLUE);
-    	g.drawImage(image, xPos, yPos, xGap, yGap, this);
+    	g.fillRect(xPos, yPos, xGap, yGap);    	
+    	//g.drawImage(image, xPos, yPos, xGap, yGap, this);
     	if (show_food)
     		g.drawString(food, xCooking, yPos - 50);
     }

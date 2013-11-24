@@ -11,6 +11,7 @@ import city.restaurant.yixin.gui.YixinAnimationPanel;
 
 public class YixinRestaurant extends Restaurant{
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
+	//count stands for the number of waiting list
 	int count = -1;
 	boolean open;
 	public YixinHostRole Host;
@@ -66,10 +67,12 @@ public class YixinRestaurant extends Restaurant{
 	@Override
 	public Role generateWaiterRole() {
 		int i = (new Random()).nextInt(2);
+		YixinWaiterRole newWaiter;
 		if (i == 0)
-			return (new YixinNormalWaiterRole(null, this, ""));
+			newWaiter = new YixinNormalWaiterRole(null, this, "");
 		else
-			return (new YixinSharedDataWaiterRole(null, this, ""));
+			newWaiter = new YixinSharedDataWaiterRole(null, this, "");
+		return newWaiter;
 	}
 
 	public void updateAccountNumber(int newAccountNumber){

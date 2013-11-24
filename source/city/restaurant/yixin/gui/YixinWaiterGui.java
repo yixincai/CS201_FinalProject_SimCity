@@ -23,7 +23,7 @@ public class YixinWaiterGui extends JPanel implements Gui {
     public static int xGap = 30;
     public static int yGap = 30;
     int count;
-    private ImageIcon i = new ImageIcon("image/waiter.png");
+    private ImageIcon i = new ImageIcon("source/image/waiter.png");
     private Image image = i.getImage();
         
 	private enum Command {noCommand, GoToSeat};
@@ -55,7 +55,8 @@ public class YixinWaiterGui extends JPanel implements Gui {
 
     public void draw(Graphics2D g) {
     	g.setColor(Color.RED);
-    	g.drawImage(image, xPos, yPos, xGap, yGap, this);
+    	g.fillRect(xPos, yPos, xGap, yGap);    	
+    	//g.drawImage(image, xPos, yPos, xGap, yGap, this);
     	if (show_choice)
     		g.drawString(food, xPos, yPos - 10);
     }
