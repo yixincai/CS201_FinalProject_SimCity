@@ -23,30 +23,45 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     private final int FRIDGEY = 300;
     
     private final int BEDX2 = 600;
-    private final int BEDY2 = 100;
+    private final int BEDY2 = 30;
     private final int STOVEX2 = 570;
-    private final int STOVEY2 = 100;
+    private final int STOVEY2 = 30;
     private final int FRIDGEX2 = 550;
-    private final int FRIDGEY2 = 100;
+    private final int FRIDGEY2 = 30;
     
-    private final int BEDX3 = 100;
+    private final int BEDX3 = 20;
     private final int BEDY3 = 300;
-    private final int STOVEX3 = 130;
+    private final int STOVEX3 = 60;
     private final int STOVEY3 = 300;
-    private final int FRIDGEX3 = 150;
+    private final int FRIDGEX3 = 80;
     private final int FRIDGEY3 = 300;
     
-    private final int BEDX4 = 100;
-    private final int BEDY4 = 100;
-    private final int STOVEX4 = 130;
-    private final int STOVEY4 = 100;
-    private final int FRIDGEX4 = 150;
-    private final int FRIDGEY4 = 100;
+    private final int BEDX4 = 20;
+    private final int BEDY4 = 30;
+    private final int STOVEX4 = 60;
+    private final int STOVEY4 = 30;
+    private final int FRIDGEX4 = 80;
+    private final int FRIDGEY4 = 30;
     
     private final int BEDWIDTH = 30;
     private final int BEDHEIGHT = 30;
     private final int STOVEDIM = 20;
     private final int FRIDGEDIM = 20;
+    
+    private final int WALLX1 = 0;
+    private final int WALLY1 = 180;
+    
+    private final int WALLX2 = 530;
+    private final int WALLY2 = 180;
+    
+    private final int WALLX3 = 341;
+    private final int WALLY3 = 0;
+    
+    private final int WALLX4 = 341;
+    private final int WALLY4 = 210;
+    
+    private final int WALLDIMH = 10;
+    private final int WALLDIMV = 150;
 
     private final int WINDOWX = 682;
     private final int WINDOWY = 360;
@@ -91,6 +106,12 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(FRIDGEX2, FRIDGEY2, FRIDGEDIM, FRIDGEDIM);
         g2.fillRect(FRIDGEX3, FRIDGEY3, FRIDGEDIM, FRIDGEDIM);
         g2.fillRect(FRIDGEX4, FRIDGEY4, FRIDGEDIM, FRIDGEDIM);
+        
+        g2.setColor(Color.BLUE);
+        g2.fillRect(WALLX1, WALLY1, WALLDIMV, WALLDIMH);
+        g2.fillRect(WALLX2, WALLY2, WALLDIMV, WALLDIMH);
+        g2.fillRect(WALLX3, WALLY3, WALLDIMH, WALLDIMV);
+        g2.fillRect(WALLX4, WALLY4, WALLDIMH, WALLDIMV);
         
 
         for(Gui gui : guis) {

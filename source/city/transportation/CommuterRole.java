@@ -63,7 +63,7 @@ public class CommuterRole extends Role implements Commuter{
 	public void setCar(CarObject car){_car = car;}
 	
 	public Place destination() { return _destination; }
-	public void setDestination(Place place) { _destination = place; }
+	public void setDestination(Place place) { _destination = place; msgGoToDestination(_destination); }
 	
 	public Place currentPlace() { return _currentPlace; }
 
