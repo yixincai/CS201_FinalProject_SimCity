@@ -33,6 +33,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		money = 130.0;
 		bankBalance = 0;
 		bankDebt = 0;
+		
 	}
 
 	public void setGui(YixinCashierGui g) {
