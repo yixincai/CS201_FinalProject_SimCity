@@ -89,7 +89,6 @@ public class TruckAgent extends Agent implements Truck{
 			GoBackToMarket();
 			return true;
 		}
-        
 		return false;
 	}
 	
