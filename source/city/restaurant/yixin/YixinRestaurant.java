@@ -89,6 +89,10 @@ public class YixinRestaurant extends Restaurant{
 		return host;
 	}
 
+	public int waiterCount(){
+		return waiter_count;
+	}
+	
 	public YixinAnimationPanel getAnimationPanel() {
 		return this._animationPanel;
 	}
