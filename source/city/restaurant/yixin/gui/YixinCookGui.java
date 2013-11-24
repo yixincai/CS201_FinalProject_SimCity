@@ -24,7 +24,7 @@ public class YixinCookGui extends JPanel implements Gui{
 		this.agent = c;
 	}
 
-    private int xPos = 200, yPos = 290, xPlate = 100, xCooking = 200, xFridge = 300;//default cook position
+    private int xPos = 200, yPos = 290, xPlate = 200, xCooking = 300, xFridge = 400;//default cook position
     private int xDestination = 100, yDestination = 290;
     public static int xGap = 30;
     public static int yGap = 30;

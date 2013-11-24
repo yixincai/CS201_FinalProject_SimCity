@@ -13,13 +13,13 @@ public class YixinWaiterGui extends JPanel implements Gui {
     private YixinWaiterRole agent = null;
     private boolean show_choice = false;
     private String food;
-	public static final int xTable1 = 200, xTable2 = 300, xTable3 = 100;
-	public static final int xPlate=100, xCook = 200, yCook = 250;
+	public static final int xTable1 = 450, xTable2 = 300, xTable3 = 150;
+	public static final int xPlate=200, xCook = 300, yCook = 250;
 	private static int xPlace, yPlace = 90;//default waiter position
     private int xPos, yPos = 90;//waiter current position
     private int xDestination, yDestination = 90;//destination
     public static int xTable = 200;
-    public static int yTable = 150;
+    public static int yTable = 100;
     public static int xGap = 30;
     public static int yGap = 30;
     int count;
