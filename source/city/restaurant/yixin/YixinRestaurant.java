@@ -73,6 +73,9 @@ public class YixinRestaurant extends Restaurant{
 			newWaiter = new YixinNormalWaiterRole(null, this, "");
 		else
 			newWaiter = new YixinSharedDataWaiterRole(null, this, "");
+		newWaiter.setCashier((YixinCashierRole)cashier);
+		newWaiter.setCook((YixinCookRole)cook);
+		newWaiter.setHost(host);
 		return newWaiter;
 	}
 
