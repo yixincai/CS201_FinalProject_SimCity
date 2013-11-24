@@ -54,11 +54,13 @@ public class YixinWaiterGui extends JPanel implements Gui {
     }
 
     public void draw(Graphics2D g) {
+    	if(agent.active){
     	g.setColor(Color.RED);
     	g.fillRect(xPos, yPos, xGap, yGap);    	
     	//g.drawImage(image, xPos, yPos, xGap, yGap, this);
     	if (show_choice)
     		g.drawString(food, xPos, yPos - 10);
+    	}
     }
 
     public boolean isPresent() {

@@ -1,8 +1,10 @@
 package city.market;
 
+import gui.BuildingInteriorAnimationPanel;
 import gui.WorldViewBuilding;
 import city.PersonAgent;
 import city.Place;
+import city.market.gui.MarketAnimationPanel;
 import city.transportation.TruckAgent;
 
 public class Market extends Place{
@@ -10,11 +12,13 @@ public class Market extends Place{
 	boolean open;
 	public MarketCashierRole MarketCashier;
 	public MarketEmployeeRole MarketEmployee;
+	private MarketAnimationPanel animationPanel;
 	public TruckAgent truck;
 	private int businessAccountNumber = -1;
 
-	public Market(String s, WorldViewBuilding _worldViewBuilding){
+	public Market(String s, WorldViewBuilding _worldViewBuilding, BuildingInteriorAnimationPanel map){
 		super("Market", _worldViewBuilding);
+		this.animationPanel = (MarketAnimationPanel)map.getBuildingAnimation();
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
 		truck = new TruckAgent(this);
