@@ -26,8 +26,10 @@ public class YixinCashierGui extends JPanel implements Gui {
     }
 
     public void draw(Graphics2D g) {
+    	if(agent.active){
     	g.fillRect(xPos, yPos, xGap, yGap);    	
     	//g.drawImage(image, xPos, yPos, xGap, yGap, this);
+    	}
     }
 
     public boolean isPresent() {

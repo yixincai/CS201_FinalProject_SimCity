@@ -125,7 +125,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	public void pickUpItems(){
 		DoGoToCashier();
 		DoLeaveMarket();
-		//Active = false;
+		active = false;
 	}
 	
 	public void DoGoToCashier(){

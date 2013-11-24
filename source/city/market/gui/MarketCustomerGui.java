@@ -47,7 +47,8 @@ public class MarketCustomerGui extends JPanel implements Gui {
     }
     
 	public void GoToCashier(){
-		//xDestination = ;
+		xDestination = 200 - xGap;
+		yDestination = 130;
 		command = Command.GoToSeat;
 	}
 

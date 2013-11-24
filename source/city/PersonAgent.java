@@ -1,7 +1,6 @@
 package city;
 
 import java.util.List;
-
 import java.util.Random;
 
 import city.bank.BankCustomerRole;
@@ -23,6 +22,7 @@ import city.restaurant.yixin.YixinHostRole;
 import city.restaurant.yixin.YixinNormalWaiterRole;
 import city.restaurant.yixin.YixinRestaurant;
 import city.restaurant.yixin.YixinWaiterRole;
+import city.restaurant.yixin.gui.YixinCashierGui;
 import city.transportation.CommuterRole;
 import agent.Agent;
 import agent.Role;
@@ -121,6 +121,9 @@ public class PersonAgent extends Agent
 				break;
 			case "Restaurant Cashier":
 				_occupation = new YixinCashierRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
+				YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)_occupation);
+				((YixinCashierRole)_occupation).setGui(yixinCashierGui);
+				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinCashierGui);
 				break;
 			case "Cook":
 				_occupation = new YixinCookRole(this, (YixinRestaurant)Directory.restaurants().get(0) );

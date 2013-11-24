@@ -33,6 +33,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		money = 130.0;
 		bankBalance = 0;
 		bankDebt = 0;
+		
 	}
 
 	public void setGui(YixinCashierGui g) {
@@ -150,6 +151,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			if (marketBills.size() == 0 && bills.size() == 0 && role_state == RoleState.WantToLeave){
 				LeaveRestaurant();
 				role_state = RoleState.none;
+				active = false;
 				return true;
 			}
 		}
