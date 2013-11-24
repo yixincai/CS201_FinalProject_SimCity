@@ -77,6 +77,7 @@ public class BusAgent extends Agent implements Bus{
 
 	public void msgGettingOnBoard(CommuterRole person, Place destination, double payment){ //Check if payment is correct?
 	    _passengers.add(new MyCommuter(person, destination));
+	    currentDestination.removePerson(person);
 	    _register += payment;
 	    numPeople++; //Fix this
 	}
@@ -119,7 +120,7 @@ public class BusAgent extends Agent implements Bus{
 	}
 
 	public void DropOff(){
-		System.out.println("Dropping off");
+		System.out.println("Bus: Dropping off");
 	    bState = BusState.droppingoff;
 	    for(MyCommuter commuter: _passengers){
 	        if(commuter.destination == currentDestination){
@@ -131,7 +132,7 @@ public class BusAgent extends Agent implements Bus{
 	}
 
 	public void PickUp(){
-		System.out.println("Pick up");
+		System.out.println("Bus: Picking up");
 		currentBusStopList = currentDestination.getList();
 		bState = BusState.pickingup;
 	    while(expectedPeople <= capacity && currentBusStopList.size() > 0){
