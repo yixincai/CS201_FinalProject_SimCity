@@ -17,6 +17,8 @@ public class Directory {
 	private static List<Place> _places = Collections.synchronizedList(new ArrayList<Place>());
 	private static List<PersonAgent> _personAgents = Collections.synchronizedList(new ArrayList<PersonAgent>());
 	
+	//Bus Fare (initialize in constructor?)
+	private static double _busFare = 2;
 	
 	
 	// ------------------------------------ PROPERTIES ---------------------------------------
@@ -112,6 +114,13 @@ public class Directory {
 	}
 	
 	
+	//Transportation Methods
+	public static double getFare(){
+		return _busFare;
+	}
+	public static void seetFare(double newFare){
+		_busFare = newFare;
+	}
 	
 	public static BusStopObject getNearestBusStop(Place fromPlace)
 	{
