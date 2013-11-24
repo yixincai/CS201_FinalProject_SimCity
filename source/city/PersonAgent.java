@@ -98,6 +98,13 @@ public class PersonAgent extends Agent
 	
 	// ------------------------------------------- CONSTRUCTORS & PROPERTIES --------------------------------------------
 	public PersonAgent(String name) { _name = name; }
+	/**
+	 * Constructor
+	 * @param name Name
+	 * @param money Initial amount of money
+	 * @param occupationType I.e. Restaurant Cashier or Restaurant Host or Bank Teller etc.
+	 * @param housingType House or Apartment
+	 */
 	public PersonAgent(String name, double money, String occupationType, String housingType) 
 	{
 		_name = name; 
@@ -115,6 +122,7 @@ public class PersonAgent extends Agent
 	{
 		
 	}
+	/** Sets the value of _occupation to a role that is requested by occupationType if possible; else it sets _occupation to a new waiter role from a randomly chosen restaurant. */
 	public void setOccupation(String occupationType) 
 	{
 		_occupationType = occupationType;
@@ -205,23 +213,36 @@ public class PersonAgent extends Agent
 			case "Market Cashier":
 				newOccupation = null;
 				for(Market m : markets)
-				{//TODO
-					newOccupation = b.tryAcquireTeller();
+				{
+					newOccupation = m.tryAcquireCashier();
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
-						BankTellerGui bankTellerGui = new BankTellerGui((BankTellerRole)_occupation);
-						((BankTellerRole)_occupation).setGui(bankTellerGui);
-						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(bankTellerGui);
+						MarketCashierGui marketCashierGui = new MarketCashierGui((MarketCashierRole)_occupation);
+						((MarketCashierRole)_occupation).setGui(marketCashierGui);
+						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(marketCashierGui);
 						return;
 					}
 				}
 				break;
 			case "Market Employee":
-			//	_occupation = new MarketEmployeeRole(this, market);
+				newOccupation = null;
+				for(Market m : markets)
+				{
+					newOccupation = m.tryAcquireEmployee();
+					if(newOccupation != null)
+					{
+						_occupation = newOccupation;
+						MarketEmployeeGui marketEmployeeGui = new MarketEmployeeGui((MarketEmployeeRole)_occupation);
+						((MarketEmployeeRole)_occupation).setGui(marketEmployeeGui);
+						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(marketEmployeeGui);
+						return;
+					}
+				}
 				break;
 		}
 		// Set the occupation to waiter
+		// note: control reaches here either because the value of occupationType is "Waiter" or because no scarce jobs were found (waiter is an unlimited/non-scarce job)
 		_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole();
 		YixinWaiterGui yixinWaiterGui = new YixinWaiterGui((YixinWaiterRole)_occupation, ((YixinRestaurant)_occupation.place()).waiterCount());
 		((YixinNormalWaiterRole)_occupation).setGui(yixinWaiterGui);
