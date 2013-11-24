@@ -7,10 +7,10 @@ import java.awt.Graphics2D;
 
 public class BankTellerRoleGui implements Gui {
 
-	static int xCoord = 622;
-	static int yCoord = 195;
-	static int width = 20;
-	static int height = 20;
+	private int xCoord = 622;
+	private int yCoord = 195;
+	private int width = 20;
+	private int height = 20;
 	
 	@Override
 	public void updatePosition() {
@@ -27,7 +27,7 @@ public class BankTellerRoleGui implements Gui {
 	@Override
 	public boolean isPresent() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	public void DoCallSecurity() {
@@ -36,7 +36,7 @@ public class BankTellerRoleGui implements Gui {
 	}
 	
 	public void DoLeaveBank() {
-		// TODO
+		
 	}
 
 }

@@ -10,10 +10,10 @@ import city.bank.interfaces.BankTeller;
 
 public class BankHostRoleGui implements Gui {
 
-	static int width = 20;
-	static int height = 20;
-	static int xCoord = 382;
-	static int yCoord = 360/2;
+	private int width = 20;
+	private int height = 20;
+	private int xCoord = 382;
+	private int yCoord = 180;
 	
 	
 	@Override
@@ -27,9 +27,10 @@ public class BankHostRoleGui implements Gui {
 	}
 
 	@Override
-	public boolean isPresent() {
+	public boolean isPresent() { //Looking at Yixin's gui it seems like we just return true. 
+		//in the restaurant, though, isPresent is set to true when they get hungry.
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	public void DoCallTeller(BankTeller t) {
