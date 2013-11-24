@@ -117,7 +117,6 @@ public class CommuterGui implements Gui {
 	@Override
 	public boolean isPresent() {
 		return isPresent;
-		// TODO put a boolean data member
 	}
 	
 	public void setPresent(boolean present){
