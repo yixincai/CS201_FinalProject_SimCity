@@ -6,11 +6,12 @@ import gui.BuildingInteriorAnimationPanel;
 import gui.WorldViewBuilding;
 import city.PersonAgent;
 import city.Place;
+import city.interfaces.PlaceWithAnimation;
 import city.market.gui.MarketAnimationPanel;
 import city.restaurant.yixin.gui.YixinAnimationPanel;
 import city.transportation.TruckAgent;
 
-public class Market extends Place{
+public class Market extends Place implements PlaceWithAnimation {
 	
 	boolean open;
 	public MarketCashierRole MarketCashier;

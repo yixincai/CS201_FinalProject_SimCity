@@ -7,10 +7,11 @@ import java.util.concurrent.Semaphore;
 
 import agent.Role;
 import city.PersonAgent;
+import city.interfaces.PlaceWithAnimation;
 import city.restaurant.*;
 import city.restaurant.yixin.gui.YixinAnimationPanel;
 
-public class YixinRestaurant extends Restaurant{
+public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
 	//count stands for the number of waiting list
 	int count = -1;

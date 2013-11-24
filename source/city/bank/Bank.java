@@ -9,11 +9,9 @@ import city.PersonAgent;
 import city.Place;
 import city.bank.gui.BankAnimationPanel;
 import city.bank.interfaces.*;
-import city.market.MarketCashierRole;
-import city.market.MarketEmployeeRole;
-import city.restaurant.yixin.gui.YixinAnimationPanel;
+import city.interfaces.PlaceWithAnimation;
 
-public class Bank extends Place {
+public class Bank extends Place implements PlaceWithAnimation {
 
 	boolean open;
 	public List<BankTellerRole> tellers;
@@ -37,6 +35,10 @@ public class Bank extends Place {
 		
 	public Bank() {
 		super("Bank", null);
+	}
+
+	public BankAnimationPanel getAnimationPanel() {
+		return _animationPanel;
 	}
 
 	public void updateBankStatus(){
