@@ -26,6 +26,10 @@ public class Bank extends Place {
 		BankHostRole host = new BankHostRole(null,this, tellers); */
 	}
 		
+	public Bank() {
+		super("Bank", null);
+	}
+
 	public void updateBankStatus(){
 		if (tellers.isEmpty() || !host.active)
 			open = false;

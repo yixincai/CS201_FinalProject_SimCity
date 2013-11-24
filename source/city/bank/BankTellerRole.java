@@ -10,6 +10,7 @@ import agent.Role;
 import city.PersonAgent;
 import city.Place;
 import city.bank.gui.BankTellerRoleGui;
+import city.bank.interfaces.BankHost;
 import city.bank.interfaces.BankTeller;
 import city.market.Market;
 import city.restaurant.Restaurant;
@@ -17,9 +18,9 @@ import city.restaurant.Restaurant;
 public class BankTellerRole extends Role implements BankTeller {
 	
 	//Data
-	List<MyCustomer> myCustomers;
-	List<MyBusinessCustomer> myBusinessCustomers;
-	BankHostRole host;
+	public List<MyCustomer> myCustomers;
+	public List<MyBusinessCustomer> myBusinessCustomers;
+	BankHost host;
 	boolean occupied;
 	String name;
 	private int tellerNum;

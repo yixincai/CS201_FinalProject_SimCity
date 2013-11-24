@@ -1,32 +1,40 @@
 package city.bank.test.mock;
 
+import utilities.EventLog;
+import utilities.LoggedEvent;
 import agent.Mock;
 import city.bank.BankCustomerRole;
 import city.bank.interfaces.BankTeller;
 
 public class MockBankTeller extends Mock implements BankTeller{
+	
+	public EventLog log;
 
 	public MockBankTeller(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
+		log = new EventLog();
 	}
 
 	@Override
 	public void msgIAmHere(BankCustomerRole c) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgIAmHere recieved"));
 	}
 
 	@Override
 	public void msgHereIsMyRequest(BankCustomerRole c, String request,
 			int amount) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgHereIsMyRequest recieved"));
 	}
 
 	@Override
 	public void msgLeavingBank(BankCustomerRole c) {
-		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("msgLeavingBank recieved"));
+	}
+
+	@Override
+	public boolean isOccupied() {
+		
 		
 	}
+	
 }
