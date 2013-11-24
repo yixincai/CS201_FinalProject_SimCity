@@ -22,7 +22,9 @@ import city.Time;
 import city.bank.Bank;
 import city.market.Market;
 import city.restaurant.yixin.YixinRestaurant;
+import city.transportation.BusAgent;
 import city.transportation.BusStopObject;
+import city.transportation.gui.BusAgentGui;
 
 public class MainGui extends JFrame 
 {
@@ -70,14 +72,21 @@ public class MainGui extends JFrame
 		BusStopObject busStop0 = new BusStopObject("Bus Stop " + 0, b5);
 		Directory.addPlace(busStop0);
 		WorldViewBuilding b6 = _worldView.addBuilding(12, 0, 30);
-		BusStopObject busStop1 = new BusStopObject("Bus Stop " + 1, b5);
+		BusStopObject busStop1 = new BusStopObject("Bus Stop " + 1, b6);
 		Directory.addPlace(busStop1);
 		WorldViewBuilding b7 = _worldView.addBuilding(12, 6, 30);
-		BusStopObject busStop2 = new BusStopObject("Bus Stop " + 2, b5);
+		BusStopObject busStop2 = new BusStopObject("Bus Stop " + 2, b7);
 		Directory.addPlace(busStop2);
 		WorldViewBuilding b8 = _worldView.addBuilding(0, 6, 30);
-		BusStopObject busStop3 = new BusStopObject("Bus Stop " + 3, b5);
+		BusStopObject busStop3 = new BusStopObject("Bus Stop " + 3, b8);
 		Directory.addPlace(busStop3);
+		
+		BusAgent bus = new BusAgent("Bus");
+		BusAgentGui busGui = new BusAgentGui(bus, null);
+		bus.setBusAgentGui(busGui);
+		busGui.setPresent(true);
+		_worldView.addGui(busGui);
+		bus.startThread();
 		
 		// Hard-coded instantiation of all the buildings in the city:
 		// Yixin's Restaurant:
