@@ -1,5 +1,7 @@
 package city.transportation.gui;
 
+import gui.Gui;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -7,7 +9,7 @@ import city.Place;
 import city.transportation.BusAgent;
 import city.transportation.BusStopObject;
 
-public class BusAgentGui {
+public class BusAgentGui implements Gui {
 	
 	int _xPos, _yPos;
 	BusStopObject _busStop;
@@ -34,6 +36,7 @@ public class BusAgentGui {
 		_busStop = busstop;
 		_xDestination = busstop.xPosition();
 		_yDestination = busstop.yPosition();
+		System.out.println("TEST");
 		moving = true;
 	}
 	
@@ -56,13 +59,15 @@ public class BusAgentGui {
 		
 		if(_xPos == _xDestination && _yPos == _yDestination && moving){
 			atBusStop();
+			_bus.releaseSem();
+			moving = false;
 		}
 	}
 	
 	public void draw(Graphics2D g) {
 		if(isPresent){
 			g.setColor(Color.GREEN);
-			g.fillRect(_xPos, _yPos, 5, 5);
+			g.fillRect(_xPos, _yPos, 100, 100);
 		}
 	}
 	

@@ -96,7 +96,7 @@ public class CashierTest extends TestCase
 
 		//send first message to cashier
 		cashier.money = 300;//send the message from a waiter
-		cashier.bankTeller = new BankTellerRole(null,null);
+		cashier.bankTeller = new BankTellerRole(null,null,0);
 		cashier.bankTeller.setPersonAgent(p);
 		cashier.bankTeller.makeDatabase();
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());

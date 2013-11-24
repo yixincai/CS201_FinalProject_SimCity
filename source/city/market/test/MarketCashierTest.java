@@ -27,7 +27,7 @@ public class MarketCashierTest  extends TestCase {
 		cashier = market.MarketCashier;
 		cashier.setPersonAgent(p);
 		customer = new MockMarketCustomer("Customer1");
-		bankTeller = new BankTellerRole(p, null);
+		bankTeller = new BankTellerRole(p, null,0);
 		cashier.bankTeller = bankTeller;
 		bankTeller.makeDatabase();
 	}

@@ -11,8 +11,6 @@ public class BankHostRoleGui implements Gui {
 
 	@Override
 	public void updatePosition() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

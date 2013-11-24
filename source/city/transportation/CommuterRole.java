@@ -266,4 +266,10 @@ public class CommuterRole extends Role implements Commuter{
 		
 	}
 
+	@Override
+	public void msgGetOffBus(Place place) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

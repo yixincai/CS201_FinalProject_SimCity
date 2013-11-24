@@ -12,6 +12,7 @@ import java.awt.GridLayout;
 import javax.swing.*;
 
 import city.Time;
+import city.transportation.gui.BusAgentGui;
 import city.transportation.gui.CommuterGui;
 
 import java.awt.*;
@@ -69,6 +70,10 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		 WorldViewBuilding b = new WorldViewBuilding( x, y, dim );
 		 buildings.add( b );
 		 return b;
+	}
+	
+	public void addGui(BusAgentGui gui){
+		guis.add(gui);
 	}
 	
 	
