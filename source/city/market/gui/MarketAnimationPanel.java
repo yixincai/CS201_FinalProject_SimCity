@@ -1,4 +1,4 @@
-package city.restaurant.yixin.gui;
+package city.market.gui;
 
 import gui.Gui;
 
@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class YixinAnimationPanel extends JPanel implements ActionListener {
+public class MarketAnimationPanel extends JPanel implements ActionListener {
     private final int TABLEX1 = 200;
     private final int TABLEX2 = 300;
     private final int TABLEX3 = 100;
@@ -22,16 +22,16 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     private final int WINDOWX = 682;
     private final int WINDOWY = 360;
     private List<Gui> guis = new ArrayList<Gui>();
-    private ImageIcon ifridge = new ImageIcon("source/image/fridge.png");
+    private ImageIcon ifridge = new ImageIcon("image/fridge.png");
     private Image fridgeimage = ifridge.getImage();
-    private ImageIcon i2 = new ImageIcon("source/image/host.png");
+    private ImageIcon i2 = new ImageIcon("image/host.png");
     private Image plateimage = i2.getImage();
-    private ImageIcon igrill = new ImageIcon("source/image/grill.jpg");
+    private ImageIcon igrill = new ImageIcon("image/grill.jpg");
     private Image grillimage = igrill.getImage();
-    private ImageIcon irevolving = new ImageIcon("source/image/revolvingStand.jpg");
+    private ImageIcon irevolving = new ImageIcon("image/revolvingStand.jpg");
     private Image standimage = irevolving.getImage();
     
-    public YixinAnimationPanel()
+    public MarketAnimationPanel()
     {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
@@ -76,7 +76,7 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
         }
     }
     
-    public void addGui(YixinCustomerGui gui) {
+    public void addGui(MarketCustomerGui gui) {
         guis.add(gui);
     }
 

@@ -15,7 +15,7 @@ import city.restaurant.yixin.YixinCookRole;
 public class YixinCookGui extends JPanel implements Gui{
 	
 	private YixinCookRole agent;
-    private ImageIcon i = new ImageIcon("image/cook.jpg");
+    private ImageIcon i = new ImageIcon("source/image/cook.jpg");
     private Image image = i.getImage();
     private String food = "";
     private boolean show_food = false;

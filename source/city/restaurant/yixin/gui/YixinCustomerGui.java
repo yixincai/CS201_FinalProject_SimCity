@@ -26,7 +26,7 @@ public class YixinCustomerGui extends JPanel implements Gui{
     private final int OriginX = -60;
     private final int OriginY = -60;
     
-    private ImageIcon i = new ImageIcon("image/customer.jpg");
+    private ImageIcon i = new ImageIcon("source/image/customer.jpg");
     private Image image = i.getImage();
     
     private String choice;
