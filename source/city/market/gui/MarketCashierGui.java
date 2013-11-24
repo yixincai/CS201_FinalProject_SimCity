@@ -12,10 +12,10 @@ public class MarketCashierGui extends JPanel implements Gui {
 
     private MarketCashierRole role = null;
 
-    private int xPos = 300, yPos = 30;//default waiter position
+    private int xPos = 230, yPos = 130;//default waiter position
     public static int xGap = 40;
     public static int yGap = 40;
-    private int xDestination = 300, yDestination = 30;//default waiter position
+    private int xDestination = 230, yDestination = 130;//default waiter position
 	private enum Command {noCommand, GoToSeat};
 	private Command command=Command.noCommand;
 	
@@ -43,7 +43,8 @@ public class MarketCashierGui extends JPanel implements Gui {
     }
     
 	public void LeaveMarket(){
-		//xDestination = ??;
+		xDestination = -40;
+		yDestination = -40;
 		command = Command.GoToSeat;
 	}
 	

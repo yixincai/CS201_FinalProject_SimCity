@@ -12,10 +12,10 @@ public class MarketEmployeeGui extends JPanel implements Gui {
 
     private MarketEmployeeRole role = null;
 
-    private int xPos = 300, yPos = 30;//default waiter position
-    public static int xGap = 40;
-    public static int yGap = 40;
-    private int xDestination = 300, yDestination = 30;//default waiter position
+    private int xPos = 400, yPos = 100;//default waiter position
+    public static int xGap = 30;
+    public static int yGap = 30;
+    private int xDestination = 400, yDestination = 100;//default waiter position
 	private enum Command {noCommand, GoToSeat};
 	private Command command=Command.noCommand;
     
@@ -48,38 +48,46 @@ public class MarketEmployeeGui extends JPanel implements Gui {
     
 	public void PickUp(String item){
 		if (item.equals("Meal")){
-			//xDestination = ??;
+			xDestination = 400;
+			yDestination = 50;
 		}
 		else if (item.equals("Car")){
-			//xDestination = ??;
+			xDestination = 430;
+			yDestination = 50;
 		}
 		else if (item.equals("Steak")){
-			//xDestination = ??;
+			xDestination = 460;
+			yDestination = 50;
 		}
 		else if (item.equals("Chicken")){
-			//xDestination = ??;
+			xDestination = 490;
+			yDestination = 50;
 		}
 		else if (item.equals("Salad")){
-			//xDestination = ??;
+			xDestination = 520;
+			yDestination = 50;
 		}
 		else if (item.equals("Pizza")){
-			//xDestination = ??;
+			xDestination = 450;
+			yDestination = 50;
 		}
 		command=Command.GoToSeat;		
 	}
 	
 	public void GoToCashier(){
-		//xDestination = ??;
+		xDestination = 275;
+		yDestination = 130;
 		command=Command.GoToSeat;
 	}
 	
 	public void GoToTruck(){
-		//xDestination = ??;
+		xDestination = 600 - xGap;
 		command=Command.GoToSeat;
 	}
 	
 	public void GoHome(){
-		//xDestination = ??;
+		xDestination = -xGap;
+		yDestination = -yGap;
 	}
 
     public boolean isPresent() {

@@ -15,6 +15,10 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     private final int counter_y = 0;
     private final int counter_width = 20;
     private final int counter_height = 300;
+    private final int inventory_x = 400;
+    private final int inventory_y = 0;
+    private final int inventory_width = 180;
+    private final int inventory_height = 50;
     private final int ICON_X = 50;
     private final int ICON_Y = 50;    
     private final int WINDOWX = 682;
@@ -59,9 +63,11 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
 
         g2.setColor(Color.GREEN);
         g2.fillRect(counter_x, counter_y, counter_width, counter_height);
+        g2.fillRect(inventory_x, inventory_y, inventory_width, inventory_height);
+                
         for (int i = 0; i < restaurant_order.size(); i++){
         	if (restaurant_order.get(i).booleanValue())
-                g2.fillRect( 500, i*ICON_X , ICON_X, ICON_Y);        		
+                g2.fillRect( 600, i*ICON_X , ICON_X, ICON_Y);        		
         }
         //here is the cooking area 
         for(Gui gui : guis) {
