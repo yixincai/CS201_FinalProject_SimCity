@@ -31,9 +31,6 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 {
 	String[] occupations = {"None", "Waiter", "Restaurant Cashier", "Cook", "Restaurant Host", 
 								"Bank Teller", "Bank Host", "Market Cashier", "Market Employee"};
-	String[] shifts = {"None", "Morning", "Afternoon", "Evening"};
-	JComboBox shiftBox = new JComboBox(shifts);
-	JLabel shiftLabel = new JLabel("Shift:");
 	JComboBox occupationBox = new JComboBox(occupations);
 	JLabel moneyField = new JLabel("$0.00");
 	JTextField nameField = new JTextField(15);
@@ -44,7 +41,11 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 	JRadioButton weekdays = new JRadioButton("Weekdays");
 	JRadioButton weekends = new JRadioButton("Weekends");
 	ButtonGroup radioButtons = new ButtonGroup();
+	JRadioButton house = new JRadioButton("House");
+	JRadioButton apartment = new JRadioButton("Apartment");
+	ButtonGroup housing = new ButtonGroup();
 	JLabel workSchedule = new JLabel("Work Schedule:");
+	JLabel housingSituation = new JLabel("Housing:");
 	
 	public CreatePersonPanel(ControlPanel cp)
 	{
@@ -54,6 +55,9 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 		this.setBorder(BorderFactory.createTitledBorder("Create New Person"));
 		radioButtons.add(weekdays);
 		radioButtons.add(weekends);
+		housing.add(house);
+		housing.add(apartment);
+		house.setSelected(true);
 		moneySlider.setMajorTickSpacing(25);
 		moneySlider.setPaintTicks(true);
 		Hashtable<Integer, JLabel> sliderLabels = new Hashtable<Integer, JLabel>();
@@ -73,8 +77,9 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 		this.add(weekends);
 		this.add(weekdays);
 		this.add(workSchedule);
-		this.add(shiftBox);
-		this.add(shiftLabel);
+		this.add(house);
+		this.add(apartment);
+		this.add(housingSituation);
 		//Position NameLabel
 		layout.putConstraint(SpringLayout.WEST, nameLabel, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, this);
@@ -99,19 +104,24 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 		layout.putConstraint(SpringLayout.EAST, moneySlider, -5, SpringLayout.EAST, this);
 		//Positon Weekends RadioButton
 		layout.putConstraint(SpringLayout.NORTH, weekends, 15, SpringLayout.SOUTH, occupationBox);
-		layout.putConstraint(SpringLayout.EAST, weekends, -5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.WEST, weekends, -100, SpringLayout.EAST, this);
 		//Position Weekdays RadioButton
 		layout.putConstraint(SpringLayout.NORTH, weekdays, 2, SpringLayout.SOUTH, weekends);
-		layout.putConstraint(SpringLayout.EAST, weekdays, -5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.WEST, weekdays, -100, SpringLayout.EAST, this);
 		//Position WorkSchedule Label
 		layout.putConstraint(SpringLayout.NORTH, workSchedule, 32, SpringLayout.SOUTH, occupationLabel);
 		layout.putConstraint(SpringLayout.WEST, workSchedule, 5, SpringLayout.WEST, this);
-		//Position Shift Label
-		layout.putConstraint(SpringLayout.NORTH, shiftLabel, 40, SpringLayout.SOUTH, workSchedule);
-		layout.putConstraint(SpringLayout.WEST, shiftLabel, 5, SpringLayout.WEST, this);
-		//Position Shift combo box
-		layout.putConstraint(SpringLayout.NORTH, shiftBox, 15, SpringLayout.SOUTH, weekdays);
-		layout.putConstraint(SpringLayout.EAST, shiftBox, -5, SpringLayout.EAST, this);
+		//Position housing label
+		layout.putConstraint(SpringLayout.NORTH, housingSituation, 45, SpringLayout.SOUTH, workSchedule);
+		layout.putConstraint(SpringLayout.WEST, housingSituation, 5, SpringLayout.WEST, this);
+		//Position house radio button
+		layout.putConstraint(SpringLayout.NORTH, house, 15, SpringLayout.SOUTH, weekdays);
+		layout.putConstraint(SpringLayout.WEST, house, -100, SpringLayout.EAST, this);
+		//Position apartment radio button
+		layout.putConstraint(SpringLayout.NORTH, apartment, 2, SpringLayout.SOUTH, house);
+		layout.putConstraint(SpringLayout.WEST, apartment, -100, SpringLayout.EAST, this);
+		
+		
 		
 		
 		JButton addButton = new JButton("Add");
@@ -129,14 +139,13 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		cPanel.addPerson(nameField.getText(), moneySlider.getValue(), (String)occupationBox.getSelectedItem(), weekdays.isSelected(), (String)shiftBox.getSelectedItem());
+		//cPanel.addPerson(nameField.getText(), moneySlider.getValue(), (String)occupationBox.getSelectedItem(), weekdays.isSelected());
 		nameField.setText("");
 		occupationBox.setSelectedIndex(0);
 		moneySlider.setValue(0);
 		moneyField.setText("$0.00");
 		weekends.setSelected(false);
 		weekdays.setSelected(false);
-		shiftBox.setSelectedIndex(0);
 	}
 
 
