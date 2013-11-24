@@ -231,6 +231,7 @@ public class PersonAgent extends Agent
 		}
 		else // i.e. _currentRole.active == false
 		{
+			System.out.println("Here");
 			// note: if we get here, a role just finished leaving.
 			_sentCmdFinishAndLeave = false;
 			
@@ -361,6 +362,7 @@ public class PersonAgent extends Agent
 	}
 	private void setNextRole(Role nextRole)
 	{
+		System.out.println("Role set");
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
 		_commuterRole.msgGoToDestination(nextRole.place());
