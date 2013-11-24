@@ -6,6 +6,7 @@ import java.util.List;
 
 import city.bank.Bank;
 import city.home.ApartmentBuilding;
+import city.home.House;
 import city.market.Market;
 import city.restaurant.Restaurant;
 import city.transportation.BusStopObject;
@@ -22,7 +23,7 @@ public class Directory {
 	
 	
 	// ------------------------------------ PROPERTIES ---------------------------------------
-	/** Makes a deep copy of the list of places and returns it */
+	/** Returns a new list of all places */
 	public static List<Place> places()
 	{
 		List<Place> newList = new ArrayList<Place>();
@@ -35,59 +36,72 @@ public class Directory {
 		}
 		return newList;
 	}
-	/** Returns a list of places that are markets */
-	public static List<Place> markets()
+	/** Returns a new list of places that are markets */
+	public static List<Market> markets()
 	{
-		List<Place> newList = new ArrayList<Place>();
+		List<Market> newList = new ArrayList<Market>();
 		synchronized(_places)
 		{
 			for(Place p : _places)
 			{
-				if(p instanceof Market) newList.add(p);
+				if(p instanceof Market) newList.add((Market)p);
 			}
 		}
 		return newList;
 	}
-	/** Returns a list of places that are restaurants */
-	public static List<Place> restaurants()
+	/** Returns a new list of places that are restaurants */
+	public static List<Restaurant> restaurants()
 	{
-		List<Place> newList = new ArrayList<Place>();
+		List<Restaurant> newList = new ArrayList<Restaurant>();
 		synchronized(_places)
 		{
 			for(Place p : _places)
 			{
-				if(p instanceof Restaurant) newList.add(p);
+				if(p instanceof Restaurant) newList.add((Restaurant)p);
 			}
 		}
 		return newList;
 	}
-	/** Returns a list of places that are banks */
-	public static List<Place> banks()
+	/** Returns a new list of places that are banks */
+	public static List<Bank> banks()
 	{
-		List<Place> newList = new ArrayList<Place>();
+		List<Bank> newList = new ArrayList<Bank>();
 		synchronized(_places)
 		{
 			for(Place p : _places)
 			{
-				if(p instanceof Bank) newList.add(p);
+				if(p instanceof Bank) newList.add((Bank)p);
 			}
 		}
 		return newList;
 	}
-	/** Returns a list of places that are apartment buildings */
-	public static List<Place> apartmentBuildings()
+	/** Returns a new list of places that are apartment buildings */
+	public static List<ApartmentBuilding> apartmentBuildings()
 	{
-		List<Place> newList = new ArrayList<Place>();
+		List<ApartmentBuilding> newList = new ArrayList<ApartmentBuilding>();
 		synchronized(_places)
 		{
 			for(Place p : _places)
 			{
-				if(p instanceof ApartmentBuilding) newList.add(p);
+				if(p instanceof ApartmentBuilding) newList.add((ApartmentBuilding)p);
 			}
 		}
 		return newList;
 	}
-	
+	/** Returns a new list of places that are houses */
+	public static List<House> houses()
+	{
+		List<House> newList = new ArrayList<House>();
+		synchronized(_places)
+		{
+			for(Place p : _places)
+			{
+				if(p instanceof House) newList.add((House)p);
+			}
+		}
+		return newList;
+	}
+	/** Returns a new list of every person */
 	public static List<PersonAgent> personAgents()
 	{
 		List<PersonAgent> newList = new ArrayList<PersonAgent>();

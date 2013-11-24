@@ -14,12 +14,13 @@ public class LandlordRole extends Role {
 	public enum MyApartmentState { VACANT, REQUESTED, ASKED_TENANT, READY_TO_LEASE, OCCUPIED }
 	class MyApartment {
 		Apartment apartment;
-		ApartmentBuilding apartmentBuiding;
-		ApartmentRenterRole tenant;
+		ApartmentBuilding apartmentBuilding;
+		
+		ApartmentRenterRole tenant = null;
 		double weeklyRate = 40; // hard-coded for now
 		double owedAmount = 0;
-		MyApartmentState state;
-		boolean justPaid;
+		MyApartmentState state = MyApartmentState.VACANT;
+		boolean justPaid = false;
 	}
 	List<MyApartment> _myApartments = new ArrayList<MyApartment>();
 	
@@ -27,10 +28,10 @@ public class LandlordRole extends Role {
 	class MyHouse
 	{
 		House house;
-		HouseOwnerRole owner;
-		double price;
-		double owedAmount;
-		MyHouseState state;
+		HouseOwnerRole owner = null;
+		double price = 400;
+		double owedAmount = 0;
+		MyHouseState state = MyHouseState.VACANT;
 	}
 	List<MyHouse> _myHouses;
 	
@@ -38,7 +39,29 @@ public class LandlordRole extends Role {
 	public LandlordRole(PersonAgent person)
 	{
 		super(person);
+		
+		// Populate the _myApartments list
 		List<ApartmentBuilding> apartmentBuildings = Directory.apartmentBuildings();
+		for(ApartmentBuilding b : apartmentBuildings)
+		{
+			List<Apartment> apartments = b.apartments();
+			for(Apartment a : apartments)
+			{
+				MyApartment m = new MyApartment();
+				m.apartment = a;
+				m.apartmentBuilding = b;
+				_myApartments.add(m);
+			}
+		}
+		
+		// Populate the _myHouses list
+		List<House> houses = Directory.houses();
+		for(House h : houses)
+		{
+			MyHouse m = new MyHouse();
+			m.house = h;
+			_myHouses.add(m);
+		}
 	}
 	@Override
 	public Place place() { return null; }
@@ -52,6 +75,7 @@ public class LandlordRole extends Role {
 	// ------------------------------------- MESSAGES ---------------------------------
 	public void msgIWouldLikeToStartRenting(ApartmentRenterRole sender, ApartmentBuilding a)
 	{
+		for(MyApartment m : _myApartments)
 		MyApartment m = myApartments.findByBuilding(a);
 		if(m.state is VACANT)
 		{
