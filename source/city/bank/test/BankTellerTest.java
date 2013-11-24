@@ -57,9 +57,9 @@ public class BankTellerTest extends TestCase
 		teller.msgIAmHere(customer);
 		assertTrue(teller.myCustomers.size() == 1);
 		assertTrue(teller.pickAndExecuteAnAction());
-		customer.msgHereIsInfoPickARequest(1000, 0, 10531); //these number are random for the sake of testing
+		customer.msgHereIsInfoPickARequest(0, 0, -1); //-1 for account number will create a new account
 		assertTrue("The customer should have logged \"msgHereIsInfoPickARequest\" but actually logges " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgHereIsInfoPickARequest recieved"));
-		teller.msgHereIsMyRequest(customer, "deposit", 200);
+		teller.msgHereIsMyRequest(customer, "deposit", customer.accNumber);
 		assertTrue(teller.pickAndExecuteAnAction());
 		
 		

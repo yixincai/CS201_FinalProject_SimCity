@@ -4,6 +4,7 @@ import utilities.EventLog;
 import utilities.LoggedEvent;
 import agent.Mock;
 import city.bank.BankCustomerRole;
+import city.bank.interfaces.BankCustomer;
 import city.bank.interfaces.BankTeller;
 
 public class MockBankTeller extends Mock implements BankTeller{
@@ -20,18 +21,18 @@ public class MockBankTeller extends Mock implements BankTeller{
 	}
 
 	@Override
-	public void msgIAmHere(BankCustomerRole c) {
+	public void msgIAmHere(BankCustomer c) {
 		log.add(new LoggedEvent("msgIAmHere recieved"));
 	}
 
 	@Override
-	public void msgHereIsMyRequest(BankCustomerRole c, String request,
+	public void msgHereIsMyRequest(BankCustomer c, String request,
 			int amount) {
 		log.add(new LoggedEvent("msgHereIsMyRequest recieved"));
 	}
 
 	@Override
-	public void msgLeavingBank(BankCustomerRole c) {
+	public void msgLeavingBank(BankCustomer c) {
 		log.add(new LoggedEvent("msgLeavingBank recieved"));
 	}
 

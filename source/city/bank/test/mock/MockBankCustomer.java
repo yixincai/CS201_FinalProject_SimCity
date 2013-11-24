@@ -10,6 +10,9 @@ public class MockBankCustomer extends Mock implements BankCustomer
 {
 
 	public EventLog log;
+	public double amountOwed;
+	public double balance;
+	public int accNumber;
 	
 	public MockBankCustomer(String name) {
 		super(name);
@@ -29,6 +32,10 @@ public class MockBankCustomer extends Mock implements BankCustomer
 	@Override
 	public void msgHereIsInfoPickARequest(double funds, double amountOwed, int newAccntNum) {
 		log.add(new LoggedEvent("msgHereIsInfoPickARequest recieved"));
+		balance = funds;
+		this.amountOwed = amountOwed;
+		accNumber = newAccntNum;
+		
 	}
 
 	@Override
