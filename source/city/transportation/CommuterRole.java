@@ -29,7 +29,7 @@ public class CommuterRole extends Role implements Commuter{
 	public CarObject _car = new CarObject();
 	public Bus _bus;
 	public double _fare;
-	CommuterGui _gui = new CommuterGui(this, null);
+	CommuterGui _gui;
 	
 	public enum TravelState{choosing, 
 		choseCar, driving, 
