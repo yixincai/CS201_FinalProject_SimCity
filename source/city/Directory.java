@@ -21,6 +21,9 @@ public class Directory {
 	//Bus Fare (initialize in constructor?)
 	private static double _busFare = 2;
 	
+	private static double _openingTime = 8;
+	private static double _closingTime = 20;
+	
 	
 	// ------------------------------------ PROPERTIES ---------------------------------------
 	/** Returns a new list of all places */
@@ -128,12 +131,26 @@ public class Directory {
 	}
 	
 	
-	//Transportation Methods
+	//Transportation Methods (Bus)
 	public static double getFare(){
 		return _busFare;
 	}
 	public static void setFare(double newFare){
 		_busFare = newFare;
+	}
+	
+	public static List<BusStopObject> getBusStopList(){
+		List<BusStopObject> busstoplist = new ArrayList<BusStopObject>();
+		
+		for(Place p : _places)
+		{
+			if(p instanceof BusStopObject)
+			{
+				busstoplist.add((BusStopObject)p);
+			}
+		}
+		
+		return busstoplist;
 	}
 	
 	public static BusStopObject getNearestBusStop(int xStart, int yStart)

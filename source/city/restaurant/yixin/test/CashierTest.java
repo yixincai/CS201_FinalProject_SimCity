@@ -17,6 +17,7 @@ public class CashierTest extends TestCase
 	MockCook cook;
 	Map<String, Double> price_list;
 	Market market;
+	PersonAgent p;
 	
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
@@ -25,9 +26,9 @@ public class CashierTest extends TestCase
 	public void setUp() throws Exception{
 		super.setUp();
 		Restaurant restaurant = new YixinRestaurant();
-		cashier = (YixinCashierRole)restaurant.Cashier;
+		cashier = (YixinCashierRole)restaurant.cashier;
 		market = new Market();
-		PersonAgent p =new PersonAgent("Dummy");
+		p =new PersonAgent("Dummy");
 		cashier.setPersonAgent(p);
 		price_list = new HashMap<String, Double>();
 		price_list.put("Steak", 10.0);
@@ -96,6 +97,7 @@ public class CashierTest extends TestCase
 		//send first message to cashier
 		cashier.money = 300;//send the message from a waiter
 		cashier.bankTeller = new BankTellerRole(null,null);
+		cashier.bankTeller.setPersonAgent(p);
 		cashier.bankTeller.makeDatabase();
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 

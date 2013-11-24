@@ -38,7 +38,7 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		 buildings = new ArrayList<WorldViewBuilding>();
 		 
 		lanes = new ArrayList<Lane>();
-		Lane l = new Lane(200, 10, 10, 310, 0, 1, false, Color.gray, Color.black );
+		/*Lane l = new Lane(200, 10, 10, 310, 0, 1, false, Color.gray, Color.black );
 		lanes.add( l );
 		l = new Lane(210, 10, 10, 310, 0, 1, false, Color.gray, Color.black );
 		lanes.add( l );
@@ -46,7 +46,7 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		l = new Lane(420, 240, 180, 10, 1, 0, true, Color.green, Color.black );
 		lanes.add( l );
 		l = new Lane(420, 250, 180, 10, 1, 0, true, Color.green, Color.black );
-		lanes.add( l );
+		lanes.add( l );*/
 		
 		/*if ( count % 40 == 0 ) {
 			Lane l = lanes.get(0);

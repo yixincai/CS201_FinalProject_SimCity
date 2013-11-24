@@ -23,10 +23,11 @@ public class MarketCashierTest  extends TestCase {
 		super.setUp();
 		p = new PersonAgent("Mike");
 		market = new Market();
+		market.MarketEmployee.setPersonAgent(p);
 		cashier = market.MarketCashier;
 		cashier.setPersonAgent(p);
 		customer = new MockMarketCustomer("Customer1");
-		bankTeller = new BankTellerRole(null, null);
+		bankTeller = new BankTellerRole(p, null);
 		cashier.bankTeller = bankTeller;
 		bankTeller.makeDatabase();
 	}
@@ -141,7 +142,7 @@ public class MarketCashierTest  extends TestCase {
 		//send first message to cashier
 		Restaurant r = new YixinRestaurant();
 		PersonAgent p1 = new PersonAgent("Dummy");
-		r.Cashier.setPersonAgent(p1);
+		r.cashier.setPersonAgent(p1);
 		List<Item> order = new ArrayList<Item>();
 		order.add(new Item("Steak", 1));
 		order.add(new Item("Chicken", 1));
