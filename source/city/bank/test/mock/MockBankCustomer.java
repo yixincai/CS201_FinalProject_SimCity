@@ -1,46 +1,45 @@
 package city.bank.test.mock;
 
+import utilities.EventLog;
+import utilities.LoggedEvent;
 import agent.Mock;
 import city.bank.BankTellerRole;
 import city.bank.interfaces.BankCustomer;
 
 public class MockBankCustomer extends Mock implements BankCustomer{
 
+	EventLog log;
+	
 	public MockBankCustomer(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
+		log = new EventLog();
 	}
 
 	@Override
 	public void msgWeAreClosed() {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgWeAreClosed recieved"));
 	}
 
 	@Override
 	public void msgCalledToDesk(BankTellerRole teller) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgCalledToDesk recieved"));
 	}
 
 	@Override
 	public void msgHereIsInfoPickARequest(double funds, double amountOwed,
 			int newAccntNum) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgHereIsInfoPickARequest recieved"));
 	}
 
 	@Override
 	public void msgTransactionComplete(double amountReceived, double funds,
 			double amountOwed) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgTransactionComplete recieved"));
 	}
 
 	@Override
 	public void msgTransactionDenied() {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgTransactionDenied recieved"));
 	}
 
 }

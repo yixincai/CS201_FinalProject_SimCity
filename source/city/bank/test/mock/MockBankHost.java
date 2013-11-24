@@ -1,5 +1,7 @@
 package city.bank.test.mock;
 
+import utilities.EventLog;
+import utilities.LoggedEvent;
 import city.bank.BankCustomerRole;
 import city.bank.BankTellerRole;
 import city.bank.interfaces.BankHost;
@@ -7,21 +9,21 @@ import agent.Mock;
 
 public class MockBankHost extends Mock implements BankHost{
 
+	EventLog log;
+	
 	public MockBankHost(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
+		log = new EventLog();
 	}
 
 	@Override
 	public void msgWaiting(BankCustomerRole c) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgWaiting recieved"));
 	}
 
 	@Override
 	public void msgLeavingBank(BankTellerRole teller) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgLeavingBank recieved"));
 	}
 
 }
