@@ -14,6 +14,7 @@ public class YixinRestaurant extends Restaurant{
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
 	//count stands for the number of waiting list
 	int count = -1;
+	int waiter_count = -1;
 	boolean open;
 	public YixinHostRole host;
 	private int businessAccountNumber = -1;
@@ -77,6 +78,7 @@ public class YixinRestaurant extends Restaurant{
 		newWaiter.setCashier((YixinCashierRole)cashier);
 		newWaiter.setCook((YixinCookRole)cook);
 		newWaiter.setHost(host);
+		waiter_count++;
 		return newWaiter;
 	}
 
