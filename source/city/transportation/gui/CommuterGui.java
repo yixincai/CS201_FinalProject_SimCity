@@ -40,6 +40,8 @@ public class CommuterGui implements Gui {
 	public void walkToLocation(Place destination){
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
+		System.out.println("destinationX: " + destination.xPosition());
+		System.out.println("destinationY: " + destination.yPosition());
 		_xDestination = destination.xPosition();
 		_yDestination = destination.yPosition();
 		_transportationType = TransportationType.walking;

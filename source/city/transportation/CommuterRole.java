@@ -1,6 +1,7 @@
 package city.transportation;
 
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 import agent.Role;
 import city.Directory;
@@ -23,6 +24,7 @@ public class CommuterRole extends Role implements Commuter{
 	public Place _destination;
 	public Place _currentPlace;
 	BusStopObject _busStop;
+	Semaphore commuterSem = new Semaphore(0, true);
 
 	public CarObject _car = new CarObject();
 	public Bus _bus;
@@ -52,6 +54,7 @@ public class CommuterRole extends Role implements Commuter{
 		_person = person;
 		_currentPlace = place;
 		_car = null;
+		active = true;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -184,6 +187,9 @@ public class CommuterRole extends Role implements Commuter{
 		if(pTransport == PrefTransport.car){
 			_tState = TravelState.choseCar;
 		}
+		
+		_tState = TravelState.choseWalking;
+		pTransport = PrefTransport.legs;
 
 	}
 	public void actChooseNewTransportation(){ //Choosing when previous form of transportation doesn't work (Mostly for bus)
@@ -234,10 +240,9 @@ public class CommuterRole extends Role implements Commuter{
 	
 	@Override
 	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-		//_person.atDestination(_currentPlace);
-		active = false;
-		
+		msgGoToDestination(_destination);
+		active = true;
+		stateChanged();
 	}
 	
 	//----------------------------------------------Hacks----------------------------------------
