@@ -1,13 +1,10 @@
 package city.market.test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import city.PersonAgent;
 import city.market.*;
-import city.market.test.mock.*;
-import city.restaurant.Restaurant;
-import city.restaurant.yixin.YixinRestaurant;
+import city.market.gui.MarketCustomerGui;
 import junit.framework.TestCase;
 
 public class MarketCustomerTest  extends TestCase {
@@ -20,6 +17,8 @@ public class MarketCustomerTest  extends TestCase {
 		p = new PersonAgent("Mike");
 		market = new Market();
 		customer = new MarketCustomerRole(p, market);
+		MarketCustomerGui gui = new MarketCustomerGui(customer);
+		customer.gui = gui;
 	}
 	
 	public void testNormalCustomerScenario(){
@@ -30,9 +29,27 @@ public class MarketCustomerTest  extends TestCase {
 		//send first message to customer
 		customer.cmdBuyFood(5);
 		assertEquals("Customer should be in wantToBuy state. It doesn't.", customer.state, MarketCustomerRole.CustomerState.wantToBuy);
-
-		assertTrue("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
 		
+		customer.msgAnimationFinished();
+		assertTrue("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
+
+		assertFalse("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
+		
+		Map<String, Double> price_list = new HashMap<String, Double>();
+		List<Item> orderFulfillment = new ArrayList<Item>();
+		orderFulfillment.add(new Item("Meal", 5));
+		customer.msgHereIsBill(25, price_list, orderFulfillment);
+		
+		customer.msgAnimationFinished();
+		customer.msgAnimationFinished();
+		assertTrue("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
+		assertFalse("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
+		
+		customer.msgHereIsGoodAndChange(orderFulfillment, 0);
+		customer.msgAnimationFinished();
+		customer.msgAnimationFinished();
+		assertTrue("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
+		assertFalse("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
 	}
 	
 }

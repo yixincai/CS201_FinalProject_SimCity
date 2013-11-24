@@ -27,13 +27,20 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	JScrollPane buildingButtons;
 	ControlPanel cPanel;	
 	BuildingInteriorAnimationPanel currentBuildingPanel = null;
+	private static int WIDTH = 1024/3;
+	private static int HEIGHT = 720;
 	
 	public CurrentBuildingPanel(ControlPanel cp)
 	{
+			this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+			this.setMaximumSize(new Dimension(WIDTH, HEIGHT));
+			this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 			cPanel = cp;
 			this.setLayout(new BorderLayout());
 			infoPanel = new JPanel();
-			infoPanel.setPreferredSize(new Dimension(1024/3, 720/2));
+			infoPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT/2));
+			infoPanel.setMaximumSize(new Dimension(WIDTH, HEIGHT/2));
+			infoPanel.setMinimumSize(new Dimension(WIDTH, HEIGHT/2));
 			infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
 			infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 			buildingName = new JLabel("Building Name: ");
@@ -43,7 +50,9 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 			this.add(infoPanel, BorderLayout.NORTH);
 			buttonPanel = new JPanel();
 			buttonPanel.setLayout(new BorderLayout());
-			buttonPanel.setPreferredSize(new Dimension(1024/3, 720/2));
+			buttonPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT/2));
+			buttonPanel.setMaximumSize(new Dimension(WIDTH, HEIGHT/2));
+			buttonPanel.setMinimumSize(new Dimension(WIDTH, HEIGHT/2));
 			buttonPanel.setBorder(BorderFactory.createTitledBorder("Buildings"));
 			view = new JPanel();
 			view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
@@ -58,14 +67,13 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	{
 		JButton newBuildingButton = new JButton(name);
 		newBuildingButton.setBackground(Color.white);
-		Dimension paneSize = new Dimension(1024/3, 720/2);
+		Dimension paneSize = buttonPanel.getPreferredSize();
 		newBuildingButton.setPreferredSize(new Dimension(paneSize.width, paneSize.height/10));
 		newBuildingButton.setMinimumSize(new Dimension(paneSize.width, paneSize.height/10));
 		newBuildingButton.setMaximumSize(new Dimension(paneSize.width, paneSize.height/10));
 		newBuildingButton.addActionListener(this);
 		view.add(newBuildingButton);
 		this.updateInfo(newBuildingButton);
-		newBuildingButton.setSelected(true);
 	}
 	
 	public void updateInfo(JButton selected)

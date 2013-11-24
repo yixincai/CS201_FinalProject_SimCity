@@ -28,14 +28,21 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 	JLabel currentRoleField;
 	JScrollPane peopleButtons;
 	ControlPanel cPanel;
+	private static int WIDTH = 1024/3;
+	private static int HEIGHT = 720;
 	
 	public CurrentPersonPanel(ControlPanel cp)
 	{
+		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+		this.setMaximumSize(new Dimension(WIDTH, HEIGHT));
 		cPanel = cp;
 		this.setLayout(new BorderLayout());
 		infoPanel = new JPanel();
 		JPanel infoPanel = new JPanel();
-		infoPanel.setPreferredSize(new Dimension(1024/3, 720/2));
+		infoPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT/2));
+		infoPanel.setMinimumSize(new Dimension(WIDTH, HEIGHT/2));
+		infoPanel.setMaximumSize(new Dimension(WIDTH, HEIGHT/2));
 		infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 		nameField = new JLabel("Person Name:");
@@ -47,6 +54,9 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		this.add(infoPanel, BorderLayout.NORTH);
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
+		buttonPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT/2));
+		buttonPanel.setMinimumSize(new Dimension(WIDTH, HEIGHT/2));
+		buttonPanel.setMaximumSize(new Dimension(WIDTH, HEIGHT/2));
 		buttonPanel.setBorder(BorderFactory.createTitledBorder("People"));
 		view = new JPanel();
 		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
@@ -60,17 +70,14 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 	public void addPerson(String name)
 	{
 		JButton newPersonButton = new JButton(name);
-		System.out.println("newPersonButton Size before setting size: " + newPersonButton.getPreferredSize());
 		newPersonButton.setBackground(Color.white);
 		Dimension paneSize = peopleButtons.getSize();
 		newPersonButton.setPreferredSize(new Dimension(paneSize.width, paneSize.height/10));
 		newPersonButton.setMinimumSize(new Dimension(paneSize.width, paneSize.height/10));
 		newPersonButton.setMaximumSize(new Dimension(paneSize.width, paneSize.height/10));
 		newPersonButton.addActionListener(this);
-		// personButtonList.add(newPersonButton);
 		view.add(newPersonButton);
 		this.updateInfo(newPersonButton);
-		newPersonButton.setSelected(true);
 	}
 	
 	public void updateInfo(JButton selected)

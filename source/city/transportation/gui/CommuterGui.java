@@ -22,7 +22,7 @@ public class CommuterGui implements Gui {
 	enum TransportationType{walking, driving, ridingBus, none};
 	TransportationType _transportationType = TransportationType.none;
 	
-	//Constructor
+	//----------------------------------Constructor & Setters & Getters----------------------------------
 	public CommuterGui(CommuterRole commuter, Place startingPlace) {
 		System.out.println("Created CommuterGui");
 		_xPos = 300;
@@ -30,7 +30,15 @@ public class CommuterGui implements Gui {
 		_commuter = commuter;
 	}
 	
-	//Walking gui
+	public double getDistanceToDestination(Place destination){
+		double x, y;
+		x = Math.abs(_xPos - destination.xPosition());
+		y = Math.abs(_yPos - destination.yPosition());
+		
+		return x+y;
+	}
+	
+	//Walking gui-------------------------------------------------------------------------------------------
 	public void walkToLocation(Place destination){
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true

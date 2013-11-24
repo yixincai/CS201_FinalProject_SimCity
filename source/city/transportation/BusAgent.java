@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import agent.Agent;
+import city.Directory;
 import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.BusAgentGui;
@@ -22,8 +23,8 @@ public class BusAgent extends Agent implements Bus{
 	BusStopObject currentDestination;
 	List<CommuterRole> currentBusStopList = new ArrayList<CommuterRole>();
 	
-	static int _fare;
-	int _register;
+	static double _fare;
+	double _register;
 
 	static int capacity;
 	int numPeople = 0;
@@ -45,14 +46,9 @@ public class BusAgent extends Agent implements Bus{
 	    }
 	}
 	
-	public BusAgent(String name, int fare){
-		_name = name;
-		_fare = fare;
-	}
-	
 	public BusAgent(String name){
 		_name = name;
-		_fare = 1;
+		_fare = Directory.getFare();
 	}
 	
 	//----------------------------------------------Messages----------------------------------------
