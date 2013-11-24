@@ -8,7 +8,7 @@ import city.bank.interfaces.BankTeller;
 
 public class MockBankTeller extends Mock implements BankTeller{
 	
-	EventLog log;
+	public EventLog log;
 
 	public MockBankTeller(String name) {
 		super(name);
@@ -30,4 +30,11 @@ public class MockBankTeller extends Mock implements BankTeller{
 	public void msgLeavingBank(BankCustomerRole c) {
 		log.add(new LoggedEvent("msgLeavingBank recieved"));
 	}
+
+	@Override
+	public boolean isOccupied() {
+		
+		
+	}
+	
 }

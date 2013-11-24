@@ -7,11 +7,13 @@ import agent.Role;
 import city.PersonAgent;
 import city.Place;
 import city.bank.gui.BankHostRoleGui;
+import city.bank.interfaces.BankCustomer;
 import city.bank.interfaces.BankHost;
+import city.bank.interfaces.BankTeller;
 
 public class BankHostRole extends Role implements BankHost {
 
-	public BankHostRole(PersonAgent person, Bank bank, List<BankTellerRole> tellers) {
+	public BankHostRole(PersonAgent person, Bank bank, List<BankTeller> tellers) {
 		super(person);
 		this.bank = bank;
 		this.tellers = tellers;
@@ -20,8 +22,8 @@ public class BankHostRole extends Role implements BankHost {
 
 	//Data
 	Bank bank;
-	List<BankTellerRole> tellers;
-	private List<BankCustomerRole> waitingCustomers;
+	List<BankTeller> tellers;
+	private List<BankCustomer> waitingCustomers;
 	BankHostRoleGui gui;
 	Semaphore hostSem = new Semaphore(0,true);
 	
@@ -45,7 +47,7 @@ public class BankHostRole extends Role implements BankHost {
 	
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
-		for(BankTellerRole t: tellers){
+		for(BankTeller t: tellers){
 			if(!t.isOccupied()){
 				if(!waitingCustomers.isEmpty()){
 					actCallTeller(waitingCustomers.remove(0), t);
@@ -62,10 +64,10 @@ public class BankHostRole extends Role implements BankHost {
 	}
 	
 	//Actions
-	private void actCallTeller(BankCustomerRole c, BankTellerRole teller){
-		gui.DoCallTeller(teller);   
-	    c.msgCalledToDesk(teller);
-	    teller.setOccupied(true);
+	private void actCallTeller(BankCustomer c, BankTeller t){
+		gui.DoCallTeller(t);   
+	    c.msgCalledToDesk(t);
+	    t.setOccupied(true);
 	}
 	
 	private void actLeaveBank(){

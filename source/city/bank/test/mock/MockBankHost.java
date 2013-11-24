@@ -9,7 +9,7 @@ import agent.Mock;
 
 public class MockBankHost extends Mock implements BankHost{
 
-	EventLog log;
+	public EventLog log;
 	
 	public MockBankHost(String name) {
 		super(name);
@@ -24,6 +24,12 @@ public class MockBankHost extends Mock implements BankHost{
 	@Override
 	public void msgLeavingBank(BankTellerRole teller) {
 		log.add(new LoggedEvent("msgLeavingBank recieved"));
+	}
+
+	@Override
+	public boolean isWaitingCustomersEmpty() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

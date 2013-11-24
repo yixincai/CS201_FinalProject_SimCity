@@ -5,10 +5,11 @@ import utilities.LoggedEvent;
 import agent.Mock;
 import city.bank.BankTellerRole;
 import city.bank.interfaces.BankCustomer;
+import city.bank.interfaces.BankTeller;
 
 public class MockBankCustomer extends Mock implements BankCustomer{
 
-	EventLog log;
+	public EventLog log;
 	
 	public MockBankCustomer(String name) {
 		super(name);
@@ -26,8 +27,7 @@ public class MockBankCustomer extends Mock implements BankCustomer{
 	}
 
 	@Override
-	public void msgHereIsInfoPickARequest(double funds, double amountOwed,
-			int newAccntNum) {
+	public void msgHereIsInfoPickARequest(double funds, double amountOwed, int newAccntNum) {
 		log.add(new LoggedEvent("msgHereIsInfoPickARequest recieved"));
 	}
 
@@ -40,6 +40,12 @@ public class MockBankCustomer extends Mock implements BankCustomer{
 	@Override
 	public void msgTransactionDenied() {
 		log.add(new LoggedEvent("msgTransactionDenied recieved"));
+	}
+
+	@Override
+	public void msgCalledToDesk(BankTeller t) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
