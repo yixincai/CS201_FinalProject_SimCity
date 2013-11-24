@@ -131,12 +131,26 @@ public class Directory {
 	}
 	
 	
-	//Transportation Methods
+	//Transportation Methods (Bus)
 	public static double getFare(){
 		return _busFare;
 	}
 	public static void setFare(double newFare){
 		_busFare = newFare;
+	}
+	
+	public static List<BusStopObject> getBusStopList(){
+		List<BusStopObject> busstoplist = new ArrayList<BusStopObject>();
+		
+		for(Place p : _places)
+		{
+			if(p instanceof BusStopObject)
+			{
+				busstoplist.add((BusStopObject)p);
+			}
+		}
+		
+		return busstoplist;
 	}
 	
 	public static BusStopObject getNearestBusStop(int xStart, int yStart)

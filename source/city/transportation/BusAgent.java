@@ -20,6 +20,9 @@ public class BusAgent extends Agent implements Bus{
 	List<MyCommuter> passengers = new ArrayList<MyCommuter>();
 	BusAgentGui _gui = new BusAgentGui();
 	
+	List<BusStopObject> busStops = new ArrayList<BusStopObject>();
+	
+	
 	BusStopObject currentDestination;
 	List<CommuterRole> currentBusStopList = new ArrayList<CommuterRole>();
 	
@@ -72,6 +75,11 @@ public class BusAgent extends Agent implements Bus{
 	
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction(){
+		if(bState == BusState.notmoving){
+			GoToFirstBusStop();
+			return true;
+		}
+		
 		if(bState == BusState.atDestination){
 			DropOff();
 			return true;
@@ -91,6 +99,9 @@ public class BusAgent extends Agent implements Bus{
 	}
 	
 	//----------------------------------------------Actions----------------------------------------
+	public void GoToFirstBusStop(){
+		
+	}
 	public void DropOff(){
 	    bState = BusState.droppingoff;
 	    for(MyCommuter commuter: passengers){

@@ -33,19 +33,14 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
  
     	Timer timer = new Timer(10, this );
     	timer.start();
-    	restaurant_order.add(false);
-    	restaurant_order.add(false);
-    	restaurant_order.add(false);
-    	restaurant_order.add(false);
-    	restaurant_order.add(false);
     }
     
     public void showRestaurantOrder(int index){
-    	restaurant_order.set(index, true);
+    	restaurant_order.add(true);
     }
 
     public void hideRestaurantOrder(int index){
-    	restaurant_order.set(index, false);
+    	restaurant_order.remove(0);
     }
     
 	public void actionPerformed(ActionEvent e) {
