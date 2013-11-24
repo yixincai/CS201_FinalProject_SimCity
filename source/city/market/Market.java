@@ -29,6 +29,13 @@ public class Market extends Place{
 		truck = new TruckAgent(this);
 	}
 	
+	public Market(String name){
+		super(name, null);
+		MarketCashier = new MarketCashierRole(null,this);
+		MarketEmployee = new MarketEmployeeRole(null,this);
+		truck = new TruckAgent(this);
+	}
+	
 	public void msgPickUpItems(){
 		//gui.removeFirstRestaurantOrder();
 	}
