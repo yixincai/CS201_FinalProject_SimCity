@@ -223,6 +223,7 @@ public class CommuterRole extends Role implements Commuter{
 		_person._money -= _fare;
 		_gui.getOnBus();
 		_bus.msgGettingOnBoard(this, _busStop, _fare);
+		stateChanged();
 	}
 	public void actGetOffBus(){
 		_tState = TravelState.gettingOffBus;
