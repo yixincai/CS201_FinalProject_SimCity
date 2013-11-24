@@ -149,6 +149,11 @@ public class PersonAgent extends Agent
 				//_occupation = new BankHostRole(this, (Bank)Directory.banks().get(0), ((Bank)Directory.banks().get(0)).getTellers());
 				break;
 			case "Market Cashier":
+				_occupation = Directory.restaurants().get(0).generateWaiterRole();
+				new YixinNormalWaiterRole(this, (YixinRestaurant)Directory.restaurants().get(0) ,this._name);
+				YixinWaiterGui yixinWaiterGui = new YixinWaiterGui((YixinWaiterRole)_occupation, ((YixinRestaurant)_occupation.place()).Waiters.size());
+				((YixinNormalWaiterRole)_occupation).setGui(yixinWaiterGui);
+				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinWaiterGui);
 			//	_occupation = new MarketCashierRole(this, market);
 				break;
 			case "Market Employee":

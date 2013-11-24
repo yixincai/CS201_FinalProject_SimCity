@@ -22,7 +22,8 @@ public class YixinRestaurant extends Restaurant{
 	
 	// Semaphores for the host, cashier, and cook
 	private Semaphore _hostSemaphore = new Semaphore(1, true);
-	
+	private Semaphore _cookSemaphore = new Semaphore(1, true);
+	private Semaphore _cashierSemaphore = new Semaphore(1, true);
 	
 	
 	// ------------- CONSTRUCTOR & PROPERTIES
