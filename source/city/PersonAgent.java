@@ -107,7 +107,13 @@ public class PersonAgent extends Agent
 	
 	// -------------------------------- CONSTRUCTORS & PROPERTIES ------------------------------------
 	public PersonAgent(String name) { _name = name; }
-	public PersonAgent(String name, double money, String initOccupation) {_name = name; _money = money; setOccupation(initOccupation);}
+	public PersonAgent(String name, double money, String occupationType, String housingType) 
+	{
+		_name = name; 
+		_money = money; 
+		setOccupation(occupationType);
+		acquireHome(housingType);
+	}
 	public String getName() { return _name; }
 	public double money() { return _money; }
 	public int getAccountNumber() { return bankAccountNumber; }

@@ -44,11 +44,10 @@ public class ControlPanel extends JTabbedPane {
 		this.setSelectedComponent(currentBuildingPanel);
 	}
 
-	public void addPerson(String name, double money, String occupation, boolean weekday_notWeekend, String shift) 
+	public void addPerson(String name, double money, String occupation, boolean weekday_notWeekend, String housing) 
 	{
 		currentPersonPanel.addPerson(name);
-		PersonAgent newPerson = new PersonAgent(name, money, occupation);
-		newPerson.setWorkDays(shift, weekday_notWeekend);
+		PersonAgent newPerson = new PersonAgent(name, money, occupation, housing);
 		CommuterRole newCommuterRole = new CommuterRole(newPerson, null);
 		newPerson.setCommuterRole(newCommuterRole);
 		CommuterGui newCommuterGui = new CommuterGui(newCommuterRole, null);
