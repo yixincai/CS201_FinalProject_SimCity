@@ -354,17 +354,19 @@ public class PersonAgent extends Agent
 	}
 	private void finishAndLeaveCurrentRole()
 	{
+		if(_currentRole == _commuterRole) setNextRole(_occupation);
 		_sentCmdFinishAndLeave = true;
 		_currentRole.cmdFinishAndLeave();
+		stateChanged();
 	}
 	private void setNextRole(Role nextRole)
 	{
-		System.out.println("Set next Role");
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
 		_commuterRole.msgGoToDestination(nextRole.place());
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
+		stateChanged();
 	}
 	private boolean goToMarket(int meals)
 	{

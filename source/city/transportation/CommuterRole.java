@@ -23,7 +23,7 @@ public class CommuterRole extends Role implements Commuter{
 	public Place _destination;
 	public Place _currentPlace;
 	BusStopObject _busStop;
-	Semaphore commuterSem = new Semaphore(0, true);
+//	Semaphore commuterSem = new Semaphore(0, true);
 
 	public CarObject _car = new CarObject();
 	public Bus _bus;
@@ -76,39 +76,48 @@ public class CommuterRole extends Role implements Commuter{
 	public void msgGoToDestination(Place place){ //Command to go to destination
 		_tState = TravelState.choosing;
 		_destination = place;
+
+		System.out.println(_destination.xPosition() + " " + _destination.yPosition());
+		stateChanged();
 	}
 	
 	//Bus Transportation messages
 	public void msgAtBusStop(BusStopObject busstop){ //GUI message
 		_tState = TravelState.atBusStop;
 		_currentPlace = busstop;
+		stateChanged();
 	}
 	public void msgGetOnBus(int fare, Bus bus){
 		_tState = TravelState.busIsHere;
 		_bus = bus;
 		_fare = fare;
+		stateChanged();
 	}
 	public void msgGetOffBus(Place place){
 		_tState = TravelState.busIsAtDestination;
 		_currentPlace = place;
+		stateChanged();
 	}
 	
 	//Msg At Destination from GUI
 	public void msgAtDestination(Place place){
 		_tState = TravelState.atDestination;
 		_currentPlace = place;
+		active = false;
+		stateChanged();
 	}
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
 		//At Destination
-		if(_destination == _currentPlace && _tState == TravelState.atDestination){
+		if(_destination.xPosition() == _gui.getX() && _destination.yPosition() == _gui.getY() && _tState == TravelState.atDestination){
 			actAtDestination();
 			return true;
 		}
-		if(_destination != _currentPlace && _tState == TravelState.atDestination){
+		if(!(_destination.xPosition() == _gui.getX() && _destination.yPosition() == _gui.getY()) && _tState == TravelState.atDestination){
 			actChooseTransportation();
 			return true;
 		}
+	//	System.out.println(_gui.getX() + " " + _gui.getY());
 		
 		//Choosing
 		if(_tState == TravelState.choosing){
@@ -188,7 +197,7 @@ public class CommuterRole extends Role implements Commuter{
 		
 		_tState = TravelState.choseWalking;
 		pTransport = PrefTransport.legs;
-
+		stateChanged();
 	}
 	public void actChooseNewTransportation(){ //Choosing when previous form of transportation doesn't work (Mostly for bus)
 		_tState = TravelState.none;
@@ -197,7 +206,7 @@ public class CommuterRole extends Role implements Commuter{
 	//Walking
 	public void actWalking(){
 		_tState = TravelState.walking;
-		//gui.walkToLocation(_destination);
+		_gui.walkToLocation(_destination);
 	}
 	
 	//Bus
@@ -238,7 +247,6 @@ public class CommuterRole extends Role implements Commuter{
 	
 	@Override
 	public void cmdFinishAndLeave() {
-		msgGoToDestination(_destination);
 		active = true;
 		stateChanged();
 	}
