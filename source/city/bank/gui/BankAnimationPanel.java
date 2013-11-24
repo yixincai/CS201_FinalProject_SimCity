@@ -15,10 +15,10 @@ import javax.swing.Timer;
 
 
 public class BankAnimationPanel extends JPanel implements ActionListener {
-	    private final int TELLERDESKX = 682/2;
-	    private final int TELLERDESKY = 100;
-	    private final int TELLERDESKWIDTH = 300;
-	    private final int TELLERDESKHEIGHT = 30;
+	    private final int TELLERDESKX = 582;
+	    private final int TELLERDESKY = 60;
+	    private final int TELLERDESKWIDTH = 30;
+	    private final int TELLERDESKHEIGHT = 270;
    
 	    private final int WINDOWX = 682;
 	    private final int WINDOWY = 360;

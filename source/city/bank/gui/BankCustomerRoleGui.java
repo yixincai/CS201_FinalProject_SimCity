@@ -15,6 +15,12 @@ public class BankCustomerRoleGui implements Gui {
 	private boolean flag = true;
 	private int xPos, yPos;
 	private int xDestination, yDestination;
+	private int lineX = 382;
+	private int lineY = 180;
+	private int tellerX = 572;
+	private int tellerY = 195;
+	private int exitX = 321;
+	private int exitY = 380;
 	
 	public BankCustomerRoleGui(BankCustomerRole c){
 		agent = c;
@@ -51,23 +57,24 @@ public class BankCustomerRoleGui implements Gui {
 	@Override
 	public boolean isPresent() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	public void DoGoToLine() {
-		// TODO Auto-generated method stub
-		
+		xDestination = lineX;
+		yDestination = lineY;
 		flag = false;
 	}
 
 	public void DoGoToTeller(int tellerNum) {
-		// TODO Auto-generated method stub
-		
+		xDestination = tellerX;
+		yDestination = tellerY;
 		flag = false;
 	}
 
 	public void DoLeaveBank() {
-		// TODO Auto-generated method stub
+		xDestination = exitX;
+		yDestination = exitY;
 		flag = false;
 	}
 
