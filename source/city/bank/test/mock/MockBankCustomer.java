@@ -24,7 +24,8 @@ public class MockBankCustomer extends Mock implements BankCustomer{
 	}
 
 	@Override
-	public void msgHereIsInfoPickARequest(double funds, double amountOwed) {
+	public void msgHereIsInfoPickARequest(double funds, double amountOwed,
+			int newAccntNum) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -41,4 +42,5 @@ public class MockBankCustomer extends Mock implements BankCustomer{
 		// TODO Auto-generated method stub
 		
 	}
+
 }
