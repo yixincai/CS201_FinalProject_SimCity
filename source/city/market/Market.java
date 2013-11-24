@@ -7,6 +7,7 @@ import gui.WorldViewBuilding;
 import city.PersonAgent;
 import city.Place;
 import city.market.gui.MarketAnimationPanel;
+import city.restaurant.yixin.gui.YixinAnimationPanel;
 import city.transportation.TruckAgent;
 
 public class Market extends Place{
@@ -49,7 +50,7 @@ public class Market extends Place{
 		return null;
 	}
 
-	public MarketEmployeeRole tryAcquireEmloyee(){
+	public MarketEmployeeRole tryAcquireEmployee(){
 		if (_employeeSemaphore.tryAcquire()){
 			return MarketEmployee;
 		}
@@ -81,5 +82,9 @@ public class Market extends Place{
 	
 	public int getAccountNumber(){
 		return this.businessAccountNumber;
+	}
+	
+	public MarketAnimationPanel getAnimationPanel() {
+		return animationPanel;
 	}
 }
