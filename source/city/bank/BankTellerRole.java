@@ -89,13 +89,13 @@ public class BankTellerRole extends Role implements BankTeller {
 	enum CustomerState { None, Arrived, GivingRequest, GivenRequest};
 	
 	//Messages
-	public void msgIAmHere(BankCustomerRole c){
+	public void msgIAmHere(BankCustomer c){
 		  MyCustomer m = new MyCustomer(c);
 		  m.customerState = CustomerState.Arrived;
 		  myCustomers.add(m);
 		  stateChanged();
 	}
-	public void msgHereIsMyRequest(BankCustomerRole c, String request, int amount){
+	public void msgHereIsMyRequest(BankCustomer c, String request, int amount){
 		  for(MyCustomer m: myCustomers){
 			if(m.customer == c){
 		  	m.customerState = CustomerState.GivenRequest;
@@ -106,7 +106,7 @@ public class BankTellerRole extends Role implements BankTeller {
 			}
 		  }
 	}
-	public void msgLeavingBank(BankCustomerRole c){
+	public void msgLeavingBank(BankCustomer c){
 		  for(MyCustomer m: myCustomers){
 			if(m.customer == c){
 				m.customerState = CustomerState.None;
