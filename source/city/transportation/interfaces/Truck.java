@@ -9,8 +9,6 @@ public interface Truck {
 	public void msgDeliverToCook(List<Item> items, Restaurant restaurant);
 	
 	public void msgAtDestination();
-	
-	public void msgGoodsUnloaded(int order_id);
 
 	public void msgAtMarket();
 }
