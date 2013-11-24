@@ -42,11 +42,13 @@ public class BankTellerTest extends TestCase
 		assertTrue(!teller.isOccupied());
 		assertTrue(host.isWaitingCustomersEmpty());
 		
-		//Make the customer go to the Bank (messageing the host)
+		//Make the customer go to the Bank (messaging the host)
 		host.msgWaiting(customer);
 		assertTrue("Should have received \"msgWaiting recieved\" but but got " + host.log.getLastLoggedEvent(), host.log.containsString("msgWaiting recieved"));
 		host.addWaitingCustomer(customer);
 		assertFalse(host.isWaitingCustomersEmpty());
+		
+		//Now make the host send the customer to the bankTeller.
 		
 		
 		
