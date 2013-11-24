@@ -51,17 +51,11 @@ public class TruckAgent extends Agent implements Truck{
 	//----------------------------------------------Messages------------------------------------------
 	public void msgDeliverToCook(List<Item> items, Restaurant restaurant){
 	    packages.add(new Package(items, restaurant));
+	    stateChanged();
 	}
 	
 	public void msgAtDestination(){
 	    isMoving.release();
-	}
-
-	public void msgGoodsUnloaded(int order_id){
-	    for(Package aPackage : packages){
-	        if(aPackage.orderId == order_id){
-	        aPackage.pState = packageState.unloaded;}
-	    }
 	}
 
 	public void msgAtMarket(){
@@ -100,7 +94,7 @@ public class TruckAgent extends Agent implements Truck{
 		//isMoving.acquire();
 		_market.msgPickUpItems();
 		aPackage.pState = packageState.inTruck;
-		
+		stateChanged();
 	}
 	
 	public void DeliverToDestination(Package aPackage){
@@ -110,6 +104,7 @@ public class TruckAgent extends Agent implements Truck{
 		aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); //Make sure GUI shows that it's dropped off !important!
 		trState = truckState.atRestaurant;
 		packages.remove(aPackage);
+		stateChanged();
 	}
 
 	public void GoBackToMarket(){
