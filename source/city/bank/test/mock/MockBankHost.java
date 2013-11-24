@@ -39,7 +39,7 @@ public class MockBankHost extends Mock implements BankHost{
 	}
 	
 	public void addWaitingCustomer(BankCustomer c) {
-		
+		waitingCustomers.add(c);
 	}
 
 }
