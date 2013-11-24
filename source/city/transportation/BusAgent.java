@@ -63,7 +63,7 @@ public class BusAgent extends Agent implements Bus{
 	    numPeople--;
 	}
 
-	public void msgGettingOnBoard(CommuterRole person, Place destination, int payment){ //Check if payment is correct?
+	public void msgGettingOnBoard(CommuterRole person, Place destination, double payment){ //Check if payment is correct?
 	    passengers.add(new MyCommuter(person, destination));
 	    _register += payment;
 	    numPeople++; //Fix this

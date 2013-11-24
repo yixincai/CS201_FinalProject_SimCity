@@ -118,19 +118,55 @@ public class Directory {
 	public static double getFare(){
 		return _busFare;
 	}
-	public static void seetFare(double newFare){
+	public static void setFare(double newFare){
 		_busFare = newFare;
 	}
 	
-	public static BusStopObject getNearestBusStop(Place fromPlace)
+	public static BusStopObject getNearestBusStop(int xStart, int yStart)
 	{
+		BusStopObject temp = null;
+		int Distance1 = -1;
+		int Distance2;
+		
 		for(Place p : _places)
 		{
 			if(p instanceof BusStopObject)
 			{
-				return (BusStopObject)p;
+				Distance2 = Math.abs(xStart - p.xPosition()) + Math.abs(yStart - p.yPosition());	
+				if(Distance1 < 0){
+					Distance1 = Distance2;
+					temp = (BusStopObject)p;
+				}
+				else if(Distance2 < Distance1){
+					Distance1 = Distance2;
+					temp = (BusStopObject)p;
+				}
 			}
 		}
-		return null;
+		return temp;
+	}
+	
+	public static BusStopObject getNearestBusStopToDestination(Place destination)
+	{
+		BusStopObject temp = null;
+		int Distance1 = -1;
+		int Distance2;
+		
+		for(Place p : _places)
+		{
+			if(p instanceof BusStopObject)
+			{
+				Distance2 = Math.abs(destination.xPosition() - p.xPosition()) + Math.abs(destination.yPosition() - p.yPosition());	
+				if(Distance1 < 0){
+					Distance1 = Distance2;
+					temp = (BusStopObject)p;
+				}
+				else if(Distance2 < Distance1){
+					Distance1 = Distance2;
+					temp = (BusStopObject)p;
+				}
+			}
+		}
+		return temp;
 	}
 }

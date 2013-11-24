@@ -101,8 +101,8 @@ public class CommuterRole extends Role implements Commuter{
 	//Msg At Destination from GUI
 	public void msgAtDestination(Place place){
 		_tState = TravelState.atDestination;
-		_currentPlace = place;
 		print("At destination " + place._name);
+		_currentPlace = place;
 	}
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
@@ -187,10 +187,6 @@ public class CommuterRole extends Role implements Commuter{
 		if(pTransport == PrefTransport.car){
 			_tState = TravelState.choseCar;
 		}
-		
-		_tState = TravelState.choseWalking;
-		pTransport = PrefTransport.legs;
-
 	}
 	public void actChooseNewTransportation(){ //Choosing when previous form of transportation doesn't work (Mostly for bus)
 		_tState = TravelState.none;

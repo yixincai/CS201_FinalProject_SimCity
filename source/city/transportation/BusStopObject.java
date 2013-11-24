@@ -23,7 +23,7 @@ public class BusStopObject extends Place {
 		_waitList.remove(person);
 	}
 	
-	public List getList(){
+	public List<CommuterRole> getList(){
 		return _waitList;
 	}
 }

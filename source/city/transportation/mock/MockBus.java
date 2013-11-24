@@ -25,14 +25,14 @@ public class MockBus extends Mock implements Bus{
 	}
 
 	@Override
-	public void msgGettingOnBoard(CommuterRole person, Place destination,
-			int payment) {
+	public void setFare(int fare) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void setFare(int fare) {
+	public void msgGettingOnBoard(CommuterRole person, Place destination,
+			double payment) {
 		// TODO Auto-generated method stub
 		
 	}
