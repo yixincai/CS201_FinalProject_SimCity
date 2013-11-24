@@ -55,7 +55,8 @@ public class YixinWaiterGui extends JPanel implements Gui {
 
     public void draw(Graphics2D g) {
     	g.setColor(Color.RED);
-    	g.drawImage(image, xPos, yPos, xGap, yGap, this);
+    	g.fillRect(xPos, yPos, xGap, yGap);    	
+    	//g.drawImage(image, xPos, yPos, xGap, yGap, this);
     	if (show_choice)
     		g.drawString(food, xPos, yPos - 10);
     }
