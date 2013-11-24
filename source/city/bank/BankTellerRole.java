@@ -1,7 +1,6 @@
 package city.bank;
 
 import java.util.ArrayList;
-
 import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -10,6 +9,7 @@ import agent.Role;
 import city.PersonAgent;
 import city.Place;
 import city.bank.gui.BankTellerRoleGui;
+import city.bank.interfaces.BankCustomer;
 import city.bank.interfaces.BankHost;
 import city.bank.interfaces.BankTeller;
 import city.market.Market;
@@ -35,12 +35,13 @@ public class BankTellerRole extends Role implements BankTeller {
 	BankTellerRoleGui gui;
 	Bank bank;
 	 
-	public BankTellerRole(PersonAgent person, Bank bank){
+	public BankTellerRole(PersonAgent person, Bank bank, int tellerNum){
 		super(person);
 		this.bank = bank;
 		command = Command.None;
 		this.myBusinessCustomers = new ArrayList<MyBusinessCustomer>();
 		this.myCustomers = new ArrayList<MyCustomer>();		
+		this.tellerNum = tellerNum;
 	}
 	public void makeDatabase(){
 		database = new AccountDatabase();
@@ -57,13 +58,13 @@ public class BankTellerRole extends Role implements BankTeller {
 	//given Account Number, gets funds or amount owed
 	}
 	private class MyCustomer{
-		  MyCustomer(BankCustomerRole c){
+		  MyCustomer(BankCustomer c){
 			  this.customer = c;
 			  customerState = CustomerState.None;
 			  accountNumber = -1;
 		  }
 		  
-	      BankCustomerRole customer;
+	      BankCustomer customer;
 	      int accountNumber;
 	      String request;
 	      int amount;
