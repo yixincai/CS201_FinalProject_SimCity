@@ -123,7 +123,7 @@ public class PersonAgent extends Agent
 				_occupation = new YixinCashierRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
 				YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)_occupation);
 				((YixinCashierRole)_occupation).setGui(yixinCashierGui);
-				((YixinRestaurant)Directory.restaurants().get(0)).getAnimationPanel().addGui(yixinCashierGui);
+				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinCashierGui);
 				break;
 			case "Cook":
 				_occupation = new YixinCookRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
