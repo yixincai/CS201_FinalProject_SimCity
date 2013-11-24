@@ -60,6 +60,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		if (pickUpOrders.size() == 0 && deliverOrders.size() == 0 && role_state == RoleState.WantToLeave){
 			cmdFinishAndLeave();
 			role_state = RoleState.none;
+			active = false;
 			return true;
 		}
 		DoGoHome();

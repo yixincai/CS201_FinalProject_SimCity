@@ -11,26 +11,17 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class MarketAnimationPanel extends JPanel implements ActionListener {
-    private final int TABLEX1 = 200;
-    private final int TABLEX2 = 300;
-    private final int TABLEX3 = 100;
-    private final int TABLEY = 150;
-    private final int GAPX = 50;
-    private final int GAPY = 50;
-    private final int ICON_X = 30;
-    private final int ICON_Y = 30;    
+    private final int counter_x = 200;
+    private final int counter_y = 0;
+    private final int counter_width = 20;
+    private final int counter_height = 300;
+    private final int ICON_X = 50;
+    private final int ICON_Y = 50;    
     private final int WINDOWX = 682;
     private final int WINDOWY = 360;
+    List<Boolean> restaurant_order = new ArrayList<Boolean>();
     private List<Gui> guis = new ArrayList<Gui>();
-    private ImageIcon ifridge = new ImageIcon("image/fridge.png");
-    private Image fridgeimage = ifridge.getImage();
-    private ImageIcon i2 = new ImageIcon("image/host.png");
-    private Image plateimage = i2.getImage();
-    private ImageIcon igrill = new ImageIcon("image/grill.jpg");
-    private Image grillimage = igrill.getImage();
-    private ImageIcon irevolving = new ImageIcon("image/revolvingStand.jpg");
-    private Image standimage = irevolving.getImage();
-    
+
     public MarketAnimationPanel()
     {
     	setSize(WINDOWX, WINDOWY);
@@ -38,8 +29,21 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
  
     	Timer timer = new Timer(10, this );
     	timer.start();
+    	restaurant_order.add(false);
+    	restaurant_order.add(false);
+    	restaurant_order.add(false);
+    	restaurant_order.add(false);
+    	restaurant_order.add(false);
+    }
+    
+    public void showRestaurantOrder(int index){
+    	restaurant_order.set(index, true);
     }
 
+    public void hideRestaurantOrder(int index){
+    	restaurant_order.set(index, false);
+    }
+    
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
 	}
@@ -53,16 +57,13 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
 
         //Here is the table
 
-        g2.setColor(Color.red);
-        g2.fillRect(TABLEX1, TABLEY, GAPX, GAPY);//200 and 250 need to be table params
-
-        g2.fillRect(TABLEX2, TABLEY, GAPX, GAPY);
-        g2.fillRect(TABLEX3, TABLEY, GAPX, GAPY);
+        g2.setColor(Color.GREEN);
+        g2.fillRect(counter_x, counter_y, counter_width, counter_height);
+        for (int i = 0; i < restaurant_order.size(); i++){
+        	if (restaurant_order.get(i).booleanValue())
+                g2.fillRect( 500, i*ICON_X , ICON_X, ICON_Y);        		
+        }
         //here is the cooking area 
-    	g.drawImage(plateimage, 70, 250, ICON_X, ICON_Y, this);
-    	g.drawImage(standimage, 40, 250, ICON_X, ICON_Y, this);
-    	g.drawImage(grillimage, 200, 250, ICON_X, ICON_Y, this);
-    	g.drawImage(fridgeimage, 330, 250, ICON_X, ICON_Y, this);
         for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.updatePosition();
@@ -80,19 +81,11 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         guis.add(gui);
     }
 
-    public void addGui(YixinHostGui gui) {
+    public void addGui(MarketCashierGui gui) {
         guis.add(gui);
     }
     
-    public void addGui(YixinWaiterGui gui) {
-        guis.add(gui);
-    }
-    
-    public void addGui(YixinCookGui gui) {
-        guis.add(gui);
-    }
-    
-    public void addGui(YixinCashierGui gui) {
+    public void addGui(MarketEmployeeGui gui) {
         guis.add(gui);
     }
 }
