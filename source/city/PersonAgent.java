@@ -193,9 +193,9 @@ public class PersonAgent extends Agent
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
-						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui((BankTellerRole)_occupation);
+						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui();
 						((BankTellerRole)_occupation).setGui(bankTellerRoleGui);
-						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(bankTellerRoleGui);
+						((Bank)_occupation.place()).getAnimationPanel().addGui(bankTellerRoleGui);
 						return;
 					}
 				}
@@ -208,9 +208,9 @@ public class PersonAgent extends Agent
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
-						BankHostRoleGui bankHostRoleGui = new BankHostRoleGui((BankHostRole)_occupation);
+						BankHostRoleGui bankHostRoleGui = new BankHostRoleGui();
 						((BankHostRole)_occupation).setGui(bankHostRoleGui);
-						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(bankHostRoleGui);
+						((Bank)_occupation.place()).getAnimationPanel().addGui(bankHostRoleGui);
 						return;
 					}
 				}
