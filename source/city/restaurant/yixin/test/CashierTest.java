@@ -3,11 +3,10 @@ package city.restaurant.yixin.test;
 import java.util.*;
 
 import city.PersonAgent;
-import city.market.Item;
-import city.market.Market;
+import city.bank.BankTellerRole;
+import city.market.*;
 import city.restaurant.Restaurant;
-import city.restaurant.yixin.YixinCashierRole;
-import city.restaurant.yixin.YixinRestaurant;
+import city.restaurant.yixin.*;
 import city.restaurant.yixin.test.mock.*;
 import junit.framework.*;
 
@@ -82,5 +81,28 @@ public class CashierTest extends TestCase
 				+ cashier.log.toString(), 1, cashier.log.size());
 		
 	}//end one normal market scenario	
-	
+
+	public void testRestaurantBankInteractionScenario()
+	{			
+		//check preconditions
+		assertEquals("Cashier should have 0 bills in it. It doesn't.",cashier.bills.size(), 0);
+		assertEquals("Cashier should have 0 marketBills in it. It doesn't.",cashier.marketBills.size(), 0);
+		assertEquals("CashierAgent should have an empty event log before the Cashier's HereIsTheBill is called. Instead, the Cashier's event log reads: "
+						+ cashier.log.toString(), 0, cashier.log.size());
+		assertEquals("CashierAgent should have 130 dollars initially. Instead, the Cashier's balance is: "
+				+ cashier.money, 130.0, cashier.money);	
+		assertFalse("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
+
+		//send first message to cashier
+		cashier.money = 300;//send the message from a waiter
+		cashier.bankTeller = new BankTellerRole(null,null);
+		cashier.bankTeller.makeDatabase();
+		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
+
+		assertFalse("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
+
+		cashier.msgTransactionComplete(150, 150.0, 0.0, 5134);
+		assertFalse("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
+		
+	}//end one normal market scenario	
 }

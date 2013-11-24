@@ -11,6 +11,7 @@ import city.restaurant.yixin.gui.YixinAnimationPanel;
 
 public class YixinRestaurant extends Restaurant{
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
+	//count stands for the number of waiting list
 	int count = -1;
 	boolean open;
 	public YixinHostRole Host;
