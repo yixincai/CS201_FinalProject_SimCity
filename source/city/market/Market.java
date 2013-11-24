@@ -23,14 +23,14 @@ public class Market extends Place{
 		MarketEmployee = new MarketEmployeeRole(null,this);
 		truck = new TruckAgent(this);
 	}
-	
+	//constructor for Yixin unit testing
 	public Market(){
 		super("Market", null);
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
 		truck = new TruckAgent(this);
 	}
-	
+	//constructor for Ryan unit testing
 	public Market(String name){
 		super(name, null);
 		MarketCashier = new MarketCashierRole(null,this);

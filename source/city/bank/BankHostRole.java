@@ -32,7 +32,7 @@ public class BankHostRole extends Role implements BankHost {
 	enum Command{None, Leave};
 	
 	//Messages
-	public void msgWaiting(BankCustomerRole c){
+	public void msgWaiting(BankCustomer c){
 	 if(command == Command.None){
 		 waitingCustomers.add(c);
 	 } else{
@@ -40,7 +40,7 @@ public class BankHostRole extends Role implements BankHost {
 	 }
 	 	stateChanged();
 	}
-	public void msgLeavingBank(BankTellerRole teller){
+	public void msgLeavingBank(BankTeller teller){
 	  teller.setOccupied(false);
 	  stateChanged();
 	}

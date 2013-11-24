@@ -95,7 +95,7 @@ public class MainGui extends JFrame
         _buildingInteriorAnimationPanels.add(bp3);
         
         //Going to be houses
-        for(int i = 0; i < 3; i+=2){
+        for(int i = 0; i < 4; i+=2){
         	for(int j = 0; j < 5; j++){
                 WorldViewBuilding b4 = _worldView.addBuilding(i, j, 20);
         		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "BankHouse", new city.bank.gui.BankAnimationPanel());
@@ -115,10 +115,10 @@ public class MainGui extends JFrame
         ArrayList<WorldViewBuilding> worldViewBuildings = _worldView.getBuildings();
         for ( int i=0; i<worldViewBuildings.size(); i++ )
         {
-       WorldViewBuilding b = worldViewBuildings.get(i);
-       BuildingInteriorAnimationPanel bp = new BuildingInteriorAnimationPanel(this,i);
-       b.setBuildingPanel( bp );
-       _buildingCardLayoutPanel.add( bp, "Building " + i );
+                WorldViewBuilding b = worldViewBuildings.get(i);
+                BuildingInteriorAnimationPanel bp = new BuildingInteriorAnimationPanel(this,i);
+                b.setBuildingPanel( bp );
+                _buildingCardLayoutPanel.add( bp, "Building " + i );
         }
         
         
@@ -138,22 +138,21 @@ public class MainGui extends JFrame
 		 */
         
       //The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
-		
-		this.add(cPanel, Component.RIGHT_ALIGNMENT);
-		this.pack();		
-		this.setVisible(true);
-		
-		// Start Time
-		Time.startTimer();
+  	  
+  	  this.add(cPanel, Component.RIGHT_ALIGNMENT);
+  	  this.pack();		
+  	  this.setVisible(true);
+	
+  	  Time.startTimer();
 	}
 	
 	public WorldView getWorldView() { return _worldView; }
 	
-	public void displayBuildingPanel(BuildingInteriorAnimationPanel bp ) {
-		System.out.println( bp.getName() );
-		((CardLayout) _buildingCardLayoutPanel.getLayout()).show(_buildingCardLayoutPanel, bp.getName());
-		cPanel.updateBuildingInfo(bp);
-	}
+	 public void displayBuildingPanel(BuildingInteriorAnimationPanel bp ) {
+         System.out.println( bp.getName() );
+         ((CardLayout) _buildingCardLayoutPanel.getLayout()).show(_buildingCardLayoutPanel, bp.getName());
+         cPanel.updateBuildingInfo(bp);
+	 }
 	
 	/**
 	 * Main routine to create an instance of the MainGui window

@@ -4,7 +4,7 @@ import city.bank.BankCustomerRole;
 import city.bank.BankTellerRole;
 
 public interface BankHost {
-	public void msgWaiting(BankCustomerRole c);
-	public void msgLeavingBank(BankTellerRole teller);
+	public void msgWaiting(BankCustomer c);
+	public void msgLeavingBank(BankTeller teller);
 	public boolean isWaitingCustomersEmpty();
 }

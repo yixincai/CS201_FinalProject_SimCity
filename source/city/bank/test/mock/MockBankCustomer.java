@@ -3,11 +3,11 @@ package city.bank.test.mock;
 import utilities.EventLog;
 import utilities.LoggedEvent;
 import agent.Mock;
-import city.bank.BankTellerRole;
 import city.bank.interfaces.BankCustomer;
 import city.bank.interfaces.BankTeller;
 
-public class MockBankCustomer extends Mock implements BankCustomer{
+public class MockBankCustomer extends Mock implements BankCustomer
+{
 
 	public EventLog log;
 	
@@ -22,7 +22,7 @@ public class MockBankCustomer extends Mock implements BankCustomer{
 	}
 
 	@Override
-	public void msgCalledToDesk(BankTellerRole teller) {
+	public void msgCalledToDesk(BankTeller teller) {
 		log.add(new LoggedEvent("msgCalledToDesk recieved"));
 	}
 
@@ -42,10 +42,5 @@ public class MockBankCustomer extends Mock implements BankCustomer{
 		log.add(new LoggedEvent("msgTransactionDenied recieved"));
 	}
 
-	@Override
-	public void msgCalledToDesk(BankTeller t) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

@@ -9,10 +9,14 @@ import city.bank.interfaces.BankTeller;
 public class MockBankTeller extends Mock implements BankTeller{
 	
 	public EventLog log;
+	boolean _occupied;
+	int tellerNum;
 
-	public MockBankTeller(String name) {
+	public MockBankTeller(String name, int tellerNum) {
 		super(name);
 		log = new EventLog();
+		_occupied = false;
+		this.tellerNum = tellerNum;
 	}
 
 	@Override
@@ -33,8 +37,17 @@ public class MockBankTeller extends Mock implements BankTeller{
 
 	@Override
 	public boolean isOccupied() {
-		
-		
+		return _occupied;
+	}
+
+	@Override
+	public void setOccupied(boolean b) {
+		_occupied = b;
+	}
+
+	@Override
+	public int getTellerNum() {
+		return tellerNum;
 	}
 	
 }

@@ -96,9 +96,9 @@ public class CommuterRole extends Role implements Commuter{
 		stateChanged();
 		print("Getting on bus " + bus.getName());
 	}
-	public void msgGetOffBus(Place place){
+	public void msgGetOffBus(BusStopObject busstop){
 		_tState = TravelState.busIsAtDestination;
-		_currentPlace = place;
+		_busStop = busstop;
 		stateChanged();
 		print("Getting off bus " + _bus.getName());
 	}
@@ -117,12 +117,7 @@ public class CommuterRole extends Role implements Commuter{
 			actAtDestination();
 			return true;
 		}
-		if(!(_destination.xPosition() == _gui.getX() && _destination.yPosition() == _gui.getY()) && _tState == TravelState.atDestination){
-			actChooseTransportation();
-			return true;
-		}
-	//	System.out.println(_gui.getX() + " " + _gui.getY());
-		
+	
 		//Choosing
 		if(_tState == TravelState.choosing){
 			actChooseTransportation();
@@ -149,7 +144,7 @@ public class CommuterRole extends Role implements Commuter{
 			return true;
 		}
 		if(_tState == TravelState.busIsHere && _bus != null && _person._money <= _fare){
-			actChooseNewTransportation();
+			actWalking();
 			return true;
 		}
 		if(_tState == TravelState.busIsAtDestination){
@@ -177,8 +172,11 @@ public class CommuterRole extends Role implements Commuter{
 			if(_car != null){
 				_tState = TravelState.choseCar;
 			}
-			else{
+			else if(_person._money >= 10){
 				_tState = TravelState.choseBus;
+			}
+			else{
+				_tState = TravelState.walking;
 			}
 		}
 		else{
@@ -217,19 +215,18 @@ public class CommuterRole extends Role implements Commuter{
 	}
 	public void actAtBusStop(){
 		_tState = TravelState.waitingAtBusStop;
-		//_busStop = Directory.getNearestBusStop(_currentPlace); (Remove comment when implemented)
-		
+		_busStop = Directory.getNearestBusStopToDestination(_destination);
 		_busStop.addPerson(this);
 	}
 	public void actGetOnBus(){
 		_tState = TravelState.ridingBus;
 		_person._money -= _fare;
 		_gui.getOnBus();
-		_bus.msgGettingOnBoard(this, _destination, _fare);
+		_bus.msgGettingOnBoard(this, _busStop, _fare);
 	}
 	public void actGetOffBus(){
 		_tState = TravelState.gettingOffBus;
-		_gui.getOffBus();
+		_gui.getOffBus(_busStop);
 		_bus.msgGotOff(this);
 		_bus = null;
 		actWalking(); //Calls this function here because after you get off of the bus stop you walk to the destination

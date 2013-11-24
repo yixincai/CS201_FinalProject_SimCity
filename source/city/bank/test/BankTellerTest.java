@@ -22,7 +22,7 @@ public class BankTellerTest extends TestCase
 		PersonAgent p = new PersonAgent("Mike");
 		host = new MockBankHost("Host");
 		customer = new MockBankCustomer("Omar");
-		teller = new BankTellerRole(p, bank);
+		teller = new BankTellerRole(p, bank, 0);
 	}
 	
 	public void testOneNormalCustomerScenario()
@@ -34,12 +34,19 @@ public class BankTellerTest extends TestCase
 			e.printStackTrace();
 		}
 		
-		//Check to make sure everything was created correctly
+		//Check to make sure everything was created correctly (Preconditions)
 		assertTrue(host.log.size() == 0);
 		assertTrue(customer.log.size() == 0);
 		assertTrue(teller.myCustomers.size() == 0);
 		assertTrue(teller.myBusinessCustomers.size() == 0);
-		//assterTrue(teller.)
+		assertTrue(!teller.isOccupied());
+		assertTrue(host.isWaitingCustomersEmpty());
+		
+		//Make the customer go to the Bank (messageing the host)
+		host.msgWaiting(customer);
+		assertTrue("Should have received \"msgWaiting recieved\" but but got " + host.log.getLastLoggedEvent(), host.log.containsString("msgWaiting recieved"));
+		host.addWaitingCustomer(customer);
+		assertFalse(host.isWaitingCustomersEmpty());
 		
 		
 		

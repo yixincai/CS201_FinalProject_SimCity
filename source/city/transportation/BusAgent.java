@@ -17,13 +17,14 @@ import city.transportation.interfaces.Bus;
 public class BusAgent extends Agent implements Bus{
 	String _name;
 	
-	List<MyCommuter> passengers = new ArrayList<MyCommuter>();
-	BusAgentGui _gui = new BusAgentGui();
+	List<MyCommuter> _passengers = new ArrayList<MyCommuter>();
+	BusAgentGui _gui;
 	
-	List<BusStopObject> busStops = new ArrayList<BusStopObject>();
+	List<BusStopObject> _busStops = new ArrayList<BusStopObject>();
 	
 	
 	BusStopObject currentDestination;
+	int _busStopNum;
 	List<CommuterRole> currentBusStopList = new ArrayList<CommuterRole>();
 	
 	static double _fare;
@@ -52,22 +53,27 @@ public class BusAgent extends Agent implements Bus{
 	public BusAgent(String name){
 		_name = name;
 		_fare = Directory.getFare();
+		_busStopNum = 0;
+		_busStops = Directory.getBusStopList();
+	}
+	
+	public void setBusAgentGui(BusAgentGui gui){
+		_gui = gui;
 	}
 	
 	//----------------------------------------------Messages----------------------------------------
 	public void msgAtDestination(BusStopObject busstop){
 	    currentDestination = busstop;
-	    
 	    bState = BusState.atDestination;
 	}
 
 	public void msgGotOff(CommuterRole passenger){
-	    passengers.remove(findCommuter(passenger)); //Fix this
+	    _passengers.remove(findCommuter(passenger)); //Fix this
 	    numPeople--;
 	}
 
 	public void msgGettingOnBoard(CommuterRole person, Place destination, double payment){ //Check if payment is correct?
-	    passengers.add(new MyCommuter(person, destination));
+	    _passengers.add(new MyCommuter(person, destination));
 	    _register += payment;
 	    numPeople++; //Fix this
 	}
@@ -100,11 +106,12 @@ public class BusAgent extends Agent implements Bus{
 	
 	//----------------------------------------------Actions----------------------------------------
 	public void GoToFirstBusStop(){
-		
+		_gui.goToBusStop(_busStops.get(_busStopNum));
 	}
+
 	public void DropOff(){
 	    bState = BusState.droppingoff;
-	    for(MyCommuter commuter: passengers){
+	    for(MyCommuter commuter: _passengers){
 	        if(commuter.destination == currentDestination){
 	        	commuter.commuter.msgGetOffBus(currentDestination);
 	            expectedPeople--;
@@ -125,13 +132,18 @@ public class BusAgent extends Agent implements Bus{
 
 	public void Leave(){
 	    bState = BusState.moving;
-	    _gui.moveToNextDestination();
+	    _busStopNum++;
+		
+		if(_busStopNum >= _busStops.size()){
+			_busStopNum = 0;
+		}
+		_gui.goToBusStop(_busStops.get(_busStopNum));
 	}
 	
 	//-----------------------------------------Utilities-----------------------------------------
 	public MyCommuter findCommuter(CommuterRole commuter){
-		synchronized(passengers){
-			for(MyCommuter passenger: passengers){
+		synchronized(_passengers){
+			for(MyCommuter passenger: _passengers){
 				if(passenger.commuter == commuter){
 					return passenger;
 				}
@@ -147,6 +159,10 @@ public class BusAgent extends Agent implements Bus{
 	@Override
 	public void setFare(int fare) {
 		_fare = fare;
+	}
+	
+	public void updateBusStopList(){
+		_busStops = Directory.getBusStopList();
 	}
 	
 }

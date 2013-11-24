@@ -72,11 +72,13 @@ public class CommuterGui implements Gui {
 	}
 	
 	public void getOnBus(){
-		
+		setPresent(false);
 	}
 	
-	public void getOffBus(){
-		
+	public void getOffBus(BusStopObject busstop){
+		_xPos = busstop.xPosition();
+		_yPos = busstop.yPosition();
+		setPresent(true);
 	}
 	
 	public int getX(){
