@@ -14,6 +14,7 @@ public class YixinRestaurant extends Restaurant{
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
 	//count stands for the number of waiting list
 	int count = -1;
+	int waiter_count = -1;
 	boolean open;
 	public YixinHostRole host;
 	private int businessAccountNumber = -1;
@@ -22,7 +23,8 @@ public class YixinRestaurant extends Restaurant{
 	
 	// Semaphores for the host, cashier, and cook
 	private Semaphore _hostSemaphore = new Semaphore(1, true);
-	
+	private Semaphore _cookSemaphore = new Semaphore(1, true);
+	private Semaphore _cashierSemaphore = new Semaphore(1, true);
 	
 	
 	// ------------- CONSTRUCTOR & PROPERTIES
@@ -73,6 +75,10 @@ public class YixinRestaurant extends Restaurant{
 			newWaiter = new YixinNormalWaiterRole(null, this, "");
 		else
 			newWaiter = new YixinSharedDataWaiterRole(null, this, "");
+		newWaiter.setCashier((YixinCashierRole)cashier);
+		newWaiter.setCook((YixinCookRole)cook);
+		newWaiter.setHost(host);
+		waiter_count++;
 		return newWaiter;
 	}
 
