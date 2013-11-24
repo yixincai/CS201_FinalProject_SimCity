@@ -89,7 +89,8 @@ public class YixinCookGui extends JPanel implements Gui{
 
     public void draw(Graphics2D g) {
     	g.setColor(Color.BLUE);
-    	g.drawImage(image, xPos, yPos, xGap, yGap, this);
+    	g.fillRect(xPos, yPos, xGap, yGap);    	
+    	//g.drawImage(image, xPos, yPos, xGap, yGap, this);
     	if (show_food)
     		g.drawString(food, xCooking, yPos - 50);
     }
