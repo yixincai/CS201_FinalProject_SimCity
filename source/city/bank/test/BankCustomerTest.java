@@ -18,7 +18,7 @@ public class BankCustomerTest extends TestCase { //
 			super.setUp();
 			PersonAgent p = new PersonAgent("Mike");
 			customer = new BankCustomerRole(p, 100, bank);
-			teller = new MockBankTeller("BankTeller");
+			teller = new MockBankTeller("BankTeller", 0);
 			host = new MockBankHost("BankHost");
 	/*		bank.addTeller(teller);
 			b.host = host; */
