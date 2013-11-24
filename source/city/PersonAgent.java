@@ -112,33 +112,33 @@ public class PersonAgent extends Agent
 	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
 	public void setOccupation(String occupation) 
 	{
-		/*switch(occupation)
+		switch(occupation)
 		{
 			case "Waiter":
-				_occupation = new YixinNormalWaiterRole(this, null restaurant ,this._name);
+				_occupation = new YixinNormalWaiterRole(this, (YixinRestaurant)Directory.restaurants().get(0) ,this._name);
 				break;
 			case "Restaurant Cashier":
-				_occupation = new YixinCashierRole(this, null restaurant);
+				_occupation = new YixinCashierRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
 				break;
 			case "Cook":
-				_occupation = new YixinCookRole(this, null restaurant);
+				_occupation = new YixinCookRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
 				break;
 			case "Restaurant Host":
-				_occupation = new YixinHostRole(this, null restaurant, this._name);
+				_occupation = new YixinHostRole(this, (YixinRestaurant)Directory.restaurants().get(0) , this._name);
 				break;
 			case "Bank Teller":
-				_occupation = new BankTellerRole(this);
+		//		_occupation = new BankTellerRole(this, (Bank)Directory.banks().get(0));
 				break;
 			case "Bank Host":
-				_occupation = new BankHostRole(this);
+		//		_occupation = new BankHostRole(this, (Bank)Directory.banks().get(0));
 				break;
 			case "Market Cashier":
-				_occupation = new MarketCashierRole(this, null market);
+			//	_occupation = new MarketCashierRole(this, market);
 				break;
 			case "Market Employee":
-				_occupation = new MarketEmployeeRole(this, null market);
+			//	_occupation = new MarketEmployeeRole(this, market);
 				break;
-		}*/
+		}
 	}
 	public void setOccupationStartTime(double occupationStartTime) { _occupationStartTime = occupationStartTime; }
 	public void setOccupationEndTime(double occupationEndTime) { _occupationEndTime = occupationEndTime; }
@@ -185,6 +185,7 @@ public class PersonAgent extends Agent
 		
 		if(_currentRole.active)
 		{
+			//System.out.println("Current Role Active");
 			// Finish role because you have to get to work:
 			if(workingToday() && !_sentCmdFinishAndLeave)
 			{
@@ -223,7 +224,10 @@ public class PersonAgent extends Agent
 			}
 			
 			// Call current role's scheduler
-			if(_currentRole.pickAndExecuteAnAction()) { return true; }
+			if(_currentRole.pickAndExecuteAnAction()) { 
+				System.out.println("Current Role Scheduler called");
+				return true; 
+			}
 		}
 		else // i.e. _currentRole.active == false
 		{
@@ -232,6 +236,7 @@ public class PersonAgent extends Agent
 			
 			if(_currentRole == _commuterRole)
 			{
+				if(timeToBeAtWork()) setNextRole(_occupation);
 				// We must have just reached the destination
 				_currentRole = _nextRole;
 				_currentRole.active = true;
@@ -354,6 +359,7 @@ public class PersonAgent extends Agent
 	}
 	private void setNextRole(Role nextRole)
 	{
+		System.out.println("Set next Role");
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
 		_commuterRole.msgGoToDestination(nextRole.place());
