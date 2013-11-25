@@ -69,6 +69,15 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public final int WINDOWX = 682;
     public final int WINDOWY = 360;
     
+    public static final int TVX4 = 300;
+    public static final int TVY4 = 50;
+    public static final int TVX3 = 300;
+    public static final int TVY3 = 310;
+    public static final int TVX2 = 382;
+    public static final int TVY2 = 50;
+    public static final int TVX = 382;
+    public static final int TVY = 310;
+    
     private List<Gui> guis = new ArrayList<Gui>();
     
     public ApartmentAnimationPanel()
@@ -130,7 +139,7 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
         }
     }
     
-  /*  public void addGui(HomeBuyingRoleGui gui) {
+ /*   public void addGui(HomeBuyingRoleGui gui) {
         guis.add(gui);
     }
 

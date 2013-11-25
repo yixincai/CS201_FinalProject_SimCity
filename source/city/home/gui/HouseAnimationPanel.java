@@ -22,7 +22,13 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	
 	// Note: I changed these to public so that they can be accessed by HouseOccupantGui and ApartmentOccupantGui --Eric
 	
-	//TODO Omar, add a public static final int KITCHENX and KITCHENY (or you could just do stove/fridge, that would be fine) so that the HouseOccupantGui knows where to go)
+	public static final int STOVEX = 300;
+	public static final int STOVEY = 100;
+	public static final int STOVEDIM = 20;
+	
+	public static final int FRIDGEX = 320;
+	public static final int FRIDGEY = 100;
+	public static final int FRIDGEDIM = 20;
 	
     public static final int BEDX = 600;
     public static final int BEDY = 300;
@@ -36,6 +42,9 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     
     public static final int BEDWALLX2 = 400;
     public static final int BEDWALLY2 = 200;
+    
+    private static final int TVX = 400;
+    private static final int TVY = 100;
     
     public static final int WINDOWX = 682;
     public static final int WINDOWY = 360;
@@ -85,7 +94,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
             }
         }
     }
-    public void addGui(HomeOccupantGui gui) {
+  /*  public void addGui(HomeOccupantGui gui) {
         guis.add(gui);
-    }
+    } */
 }
