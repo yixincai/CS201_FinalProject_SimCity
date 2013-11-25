@@ -123,10 +123,11 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(bank.getName());
         _buildingInteriorAnimationPanels.add(bp2);
         
+        //Market
         WorldViewBuilding b3 = _worldView.addBuilding(10, 5, 40);
 		BuildingInteriorAnimationPanel bp3 = new BuildingInteriorAnimationPanel(this, "Market", new city.market.gui.MarketAnimationPanel());
 		b3.setBuildingPanel(bp3);
-		Market market = new Market("Market", b3, bp3);
+		Market market = new Market("Market", b3, bp3, _worldView);
 		Directory.addPlace(market);
 		_buildingCardLayoutPanel.add( bp3, bp3.getName() );
 		cPanel.currentBuildingPanel.addBuilding(market.getName());
@@ -193,7 +194,9 @@ public class MainGui extends JFrame
 	
   	  Time.startTimer();
   	  
+  	  market.truck.startThread();
   	  market.truck.msgDeliverToCook(null, yr);
+  	  market.truck.msgDeliverToCook(null, or);
 	}
 	
 	public WorldView getWorldView() { return _worldView; }

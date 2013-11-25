@@ -7,6 +7,7 @@ import agent.Role;
 import city.Directory;
 import city.PersonAgent;
 import city.Place;
+import city.home.House;
 import city.transportation.gui.CommuterGui;
 import city.transportation.interfaces.Bus;
 import city.transportation.interfaces.Commuter;
@@ -53,6 +54,7 @@ public class CommuterRole extends Role implements Commuter{
 		super(person);
 		_person = person;
 		_currentPlace = place;
+		_destination = new House("Dummy", null);
 		_car = null;
 		active = true;
 		// TODO Auto-generated constructor stub
