@@ -14,6 +14,7 @@ import javax.swing.*;
 import city.Time;
 import city.transportation.gui.BusAgentGui;
 import city.transportation.gui.CommuterGui;
+import city.transportation.gui.TruckAgentGui;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -76,6 +77,9 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		guis.add(gui);
 	}
 	
+	public void addGui(TruckAgentGui gui){
+		guis.add(gui);
+	}
 	
 
 	public void paintComponent( Graphics g ) {

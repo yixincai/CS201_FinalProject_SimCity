@@ -1,5 +1,7 @@
 package city.transportation;
 
+import gui.WorldView;
+
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +21,10 @@ import city.market.Item;
 
 public class TruckAgent extends Agent implements Truck{
 	List<Package> packages = new ArrayList<Package>();
-	Semaphore isMoving;
+	String _name;
+	Semaphore isMoving = new Semaphore(0, true);;
 	Market _market;
-	TruckAgentGui gui;
+	TruckAgentGui _gui;
 	Boolean out = false;
 	
 	enum truckState{parkingLot, docking, drivingtoRestaurant, atRestaurant, drivingtoMarket};
@@ -44,13 +47,21 @@ public class TruckAgent extends Agent implements Truck{
 	}
 	
 	//Constructor
-	public TruckAgent(Market market){
+	public TruckAgent(Market market, WorldView worldView){
+		_name = market.getName() + "'s Truck";
 		_market = market;
+		_gui = new TruckAgentGui(this, _market);
+		worldView.addGui(_gui);
+	}
+	
+	public void setTruckAgentGui(TruckAgentGui gui){
+		_gui = gui;
 	}
 	
 	//----------------------------------------------Messages------------------------------------------
 	public void msgDeliverToCook(List<Item> items, Restaurant restaurant){
 	    packages.add(new Package(items, restaurant));
+	    print("Package at market");
 	    stateChanged();
 	}
 	
@@ -90,27 +101,50 @@ public class TruckAgent extends Agent implements Truck{
 	public void PickFromDock(Package aPackage){
 		trState = truckState.docking;
 		out = true;
-		gui.goToDock(_market);
-		//isMoving.acquire();
-		_market.msgPickUpItems();
-		aPackage.pState = packageState.inTruck;
-		stateChanged();
+		_gui.goToDock(_market);
+		print("Going to dock");
+		try {
+			isMoving.acquire();
+			//_market.msgPickUpItems();
+			print("Picked up");
+			aPackage.pState = packageState.inTruck;
+			stateChanged();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void DeliverToDestination(Package aPackage){
 		trState = truckState.drivingtoRestaurant;
-		gui.goToDestination(aPackage._restaurant);
-		//isMoving.acquire();
-		aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); //Make sure GUI shows that it's dropped off !important!
-		trState = truckState.atRestaurant;
-		packages.remove(aPackage);
-		stateChanged();
+		_gui.goToDestination(aPackage._restaurant);
+		try {
+			isMoving.acquire();
+			//aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); //Make sure GUI shows that it's dropped off !important!
+			trState = truckState.atRestaurant;
+			packages.remove(aPackage);
+			stateChanged();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void GoBackToMarket(){
 	    out = false;
-	    gui.goToMarketParkingLot(_market);
-	    //isMoving.acquire();
-	    trState = truckState.parkingLot;
+	    _gui.goToMarketParkingLot(_market);
+	    try {
+			isMoving.acquire();
+			trState = truckState.parkingLot;
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	}
+	
+	public String getName(){
+		return _name;
 	}
 }

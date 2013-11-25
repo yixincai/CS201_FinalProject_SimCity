@@ -43,22 +43,25 @@ public abstract class Restaurant extends Place {
 		return cashier;
 	}
 	
-	public RestaurantCookRole tryAcquireCook() {
+	public RestaurantCookRole tryAcquireCook(PersonAgent person) {
 		if(_cookSemaphore.tryAcquire()) {
+			cook.setPersonAgent(person);
 			return cook;
 		}
 		else return null;
 	}
 	
-	public RestaurantCashierRole tryAcquireCashier() {
+	public RestaurantCashierRole tryAcquireCashier(PersonAgent person) {
 		if(_cashierSemaphore.tryAcquire()) {
+			cashier.setPersonAgent(person);
 			return cashier;
 		}
 		else return null;
 	}
 	
-	public Role tryAcquireHost() {
+	public Role tryAcquireHost(PersonAgent person) {
 		if(_hostSemaphore.tryAcquire()) {
+			getHostRole().setPersonAgent(person);
 			return getHostRole();
 		}
 		else return null;
