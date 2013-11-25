@@ -65,6 +65,14 @@ public class TruckAgentGui implements Gui{
 		_xDestination = market.xPosition()- 10;
 		_yDestination = market.yPosition() + 15;
 	}
+	
+	public void goToDock(Market market) {
+		// TODO Auto-generated method stub
+		isPresent = true;
+		_point = Point.Market;
+		_xDestination = market.xPosition()- 10;
+		_yDestination = market.yPosition() + 15;
+	}
 
 	public void goToDestination(Restaurant restaurant) {
 		// TODO Auto-generated method stub
