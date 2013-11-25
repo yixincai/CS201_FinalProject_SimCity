@@ -33,7 +33,17 @@ public abstract class HomeOccupantRole extends Role
 	public boolean sleeping() { return _state == State.SLEEPING; }
 	public boolean cooking() { return _state == State.COOKING; }
 	public boolean haveFood() { return _mealCount > 0; } //TODO implement _mealCount;
-	public Place place() { return _home.place(); }
+	public Place place()
+	{
+		if(_home != null)
+		{
+			return _home.place();
+		}
+		else
+		{
+			return null;
+		}
+	}
 	public void setHome(Home home) { _home = home; }
 	
 	
