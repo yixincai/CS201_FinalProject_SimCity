@@ -51,6 +51,7 @@ public class TruckAgent extends Agent implements Truck{
 	//----------------------------------------------Messages------------------------------------------
 	public void msgDeliverToCook(List<Item> items, Restaurant restaurant){
 	    packages.add(new Package(items, restaurant));
+	    print("Going to " + restaurant.getName());
 	    stateChanged();
 	}
 	

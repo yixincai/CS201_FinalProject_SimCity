@@ -192,6 +192,8 @@ public class MainGui extends JFrame
   	  this.setVisible(true);
 	
   	  Time.startTimer();
+  	  
+  	  market.truck.msgDeliverToCook(null, yr);
 	}
 	
 	public WorldView getWorldView() { return _worldView; }
