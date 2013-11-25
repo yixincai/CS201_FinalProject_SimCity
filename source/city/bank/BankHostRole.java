@@ -23,7 +23,7 @@ public class BankHostRole extends Role implements BankHost {
 	//Data
 	Bank bank;
 	List<BankTeller> tellers;
-	private List<BankCustomer> waitingCustomers;
+	private List<BankCustomer> waitingCustomers = new ArrayList<BankCustomer>();
 	BankHostRoleGui gui;
 	Semaphore hostSem = new Semaphore(0,true);
 	

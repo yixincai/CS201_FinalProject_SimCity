@@ -50,6 +50,7 @@ public class MarketEmployeeGui extends JPanel implements Gui {
     }
     
 	public void PickUp(String item){
+		System.out.println("Getting things!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		if (item.equals("Meal")){
 			xDestination = 400;
 			yDestination = 50;
@@ -89,8 +90,8 @@ public class MarketEmployeeGui extends JPanel implements Gui {
 	}
 	
 	public void GoHome(){
-		xDestination = -xGap;
-		yDestination = -yGap;
+		xDestination = 400;
+		yDestination = 100;
 	}
 
     public boolean isPresent() {
