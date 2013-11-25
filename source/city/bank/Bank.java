@@ -15,10 +15,8 @@ public class Bank extends Place implements PlaceWithAnimation {
 
 	boolean open;
 	public List<BankTellerRole> tellers = new ArrayList<BankTellerRole>();
-	public BankHostRole host;
 	BankAnimationPanel _animationPanel;
 	
-	private BankTellerRole _bankTellerRole;
 	private BankHostRole _bankHostRole;
 	private Semaphore _tellerSemaphore = new Semaphore(1, true);
 	private Semaphore _hostSemaphore = new Semaphore(1, true);
@@ -27,10 +25,10 @@ public class Bank extends Place implements PlaceWithAnimation {
 		super("Bank", wvb);
 		this._animationPanel = (BankAnimationPanel)bp.getBuildingAnimation();
 		List<BankTeller> tellers_for_host = new ArrayList<BankTeller>();
-		BankTellerRole teller = new BankTellerRole(null,this, 0);
-		tellers.add(teller);
-		tellers_for_host.add(teller);
-		host = new BankHostRole(null,this, tellers_for_host);
+		BankTellerRole bankTellerRole = new BankTellerRole(null,this, 0);
+		tellers.add(bankTellerRole);
+		tellers_for_host.add(bankTellerRole);
+		_bankHostRole = new BankHostRole(null,this, tellers_for_host);
 	}
 		
 	public Bank() {
@@ -44,7 +42,7 @@ public class Bank extends Place implements PlaceWithAnimation {
 	}
 
 	public void updateBankStatus(){
-		if (tellers.isEmpty() || !host.active)
+		if (tellers.isEmpty() || !_bankHostRole.active)
 			open = false;
 		else
 			open = true;
@@ -68,8 +66,8 @@ public class Bank extends Place implements PlaceWithAnimation {
 	
 	public BankTellerRole tryAcquireTeller(PersonAgent person){
 		if (_tellerSemaphore.tryAcquire()){
-			_bankTellerRole.setPersonAgent(person);
-			return _bankTellerRole;
+			tellers.get(0).setPersonAgent(person);
+			return tellers.get(0);
 		}
 		return null;
 	}
