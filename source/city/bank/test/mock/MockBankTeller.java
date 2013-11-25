@@ -27,7 +27,7 @@ public class MockBankTeller extends Mock implements BankTeller{
 
 	@Override
 	public void msgHereIsMyRequest(BankCustomer c, String request,
-			int amount) {
+			double amount) {
 		log.add(new LoggedEvent("msgHereIsMyRequest recieved"));
 	}
 

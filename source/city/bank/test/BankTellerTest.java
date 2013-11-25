@@ -1,5 +1,8 @@
 package city.bank.test;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import city.PersonAgent;
 import city.bank.Bank;
 import city.bank.BankHostRole;
@@ -11,6 +14,7 @@ import junit.framework.TestCase;
 
 public class BankTellerTest extends TestCase
 {
+	Timer waitForGui = new Timer();
 	Bank bank;
 	MockBankHost host;
 	BankTellerRole teller;
@@ -26,7 +30,7 @@ public class BankTellerTest extends TestCase
 		teller.makeDatabase();
 	}
 	
-	public void testOneNormalCustomerScenario()
+	public void testOneNormalCustomerDepositScenario()
 	{
 		try {
 			this.setUp();
@@ -57,18 +61,24 @@ public class BankTellerTest extends TestCase
 		teller.msgIAmHere(customer);
 		assertTrue(teller.myCustomers.size() == 1);
 		assertTrue(teller.pickAndExecuteAnAction());
-		assertTrue("The customer should have logged \"msgHereIsInfoPickARequest\" but actually logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgHereIsInfoPickARequest recieved"));
-		teller.msgHereIsMyRequest(customer, "deposit", customer.accNumber);
+		assertTrue("The customer should have logged \"msgHereIsInfoPickARequest recieved\" but actually logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgHereIsInfoPickARequest recieved"));
+		customer.cash = 1000; //arbitrarily adding money for the mock customer to deposit
+		teller.msgHereIsMyRequest(customer, "deposit", customer.cash);
 		assertTrue(teller.pickAndExecuteAnAction());
-		
-		
-		
-		
-	
-		
-		
-		
+		waitForGui.schedule(new TimerTask(){
+			public void run()
+			{
 				
+			}
+		}, 5 * 1000);
+		assertTrue("Customer should have logged \"msgTransactionComplete received\" but logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgTransactionComplete recieved"));
+		assertTrue("Customer should have no cash but actually has " + customer.cash, customer.cash == (double)0.0);
+		assertTrue("Customer should have 1000.0 in the bank but actually has " + customer.balance, customer.balance == (double)1000);
+		assertTrue("Custoemr should owe no money but actually owes " + customer.amountOwed, customer.amountOwed == (double)0.0);
+	}
+	
+	public void testOneNormalCustomerWithdrawScenario()
+	{
 		
 	}
 

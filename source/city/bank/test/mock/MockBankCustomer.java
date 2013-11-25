@@ -13,6 +13,7 @@ public class MockBankCustomer extends Mock implements BankCustomer
 	public double amountOwed;
 	public double balance;
 	public int accNumber;
+	public double cash;
 	
 	public MockBankCustomer(String name) {
 		super(name);
@@ -41,6 +42,9 @@ public class MockBankCustomer extends Mock implements BankCustomer
 	public void msgTransactionComplete(double amountReceived, double funds,
 			double amountOwed) {
 		log.add(new LoggedEvent("msgTransactionComplete recieved"));
+		this.cash = this.cash + amountReceived;
+		this.balance = funds;
+		this.amountOwed = amountOwed;
 	}
 
 	@Override

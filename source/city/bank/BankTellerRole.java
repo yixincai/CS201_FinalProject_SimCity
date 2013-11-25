@@ -67,7 +67,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	      BankCustomer customer;
 	      int accountNumber;
 	      String request;
-	      int amount;
+	      double amount;
 	      
 	      CustomerState customerState;
 	}
@@ -95,7 +95,7 @@ public class BankTellerRole extends Role implements BankTeller {
 		  myCustomers.add(m);
 		  stateChanged();
 	}
-	public void msgHereIsMyRequest(BankCustomer c, String request, int amount){
+	public void msgHereIsMyRequest(BankCustomer c, String request, double amount){
 		  for(MyCustomer m: myCustomers){
 			if(m.customer == c){
 		  	m.customerState = CustomerState.GivenRequest;
@@ -281,6 +281,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	public void setOccupied(boolean occupied){
 		this.occupied = occupied;
 	}
+	
 	
 	
 	//-------commands--------
