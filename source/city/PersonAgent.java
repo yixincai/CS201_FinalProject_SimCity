@@ -301,7 +301,9 @@ public class PersonAgent extends Agent
 	
 	
 	
-	// --------------------------------------- SCHEDULER -------------------------------------
+	// =========================================================================================================================
+	// -------------------------------------------------- SCHEDULER ------------------------------------------------------------
+	// =========================================================================================================================
 	@Override
 	protected boolean pickAndExecuteAnAction() {
 		// here, check for and do emergencies/important actions
@@ -314,14 +316,18 @@ public class PersonAgent extends Agent
 			{
 				if(_occupation != null)
 				{
-					if(_currentRole != _occupation)
+					if(_currentRole == _occupation)
 					{
-						if(timeToBeAtWork()) finishAndLeaveCurrentRole();
+						// note: you're currently at you job.
+						// If your shift just finished, leave.
+						if(!timeToBeAtWork()) finishAndLeaveCurrentRole();
 						return true;
 					}
-					else // i.e. if you're currently at your job and your shift just finished
+					else
 					{
-						if(!timeToBeAtWork()) finishAndLeaveCurrentRole();
+						// note: you're not currently at your job.
+						// If you need to go to work, finish your current role.
+						if(timeToBeAtWork()) finishAndLeaveCurrentRole();
 						return true;
 					}
 				}
@@ -478,7 +484,7 @@ public class PersonAgent extends Agent
 	}
 	private void finishAndLeaveCurrentRole()
 	{
-		if(_currentRole == _commuterRole) setNextRole(_occupation);
+		//if(_currentRole == _commuterRole) setNextRole(_occupation); // why is that here?
 		_sentCmdFinishAndLeave = true;
 		_currentRole.cmdFinishAndLeave();
 		stateChanged();

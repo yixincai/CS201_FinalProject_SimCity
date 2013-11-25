@@ -84,7 +84,7 @@ public class CommuterRole extends Role implements Commuter{
 	}
 	@Override
 	public void cmdFinishAndLeave() {
-		active = true;
+		//active = true; // shouldn't need this
 		stateChanged();
 	}
 	
