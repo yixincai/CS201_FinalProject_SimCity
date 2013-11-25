@@ -10,41 +10,41 @@ import city.restaurant.yixin.YixinCashierRole;
 
 public class YixinCashierGui extends JPanel implements Gui {
 
-    private YixinCashierRole agent = null;
+	private YixinCashierRole agent = null;
 
-    private int xPos = 300, yPos = 30;//default waiter position
-    public static int xGap = 40;
-    public static int yGap = 40;
-    
-    private ImageIcon i = new ImageIcon("source/image/cashier.jpg");
-    private Image image = i.getImage();
-    public YixinCashierGui(YixinCashierRole agent) {
-        this.agent = agent;
-    }
+	private int xPos = 300, yPos = 30;//default waiter position
+	public static int xGap = 40;
+	public static int yGap = 40;
 
-    public void updatePosition() {
-    }
+	private ImageIcon i = new ImageIcon("source/image/cashier.jpg");
+	private Image image = i.getImage();
+	public YixinCashierGui(YixinCashierRole agent) {
+		this.agent = agent;
+	}
 
-    public void draw(Graphics2D g) {
-    	if(agent.active){
-    	g.fillRect(xPos, yPos, xGap, yGap);    	
-    	//g.drawImage(image, xPos, yPos, xGap, yGap, this);
-    	}
-    }
+	public void updatePosition() {
+	}
 
-    public boolean isPresent() {
-        return true;
-    }
+	public void draw(Graphics2D g) {
+		if(agent.active){
+			g.fillRect(xPos, yPos, xGap, yGap);    	
+			//g.drawImage(image, xPos, yPos, xGap, yGap, this);
+		}
+	}
 
-    public int getXPos() {
-        return xPos;
-    }
+	public boolean isPresent() {
+		return true;
+	}
 
-    public int getYPos() {
-        return yPos;
-    }
-    
-    public void LeaveRestaurant(){
-    	
-    }
+	public int getXPos() {
+		return xPos;
+	}
+
+	public int getYPos() {
+		return yPos;
+	}
+
+	public void LeaveRestaurant(){
+
+	}
 }
