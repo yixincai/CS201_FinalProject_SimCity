@@ -20,8 +20,14 @@ import javax.swing.JPanel;
 import city.Directory;
 import city.Time;
 import city.bank.Bank;
+import city.home.Apartment;
+import city.home.ApartmentBuilding;
+import city.home.House;
 import city.market.Market;
 import city.restaurant.yixin.YixinRestaurant;
+import city.transportation.BusAgent;
+import city.transportation.BusStopObject;
+import city.transportation.gui.BusAgentGui;
 
 public class MainGui extends JFrame 
 {
@@ -64,9 +70,30 @@ public class MainGui extends JFrame
 		animationArea.add(_buildingCardLayoutPanel);
 		this.add(animationArea, Component.LEFT_ALIGNMENT);
 		
+		//Bus Stops
+		WorldViewBuilding b5 = _worldView.addBuilding(0, 0, 30);
+		BusStopObject busStop0 = new BusStopObject("Bus Stop " + 0, b5);
+		Directory.addPlace(busStop0);
+		WorldViewBuilding b6 = _worldView.addBuilding(12, 0, 30);
+		BusStopObject busStop1 = new BusStopObject("Bus Stop " + 1, b6);
+		Directory.addPlace(busStop1);
+		WorldViewBuilding b7 = _worldView.addBuilding(12, 6, 30);
+		BusStopObject busStop2 = new BusStopObject("Bus Stop " + 2, b7);
+		Directory.addPlace(busStop2);
+		WorldViewBuilding b8 = _worldView.addBuilding(0, 6, 30);
+		BusStopObject busStop3 = new BusStopObject("Bus Stop " + 3, b8);
+		Directory.addPlace(busStop3);
+		
+		BusAgent bus = new BusAgent("Bus");
+		BusAgentGui busGui = new BusAgentGui(bus, null);
+		bus.setBusAgentGui(busGui);
+		busGui.setPresent(true);
+		_worldView.addGui(busGui);
+		bus.startThread();
+		
 		// Hard-coded instantiation of all the buildings in the city:
 		// Yixin's Restaurant:
-		WorldViewBuilding b = _worldView.addBuilding(5, 0, 40);
+		WorldViewBuilding b = _worldView.addBuilding(10, 1, 40);
 		BuildingInteriorAnimationPanel bp = new BuildingInteriorAnimationPanel(this, "Yixin's Restaurant", new city.restaurant.yixin.gui.YixinAnimationPanel());
 		b.setBuildingPanel(bp);
 		YixinRestaurant yr = new YixinRestaurant("Yixin's Restaurant", b, bp);
@@ -76,7 +103,7 @@ public class MainGui extends JFrame
         _buildingInteriorAnimationPanels.add(bp);
         
         //Bank
-        WorldViewBuilding b2 = _worldView.addBuilding(5, 2, 40);
+        WorldViewBuilding b2 = _worldView.addBuilding(10, 3, 40);
 		BuildingInteriorAnimationPanel bp2 = new BuildingInteriorAnimationPanel(this, "Bank", new city.bank.gui.BankAnimationPanel());
 		b2.setBuildingPanel(bp2);
 		Bank bank = new Bank("Bank", b2, bp2);
@@ -85,7 +112,7 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(bank.getName());
         _buildingInteriorAnimationPanels.add(bp2);
         
-        WorldViewBuilding b3 = _worldView.addBuilding(5, 4, 40);
+        WorldViewBuilding b3 = _worldView.addBuilding(10, 5, 40);
 		BuildingInteriorAnimationPanel bp3 = new BuildingInteriorAnimationPanel(this, "Market", new city.market.gui.MarketAnimationPanel());
 		b3.setBuildingPanel(bp3);
 		Market market = new Market("Market", b3, bp3);
@@ -94,18 +121,28 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(market.getName());
         _buildingInteriorAnimationPanels.add(bp3);
         
-        //Going to be houses
-        for(int i = 0; i < 4; i+=2){
-        	for(int j = 0; j < 5; j++){
-                WorldViewBuilding b4 = _worldView.addBuilding(i, j, 20);
-        		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "BankHouse", new city.bank.gui.BankAnimationPanel());
-        		b4.setBuildingPanel(bp4);
-        		Bank bankTemp = new Bank("Bank", b4, bp4);
-        		Directory.addPlace(bankTemp);
-        		_buildingCardLayoutPanel.add( bp4, bp4.getName() );
-        		cPanel.currentBuildingPanel.addBuilding(bankTemp.getName());
-                _buildingInteriorAnimationPanels.add(bp4);
-        	}
+        //Initializing houses
+        for(int j = 1; j < 6; j++){
+            WorldViewBuilding b4 = _worldView.addBuilding(1, j, 20);
+    		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House", new city.home.gui.HomeAnimationPanel());
+    		b4.setBuildingPanel(bp4);
+    		House house = new House("House", b4, bp4);
+    		Directory.addPlace(house);
+    		_buildingCardLayoutPanel.add( bp4, bp4.getName() );
+    		cPanel.currentBuildingPanel.addBuilding(house.getName());
+            _buildingInteriorAnimationPanels.add(bp4);
+        }
+        
+        //Initializing apartments
+        for(int i = 1; i < 6; i++){
+        	 WorldViewBuilding b4 = _worldView.addBuilding(2, i, 20);
+     		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment", new city.home.gui.ApartmentAnimationPanel());
+     		b4.setBuildingPanel(bp4);
+     		ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
+     		Directory.addPlace(apartment);
+     		_buildingCardLayoutPanel.add( bp4, bp4.getName() );
+     		cPanel.currentBuildingPanel.addBuilding(apartment.getName());
+             _buildingInteriorAnimationPanels.add(bp4);
         }
         
         

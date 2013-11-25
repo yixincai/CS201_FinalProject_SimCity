@@ -40,6 +40,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		
 		state = State.DoingNothing;
 		event = Event.None;
+		bankCustSem = new Semaphore(0, true);
 	}
 	
 	// --------------------- ACCESSORS ---------------
@@ -151,12 +152,22 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	private void actGoToLine(){
 		  gui.DoGoToLine();
+		  try {
+				bankCustSem.acquire();
+		  } catch (InterruptedException e) {
+				e.printStackTrace();
+		  }
 		  bankHost.msgWaiting(this);
 		  state = State.Waiting;
 		  // stateChanged();
 	}
 	private void actGoToTeller(){
 		  gui.DoGoToTeller(this.teller.getTellerNum());
+		  try {
+				bankCustSem.acquire();
+		  } catch (InterruptedException e) {
+				e.printStackTrace();
+		  }
 		  teller.msgIAmHere(this);
 		  state = State.AtTeller;
 		  // stateChanged();
@@ -203,6 +214,11 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		//teller.msgGiveMeAllYourMoney();
 		state = State.Robber;
 		 // stateChanged();
+	}
+	
+	public void releaseSemaphore(){
+		bankCustSem.release();
+		stateChanged();
 	}
 
 	@Override

@@ -23,6 +23,7 @@ public class BankTellerTest extends TestCase
 		host = new MockBankHost("Host");
 		customer = new MockBankCustomer("Omar");
 		teller = new BankTellerRole(p, bank, 0);
+		teller.makeDatabase();
 	}
 	
 	public void testOneNormalCustomerScenario()
@@ -42,11 +43,28 @@ public class BankTellerTest extends TestCase
 		assertTrue(!teller.isOccupied());
 		assertTrue(host.isWaitingCustomersEmpty());
 		
-		//Make the customer go to the Bank (messageing the host)
+		//Make the customer go to the Bank (messaging the host)
 		host.msgWaiting(customer);
 		assertTrue("Should have received \"msgWaiting recieved\" but but got " + host.log.getLastLoggedEvent(), host.log.containsString("msgWaiting recieved"));
 		host.addWaitingCustomer(customer);
 		assertFalse(host.isWaitingCustomersEmpty());
+		
+		//Now make the host send the customer to the bankTeller.
+		customer.msgCalledToDesk(teller);
+		assertTrue("customer log should read \"msgCalledToDesk recieved.\" but reads " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgCalledToDesk recieved"));
+		
+		//Customer now begins interaction with teller
+		teller.msgIAmHere(customer);
+		assertTrue(teller.myCustomers.size() == 1);
+		assertTrue(teller.pickAndExecuteAnAction());
+		customer.msgHereIsInfoPickARequest(1000, 0, 10531); //these number are random for the sake of testing
+		assertTrue("The customer should have logged \"msgHereIsInfoPickARequest\" but actually logges " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgHereIsInfoPickARequest recieved"));
+		teller.msgHereIsMyRequest(customer, "deposit", 200);
+		assertTrue(teller.pickAndExecuteAnAction());
+		
+		
+		
+	
 		
 		
 		

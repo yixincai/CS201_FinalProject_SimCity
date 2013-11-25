@@ -44,6 +44,10 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		inventory.put("Meal", new Good("Meal", 5, 1000));
 		moneyInHand = 50;
 	}
+	
+	public void setGui(MarketCashierGui g) {
+		gui = g;
+	}
 
 	@Override
 	public Place place() {

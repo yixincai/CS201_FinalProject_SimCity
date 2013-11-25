@@ -1,6 +1,7 @@
 package city.home;
 
 import city.PersonAgent;
+import city.Place;
 
 public class HouseOwnerRole extends HomeBuyingRole
 {
@@ -9,6 +10,11 @@ public class HouseOwnerRole extends HomeBuyingRole
 	
 	// ------------------------ CONSTRUCTOR & PROPERTIES --------------------------
 	public HouseOwnerRole(PersonAgent person) { super(person); }
+	public Place place() { return _house; }
+	
+	
+	
+	// -------------------------------- SCHEDULER ---------------------------------
 
 	public boolean pickAndExecuteAnAction() {
 		if(_house == null)
@@ -24,5 +30,4 @@ public class HouseOwnerRole extends HomeBuyingRole
 	}
 
 	public void cmdFinishAndLeave() { } // do nothing
-
 }

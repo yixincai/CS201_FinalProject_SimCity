@@ -12,6 +12,7 @@ import city.restaurant.Restaurant;
 import city.transportation.BusStopObject;
 
 public class Directory {
+	// -------------------------------------- DATA ----------------------------------------------
 	
 	// Add location data for each place somehow.
 	
@@ -21,11 +22,13 @@ public class Directory {
 	//Bus Fare (initialize in constructor?)
 	private static double _busFare = 2;
 	
-	private static double _openingTime = 8;
-	private static double _closingTime = 20;
-	
-	
+	private static double _openingTime = 0;
+	private static double _closingTime = 24;
+
 	// ------------------------------------ PROPERTIES ---------------------------------------
+	public static double openingTime() { return _openingTime; }
+	public static double closingTime() { return _closingTime; }
+	
 	/** Returns a new list of all places */
 	public static List<Place> places()
 	{
@@ -104,6 +107,18 @@ public class Directory {
 		}
 		return newList;
 	}
+	public static List<BusStopObject> busStops()
+	{
+		List<BusStopObject> busstoplist = new ArrayList<BusStopObject>();
+		synchronized(_places)
+		{
+			for(Place p : _places)
+			{
+				if(p instanceof BusStopObject) busstoplist.add((BusStopObject)p);
+			}
+		}
+		return busstoplist;
+	}
 	/** Returns a new list of every person */
 	public static List<PersonAgent> personAgents()
 	{
@@ -132,26 +147,13 @@ public class Directory {
 	
 	
 	//Transportation Methods (Bus)
-	public static double getFare(){
+	public static double getBusFare(){
 		return _busFare;
 	}
-	public static void setFare(double newFare){
+	public static void setBusFare(double newFare){
 		_busFare = newFare;
 	}
 	
-	public static List<BusStopObject> getBusStopList(){
-		List<BusStopObject> busstoplist = new ArrayList<BusStopObject>();
-		
-		for(Place p : _places)
-		{
-			if(p instanceof BusStopObject)
-			{
-				busstoplist.add((BusStopObject)p);
-			}
-		}
-		
-		return busstoplist;
-	}
 	
 	public static BusStopObject getNearestBusStop(int xStart, int yStart)
 	{

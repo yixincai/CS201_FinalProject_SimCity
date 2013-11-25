@@ -26,6 +26,7 @@ public class BusAgent extends Agent implements Bus{
 	BusStopObject currentDestination;
 	int _busStopNum;
 	List<CommuterRole> currentBusStopList = new ArrayList<CommuterRole>();
+	Semaphore busSem = new Semaphore(0, true);
 	
 	static double _fare;
 	double _register;
@@ -52,9 +53,9 @@ public class BusAgent extends Agent implements Bus{
 	
 	public BusAgent(String name){
 		_name = name;
-		_fare = Directory.getFare();
+		_fare = Directory.getBusFare();
 		_busStopNum = 0;
-		_busStops = Directory.getBusStopList();
+		_busStops = Directory.busStops();
 	}
 	
 	public void setBusAgentGui(BusAgentGui gui){
@@ -63,8 +64,10 @@ public class BusAgent extends Agent implements Bus{
 	
 	//----------------------------------------------Messages----------------------------------------
 	public void msgAtDestination(BusStopObject busstop){
+	//	System.out.println("msgAtDestination");
 	    currentDestination = busstop;
 	    bState = BusState.atDestination;
+	    stateChanged();
 	}
 
 	public void msgGotOff(CommuterRole passenger){
@@ -74,6 +77,7 @@ public class BusAgent extends Agent implements Bus{
 
 	public void msgGettingOnBoard(CommuterRole person, Place destination, double payment){ //Check if payment is correct?
 	    _passengers.add(new MyCommuter(person, destination));
+	    currentDestination.removePerson(person);
 	    _register += payment;
 	    numPeople++; //Fix this
 	}
@@ -97,6 +101,7 @@ public class BusAgent extends Agent implements Bus{
 		}
 		
 		if(bState == BusState.pickingup && expectedPeople == numPeople){
+			System.out.println("Leaving");
 			Leave();
 			return true;
 		}
@@ -107,9 +112,15 @@ public class BusAgent extends Agent implements Bus{
 	//----------------------------------------------Actions----------------------------------------
 	public void GoToFirstBusStop(){
 		_gui.goToBusStop(_busStops.get(_busStopNum));
+		try {
+			busSem.acquire();
+	  } catch (InterruptedException e) {
+			e.printStackTrace();
+	  }
 	}
 
 	public void DropOff(){
+		System.out.println("Bus: Dropping off");
 	    bState = BusState.droppingoff;
 	    for(MyCommuter commuter: _passengers){
 	        if(commuter.destination == currentDestination){
@@ -117,17 +128,20 @@ public class BusAgent extends Agent implements Bus{
 	            expectedPeople--;
 	        }
 	    }
+	    stateChanged();
 	}
 
 	public void PickUp(){
+		System.out.println("Bus: Picking up");
 		currentBusStopList = currentDestination.getList();
 		bState = BusState.pickingup;
-	    while(expectedPeople <= capacity){
+	    while(expectedPeople <= capacity && currentBusStopList.size() > 0){
 	    	for(CommuterRole comm: currentBusStopList){
 	    		comm.msgGetOnBus(_fare, this);
 	            expectedPeople++;
 	        }
 	    }
+	    stateChanged();
 	}
 
 	public void Leave(){
@@ -162,7 +176,11 @@ public class BusAgent extends Agent implements Bus{
 	}
 	
 	public void updateBusStopList(){
-		_busStops = Directory.getBusStopList();
+		_busStops = Directory.busStops();
+	}
+	
+	public void releaseSem(){
+		busSem.release();
 	}
 	
 }

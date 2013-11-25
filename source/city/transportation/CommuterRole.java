@@ -63,7 +63,7 @@ public class CommuterRole extends Role implements Commuter{
 	public void setCar(CarObject car){_car = car;}
 	
 	public Place destination() { return _destination; }
-	public void setDestination(Place place) { _destination = place; }
+	public void setDestination(Place place) { _destination = place; msgGoToDestination(_destination); }
 	
 	public Place currentPlace() { return _currentPlace; }
 
@@ -223,6 +223,7 @@ public class CommuterRole extends Role implements Commuter{
 		_person._money -= _fare;
 		_gui.getOnBus();
 		_bus.msgGettingOnBoard(this, _busStop, _fare);
+		stateChanged();
 	}
 	public void actGetOffBus(){
 		_tState = TravelState.gettingOffBus;
@@ -263,6 +264,12 @@ public class CommuterRole extends Role implements Commuter{
 			pTransport = PrefTransport.none;
 		}
 		
+		
+	}
+
+	@Override
+	public void msgGetOffBus(Place place) {
+		// TODO Auto-generated method stub
 		
 	}
 

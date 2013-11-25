@@ -12,6 +12,7 @@ import java.awt.GridLayout;
 import javax.swing.*;
 
 import city.Time;
+import city.transportation.gui.BusAgentGui;
 import city.transportation.gui.CommuterGui;
 
 import java.awt.*;
@@ -71,6 +72,10 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		 return b;
 	}
 	
+	public void addGui(BusAgentGui gui){
+		guis.add(gui);
+	}
+	
 	
 
 	public void paintComponent( Graphics g ) {
@@ -86,10 +91,10 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 				}
 		}
 			
-		super.paintComponent(g);
+		super.paintComponent(g); // this prevents the building animation panel from being copied in the worldview (for some reason).
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setColor( Color.black );
-		                        
+		
 		for ( int i=0; i<buildings.size(); i++ ) {
 			WorldViewBuilding b = buildings.get(i);
 		    g2.fill( b );
@@ -128,7 +133,9 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
         for ( int i=0; i<buildings.size(); i++ ) {
                 WorldViewBuilding b = buildings.get(i);
                 if ( b.contains( e.getX(), e.getY() ) ) {
+                	if(b.myBuildingPanel != null){
                         b.displayBuilding();
+                	}
                 }
         }	
 	}

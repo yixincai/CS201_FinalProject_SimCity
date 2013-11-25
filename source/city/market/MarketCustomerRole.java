@@ -26,6 +26,10 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		super(person);
 		this.market = m;
 	}
+
+	public void setGui(MarketCustomerGui g) {
+		gui = g;
+	}
 	
 	public void msgAnimationFinished() {
 		//from animation

@@ -16,6 +16,8 @@ import javax.swing.JTabbedPane;
 
 import city.Directory;
 import city.PersonAgent;
+import city.bank.BankCustomerRole;
+import city.restaurant.yixin.YixinCustomerRole;
 import city.transportation.CommuterRole;
 import city.transportation.gui.CommuterGui;
 
@@ -44,15 +46,30 @@ public class ControlPanel extends JTabbedPane {
 		this.setSelectedComponent(currentBuildingPanel);
 	}
 
-	public void addPerson(String name, double money, String occupation, boolean weekday_notWeekend, String shift) 
+	public void addPerson(String name, double money, String occupation, boolean weekday_notWeekend, String housing) 
 	{
 		currentPersonPanel.addPerson(name);
-		PersonAgent newPerson = new PersonAgent(name, money, occupation);
-		newPerson.setShift(shift, weekday_notWeekend);
+		PersonAgent newPerson = new PersonAgent(name, money, occupation, housing);
 		CommuterRole newCommuterRole = new CommuterRole(newPerson, null);
 		newPerson.setCommuterRole(newCommuterRole);
 		CommuterGui newCommuterGui = new CommuterGui(newCommuterRole, null);
 		newCommuterRole.setGui(newCommuterGui);
+		//Instantiate people with a role
+/*		if(occupation.equalsIgnoreCase("None")){ //can be used for testing perhaps
+			int rand = (int)(Math.random()*5);
+			newCommuterRole.setDestination(Directory.banks().get(0));
+			newPerson.setNextRole(new BankCustomerRole(newPerson, newPerson.getAccountNumber(), Directory.banks().get(0)));
+			if(rand == 0){
+				newCommuterRole.setDestination(Directory.restaurants().get(0));
+				newPerson.setNextRole(new YixinCustomerRole(newPerson, (YixinRestaurant)Directory.restaurants().get(0), newPerson.getName(), 0));
+			} else if(rand == 1){
+				newCommuterRole.setDestination(Directory.banks().get(0));
+				newPerson.setNextRole(new BankCustomerRole(newPerson, newPerson.getAccountNumber(), Directory.banks().get(0)));
+			} else if(rand == 2){
+				newCommuterRole.setDestination(Directory.banks().get(0));
+				newPerson.setNextRole(new MarketCustomerRole());
+			} 
+		} */
 		Directory.addPerson(newPerson);
 		mainGui.getWorldView().addGui(newCommuterGui);
 		this.setSelectedComponent(currentPersonPanel);
