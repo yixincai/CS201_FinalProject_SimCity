@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -200,10 +201,6 @@ public class MainGui extends JFrame
   	  cPanel.addPerson("Yixin", 300, "Market Cashier", true, "house");
   	  cPanel.addPerson("Yixin", 300, "Market Employee", true, "house");
   	  Time.startTimer();
-  	  
-  	  market.truck.startThread();
-  	  market.truck.msgDeliverToCook(null, yr);
-  	  market.truck.msgDeliverToCook(null, or);
 	}
 	
 	public WorldView getWorldView() { return _worldView; }
