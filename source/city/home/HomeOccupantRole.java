@@ -11,8 +11,8 @@ public abstract class HomeOccupantRole extends Role
 
 
 
-	protected enum Command { NONE, WATCH_TV, COOK_AND_EAT_FOOD, GO_TO_BED, WAKE_UP, LEAVE }
-	protected Command _command;
+	protected enum Event { NONE, WATCH_TV, COOK_AND_EAT_FOOD, GO_TO_BED, WAKE_UP, LEAVE }
+	protected Event _event;
 	
 	public enum State { IDLE, COOKING, SLEEPING }
 	private State _state; //TODO fully implement these states
@@ -48,30 +48,30 @@ public abstract class HomeOccupantRole extends Role
 	
 	
 	
-	// --------------------------------- COMMANDS -----------------------------------
+	// --------------------------------- COMMANDS & MESSAGES -----------------------------------
 	// note: commands are only from PersonAgent
 	public void cmdWatchTv()
 	{
-		_command = Command.WATCH_TV;
+		_event = Event.WATCH_TV;
 		stateChanged();
 	}
 	public void cmdCookAndEatFood()
 	{
-		_command = Command.COOK_AND_EAT_FOOD;
+		_event = Event.COOK_AND_EAT_FOOD;
 		stateChanged();
 	}
 	public void cmdGoToBed()
 	{
-		_command = Command.GO_TO_BED;
-		stateChanged();
-	}
-	public void cmdWakeUp()
-	{
-		_command = Command.WAKE_UP;
+		_event = Event.GO_TO_BED;
 		stateChanged();
 	}
 	public void cmdFinishAndLeave() {
-		_command = Command.LEAVE;
+		_event = Event.LEAVE;
+	}
+	public void msgWakeUp()
+	{
+		_event = Event.WAKE_UP;
+		stateChanged();
 	}
 	
 	
@@ -82,7 +82,7 @@ public abstract class HomeOccupantRole extends Role
 		//TODO if cmdGoToBed, set wakeTime to 7
 		if(_state == State.IDLE)
 		{
-			if(_command == Command.COOK_AND_EAT_FOOD)
+			if(_event == Event.COOK_AND_EAT_FOOD)
 			{
 				actStartCooking();
 				return true;
