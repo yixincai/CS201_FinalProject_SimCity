@@ -183,7 +183,7 @@ public class BankTellerRole extends Role implements BankTeller {
 			database.funds.put(m.accountNumber, currentFunds + m.amount);
 			m.customer.msgTransactionComplete(-m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber)); // negative m.amount because I'm taking money from the customer
 		} else if(m.request.equalsIgnoreCase("Withdraw")){ //checked
-		    if(database.amountOwed.get(m.accountNumber) >= 0){
+		    if(database.amountOwed.get(m.accountNumber) > 0){
 		    	m.customer.msgTransactionDenied();
 		  	}
 			else {
@@ -192,7 +192,7 @@ public class BankTellerRole extends Role implements BankTeller {
 				m.customer.msgTransactionComplete(m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
 			}
 		} else if(m.request.equalsIgnoreCase("Withdraw Loan")){ // checked a bit, add robber
-			if(database.amountOwed.get(m.accountNumber) >= 0){
+			if(database.amountOwed.get(m.accountNumber) > 0){
 			      m.customer.msgTransactionDenied();
 			}
 			else { 

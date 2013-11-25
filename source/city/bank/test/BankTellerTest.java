@@ -79,7 +79,46 @@ public class BankTellerTest extends TestCase
 	
 	public void testOneNormalCustomerWithdrawScenario()
 	{
+		try {
+			this.setUp();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		//Check to make sure everything was created correctly (Preconditions)
+		assertTrue(host.log.size() == 0);
+		assertTrue(customer.log.size() == 0);
+		assertTrue(teller.myCustomers.size() == 0);
+		assertTrue(teller.myBusinessCustomers.size() == 0);
+		assertTrue(!teller.isOccupied());
+		assertTrue(host.isWaitingCustomersEmpty());
+		
+		//Now make the host send the customer to the bankTeller.
+		customer.msgCalledToDesk(teller);
+		assertTrue("customer log should read \"msgCalledToDesk recieved.\" but reads " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgCalledToDesk recieved"));
+		
+		//Now customer starts interacting with teller
+		teller.msgIAmHere(customer);
+		assertTrue(teller.myCustomers.size() == 1);
+		assertTrue(teller.pickAndExecuteAnAction());
+		assertTrue("The customer should have logged \"msgHereIsInfoPickARequest recieved\" but actually logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgHereIsInfoPickARequest recieved"));
+		customer.cash = (double) 0.0; //make the customer have no cash on him at the time
+		customer.balance = (double) 500.0; //make the customer have 500 bucks in the bank
+		teller.database.funds.put(customer.accNumber, (double)500.0); //updating the teller's database to reflect the customer's balance
+		//now ask to withdraw some money
+		teller.msgHereIsMyRequest(customer, "withdraw", (double)100.0);
+		assertTrue(teller.pickAndExecuteAnAction());
+		waitForGui.schedule(new TimerTask(){
+			public void run()
+			{
+				
+			}
+		}, 5 * 1000);
+		assertTrue("Customer should have logged \"msgTransactionComplete received\" but logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgTransactionComplete recieved"));
+		assertTrue("Customer should have 100 bucks but actually has " + customer.cash, customer.cash == (double)100.0);
+		assertTrue("Customer should have 400.0 in the bank but actually has " + customer.balance, customer.balance == (double)400);
+		assertTrue("Custoemr should owe no money but actually owes " + customer.amountOwed, customer.amountOwed == (double)0.0);	
 	}
 
 }
