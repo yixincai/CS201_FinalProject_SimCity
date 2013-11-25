@@ -200,6 +200,9 @@ public class MainGui extends JFrame
 //  	  cPanel.addPerson("Yixin", 300, "Bank Host", true, "house");
 //  	  cPanel.addPerson("Yixin", 300, "Market Cashier", true, "house");
 //  	  cPanel.addPerson("Yixin", 300, "Market Employee", true, "house");
+  	  
+  	  // TODO Here, add scanning the configuration file.
+  	  
   	  Time.startTimer();
 	}
 	
