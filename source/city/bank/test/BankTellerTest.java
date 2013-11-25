@@ -14,7 +14,6 @@ import junit.framework.TestCase;
 
 public class BankTellerTest extends TestCase
 {
-	Timer waitForGui = new Timer();
 	Bank bank;
 	MockBankHost host;
 	BankTellerRole teller;
@@ -65,12 +64,12 @@ public class BankTellerTest extends TestCase
 		customer.cash = 1000; //arbitrarily adding money for the mock customer to deposit
 		teller.msgHereIsMyRequest(customer, "deposit", customer.cash);
 		assertTrue(teller.pickAndExecuteAnAction());
-		waitForGui.schedule(new TimerTask(){
+		/*waitForGui.schedule(new TimerTask(){
 			public void run()
 			{
 				
 			}
-		}, 5 * 1000);
+		}, 5 * 1000);*/
 		assertTrue("Customer should have logged \"msgTransactionComplete received\" but logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgTransactionComplete recieved"));
 		assertTrue("Customer should have no cash but actually has " + customer.cash, customer.cash == (double)0.0);
 		assertTrue("Customer should have 1000.0 in the bank but actually has " + customer.balance, customer.balance == (double)1000);
@@ -109,12 +108,6 @@ public class BankTellerTest extends TestCase
 		//now ask to withdraw some money
 		teller.msgHereIsMyRequest(customer, "withdraw", (double)100.0);
 		assertTrue(teller.pickAndExecuteAnAction());
-		waitForGui.schedule(new TimerTask(){
-			public void run()
-			{
-				
-			}
-		}, 5 * 1000);
 		assertTrue("Customer should have logged \"msgTransactionComplete received\" but logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgTransactionComplete recieved"));
 		assertTrue("Customer should have 100 bucks but actually has " + customer.cash, customer.cash == (double)100.0);
 		assertTrue("Customer should have 400.0 in the bank but actually has " + customer.balance, customer.balance == (double)400);
@@ -150,12 +143,6 @@ public class BankTellerTest extends TestCase
 		//now ask to get a loan
 		teller.msgHereIsMyRequest(customer, "withdraw loan", (double)100.0);
 		assertTrue(teller.pickAndExecuteAnAction());
-		waitForGui.schedule(new TimerTask(){
-			public void run()
-			{
-				
-			}
-		}, 5 * 1000);
 		assertTrue("Customer should have logged \"msgTransactionComplete received\" but logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgTransactionComplete recieved"));
 		assertTrue("Customer should have 100 bucks but actually has " + customer.cash, customer.cash == (double)100.0);
 		assertTrue("Customer should have 0.0 in the bank but actually has " + customer.balance, customer.balance == (double)0.0);
@@ -196,12 +183,6 @@ public class BankTellerTest extends TestCase
 		teller.database.amountOwed.put(customer.accNumber, (double)100.0);
 		teller.msgHereIsMyRequest(customer, "pay loan", (double)100.0);
 		assertTrue(teller.pickAndExecuteAnAction());
-		waitForGui.schedule(new TimerTask(){
-			public void run()
-			{
-				
-			}
-		}, 5 * 1000);
 		assertTrue("Customer should have logged \"msgTransactionComplete received\" but logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgTransactionComplete recieved"));
 		assertTrue("Customer should have no money but actually has " + customer.cash, customer.cash == (double)0.0);
 		assertTrue("Customer should have 0.0 in the bank but actually has " + customer.balance, customer.balance == (double)0.0);
