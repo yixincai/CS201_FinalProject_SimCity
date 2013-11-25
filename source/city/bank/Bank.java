@@ -66,15 +66,17 @@ public class Bank extends Place implements PlaceWithAnimation {
 	
 	// -------------------- FACTORIES/TRY-ACQUIRES ------------------
 	
-	public BankTellerRole tryAcquireTeller(){
+	public BankTellerRole tryAcquireTeller(PersonAgent person){
 		if (_tellerSemaphore.tryAcquire()){
+			_bankTellerRole.setPersonAgent(person);
 			return _bankTellerRole;
 		}
 		return null;
 	}
 
-	public BankHostRole tryAcquireHost(){
+	public BankHostRole tryAcquireHost(PersonAgent person){
 		if (_hostSemaphore.tryAcquire()){
+			_bankHostRole.setPersonAgent(person);;
 			return _bankHostRole;
 		}
 		return null;
