@@ -192,7 +192,14 @@ public class MainGui extends JFrame
   	  this.add(cPanel, Component.RIGHT_ALIGNMENT);
   	  this.pack();		
   	  this.setVisible(true);
-	
+//  	  cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Restaurant Cashier", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Cook", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Waiter", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Bank Teller", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Bank Host", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Market Cashier", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Market Employee", true, "house");
   	  Time.startTimer();
 	}
 	
