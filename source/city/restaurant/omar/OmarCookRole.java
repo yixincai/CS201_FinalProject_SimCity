@@ -276,9 +276,10 @@ public class OmarCookRole extends RestaurantCookRole {
 			return restaurant;
 		}
 
-		@Override
+		@Override  //TODO INTEGRATION REQUIRED
 		public void cmdFinishAndLeave() {
 			// TODO Auto-generated method stub
-			
+			active = false;
+			stateChanged();
 		}
 }
