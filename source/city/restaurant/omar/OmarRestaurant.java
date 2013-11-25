@@ -19,6 +19,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	int waiter_count = -1;
 	boolean open;
 	public OmarHostRole host;
+	private List<Table> tables;
 	public OmarCookRole cook;
 	private int businessAccountNumber = -1;
 	public List<OmarWaiterRole> Waiters = new ArrayList<OmarWaiterRole>();
@@ -34,6 +35,8 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
 		cashier = new OmarCashierRole(null,this);
 		host = new OmarHostRole(null,this,"Host");
+		_animationPanel.setHost(host);
+		tables = host.getTableList();
 		cook = new OmarCookRole(null,null, this);
 		((OmarCookRole)cook).cashier = (OmarCashierRole)cashier;
 	}

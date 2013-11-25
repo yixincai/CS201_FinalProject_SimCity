@@ -27,7 +27,7 @@ public class OmarRestaurantAnimationPanel extends JPanel implements ActionListen
     private Image bufferImage;
     private Dimension bufferSize;
     
-    private ArrayList<Table> tables = new ArrayList<Table>();
+    private ArrayList<Table> tables;
     
     private static int TABLEHEIGHT = 50;
     private static int TABLEWIDTH = 50;
@@ -71,33 +71,34 @@ public class OmarRestaurantAnimationPanel extends JPanel implements ActionListen
         
         //Cooking Area
         g2.setColor(Color.GRAY);
-        g2.fillRect(500, 300, 100, 75);
+        g2.fillRect(550, 200, 100, 75);
         g2.setColor(Color.BLACK);
-        g2.drawString("Cooking Area", 510, 300);
+        g2.drawString("Cooking Area", 560, 300);
         
         //Plating Area
         g2.setColor(Color.PINK);
-        g2.fillRect(500, 220, 100, 75);
+        g2.fillRect(550, 130, 100, 75);
         g2.setColor(Color.BLACK);
-        g2.drawString("Plating Area", 510, 210);
+        g2.drawString("Plating Area", 560, 110);
         
         //Grills
         g2.setColor(Color.DARK_GRAY);
-        g2.fillRect(500, 300, 20, 20);
-        g2.fillRect(540, 300, 20, 20);
-        g2.fillRect(580, 300, 20, 20);
+        g2.fillRect(550, 200, 20, 20);
+        g2.fillRect(590, 200, 20, 20);
+        g2.fillRect(630, 200, 20, 20);
         
         //Fridge
         g2.setColor(Color.lightGray);
-        g2.fillRect(580, 440, 20, 20);
-        g2.drawString("Fridge", 560, 270);
+        g2.fillRect(630, 255, 20, 20);
+        g2.drawString("Fridge", 620, 285);
         
         
         //Here is the table
         g2.setColor(Color.ORANGE);
         
-        for(int i = 0; i < tables.size(); i++){
+        for(int i = 0; i < host.getTableList().size(); i++){
         	g2.fillRect(host.getTableList().get(i).getX(), host.getTableList().get(i).getY(), TABLEWIDTH, TABLEHEIGHT);
+        //	tables.add(host.getTableList().get(i));
         }
         
         g2.setColor(Color.MAGENTA); // add waiter guis

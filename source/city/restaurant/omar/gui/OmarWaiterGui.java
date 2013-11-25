@@ -22,11 +22,11 @@ public class OmarWaiterGui implements Gui {
 	
 	private static int TOFFSET = 20;
 	private static int ORPOS = 50;
-	private static int COOKLOCX = 480;
+	private static int COOKLOCX = 530;
 	private static int COOKLOCY = 240;
 
 	private static int BREAKX = 100;
-	private static int BREAKY = 400;
+	private static int BREAKY = 200;
 	
 	private static int CASHIERX = 0;
 	private static int CASHIERY = 200;
@@ -86,15 +86,15 @@ public class OmarWaiterGui implements Gui {
 	    }
 	    
 	    public void DoBringToTable(OmarCustomerRole customer, Table table) {
-	    	xDestination = table.getY() + TOFFSET;
-	    	yDestination = table.getX() - TOFFSET;
+	    	xDestination = table.getX() + TOFFSET;
+	    	yDestination = table.getY() - TOFFSET;
 	    	
 	    	gotAct = true;
 	    }
 	    
 	    public void DoTakeCustomerOrder(OmarCustomerRole c, Table table){
-	    	xDestination = table.getY() + TOFFSET;
-	    	yDestination = table.getX() - TOFFSET;
+	    	xDestination = table.getX() + TOFFSET;
+	    	yDestination = table.getY() - TOFFSET;
 	    	
 	    	gotAct = true;
 	    }
@@ -108,14 +108,14 @@ public class OmarWaiterGui implements Gui {
 	    
 	    public void DoGetFoodFromCook(){
 	    	xDestination = 540;
-	    	yDestination = 320;
+	    	yDestination = 220;
 	    	
 	    	gotAct = true;
 	    }
 	    
 	    public void DoGiveCustomerFood(OmarCustomerRole c, Table table){
-	    	xDestination = table.getY() + TOFFSET;
-	    	yDestination = table.getX() - TOFFSET;
+	    	xDestination = table.getX() + TOFFSET;
+	    	yDestination = table.getY() - TOFFSET;
 	    	
 	    	gotAct = true;
 	    }
@@ -130,8 +130,8 @@ public class OmarWaiterGui implements Gui {
 	    
 	    public void DoGiveCorrectBillToCustomer(OmarCustomerRole c, Table table){
 	    	setCurrentStatus("Check");
-	    	xDestination = table.getY() + TOFFSET;
-	    	yDestination = table.getX() - TOFFSET;
+	    	xDestination = table.getX() + TOFFSET;
+	    	yDestination = table.getY() - TOFFSET;
 	    	
 	    	gotAct = true;
 	    }
