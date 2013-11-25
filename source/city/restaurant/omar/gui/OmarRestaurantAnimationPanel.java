@@ -32,7 +32,7 @@ public class OmarRestaurantAnimationPanel extends JPanel implements ActionListen
     private static int TABLEHEIGHT = 50;
     private static int TABLEWIDTH = 50;
     
-    private static int TIMER = 5;
+    private static int TIMER = 10;
 
     private List<Gui> guis = new ArrayList<Gui>();
     OmarHostRole host;
@@ -53,6 +53,12 @@ public class OmarRestaurantAnimationPanel extends JPanel implements ActionListen
     }
 
 	public void actionPerformed(ActionEvent e) {
+        for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+        }
+		
 		repaint();  //Will have paintComponent called
 	}
 
@@ -102,12 +108,6 @@ public class OmarRestaurantAnimationPanel extends JPanel implements ActionListen
         }
         
         g2.setColor(Color.MAGENTA); // add waiter guis
-
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {

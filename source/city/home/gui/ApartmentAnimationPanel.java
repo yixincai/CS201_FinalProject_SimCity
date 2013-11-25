@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import city.bank.gui.BankHostRoleGui;
 
@@ -72,11 +73,17 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
  
-    	/*Timer timer = new Timer(10, this );
-    	timer.start(); */
+    	Timer timer = new Timer(10, this );
+    	timer.start(); 
     }
 
 	public void actionPerformed(ActionEvent e) {
+		
+		  for(Gui gui : guis) {
+	            if (gui.isPresent()) {
+	                gui.updatePosition();
+	            }
+	        }
 		repaint();  //Will have paintComponent called
 	}
 	
@@ -112,13 +119,6 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(WALLX2, WALLY2, WALLDIMV, WALLDIMH);
         g2.fillRect(WALLX3, WALLY3, WALLDIMH, WALLDIMV);
         g2.fillRect(WALLX4, WALLY4, WALLDIMH, WALLDIMV);
-        
-
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
