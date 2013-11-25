@@ -29,13 +29,14 @@ public class Market extends Place implements PlaceWithAnimation {
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
 		truck = new TruckAgent(this, worldView);
+		truck.startThread();
 	}
 	//constructor for Yixin unit testing
 	public Market(){
 		super("Market", null);
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
-		truck = new TruckAgent(this);
+		truck = new TruckAgent(this, null);
 	}
 	//constructor for Ryan unit testing
 	public Market(String name){
