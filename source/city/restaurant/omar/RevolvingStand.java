@@ -5,13 +5,13 @@ import java.util.Vector;
 public class RevolvingStand extends Object {
     private final int N = 50000;
     private int count = 0;
-    private Vector<Order> theData = new Vector<Order>();
+    private Vector<FoodTicket> theData = new Vector<FoodTicket>();
     
     public int getSize(){
     	return count;
     }
     
-    synchronized public void insert(Order data) {
+    synchronized public void insert(FoodTicket data) {
         while (count == N) {
             try{ 
                 System.out.println("\tFull, waiting");
@@ -27,8 +27,8 @@ public class RevolvingStand extends Object {
         }
     }
     
-    synchronized public Order remove() {
-        Order data;
+    synchronized public FoodTicket remove() {
+        FoodTicket data;
         if(count == 0){
         	return null;
         }
@@ -43,17 +43,17 @@ public class RevolvingStand extends Object {
         return data;
     }
     
-    private void insert_item(Order data){
+    private void insert_item(FoodTicket data){
         theData.addElement(data);
     }
     
-    private Order remove_item(){
-        Order data = (Order) theData.firstElement();
+    private FoodTicket remove_item(){
+        FoodTicket data = (FoodTicket) theData.firstElement();
         theData.removeElementAt(0);
         return data;
     }
     
     public RevolvingStand(){
-        theData = new Vector<Order>();
+        theData = new Vector<FoodTicket>();
     }
 }

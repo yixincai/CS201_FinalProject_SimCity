@@ -31,6 +31,9 @@ public class OmarWaiterGui implements Gui {
 	private static int CASHIERX = 0;
 	private static int CASHIERY = 200;
 	
+	private static int REVOLVINGX = 530; // can change if needed
+	private static int REVOLVINGY = 330;
+	
 	private int HOMEX = 0;
 	private int HOMEY = 0;
 
@@ -103,6 +106,13 @@ public class OmarWaiterGui implements Gui {
 	    	xDestination = COOKLOCX;
 	    	yDestination = COOKLOCY;
 	    	
+	    	gotAct = true;
+	    }
+	    
+	    public void DoGoToRevolvingStand(){
+	    	xDestination = REVOLVINGX;
+	    	yDestination = REVOLVINGY;
+	    			
 	    	gotAct = true;
 	    }
 	    
