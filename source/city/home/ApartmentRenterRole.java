@@ -29,6 +29,7 @@ public class ApartmentRenterRole extends HomeBuyingRole
 	public boolean haveHome() { if(_apartment != null) { return true; } return false; }
 	@Override
 	public Place place() { return _apartment.apartmentBuilding(); }
+	public void setApartment(Apartment a) { _apartment = a; }
 	
 	
 	
@@ -39,6 +40,9 @@ public class ApartmentRenterRole extends HomeBuyingRole
 		stateChanged();
 	}
 	public void cmdFinishAndLeave() { } // nothing to do
+	public void cmdPayRent() {
+		
+	}
 	
 	// ------------------------------- MESSAGES ---------------------------------
 	public void msg() {}

@@ -30,21 +30,21 @@ public abstract class Role
 	public abstract void cmdFinishAndLeave(); // from PersonAgent
 	
 	// --------- UTILITIES ---------
-    /**
-     * Print message with this agent's name and exception stack trace
-     */
-    protected void print(String msg, Throwable e)
-    {
-        StringBuffer sb = new StringBuffer();
-        sb.append(_person.getName());
-        sb.append(": ");
-        sb.append(msg);
-        sb.append("\n");
-        if (e != null) sb.append(StringUtil.stackTraceString(e));
-        System.out.print(sb.toString());
-    }
-    protected void print(String msg)
-    {
-    	print(msg, null);
-    }
+	/**
+	 * Print message with this agent's name and exception stack trace
+	 */
+	protected void print(String msg, Throwable e)
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append(_person.getName());
+		sb.append(": ");
+		sb.append(msg);
+		sb.append("\n");
+		if (e != null) sb.append(StringUtil.stackTraceString(e));
+		System.out.print(sb.toString());
+	}
+	protected void print(String msg)
+	{
+		print(msg, null);
+	}
 }
