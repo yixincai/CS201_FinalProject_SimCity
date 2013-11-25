@@ -17,11 +17,8 @@ public class ApartmentBuilding extends Place implements PlaceWithAnimation {
 	
 	// ---------------------------------------- DATA ----------------------------------
 	private List<Apartment> _apartments = new ArrayList<Apartment>();
-
 	private ApartmentAnimationPanel _animationPanel;
-	
 	private LandlordRole _landlord;
-	
 	private static Semaphore _landlordSemaphore = new Semaphore(1, true);
 
 	// ---------------------------- CONSTRUCTOR & PROPERTIES ------------------------------
@@ -37,6 +34,7 @@ public class ApartmentBuilding extends Place implements PlaceWithAnimation {
 			}
 		}
 		_animationPanel = (ApartmentAnimationPanel)bp.getBuildingAnimation();
+		_landlord = new LandlordRole(null);
 	}
 	/** Returns a new list of the apartments.  Makes and populates a new list every time it is called. */
 	public List<Apartment> apartments()
@@ -46,13 +44,8 @@ public class ApartmentBuilding extends Place implements PlaceWithAnimation {
 		return newList;
 	}
 	public LandlordRole landlord() { return _landlord; }
-	
-	@Override
-	public JPanel getAnimationPanel() {
-		return _animationPanel;
-	}
-	
-	public LandlordRole tryAcquireLandlord() {
+	public JPanel getAnimationPanel() { return _animationPanel; }
+	public LandlordRole tryAcquireLandlordRole() {
 		if(_landlordSemaphore.tryAcquire()) {
 			return _landlord;
 		}

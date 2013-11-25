@@ -23,7 +23,7 @@ public class BusAgentGui implements Gui {
 	//-------------------------------Constructor-------------------------------
 	public BusAgentGui(BusAgent bus, Place startingPlace) {
 		System.out.println("Created CommuterGui");
-		_xPos = 200;
+		_xPos = 20;
 		_yPos = 200; 
 		_bus = bus;
 		_busStop = null;
@@ -33,10 +33,10 @@ public class BusAgentGui implements Gui {
 	
 	//-------------------------------GUI Calls------------------------------------
 	public void goToBusStop(BusStopObject busstop){
+		System.out.println("Going To Bus Stop");
 		_busStop = busstop;
 		_xDestination = busstop.xPosition();
 		_yDestination = busstop.yPosition();
-		System.out.println("TEST");
 		moving = true;
 	}
 	
