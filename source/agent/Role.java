@@ -21,8 +21,8 @@ public abstract class Role
 	// ----------------------------- METHODS ------------------------------------
 	protected void stateChanged()
 	{
-		if(_person != null) _person.stateChanged(); // it should be okay to perform extra scheduler calls in the person (since they all take place in one thread anyway)
-		//if(active) _person.stateChanged();
+		if(_person != null) _person.stateChanged(); // this checking for _person != null is necessary in cases like when the cook sends a message to a market whose cashier role isn't yet filled 
+		// note: it should be okay to perform extra scheduler calls in the person (i.e. if active == false) (since they all take place in one thread anyway)
 	}
 	
 	// --------- ABSTRACT ---------

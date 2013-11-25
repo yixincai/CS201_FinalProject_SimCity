@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Random;
 
 
+
 // TODO the gui packages are basically only here for the setOccupation() function. We will move the gui instantiation elsewhere, probably to the roles' respective constructors.
 import city.home.HomeBuyingRole;
+import city.home.HomelessRole;
 import city.bank.*;
 import city.bank.gui.*;
 import city.home.*;
@@ -159,6 +161,10 @@ public class PersonAgent extends Agent
 		{
 			throw new IllegalArgumentException("Invalid value of homeType: " + homeType);
 		}
+		
+		print("Failed to acquire a(n) " + homeType + ".");
+		_homeOccupantRole = new HomelessRole(this);
+		_homeBuyingRole = null;
 	}
 	/** Sets the value of _occupation to a role that is requested by occupationType if possible; else it sets _occupation to a new waiter role from a randomly chosen restaurant. */
 	public void acquireOccupation(String occupationType) 
@@ -290,7 +296,7 @@ public class PersonAgent extends Agent
 	public void setWorkDays(boolean weekday_notWeekend) {
 		_weekday_notWeekend = weekday_notWeekend;
 	}
-	public HomeOccupantRole homeRole() { return _homeOccupantRole; }
+	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
 	public CommuterRole commuterRole() { return _commuterRole; }
 	
 	

@@ -64,7 +64,7 @@ public class LandlordRole extends Role {
 		}
 	}
 	@Override
-	public Place place() { return _person.homeRole().place(); }
+	public Place place() { return _person.homeOccupantRole().place(); }
 	
 	
 	
