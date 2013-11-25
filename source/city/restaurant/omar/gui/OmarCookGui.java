@@ -9,14 +9,14 @@ import city.restaurant.omar.OmarCookRole;
 
 public class OmarCookGui implements Gui {
 
-	private static int XGRILL0 = 500; //change numbers to grill positions
-	private static int YGRILL0 = 400;
+	private static int XGRILL0 = 550; //change numbers to grill positions
+	private static int YGRILL0 = 200;
 	
-	private static int XGRILL1 = 540;
-	private static int YGRILL1 = 400;
+	private static int XGRILL1 = 590;
+	private static int YGRILL1 = 200;
 	
-	private static int XGRILL2 = 580;
-	private static int YGRILL2 = 400;
+	private static int XGRILL2 = 630;
+	private static int YGRILL2 = 200;
 	
 	private static int GRILLOFFSETY = 20;
 	
@@ -32,10 +32,10 @@ public class OmarCookGui implements Gui {
 
 	public OmarCookGui(OmarCookRole c){
 		agent = c;
-		xPos = 540;
-		yPos = 440;
-		xDestination = 540;
-		yDestination = 440;
+		xPos = 590;
+		yPos = 240;
+		xDestination = 590;
+		yDestination = 240;
 	}
 
 	public void updatePosition() {
@@ -50,11 +50,11 @@ public class OmarCookGui implements Gui {
 			yPos--;
 
 		if (xPos == xDestination && yPos == yDestination && flag) {
-			if(!(xPos == 540 && yPos == 440)){
+			if(!(xPos == 590 && yPos == 240)){
 				agent.msgArrived();
 			}
 				flag = false;
-				if(xPos == 540 && yPos == 340){
+				if(xPos == 590 && yPos == 140){
 					setPickupStatus("PICKUP");
 				}
 		}
@@ -65,7 +65,7 @@ public class OmarCookGui implements Gui {
 		g.fillRect(xPos, yPos, 20, 20);
 		
 		g.drawString(currentStatus, xPos + 5, yPos - 5);
-		g.drawString(pickupStatus, 520, 340);
+		g.drawString(pickupStatus, 590, 140);
 	}
 	
 	public void setPickupStatus(String pickupStatus){
@@ -77,8 +77,8 @@ public class OmarCookGui implements Gui {
 	}
 	
 	public void DoGoToFridge(){
-		xDestination = 560;
-		yDestination = 470;
+		xDestination = 610;
+		yDestination = 255;
 		
 		flag = true;
 	}
@@ -101,15 +101,15 @@ public class OmarCookGui implements Gui {
 	
 	public void DoGoBackToRest(){
 		setCurrentStatus("");
-		xDestination = 540;
-		yDestination = 440;
+		xDestination = 590;
+		yDestination = 240;
 		flag = true;
 	}
 	
 	public void DoMoveFoodToPlatingArea(){
 		setPickupStatus("PICKUP");
-		xDestination = 540;
-		yDestination = 340;
+		xDestination = 590;
+		yDestination = 140;
 		flag = true;
 	}
 	

@@ -15,7 +15,6 @@ public class YixinHostGui extends JPanel implements Gui {
     private int xPos = 50, yPos = 20;//default waiter position
     public static int xGap = 40;
     public static int yGap = 40;
-    private String WA = "Waiting Area";
     
     //private ImageIcon i = new ImageIcon("image/host.png");
     //private Image image = i.getImage();
@@ -33,7 +32,6 @@ public class YixinHostGui extends JPanel implements Gui {
     public void draw(Graphics2D g) {
     	g.setColor(Color.BLUE);
     	g.fillRect(xPos, yPos, xGap, yGap); 
-    	g.drawString(WA, 30, 10);
     }
 
     public boolean isPresent() {

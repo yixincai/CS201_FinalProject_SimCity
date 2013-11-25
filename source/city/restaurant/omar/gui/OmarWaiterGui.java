@@ -14,7 +14,7 @@ public class OmarWaiterGui implements Gui {
 	private OmarWaiterRole agent = null;
 	private boolean gotAct = false;
 	
-	RestaurantGui gui;
+	OmarRestaurantAnimationPanel gui;  //maybe not
 
 	private int xPos = 50, yPos = 50;//default waiter position
 	private int xDestination = 50, yDestination = 50;//default start position
@@ -22,19 +22,22 @@ public class OmarWaiterGui implements Gui {
 	
 	private static int TOFFSET = 20;
 	private static int ORPOS = 50;
-	private static int COOKLOCX = 480;
-	private static int COOKLOCY = 440;
+	private static int COOKLOCX = 530;
+	private static int COOKLOCY = 240;
 
 	private static int BREAKX = 100;
-	private static int BREAKY = 400;
+	private static int BREAKY = 200;
 	
 	private static int CASHIERX = 0;
 	private static int CASHIERY = 200;
 	
+	private static int REVOLVINGX = 530; // can change if needed
+	private static int REVOLVINGY = 330;
+	
 	private int HOMEX = 0;
 	private int HOMEY = 0;
 
-	    public OmarWaiterGui(OmarWaiterRole agent, RestaurantGui gui) {
+	    public OmarWaiterGui(OmarWaiterRole agent, OmarRestaurantAnimationPanel gui) {
 	        this.agent = agent;
 	        this.gui = gui;
 	    }
@@ -86,15 +89,15 @@ public class OmarWaiterGui implements Gui {
 	    }
 	    
 	    public void DoBringToTable(OmarCustomerRole customer, Table table) {
-	    	xDestination = table.getY() + TOFFSET;
-	    	yDestination = table.getX() - TOFFSET;
+	    	xDestination = table.getX() + TOFFSET;
+	    	yDestination = table.getY() - TOFFSET;
 	    	
 	    	gotAct = true;
 	    }
 	    
 	    public void DoTakeCustomerOrder(OmarCustomerRole c, Table table){
-	    	xDestination = table.getY() + TOFFSET;
-	    	yDestination = table.getX() - TOFFSET;
+	    	xDestination = table.getX() + TOFFSET;
+	    	yDestination = table.getY() - TOFFSET;
 	    	
 	    	gotAct = true;
 	    }
@@ -106,16 +109,23 @@ public class OmarWaiterGui implements Gui {
 	    	gotAct = true;
 	    }
 	    
+	    public void DoGoToRevolvingStand(){
+	    	xDestination = REVOLVINGX;
+	    	yDestination = REVOLVINGY;
+	    			
+	    	gotAct = true;
+	    }
+	    
 	    public void DoGetFoodFromCook(){
 	    	xDestination = 540;
-	    	yDestination = 320;
+	    	yDestination = 220;
 	    	
 	    	gotAct = true;
 	    }
 	    
 	    public void DoGiveCustomerFood(OmarCustomerRole c, Table table){
-	    	xDestination = table.getY() + TOFFSET;
-	    	yDestination = table.getX() - TOFFSET;
+	    	xDestination = table.getX() + TOFFSET;
+	    	yDestination = table.getY() - TOFFSET;
 	    	
 	    	gotAct = true;
 	    }
@@ -130,8 +140,8 @@ public class OmarWaiterGui implements Gui {
 	    
 	    public void DoGiveCorrectBillToCustomer(OmarCustomerRole c, Table table){
 	    	setCurrentStatus("Check");
-	    	xDestination = table.getY() + TOFFSET;
-	    	yDestination = table.getX() - TOFFSET;
+	    	xDestination = table.getX() + TOFFSET;
+	    	yDestination = table.getY() - TOFFSET;
 	    	
 	    	gotAct = true;
 	    }
@@ -158,7 +168,7 @@ public class OmarWaiterGui implements Gui {
 	    }
 	    
 	    public void setWaiterBreakBoxEnabled(){
-	    	gui.setWaiterBreakBoxEnabled(this.agent);
+	    //gui.setWaiterBreakBoxEnabled(this.agent);
 	    }
 	    
 	    public void setHomePosition(int x, int y){

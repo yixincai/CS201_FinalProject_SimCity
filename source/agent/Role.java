@@ -1,5 +1,6 @@
 package agent;
 
+import utilities.EventLog;
 import utilities.StringUtil;
 import city.PersonAgent;
 import city.Place;
@@ -9,6 +10,7 @@ public abstract class Role
 	// ----------------------------- DATA ------------------------------------
 	protected PersonAgent _person;
 	public boolean active = false;
+	public EventLog log = new EventLog();
 	
 	// ----------------------------- CONSTRUCTOR & PROPERTIES ------------------------------------
 	public Role(PersonAgent person) { _person = person; }

@@ -17,14 +17,14 @@ public class OmarCustomerGui implements Gui {
 	
 	private String currentStatus = "Hungry";
 
-	private RestaurantGui gui;
+	private OmarRestaurantAnimationPanel gui;
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
 
-	public OmarCustomerGui(OmarCustomerRole c, RestaurantGui gui){
+	public OmarCustomerGui(OmarCustomerRole c, OmarRestaurantAnimationPanel gui){
 		agent = c;
 		xPos = -40;
 		yPos = -40;
@@ -59,7 +59,7 @@ public class OmarCustomerGui implements Gui {
 			else if (command==Command.LeaveRestaurant) {
 				agent.msgAnimationFinishedLeaveRestaurant();
 				isHungry = false;
-				gui.setCustomerEnabled(agent);
+				//gui.setCustomerEnabled(agent);
 			}
 			command=Command.noCommand;
 		}
@@ -99,8 +99,8 @@ public class OmarCustomerGui implements Gui {
 	}
 
 	public void DoGoToSeat(int seatnumber, int tableNum) {
-    		xDestination = 200;
-    		yDestination = tableNum*100;
+    		xDestination = tableNum*100 + 100;
+    		yDestination = 100;
     		
     	;
 		command = Command.GoToSeat;
@@ -121,7 +121,7 @@ public class OmarCustomerGui implements Gui {
 	public void DoDie(){
 		setCurrentStatus("Paying with Life");
 		xDestination = 450;
-		yDestination = 500;
+		yDestination = 200;
 		
 		sentencedToDeath = true;
 	}

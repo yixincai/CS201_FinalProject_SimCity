@@ -2,12 +2,15 @@ package city.restaurant.yixin.test;
 
 import java.util.*;
 
+import city.Directory;
 import city.PersonAgent;
+import city.bank.Bank;
 import city.bank.BankTellerRole;
 import city.market.*;
 import city.restaurant.Restaurant;
 import city.restaurant.yixin.*;
 import city.restaurant.yixin.test.mock.*;
+import city.transportation.TruckAgent;
 import junit.framework.*;
 
 public class CashierTest extends TestCase
@@ -28,6 +31,8 @@ public class CashierTest extends TestCase
 		Restaurant restaurant = new YixinRestaurant();
 		cashier = (YixinCashierRole)restaurant.cashier;
 		market = new Market();
+		TruckAgent t = new TruckAgent(market);
+		market.truck = t;
 		p =new PersonAgent("Dummy");
 		cashier.setPersonAgent(p);
 		price_list = new HashMap<String, Double>();
@@ -35,6 +40,8 @@ public class CashierTest extends TestCase
 		price_list.put("Chicken", 7.0);
 		price_list.put("Salad", 3.0);
 		price_list.put("Pizza", 4.0);
+		Bank b = new Bank();
+		Directory.addPlace(b);
 	}
 	/**
 	 * This tests the cashier under very simple terms: one customer is ready to pay the exact bill.
@@ -96,9 +103,8 @@ public class CashierTest extends TestCase
 
 		//send first message to cashier
 		cashier.money = 300;//send the message from a waiter
-		cashier.bankTeller = new BankTellerRole(null,null,0);
-		cashier.bankTeller.setPersonAgent(p);
-		cashier.bankTeller.makeDatabase();
+		Directory.banks().get(0).tellers.get(0).makeDatabase();
+		Directory.banks().get(0).tellers.get(0).setPersonAgent(new PersonAgent("Dummy"));
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 
 		assertFalse("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());

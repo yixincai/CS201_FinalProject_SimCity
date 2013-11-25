@@ -2,6 +2,7 @@ package city.market;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import city.Directory;
 import city.PersonAgent;
 import city.Place;
 import city.bank.BankTellerRole;
@@ -16,9 +17,7 @@ import utilities.LoggedEvent;
 public class MarketCashierRole extends Role implements MarketCashier{
 
 	public MarketCashierGui gui;
-	
-	public BankTellerRole bankTeller;
-	
+		
 	public EventLog log = new EventLog();
 	public Map<String, Good> inventory = new HashMap<String, Good>();
 	public List<CustomerOrder> customers = new ArrayList<CustomerOrder>(); 
@@ -53,10 +52,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public Place place() {
 		// TODO Auto-generated method stub
 		return market;
-	}
-	
-	public void setBankTeller(BankTellerRole b){
-		bankTeller = b;
 	}
 	
 	public void msgAnimationFinished() {
@@ -231,7 +226,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 	
 	public void DepositMoney(){
-		bankTeller.msgWiredTransaction(market, market.getAccountNumber(), moneyInHand / 2, "Desposit");
+		Directory.banks().get(0).tellers.get(0).msgWiredTransaction(market, market.getAccountNumber(), moneyInHand / 2, "Desposit");
 		money_state = MoneyState.OrderedFromBank;
 	}
 	

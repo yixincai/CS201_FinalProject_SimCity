@@ -30,7 +30,7 @@ public class OmarHostRole extends Role {
 		tables = new ArrayList<Table>(NTABLES);
 		synchronized(tables){
 		for (int ix = 1; ix <= NTABLES; ix++) {
-			tables.add(new Table(ix, ix*100, 200));//how you add to a collections
+			tables.add(new Table(ix, ix*100 + 100, 100));
 		}
 		}
 	}

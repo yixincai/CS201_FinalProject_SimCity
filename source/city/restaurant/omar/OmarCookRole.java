@@ -66,8 +66,8 @@ public class OmarCookRole extends RestaurantCookRole {
 		}
 		
 		// Messages
-		public void msgHereIsAnOrder(OmarWaiterRole w, OmarCustomerRole c){
-			orders.add(new Order(w, c.tableNum, this, c));
+		public void msgHereIsAnOrder(FoodTicket ticket){
+			orders.add(new Order(ticket.getW(), ticket.getC().tableNum, this, ticket.getC()));
 			stateChanged();
 		}
 		

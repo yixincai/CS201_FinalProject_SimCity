@@ -38,7 +38,7 @@ public class OmarWaiterRole extends Role {
 		ordering, ordered, needToReorder, waitingForFood, orderReady, 
 			eating, paying, awaitingCheck,hasCorrectBill, paid, leaving};
 	
-	private class MyCustomer{
+	class MyCustomer{
 		  public OmarCustomerRole customer;
 		  public Table table;
 		  public String choice;
@@ -213,7 +213,7 @@ public class OmarWaiterRole extends Role {
 		m.customer.msgNeedReorder();
 	}
 	
-	public void giveOrderToCook(MyCustomer m, OmarCookRole c){
+	protected void giveOrderToCook(MyCustomer m, OmarCookRole c){
 		waiterGui.setCurrentStatus("Giving Order");
 		System.out.println("Gave " + m.customer.getName() + "'s order " + m.choice + " to cook " + c.name);
 		waiterGui.DoGiveOrderToCook();
@@ -224,7 +224,7 @@ public class OmarWaiterRole extends Role {
 		}  
 		while(cook.cookSem.availablePermits() > 0){}
 		m.myCustomerState = MycustomerState.waitingForFood;
-		c.msgHereIsAnOrder(this, m.customer);
+		c.msgHereIsAnOrder(new FoodTicket(this, m.customer));
 		
 	}
 	public void giveCustomerFood(MyCustomer m){

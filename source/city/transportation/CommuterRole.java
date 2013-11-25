@@ -7,6 +7,7 @@ import agent.Role;
 import city.Directory;
 import city.PersonAgent;
 import city.Place;
+import city.home.House;
 import city.transportation.gui.CommuterGui;
 import city.transportation.interfaces.Bus;
 import city.transportation.interfaces.Commuter;
@@ -53,6 +54,7 @@ public class CommuterRole extends Role implements Commuter{
 		super(person);
 		_person = person;
 		_currentPlace = place;
+		_destination = _person.homeRole().place();
 		_car = null;
 		active = true;
 		// TODO Auto-generated constructor stub
@@ -114,7 +116,7 @@ public class CommuterRole extends Role implements Commuter{
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
 		//At Destination
-		if(_destination.xPosition() == _gui.getX() && _destination.yPosition() == _gui.getY() && _tState == TravelState.atDestination){
+		if(_tState == TravelState.atDestination){
 			actAtDestination();
 			return true;
 		}

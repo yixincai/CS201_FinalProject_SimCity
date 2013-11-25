@@ -173,7 +173,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Restaurant r : restaurants)
 				{
-					newOccupation = r.tryAcquireCashier();
+					newOccupation = r.tryAcquireCashier(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -188,7 +188,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Restaurant r : restaurants)
 				{
-					newOccupation = r.tryAcquireCook();
+					newOccupation = r.tryAcquireCook(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -203,7 +203,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Restaurant r : restaurants)
 				{
-					newOccupation = r.tryAcquireHost();
+					newOccupation = r.tryAcquireHost(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -218,7 +218,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Bank b : banks)
 				{
-					newOccupation = b.tryAcquireTeller();
+					newOccupation = b.tryAcquireTeller(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -233,7 +233,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Bank b : banks)
 				{
-					newOccupation = b.tryAcquireHost();
+					newOccupation = b.tryAcquireHost(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -248,7 +248,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Market m : markets)
 				{
-					newOccupation = m.tryAcquireCashier();
+					newOccupation = m.tryAcquireCashier(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -263,7 +263,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Market m : markets)
 				{
-					newOccupation = m.tryAcquireEmployee();
+					newOccupation = m.tryAcquireEmployee(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
