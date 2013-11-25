@@ -27,5 +27,14 @@ public class BankHostTest extends TestCase{
 	}
 	
 	public void testOneNormalCustomerScenario(){
+		try {
+			this.setUp();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Check to make sure everything was created correctly (Preconditions)
+		
 	}
 }
