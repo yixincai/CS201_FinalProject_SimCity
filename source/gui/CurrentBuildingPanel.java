@@ -84,7 +84,7 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 			if(tempPlace.getName() == selected.getText())
 			{
 				buildingName.setText("Building Name: " + Directory.places().get(i)._name);
-				buildingMoney.setText("Building Money: Need a money field in places");
+			//	buildingMoney.setText("Building Money: Need a money field in places");
 				tempPlace.getBuilding().displayBuilding();
 			}
 		}

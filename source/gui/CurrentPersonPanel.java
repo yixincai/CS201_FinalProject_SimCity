@@ -88,7 +88,7 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 			{
 				nameField.setText("Person Name: " + tempPerson.getName());
 				moneyField.setText("Person Money: " + tempPerson.money() + "0");
-				currentRoleField.setText("Current Role: Need to implement toString() for the different roles.");
+			//	currentRoleField.setText("Current Role: Need to implement toString() for the different roles.");
 			}
 		}
 	}
