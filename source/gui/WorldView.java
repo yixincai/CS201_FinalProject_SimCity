@@ -84,7 +84,7 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 
 	public void paintComponent( Graphics g ) {
 		
-		 if ((int)(100*Time.getTime()) % 25 == 0) {
+	/*	 if ((int)(100*Time.getTime()) % 25 == 0) {
 				for ( int i=0; i<lanes.size(); i++ ) {
 					lanes.get(i).redLight();
 				}
@@ -93,7 +93,7 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 				for ( int i=0; i<lanes.size(); i++ ) {
 					lanes.get(i).greenLight();
 				}
-		}
+		} */
 			
 		super.paintComponent(g); // this prevents the building animation panel from being copied in the worldview (for some reason).
 		Graphics2D g2 = (Graphics2D)g;
