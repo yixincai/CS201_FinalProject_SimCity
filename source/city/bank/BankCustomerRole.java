@@ -31,10 +31,10 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		TransactionComplete, TransactionDenied, LeaveBank };
 	enum Event {None, CalledToDesk, GivenRequestPermission, WantsAnotherRequest, ApprovedTransaction, DeniedTransaction};
 	
-	public BankCustomerRole(PersonAgent person, int accountNumber, Bank bank){
+	public BankCustomerRole(PersonAgent person, Bank bank){
 		super(person);
 		//person.getAccountNumber() = accountNumber;
-		this.accountNumber = accountNumber;
+		accountNumber = -1;
 		this.bank = bank;
 		//set values above through personAgent, possible
 		
@@ -121,7 +121,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		if(state == State.Robber && event == Event.DeniedTransaction){
 			actRobBank();
 			return true;
-		}
+		} 
 		if(state == State.DoingNothing && event == Event.None){
 			actGoToLine();
 			return true;
@@ -170,19 +170,19 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		  }
 		  teller.msgIAmHere(this);
 		  state = State.AtTeller;
-		  // stateChanged();
+		  stateChanged();
 	}
 	private void actGiveRequest(){
 		teller.msgHereIsMyRequest(this, request, accountNumber);
 		state = State.GaveRequest;
-		 // stateChanged();
+		 stateChanged();
 	}
 	private void actGiveNewRequest(){
 		//may trigger robbery
 		//pick new request using logic tied to accountFunds and amountOwed
 		  //teller.msgHereIsMyRequest(String newRequest, int accountNumber);
 		  state = State.GaveRequest;
-		  // stateChanged();
+		  stateChanged();
 	}
 	private void actLeaveBank(){
 		  bankHost.msgLeavingBank(teller);

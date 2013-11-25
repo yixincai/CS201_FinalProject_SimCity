@@ -36,7 +36,6 @@ public class PersonAgent extends Agent
 	private boolean _weekday_notWeekend;
 	private HomeOccupantRole _homeOccupantRole;
 	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house (now, just pays rent on apartment)
-	private int bankAccountNumber = -1;
 	
 	// State data:
 	public double _money;
@@ -111,9 +110,7 @@ public class PersonAgent extends Agent
 		acquireHome(housingType);
 	}
 	public String getName() { return _name; }
-	public double money() { return _money; }
-	public int getAccountNumber() { return bankAccountNumber; }
-	public void setAccountNumber(int newAccntNum) { this.bankAccountNumber = newAccntNum;} 
+	public double money() { return _money; } 
 	public void changeMoney(double delta) { _money += delta; }
 	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
 	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
