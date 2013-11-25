@@ -237,7 +237,7 @@ public class OmarCookRole extends RestaurantCookRole {
 				e.printStackTrace();
 			}
 			cookGui.DoMoveFoodToPlatingArea();
-			Do("Told Waiter " + o.getWaiter().toString()+ " that " + 
+			System.out.println(this.name + ": Told Waiter " + o.getWaiter().toString()+ " that " + 
 					o.toString() + " is ready");
 			o.status = OrderStatus.pickup;
 			o.getWaiter().msgOrderIsReady(o.getTableNumber());
