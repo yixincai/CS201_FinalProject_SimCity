@@ -19,6 +19,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	int waiter_count = -1;
 	boolean open;
 	public OmarHostRole host;
+	public OmarCookRole cook;
 	private int businessAccountNumber = -1;
 	public List<OmarWaiterRole> Waiters = new ArrayList<OmarWaiterRole>();
 	private OmarRestaurantAnimationPanel _animationPanel;
@@ -33,7 +34,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
 		cashier = new OmarCashierRole(null,this);
 		host = new OmarHostRole(null,this,"Host");
-		cook = new OmarCookRole(null,this);
+		cook = new OmarCookRole(null,null, this);
 		((OmarCookRole)cook).cashier = (OmarCashierRole)cashier;
 	}
 
@@ -42,7 +43,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		super("Omar's Restaurant");    
 		cashier = new OmarCashierRole(null,this);
 		host = new OmarHostRole(null,this,"Host");
-		cook = new OmarCookRole(null,this);
+		cook = new OmarCookRole(null,null, this);
 		((OmarCookRole)cook).cashier = (OmarCashierRole)cashier;
 	}
 
@@ -63,12 +64,10 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		int i = (new Random()).nextInt(2);
 		OmarWaiterRole newWaiter;
 		if (i == 0)
-			newWaiter = new OmarNormalWaiterRole(null, this, "");
+			newWaiter = new OmarWaiterRole(null, this,cook, host, null);
 		else
-			newWaiter = new OmarSharedDataWaiterRole(null, this, "");
+			newWaiter = new OmarWaiterRole(null, this, cook, host, null);
 		newWaiter.setCashier((OmarCashierRole)cashier);
-		newWaiter.setCook((OmarCookRole)cook);
-		newWaiter.setHost(host);
 		waiter_count++;
 		return newWaiter;
 	}

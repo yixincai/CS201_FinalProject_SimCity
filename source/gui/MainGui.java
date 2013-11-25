@@ -24,6 +24,7 @@ import city.home.Apartment;
 import city.home.ApartmentBuilding;
 import city.home.House;
 import city.market.Market;
+import city.restaurant.omar.OmarRestaurant;
 import city.restaurant.yixin.YixinRestaurant;
 import city.transportation.BusAgent;
 import city.transportation.BusStopObject;
@@ -101,6 +102,16 @@ public class MainGui extends JFrame
 		_buildingCardLayoutPanel.add( bp, bp.getName() );
 		cPanel.currentBuildingPanel.addBuilding(yr.getName()); // unsure if this is needed or not; I deleted it earlier
         _buildingInteriorAnimationPanels.add(bp);
+        
+        //Omar's Restaurant
+        WorldViewBuilding b9 = _worldView.addBuilding(8, 3, 40);
+		BuildingInteriorAnimationPanel bp9 = new BuildingInteriorAnimationPanel(this, "Omar's Restaurant", new city.restaurant.omar.gui.OmarRestaurantAnimationPanel());
+		b9.setBuildingPanel(bp9);
+		OmarRestaurant or = new OmarRestaurant("Omar's Restaurant", b9, bp9);
+		Directory.addPlace(or);
+		_buildingCardLayoutPanel.add( bp9, bp9.getName() );
+		cPanel.currentBuildingPanel.addBuilding(or.getName()); // unsure if this is needed or not; I deleted it earlier
+        _buildingInteriorAnimationPanels.add(bp9);
         
         //Bank
         WorldViewBuilding b2 = _worldView.addBuilding(10, 3, 40);
