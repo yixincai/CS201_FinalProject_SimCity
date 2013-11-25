@@ -10,6 +10,9 @@ import city.transportation.CarObject;
 import city.transportation.CommuterRole;
 
 public class CommuterGui implements Gui {
+
+	private static final int NULL_POSITION_X = 300;
+	private static final int NULL_POSITION_Y = 300;
 	
 	int _xPos, _yPos;
 	Place _destination;
@@ -23,17 +26,17 @@ public class CommuterGui implements Gui {
 	TransportationType _transportationType = TransportationType.none;
 	
 	//----------------------------------Constructor & Setters & Getters----------------------------------
-	public CommuterGui(CommuterRole commuter, Place startingPlace) {
+	public CommuterGui(CommuterRole commuter, Place initialPlace) {
 		System.out.println("Created CommuterGui");
-		_xPos = 300;
-		_yPos = 0; 
+		// Note: placeX and placeY can safely receive values of null
+		_xPos = placeX(initialPlace);
+		_yPos = placeY(initialPlace);
 		_commuter = commuter;
 	}
 	
-	public double getDistanceToDestination(Place destination){
-		double x, y;
-		x = Math.abs(_xPos - destination.xPosition());
-		y = Math.abs(_yPos - destination.yPosition());
+	public double getManhattanDistanceToDestination(Place destination){
+		double x = Math.abs(placeX(destination) - _xPos);
+		double y = Math.abs(placeY(destination) - _yPos);
 		
 		return x+y;
 	}
@@ -43,10 +46,10 @@ public class CommuterGui implements Gui {
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
 		tFlag = true;
-		System.out.println("destinationX: " + destination.xPosition());
-		System.out.println("destinationY: " + destination.yPosition());
-		_xDestination = destination.xPosition();
-		_yDestination = destination.yPosition();
+		System.out.println("destination X: " + placeX(destination));
+		System.out.println("destination Y: " + placeY(destination));
+		_xDestination = placeX(destination);
+		_yDestination = placeY(destination);
 		_transportationType = TransportationType.walking;
 	}
 	
@@ -125,4 +128,23 @@ public class CommuterGui implements Gui {
 		this.isPresent = present;
 	}
 	
+	// ----------------------------------------- UTILITIES --------------------------------------------
+	/** This function returns the x value of the place; it can receive a value of null */
+	private int placeX(Place place) {
+		if(place != null) {
+			return place.xPosition();
+		}
+		else {
+			return NULL_POSITION_X;
+		}
+	}
+	/** This function returns the y value of the place; it can receive a value of null */
+	private int placeY(Place place) {
+		if(place != null) {
+			return place.yPosition();
+		}
+		else {
+			return NULL_POSITION_Y;
+		}
+	}
 }

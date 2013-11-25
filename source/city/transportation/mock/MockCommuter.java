@@ -14,7 +14,7 @@ public class MockCommuter extends Mock implements Commuter{
 	}
 
 	@Override
-	public void msgGoToDestination(Place place) {
+	public void cmdGoToDestination(Place place) {
 		// TODO Auto-generated method stub
 		
 	}
