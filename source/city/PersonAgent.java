@@ -95,6 +95,7 @@ public class PersonAgent extends Agent
 	
 	
 	// ------------------------------------------- CONSTRUCTORS & PROPERTIES --------------------------------------------
+	// ------------------ CONSTRUCTORS & SETUP ---------------------
 	public PersonAgent(String name) { _name = name; }
 	/**
 	 * Constructor
@@ -110,15 +111,10 @@ public class PersonAgent extends Agent
 		acquireOccupation(occupationType);
 		acquireHome(housingType);
 	}
-	public String getName() { return _name; }
-	public double money() { return _money; }
-	public int getAccountNumber() { return bankAccountNumber; }
-	public void setAccountNumber(int newAccntNum) { this.bankAccountNumber = newAccntNum;} 
-	public void changeMoney(double delta) { _money += delta; }
 	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
 	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
 	 * @param homeType Either "house" or "apartment" */
-	public void acquireHome(String homeType) //TODO finish
+	public void acquireHome(String homeType)
 	{
 		if(homeType.equalsIgnoreCase("apartment"))
 		{
@@ -154,7 +150,7 @@ public class PersonAgent extends Agent
 		}
 		else
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Invalid value of homeType: " + homeType);
 		}
 	}
 	/** Sets the value of _occupation to a role that is requested by occupationType if possible; else it sets _occupation to a new waiter role from a randomly chosen restaurant. */
@@ -282,6 +278,12 @@ public class PersonAgent extends Agent
 		((YixinWaiterRole)_occupation).setGui(yixinWaiterGui);
 		((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinWaiterGui);
 	}
+	// ---------------------- OTHER PROPERTIES -------------------------
+	public String getName() { return _name; }
+	public double money() { return _money; }
+	public int getAccountNumber() { return bankAccountNumber; }
+	public void setAccountNumber(int newAccntNum) { this.bankAccountNumber = newAccntNum;} 
+	public void changeMoney(double delta) { _money += delta; }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
 	public void setWorkDays(boolean weekday_notWeekend) {
 		_weekday_notWeekend = weekday_notWeekend;
