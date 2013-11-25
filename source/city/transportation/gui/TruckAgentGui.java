@@ -35,6 +35,8 @@ public class TruckAgentGui implements Gui{
 		_market = market;
 		_xPos = _market.xPosition() - 10;
 		_yPos = _market.yPosition();
+		_xDestination = _market.xPosition() - 10;
+		_yDestination = _market.yPosition();
 		_truck = truck;
 		isPresent = true;
 		park = false;
@@ -54,7 +56,7 @@ public class TruckAgentGui implements Gui{
 		isPresent = true;
 		park = true;
 		_point = Point.PointC;
-		_xDestination = _market.xPosition()- 20;
+		_xDestination = _market.xPosition()- 35;
 	}
 
 	public void goToDockFromParkingLot(Market market) {
@@ -69,7 +71,7 @@ public class TruckAgentGui implements Gui{
 		// TODO Auto-generated method stub
 		isPresent = true;
 		_point = Point.PointC;
-		_xDestination = _market.xPosition()- 20;
+		_xDestination = _market.xPosition()- 35;
 	}
 
 	public void goToDestination(Restaurant restaurant) {
@@ -77,7 +79,7 @@ public class TruckAgentGui implements Gui{
 		isPresent = true;
 		_restaurant = restaurant;
 		_point = Point.PointA;
-		_xDestination = _market.xPosition()- 20;
+		_xDestination = _market.xPosition()- 35;
 		_yDestination = _market.yPosition() + 15;
 		
 	}
@@ -138,7 +140,7 @@ public class TruckAgentGui implements Gui{
 			System.out.println("going to park");
 		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Park && park){
-			isPresent = false;
+			//isPresent = false;
 			_point = Point.none;
 			park = false;
 			_truck.msgAtDestination();
