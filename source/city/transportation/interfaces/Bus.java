@@ -8,7 +8,7 @@ public interface Bus {
 	
 	public abstract void msgAtDestination(BusStopObject busstop);
 
-	public abstract void msgGotOff(CommuterRole passenger);
+	public abstract void msgGotOff(Commuter passenger);
 
 	public abstract void msgGettingOnBoard(Commuter person, Place destination, double _fare);
 	
