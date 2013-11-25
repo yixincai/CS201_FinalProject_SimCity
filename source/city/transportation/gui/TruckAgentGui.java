@@ -3,6 +3,7 @@ package city.transportation.gui;
 import gui.Gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class TruckAgentGui implements Gui{
 		_xPos = _market.xPosition() - 10;
 		_yPos = _market.yPosition();
 		_xDestination = _market.xPosition() - 10;
-		_yDestination = _market.yPosition();
+		_yDestination = _market.yPosition() + 2;
 		_truck = truck;
 		isPresent = true;
 		park = false;
@@ -136,7 +137,7 @@ public class TruckAgentGui implements Gui{
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Market && park){
 			_point = Point.Park;
 			_xDestination = _market.xPosition()- 10;
-			_yDestination = _market.yPosition();
+			_yDestination = _market.yPosition()+ 2;
 			System.out.println("going to park");
 		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Park && park){
@@ -148,6 +149,13 @@ public class TruckAgentGui implements Gui{
 	}
 	
 	public void draw(Graphics2D g) {
+		g.setColor(new Color(156, 93, 82));
+		g.fillRect(_market.xPosition() - 12, _market.yPosition(), 12, 14);
+		
+		g.setColor(Color.black);
+		g.setFont(new Font("default", Font.PLAIN, 10));
+		g.drawString("Truck", _market.xPosition() - 12, _market.yPosition()-5);
+		
 		if(isPresent){
 			g.setColor(Color.blue);
 			g.fillRect(_xPos, _yPos, 10, 10);

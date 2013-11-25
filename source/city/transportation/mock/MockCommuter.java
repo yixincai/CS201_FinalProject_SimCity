@@ -26,12 +26,6 @@ public class MockCommuter extends Mock implements Commuter{
 	}
 
 	@Override
-	public void msgGetOnBus(int fare, Bus bus) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void msgGetOffBus(Place place) {
 		// TODO Auto-generated method stub
 		
@@ -39,6 +33,12 @@ public class MockCommuter extends Mock implements Commuter{
 
 	@Override
 	public void msgAtDestination(Place place) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGetOnBus(double fare, Bus bus) {
 		// TODO Auto-generated method stub
 		
 	}

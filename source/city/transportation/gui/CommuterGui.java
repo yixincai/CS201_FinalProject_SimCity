@@ -22,7 +22,7 @@ public class CommuterGui implements Gui {
 	
 	CommuterRole _commuter;
 	
-	enum TransportationType{walking, driving, ridingBus, none};
+	enum TransportationType{goToCar, atCar, walking, driving, ridingBus, none};
 	TransportationType _transportationType = TransportationType.none;
 	
 	//----------------------------------Constructor & Setters & Getters----------------------------------
@@ -70,10 +70,16 @@ public class CommuterGui implements Gui {
 	
 	//Car gui
 	public void goToCar(CarObject car, Place destination){
-		_transportationType = TransportationType.driving;
 		tFlag = true;
+		_transportationType = TransportationType.goToCar;
 		_xDestination = car.getXPosition();
 		_yDestination = car.getYPosition();
+	}
+	
+	public void atCar(){
+		_transportationType = TransportationType.atCar;
+		setPresent(false);
+		_commuter.msgAtCar();
 	}
 	
 	
@@ -84,6 +90,7 @@ public class CommuterGui implements Gui {
 		tFlag = false;
 		setPresent(false);
 	}
+	
 	
 	public void getOnBus(){
 		setPresent(false);
@@ -119,6 +126,10 @@ public class CommuterGui implements Gui {
 		
 		if(_xPos == _xDestination && _yPos == _yDestination && tFlag){
 			atDestination();
+		}
+		if(_xPos == _xDestination && _yPos == _yDestination && _transportationType == TransportationType.goToCar){
+			isPresent = false;
+			atCar();
 		}
 	}
 

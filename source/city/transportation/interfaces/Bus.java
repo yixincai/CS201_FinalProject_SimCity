@@ -10,7 +10,7 @@ public interface Bus {
 
 	public abstract void msgGotOff(CommuterRole passenger);
 
-	public abstract void msgGettingOnBoard(CommuterRole person, Place destination, double _fare);
+	public abstract void msgGettingOnBoard(Commuter person, Place destination, double _fare);
 	
 	public abstract void setFare(int fare);
 	
