@@ -40,6 +40,15 @@ public class CommuterGui implements Gui {
 		
 		return x+y;
 	}
+
+	@Override
+	public boolean isPresent() {
+		return isPresent;
+	}
+	
+	public void setPresent(boolean present){
+		this.isPresent = present;
+	}
 	
 	//Walking gui-------------------------------------------------------------------------------------------
 	public void walkToLocation(Place destination){
@@ -117,15 +126,6 @@ public class CommuterGui implements Gui {
 			g.setColor(Color.GREEN);
 			g.fillRect(_xPos, _yPos, 5, 5);
 		}
-	}
-
-	@Override
-	public boolean isPresent() {
-		return isPresent;
-	}
-	
-	public void setPresent(boolean present){
-		this.isPresent = present;
 	}
 	
 	// ----------------------------------------- UTILITIES --------------------------------------------
