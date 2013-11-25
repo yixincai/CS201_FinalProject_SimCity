@@ -63,8 +63,9 @@ public class CommuterRole extends Role implements Commuter{
 	public void setCar(CarObject car){_car = car;}
 	
 	public Place destination() { return _destination; }
-	public void setDestination(Place place) { _destination = place; msgGoToDestination(_destination); }
+	public void setDestination(Place place) { msgGoToDestination(_destination); }
 	
+	public void setCurrentPlace(Place place) { _currentPlace = place; }
 	public Place currentPlace() { return _currentPlace; }
 
 	public Place place() { return currentPlace(); }
@@ -74,12 +75,12 @@ public class CommuterRole extends Role implements Commuter{
 	//----------------------------------------------Command---------------------------------------------
 	
 	//----------------------------------------------Messages------------------------------------------
-	public void msgGoToDestination(Place place){ //Command to go to destination
+	public void msgGoToDestination(Place destination){ //Command to go to destination
 		_tState = TravelState.choosing;
-		_destination = place;
+		_destination = destination;
 		//System.out.println(_destination.xPosition() + " " + _destination.yPosition());
 		stateChanged();
-		print("Told to go to place " + place._name + " " + place.xPosition());
+		print("Told to go to place " + destination._name + " " + destination.xPosition());
 	}
 	
 	//Bus Transportation messages
