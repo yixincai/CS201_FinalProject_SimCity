@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -193,10 +194,6 @@ public class MainGui extends JFrame
   	  this.setVisible(true);
 	
   	  Time.startTimer();
-  	  
-  	  market.truck.startThread();
-  	  market.truck.msgDeliverToCook(null, yr);
-  	  market.truck.msgDeliverToCook(null, or);
 	}
 	
 	public WorldView getWorldView() { return _worldView; }
