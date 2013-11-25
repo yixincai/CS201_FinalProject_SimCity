@@ -6,20 +6,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import city.PersonAgent;
+import city.Place;
+import agent.Role;
+
 public class OmarHostRole extends Role {
 
 	static final int NTABLES = 3;//a global for the number of tables.
 
+	OmarRestaurant restaurant;
 	public Collection<Table> tables; //note that tables is typed with Collection semantics.
-	public List<WaiterAgent> waiters = Collections.synchronizedList(new ArrayList<WaiterAgent>());
-	public List<CustomerAgent> waitingCustomers = Collections.synchronizedList(new ArrayList<CustomerAgent>());
+	public List<OmarWaiterRole> waiters = Collections.synchronizedList(new ArrayList<OmarWaiterRole>());
+	public List<OmarCustomerRole> waitingCustomers = Collections.synchronizedList(new ArrayList<OmarCustomerRole>());
 
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
 
-	public HostAgent(String name) {
-		super();
-
+	public OmarHostRole(PersonAgent p, OmarRestaurant r, String name) {
+		super(p);
+		this.restaurant = r;
 		this.name = name;
 		// make some tables
 		tables = new ArrayList<Table>(NTABLES);
@@ -35,12 +40,12 @@ public class OmarHostRole extends Role {
 	}
 
 	// Messages
-	public void msgIWantFood(CustomerAgent cust) { // 1 receives messages from hungry customers, puts them on list
+	public void msgIWantFood(OmarCustomerRole cust) { // 1 receives messages from hungry customers, puts them on list
 		waitingCustomers.add(cust);
 		stateChanged();
 	}
 
-	public void msgLeavingTable(CustomerAgent cust) {  //last - waits for msg, marks table as available
+	public void msgLeavingTable(OmarCustomerRole cust) {  //last - waits for msg, marks table as available
 		synchronized(tables){
 		for (Table table : tables) {
 			if (table.getOccupant() == cust) {
@@ -52,7 +57,7 @@ public class OmarHostRole extends Role {
 		}
 	}
 	
-	public void msgLeavingWaitList(CustomerAgent cust) {
+	public void msgLeavingWaitList(OmarCustomerRole cust) {
 		waitingCustomers.remove(cust);
 		System.out.println("Customer " + cust.toString() + " left from waiting too long");
 		stateChanged();
@@ -61,7 +66,7 @@ public class OmarHostRole extends Role {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		synchronized(tables){
 			for (Table table : tables) {
 				if (!table.isOccupied()) {
@@ -88,7 +93,7 @@ public class OmarHostRole extends Role {
 	}
 
 	// Actions
-	public void wantBreak(WaiterAgent w){
+	public void wantBreak(OmarWaiterRole w){
 		if(waiters.size() <= 1){
 			w.breakRejected();
 		} else{
@@ -96,13 +101,13 @@ public class OmarHostRole extends Role {
 		}
 	}
 	
-	public void callWaiter(CustomerAgent customer, Table table, WaiterAgent w){
-			Do("Called Waiter.");
+	public void callWaiter(OmarCustomerRole customer, Table table, OmarWaiterRole w){
+			System.out.println(this.name + ": Called Waiter.");
 			if(waiters.size() != 0){
 				int custNum = waiters.get(0).getNumCustomers();
-				WaiterAgent selectedWaiter = null;
+				OmarWaiterRole selectedWaiter = null;
 				synchronized(waiters){
-				for (WaiterAgent wa: waiters){
+				for (OmarWaiterRole wa: waiters){
 					if(wa.getNumCustomers() <= custNum && wa.onBreak == false){
 						custNum = wa.getNumCustomers();
 						selectedWaiter = wa;
@@ -116,7 +121,7 @@ public class OmarHostRole extends Role {
 	}
 
 	//utilities
-	private void DoCallWaiter(WaiterAgent w){
+	private void DoCallWaiter(OmarWaiterRole w){
 		System.out.println("Called waiter" + w.toString());
 	}
 	
@@ -126,5 +131,17 @@ public class OmarHostRole extends Role {
 	
 	public ArrayList<Table> getTableList(){
 		return (ArrayList<Table>) tables;
+	}
+
+	@Override
+	public Place place() {
+		return restaurant;
+	}
+
+	@Override	//TODO INTEGRATION REQUIRED
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+		active = false;
+		stateChanged();
 	}
 }
