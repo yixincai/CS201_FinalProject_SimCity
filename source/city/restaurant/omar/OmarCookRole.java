@@ -7,7 +7,13 @@ import java.util.List;
 import java.util.Timer;
 import java.util.concurrent.Semaphore;
 
+import city.PersonAgent;
+import city.Place;
+import city.market.Item;
+import city.market.Market;
 import city.restaurant.RestaurantCookRole;
+import city.restaurant.omar.Order.OrderStatus;
+import city.restaurant.omar.gui.OmarCookGui;
 
 public class OmarCookRole extends RestaurantCookRole {
 
@@ -22,21 +28,22 @@ public class OmarCookRole extends RestaurantCookRole {
 		Timer cookTimer;
 		
 		String name;
-		CashierAgent cashier;
+		OmarCashierRole cashier;
 		
-		CookGui cookGui = null;
+		OmarCookGui cookGui = null;
+		OmarRestaurant restaurant;
 		
 		public Semaphore cookSem = new Semaphore(0, true);
 		
 		enum MarketStatus {available, ordering, paying, paid, gone};
 		
 		public class MyMarket{
-			public MarketAgent market;
+			public Market market;
 			public MarketStatus marketState;
 			public List<Food> currentOrder;
 			public double currentOrderCost;
 			
-			public MyMarket(MarketAgent market){
+			public MyMarket(Market market){
 				this.market = market;
 				marketState = MarketStatus.available;
 				currentOrder = Collections.synchronizedList(new ArrayList<Food>());
@@ -44,11 +51,12 @@ public class OmarCookRole extends RestaurantCookRole {
 			}
 		}
 
-		public CookAgent(CashierAgent cashier) { //starts out of food
-			super();
+		public OmarCookRole(OmarCashierRole cashier, PersonAgent p, OmarRestaurant r) { //starts out of food
+			super(p);
+			this.restaurant = r;
 			name = "Chef Matt";
 			this.cashier = cashier;
-			System.out.println("Chef Matt: About to Restock");
+			//System.out.println("Chef Matt: About to Restock");
 			
 			cookInventory = new Hashtable<String, Food>();
 			cookInventory.put("Pizza", new Food("Pizza", 1200.0, 0));
@@ -58,12 +66,12 @@ public class OmarCookRole extends RestaurantCookRole {
 		}
 		
 		// Messages
-		public void msgHereIsAnOrder(WaiterAgent w, CustomerAgent c){
+		public void msgHereIsAnOrder(OmarWaiterRole w, OmarCustomerRole c){
 			orders.add(new Order(w, c.tableNum, this, c));
 			stateChanged();
 		}
 		
-		public void msgIHaveNoFood(MarketAgent market){
+		public void msgIHaveNoFood(Market market){
 		synchronized(markets){
 			System.out.println("Market is out of Food! Ordering from next Market, Paid previous market $2");
 			for(MyMarket m: markets){
@@ -79,7 +87,7 @@ public class OmarCookRole extends RestaurantCookRole {
 		}
 		}
 		
-		public void msgHereIsMyPrice(MarketAgent market, List<Food> currentOrder, int currentOrderCost){
+		public void msgHereIsMyPrice(Market market, List<Food> currentOrder, int currentOrderCost){
 		synchronized(markets){
 			for(MyMarket m: markets){
 				if(m.market == market){
@@ -93,7 +101,7 @@ public class OmarCookRole extends RestaurantCookRole {
 		}
 		}
 		
-		public void msgTakeMyFood(MarketAgent market, List<Food> currentOrder){
+		public void msgTakeMyFood(Market market, List<Food> currentOrder){
 		synchronized(markets){
 			print(market.toString() + " is giving me food");
 			for(MyMarket m:markets) {
@@ -110,7 +118,7 @@ public class OmarCookRole extends RestaurantCookRole {
 		/**
 		 * Scheduler.  Determine what action is called for, and do it.
 		 */
-		protected boolean pickAndExecuteAnAction() {
+		public boolean pickAndExecuteAnAction() {
 		synchronized(markets){
 			for(MyMarket m: markets){
 				if(m.marketState == MarketStatus.gone){
@@ -153,7 +161,7 @@ public class OmarCookRole extends RestaurantCookRole {
 				synchronized(orders){
 				for(Order o: orders){
 					if(o.status == OrderStatus.cooked){
-						Do("Order " + o.toString() + " is ready.");
+						System.out.println("Order " + o.toString() + " is ready.");
 						tellWaiter(o);
 						return true;
 					}
@@ -165,7 +173,7 @@ public class OmarCookRole extends RestaurantCookRole {
 		}
 
 		//Actions
-		public void addMarket(MarketAgent m){
+		public void addMarket(Market m){
 			markets.add(new MyMarket(m));
 		}
 		
@@ -186,7 +194,7 @@ public class OmarCookRole extends RestaurantCookRole {
 				cookInventory.put(f.type, f);
 			}
 		}
-			Do("Restocking from market");
+			System.out.println("Restocking from market");
 			m.marketState = MarketStatus.paid;
 			stateChanged();
 		}
@@ -215,7 +223,7 @@ public class OmarCookRole extends RestaurantCookRole {
 				}
 				cookGui.DoGoBackToRest();
 				o.status = OrderStatus.cooking;
-				Do("Cooking Order " + o.toString());
+				System.out.println("Cooking Order " + o.toString());
 				o.isCooking();
 			}
 		}
@@ -240,7 +248,7 @@ public class OmarCookRole extends RestaurantCookRole {
 		public void tellCashierToPayMarket(MyMarket m){ //initialize cashier
 			cashier.msgPayTheMarket(m.market, m.currentOrderCost);
 			m.marketState = MarketStatus.available;
-			Do("Told Cashier To Pay Market");
+			System.out.println("Told Cashier To Pay Market");
 			stateChanged();
 		}
 
@@ -249,11 +257,28 @@ public class OmarCookRole extends RestaurantCookRole {
 			return name;
 		}
 		
-		public void setGui(CookGui g){
+		public void setGui(OmarCookGui g){
 			this.cookGui = g;
 		}
 		
 		public void msgArrived(){
 			cookSem.release();
+		}
+
+		@Override	//TODO INTEGRATION REQUIRED
+		public void msgOrderFulfillment(Market m, List<Item> order) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public Place place() {
+			return restaurant;
+		}
+
+		@Override
+		public void cmdFinishAndLeave() {
+			// TODO Auto-generated method stub
+			
 		}
 }

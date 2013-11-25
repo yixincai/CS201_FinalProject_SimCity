@@ -8,6 +8,7 @@ import agent.Role;
 import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
 import city.restaurant.Restaurant;
+import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.omar.gui.OmarRestaurantAnimationPanel;
 
 public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
@@ -54,12 +55,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
-		//TODO make a new customer that is initialized with a PersonAgent of person
-		count++;
-		if (count > 10){
-			count = 1;
-		}
-		return (new OmarCustomerRole(person, this, person.getName(), count-1));
+		return (new OmarCustomerRole(person, this, person.getName()));
 	}
 
 	@Override
