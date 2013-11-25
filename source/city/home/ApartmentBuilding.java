@@ -10,7 +10,7 @@ import gui.BuildingInteriorAnimationPanel;
 import gui.WorldViewBuilding;
 import city.Place;
 import city.home.gui.ApartmentAnimationPanel;
-import city.home.gui.HomeAnimationPanel;
+import city.home.gui.HouseAnimationPanel;
 import city.interfaces.PlaceWithAnimation;
 
 public class ApartmentBuilding extends Place implements PlaceWithAnimation {
