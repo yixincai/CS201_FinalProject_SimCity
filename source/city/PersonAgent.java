@@ -280,7 +280,7 @@ public class PersonAgent extends Agent
 		}
 		// Set the occupation to waiter
 		// note: control reaches here either because the value of occupationType is "Waiter" or because no scarce jobs were found (waiter is an unlimited/non-scarce job)
-		_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole();
+		_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------
 	public String getName() { return _name; }
