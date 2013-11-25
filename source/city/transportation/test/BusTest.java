@@ -24,6 +24,8 @@ public class BusTest extends TestCase {
 	BusState bState;
 	
 	MockCommuter mockCommuter;
+	MockCommuter mockCommuter1;
+	MockCommuter mockCommuter2;
 	
 	BusStopObject busStop;
 	BusStopObject busStop1;
@@ -48,6 +50,8 @@ public class BusTest extends TestCase {
 		bus.setBusAgentGui(gui);
 		
 		mockCommuter = new MockCommuter("mock commuter");
+		mockCommuter1 = new MockCommuter("mock commuter1");
+		mockCommuter2 = new MockCommuter("mock commuter2");
 		
 	}
 	public void testZeroBusCommuterScenario(){
@@ -102,6 +106,7 @@ public class BusTest extends TestCase {
 		
 		busStop.addCommuterRole(mockCommuter);
 		bus.msgAtDestination(busStop);
+		assertEquals("busstop list should be size 1", busStop.getList().size(), 1);
 		
 		assertEquals("Bus state is not moving", bus.bState, BusState.atDestination);
 
@@ -118,6 +123,8 @@ public class BusTest extends TestCase {
 		assertFalse("Scheduler returns true", bus.pickAndExecuteAnAction());
 		
 		bus.msgGettingOnBoard(mockCommuter, busStop1, 0);
+		
+		assertEquals("busstop list should be size 1", busStop.getList().size(), 0);
 		assertEquals("Expected number is 0", bus.getExpectedPeople(), 1);
 		assertEquals("Number of people is 0", bus.getNumPeople(), 1);
 		
@@ -152,8 +159,82 @@ public class BusTest extends TestCase {
 		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
 		
 		busStop.addCommuterRole(mockCommuter);
-		busStop.addCommuterRole(mockCommuter);
+		busStop.addCommuterRole(mockCommuter1);
 		bus.msgAtDestination(busStop);
+		
+		assertEquals("busstop list should be size 1", busStop.getList().size(), 2);
+		assertEquals("Bus state is not moving", bus.bState, BusState.atDestination);
+
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.droppingoff);
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 0);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 0);
+		
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.pickingup);
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 2);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 0);
+		
+		assertFalse("Scheduler returns true", bus.pickAndExecuteAnAction());
+		
+		bus.msgGettingOnBoard(mockCommuter, busStop1, 0);
+		bus.msgGettingOnBoard(mockCommuter1, busStop, 0);
+		assertEquals("busstop list should be size 1", busStop.getList().size(), 0);
+		
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 2);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 2);
+		
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		
+		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
+		
+		bus.msgAtDestination(busStop1);
+		
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.droppingoff);
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 1);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 2);
+		
+		bus.msgGotOff(mockCommuter);
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 1);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 1);
+		
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.pickingup);
+		
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
+		
+		bus.msgAtDestination(busStop);
+		
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.droppingoff);
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 0);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 1);
+		
+		bus.msgGotOff(mockCommuter1);
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 0);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 0);
+		
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.pickingup);
+		
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
+	}
+	public void testFourNormalBusScenario(){
+		assertEquals("Bus state is not moving", bus.bState, BusState.notmoving);
+		bus.releaseSem();
+		
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 0);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 0);
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
+		
+		busStop.addCommuterRole(mockCommuter);
+		busStop.addCommuterRole(mockCommuter1);
+		bus.msgAtDestination(busStop);
+		assertEquals("busstop list should be size 1", busStop.getList().size(), 2);
 		
 		assertEquals("Bus state is not moving", bus.bState, BusState.atDestination);
 
@@ -164,36 +245,65 @@ public class BusTest extends TestCase {
 		
 		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
 		assertEquals("Bus state is not moving", bus.bState, BusState.pickingup);
-		assertEquals("Expected number is 0", bus.getExpectedPeople(), 1);
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 2);
 		assertEquals("Number of people is 0", bus.getNumPeople(), 0);
 		
 		assertFalse("Scheduler returns true", bus.pickAndExecuteAnAction());
 		
 		bus.msgGettingOnBoard(mockCommuter, busStop1, 0);
-		bus.msgGettingOnBoard(mockCommuter, busStop, 0);
+		bus.msgGettingOnBoard(mockCommuter1, busStop, 0);
+		assertEquals("busstop list should be size 1", busStop.getList().size(), 0);
 		
-		assertEquals("Expected number is 0", bus.getExpectedPeople(), 1);
-		assertEquals("Number of people is 0", bus.getNumPeople(), 1);
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 2);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 2);
 		
 		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
 		
 		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
 		
+		busStop1.addCommuterRole(mockCommuter2);
 		bus.msgAtDestination(busStop1);
+		
+		assertEquals("busstop list should be size 1", busStop1.getList().size(), 1);
+		
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.droppingoff);
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 1);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 2);
+		
+		bus.msgGotOff(mockCommuter);
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 1);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 1);
+		assertEquals("busstop list should be size 1", busStop1.getList().size(), 1);
+		
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.pickingup);
+		
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 2);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 1);
+		
+		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
+		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
+		
+		bus.msgAtDestination(busStop);
 		
 		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
 		assertEquals("Bus state is not moving", bus.bState, BusState.droppingoff);
 		assertEquals("Expected number is 0", bus.getExpectedPeople(), 0);
 		assertEquals("Number of people is 0", bus.getNumPeople(), 1);
 		
-		bus.msgGotOff(mockCommuter);
+		bus.msgGotOff(mockCommuter1);
 		assertEquals("Expected number is 0", bus.getExpectedPeople(), 0);
 		assertEquals("Number of people is 0", bus.getNumPeople(), 0);
 		
 		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
 		assertEquals("Bus state is not moving", bus.bState, BusState.pickingup);
 		
+		assertEquals("Expected number is 0", bus.getExpectedPeople(), 2);
+		assertEquals("Number of people is 0", bus.getNumPeople(), 1);
+		
 		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
 		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
 	}
+	
 }

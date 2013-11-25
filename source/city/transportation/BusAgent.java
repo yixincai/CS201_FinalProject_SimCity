@@ -125,7 +125,7 @@ public class BusAgent extends Agent implements Bus{
 	}
 
 	public void DropOff(){
-		System.out.println("Bus: Dropping off");
+		System.out.println("Bus: Dropping off from " + currentDestination.getName());
 	    bState = BusState.droppingoff;
 	    for(MyCommuter commuter: _passengers){
 	        if(commuter.destination == currentDestination){
@@ -137,7 +137,7 @@ public class BusAgent extends Agent implements Bus{
 	}
 
 	public void PickUp(){
-		System.out.println("Bus: Picking up");
+		System.out.println("Bus: Picking up from " + currentDestination.getName());
 		currentBusStopList = currentDestination.getList();
 		bState = BusState.pickingup;
 	    while(getExpectedPeople() <= capacity && currentBusStopList.size() > 0){
