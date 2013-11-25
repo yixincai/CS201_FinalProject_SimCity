@@ -11,11 +11,14 @@ public abstract class HomeOccupantRole extends Role
 
 
 
-	protected enum Command { NONE, WATCH_TV, COOK_AND_EAT_FOOD, GO_TO_BED, WAKE_UP, LEAVE }
-	protected Command _command;
+	private enum Command { NONE, WATCH_TV, COOK_AND_EAT_FOOD, GO_TO_BED, WAKE_UP, LEAVE }
+	private Command _command = Command.NONE;
 	
-	public enum State { IDLE, COOKING, SLEEPING }
-	private State _state; //TODO fully implement these states
+	private enum Event { NONE, ALARM_CLOCK_RANG, }
+	private Event _event = Event.NONE;
+	
+	public enum State { AWAY, IDLE, COOKING, SLEEPING, LEAVING }
+	private State _state = State.IDLE; //TODO fully implement these states
 	
 	private int _mealCount = 2; // Starting people out with 2 meals
 
@@ -48,7 +51,7 @@ public abstract class HomeOccupantRole extends Role
 	
 	
 	
-	// --------------------------------- COMMANDS -----------------------------------
+	// --------------------------------- COMMANDS & MESSAGES -----------------------------------
 	// note: commands are only from PersonAgent
 	public void cmdWatchTv()
 	{
@@ -65,13 +68,13 @@ public abstract class HomeOccupantRole extends Role
 		_command = Command.GO_TO_BED;
 		stateChanged();
 	}
-	public void cmdWakeUp()
+	public void cmdFinishAndLeave() {
+		_command = Command.LEAVE;
+	}
+	public void msgWakeUp()
 	{
 		_command = Command.WAKE_UP;
 		stateChanged();
-	}
-	public void cmdFinishAndLeave() {
-		_command = Command.LEAVE;
 	}
 	
 	
@@ -94,7 +97,11 @@ public abstract class HomeOccupantRole extends Role
 		}
 		else if(_state == State.SLEEPING)
 		{
-			
+			if(_event == Event.ALARM_CLOCK_RANG)
+			{
+				actWakeUp();
+				return true;
+			}
 		}
 		return false;
 	}
@@ -107,7 +114,31 @@ public abstract class HomeOccupantRole extends Role
 		print("Starting to cook.");
 		_state = State.COOKING;
 		
-		//_gui.doGoToKitchen();
-		
+		_gui.doGoToKitchen();
+		waitForGuiToReachDestination();
+	}
+	private void actGoToBed()
+	{
+		print("Going to bed.");
+		_state = State.SLEEPING;
+		_gui.doGoToBed();
+	}
+	private void actWakeUp()
+	{
+		print("Waking up.");
+		_state = State.IDLE;
+		_gui.doGoIdle();
+	}
+	private void actLeave()
+	{
+		print("Leaving my home");
+		_state = State.LEAVING;
+		_gui.doLeaveHome();
+	}
+	private void actFinishedLeaving()
+	{
+		print("Finished leaving home");
+		_state = State.AWAY;
+		active = false;
 	}
 }

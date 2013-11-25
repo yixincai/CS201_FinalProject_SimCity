@@ -11,6 +11,7 @@ import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.BusAgentGui;
 import city.transportation.interfaces.Bus;
+import city.transportation.interfaces.Commuter;
 
 //NOTES when taking bus, must decide who finds which busstop is nearest to destination (commuter role or busagent)
 
@@ -25,27 +26,28 @@ public class BusAgent extends Agent implements Bus{
 	
 	BusStopObject currentDestination;
 	int _busStopNum;
-	List<CommuterRole> currentBusStopList = new ArrayList<CommuterRole>();
+	List<Commuter> currentBusStopList = new ArrayList<Commuter>();
 	Semaphore busSem = new Semaphore(0, true);
 	
 	static double _fare;
 	double _register;
 
 	static int capacity;
-	int numPeople = 0;
-	int expectedPeople = 0;
+	private int numPeople = 0;
+	private int expectedPeople = 0;
 
-	enum BusState{moving, atDestination, droppingoff, pickingup, notmoving};
-	BusState bState = BusState.notmoving;
+	public enum BusState{moving, atDestination, droppingoff, pickingup, notmoving};
+	public BusState bState = BusState.notmoving;
 	
 	enum PassengerState{onBus, offBus};
 
 	class MyCommuter{
-	    CommuterRole commuter;
+	    Commuter commuter;
 	    Place destination;
+	    double payment;
 	    PassengerState pState = PassengerState.onBus;
 	    
-	    MyCommuter(CommuterRole person, Place destination){
+	    MyCommuter(Commuter person, Place destination){
 	    	this.commuter = person;
 	    	this.destination = destination;
 	    }
@@ -70,16 +72,18 @@ public class BusAgent extends Agent implements Bus{
 	    stateChanged();
 	}
 
-	public void msgGotOff(CommuterRole passenger){
+	public void msgGotOff(Commuter passenger){
 	    _passengers.remove(findCommuter(passenger)); //Fix this
-	    numPeople--;
+	    setNumPeople(getNumPeople() - 1);
+	    stateChanged();
 	}
 
-	public void msgGettingOnBoard(CommuterRole person, Place destination, double payment){ //Check if payment is correct?
+	public void msgGettingOnBoard(Commuter person, Place destination, double payment){ //Check if payment is correct?
 	    _passengers.add(new MyCommuter(person, destination));
-	    currentDestination.removePerson(person);
+	    currentDestination.removeCommuterRole(person);
 	    _register += payment;
-	    numPeople++; //Fix this
+	    setNumPeople(getNumPeople() + 1); //Fix this
+	    stateChanged();
 	}
 	
 	
@@ -95,12 +99,12 @@ public class BusAgent extends Agent implements Bus{
 			return true;
 		}
 		
-		if(bState == BusState.droppingoff && expectedPeople == numPeople){
+		if(bState == BusState.droppingoff && getExpectedPeople() == getNumPeople()){
 			PickUp();
 			return true;
 		}
 		
-		if(bState == BusState.pickingup && expectedPeople == numPeople){
+		if(bState == BusState.pickingup && getExpectedPeople() == getNumPeople()){
 			System.out.println("Leaving");
 			Leave();
 			return true;
@@ -111,6 +115,7 @@ public class BusAgent extends Agent implements Bus{
 	
 	//----------------------------------------------Actions----------------------------------------
 	public void GoToFirstBusStop(){
+		bState = BusState.moving;
 		_gui.goToBusStop(_busStops.get(_busStopNum));
 		try {
 			busSem.acquire();
@@ -120,25 +125,25 @@ public class BusAgent extends Agent implements Bus{
 	}
 
 	public void DropOff(){
-		System.out.println("Bus: Dropping off");
+		System.out.println("Bus: Dropping off from " + currentDestination.getName());
 	    bState = BusState.droppingoff;
 	    for(MyCommuter commuter: _passengers){
 	        if(commuter.destination == currentDestination){
 	        	commuter.commuter.msgGetOffBus(currentDestination);
-	            expectedPeople--;
+	            setExpectedPeople(getExpectedPeople() - 1);
 	        }
 	    }
 	    stateChanged();
 	}
 
 	public void PickUp(){
-		System.out.println("Bus: Picking up");
+		System.out.println("Bus: Picking up from " + currentDestination.getName());
 		currentBusStopList = currentDestination.getList();
 		bState = BusState.pickingup;
-	    while(expectedPeople <= capacity && currentBusStopList.size() > 0){
-	    	for(CommuterRole comm: currentBusStopList){
+	    while(getExpectedPeople() <= capacity && currentBusStopList.size() > 0){
+	    	for(Commuter comm: currentBusStopList){
 	    		comm.msgGetOnBus(_fare, this);
-	            expectedPeople++;
+	            setExpectedPeople(getExpectedPeople() + 1);
 	        }
 	    }
 	    stateChanged();
@@ -155,7 +160,7 @@ public class BusAgent extends Agent implements Bus{
 	}
 	
 	//-----------------------------------------Utilities-----------------------------------------
-	public MyCommuter findCommuter(CommuterRole commuter){
+	public MyCommuter findCommuter(Commuter commuter){
 		synchronized(_passengers){
 			for(MyCommuter passenger: _passengers){
 				if(passenger.commuter == commuter){
@@ -181,6 +186,22 @@ public class BusAgent extends Agent implements Bus{
 	
 	public void releaseSem(){
 		busSem.release();
+	}
+
+	public int getExpectedPeople() {
+		return expectedPeople;
+	}
+
+	public void setExpectedPeople(int expectedPeople) {
+		this.expectedPeople = expectedPeople;
+	}
+
+	public int getNumPeople() {
+		return numPeople;
+	}
+
+	public void setNumPeople(int numPeople) {
+		this.numPeople = numPeople;
 	}
 	
 }

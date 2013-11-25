@@ -24,7 +24,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	boolean occupied;
 	String name;
 	private int tellerNum;
-	static AccountDatabase database;
+	public static AccountDatabase database = new AccountDatabase();
 	
 	enum Command{None, Leave};
 	Command command;
@@ -47,9 +47,9 @@ public class BankTellerRole extends Role implements BankTeller {
 		database = new AccountDatabase();
 	}
 	
-	private static class AccountDatabase{
-	      Hashtable<Integer, Double> funds;
-	      Hashtable<Integer, Double> amountOwed;
+	public static class AccountDatabase{
+	      public Hashtable<Integer, Double> funds;
+	      public Hashtable<Integer, Double> amountOwed;
 	      
 	      public AccountDatabase(){
 	    	  funds = new Hashtable();
@@ -67,7 +67,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	      BankCustomer customer;
 	      int accountNumber;
 	      String request;
-	      int amount;
+	      double amount;
 	      
 	      CustomerState customerState;
 	}
@@ -95,7 +95,7 @@ public class BankTellerRole extends Role implements BankTeller {
 		  myCustomers.add(m);
 		  stateChanged();
 	}
-	public void msgHereIsMyRequest(BankCustomer c, String request, int amount){
+	public void msgHereIsMyRequest(BankCustomer c, String request, double amount){
 		  for(MyCustomer m: myCustomers){
 			if(m.customer == c){
 		  	m.customerState = CustomerState.GivenRequest;
@@ -169,6 +169,7 @@ public class BankTellerRole extends Role implements BankTeller {
 		   while(database.funds.containsKey(newAccntNum)){
 			   newAccntNum = (int)(Math.random()*10000);
 		   }
+		   m.accountNumber = newAccntNum;
 		   database.funds.put(newAccntNum, 0.0);
 		   database.amountOwed.put(newAccntNum, 0.0);
 		} 
@@ -182,7 +183,7 @@ public class BankTellerRole extends Role implements BankTeller {
 			database.funds.put(m.accountNumber, currentFunds + m.amount);
 			m.customer.msgTransactionComplete(-m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber)); // negative m.amount because I'm taking money from the customer
 		} else if(m.request.equalsIgnoreCase("Withdraw")){ //checked
-		    if(database.amountOwed.get(m.accountNumber) >= 0){
+		    if(database.amountOwed.get(m.accountNumber) > 0){
 		    	m.customer.msgTransactionDenied();
 		  	}
 			else {
@@ -191,7 +192,7 @@ public class BankTellerRole extends Role implements BankTeller {
 				m.customer.msgTransactionComplete(m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber));
 			}
 		} else if(m.request.equalsIgnoreCase("Withdraw Loan")){ // checked a bit, add robber
-			if(database.amountOwed.get(m.accountNumber) >= 0){
+			if(database.amountOwed.get(m.accountNumber) > 0){
 			      m.customer.msgTransactionDenied();
 			}
 			else { 
@@ -283,6 +284,8 @@ public class BankTellerRole extends Role implements BankTeller {
 	public void setGui(BankTellerRoleGui g){
 		gui = g;
 	}
+	
+	
 	
 	//-------commands--------
 	@Override

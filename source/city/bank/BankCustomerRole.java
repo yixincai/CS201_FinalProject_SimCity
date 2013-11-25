@@ -15,21 +15,21 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	//Data
 	BankHost bankHost;
 	BankTeller teller;
-	String request;
-	private double amount;
-	private double accountFunds;
-	private double amountOwed;
-	int accountNumber;
+	public String request;
+	public double amount;
+	public double accountFunds;
+	public double amountOwed;
+	public int accountNumber;
 	
-	State state;
-	Event event;
+	public State state;
+	public Event event;
 	Semaphore bankCustSem;
 	BankCustomerRoleGui gui;
 	Bank bank;
 	 
-	enum State {Robber, DoingNothing, Waiting, AtTeller, GaveRequest, 
+	public enum State {Robber, DoingNothing, Waiting, AtTeller, GaveRequest, 
 		TransactionComplete, TransactionDenied, LeaveBank };
-	enum Event {None, CalledToDesk, GivenRequestPermission, WantsAnotherRequest, ApprovedTransaction, DeniedTransaction};
+	public enum Event {None, CalledToDesk, GivenRequestPermission, WantsAnotherRequest, ApprovedTransaction, DeniedTransaction};
 	
 	public BankCustomerRole(PersonAgent person, Bank bank){
 		super(person);

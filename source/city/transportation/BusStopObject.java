@@ -6,24 +6,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import city.Place;
+import city.transportation.interfaces.Commuter;
 
 public class BusStopObject extends Place {
-	List<CommuterRole> _waitList = new ArrayList<CommuterRole>();
+	List<Commuter> _waitList = new ArrayList<Commuter>();
 	
 	public BusStopObject(String name, WorldViewBuilding worldViewBuilding) {
 		super(name, worldViewBuilding);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void addPerson(CommuterRole person){
+	public void addCommuterRole(Commuter person){
 		_waitList.add(person);
 	}
 	
-	public void removePerson(CommuterRole person){
+	public void removeCommuterRole(Commuter person){
 		_waitList.remove(person);
 	}
 	
-	public List<CommuterRole> getList(){
+	public List<Commuter> getList(){
 		return _waitList;
 	}
 }
