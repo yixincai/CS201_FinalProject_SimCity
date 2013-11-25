@@ -8,6 +8,7 @@ import java.util.Map;
 
 import city.PersonAgent;
 import city.Place;
+import city.market.Item;
 import city.market.Market;
 import city.restaurant.RestaurantCashierRole;
 import city.restaurant.yixin.YixinRestaurant;
@@ -37,6 +38,8 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		}
 		
 		public enum CustomerState {paying, paid, awaitingChange, canAfford, cantAfford};
+		enum Command{None, Leave};
+		Command command;
 
 		class Food {
 			String foodType;
@@ -51,13 +54,23 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			}
 		}
 		
+		
+		enum MarketOrderState{none, billReceived, payBill};
 		private class Order {
 			public Market market;
+			public Map<String, Double> price_list;
 			public double cost;
+			List<Item> orderItems;
+			MarketOrderState orderState = MarketOrderState.none;
 			
-			public Order(Market market2, double cost){
-				this.market = market2;
-				this.cost = cost;
+			public Order(Market market, Map<String, Double> price_list, double bill){
+				this.market = market;
+				this.price_list = price_list;
+				this.cost = bill;
+			}
+			
+			public void setOrderItems(List<Item> orderItems){
+				this.orderItems = orderItems;
 			}
 		}
 		
@@ -69,6 +82,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 //
 		public OmarCashierRole(PersonAgent p, OmarRestaurant r) {
 			super(p);
+			command = Command.None;
 			this.restaurant = r;
 			cashierFunds = 10000;
 			menu = new Menu();
@@ -86,6 +100,19 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		 * Scheduler.  Determine what action is called for, and do it.
 		 */
 		public boolean pickAndExecuteAnAction() {
+			if(!restaurant.open || (orders.isEmpty() && myCustomers.isEmpty())){
+				leave();
+				return true;
+			}
+			synchronized(orders){
+				for(Order o: orders){
+					if(o.orderState == MarketOrderState.payBill){
+						processOrder(o);
+						return true;
+					}
+				}
+			}
+			
 		synchronized(myCustomers){
 			for(MyCustomer m: myCustomers){
 				if(m.state == CustomerState.paying){
@@ -108,12 +135,6 @@ public class OmarCashierRole extends RestaurantCashierRole {
 					customerDies(m);
 					return true;
 				}
-			}
-		}
-		synchronized(orders){
-			for(Order o: orders){
-				processOrder(o);
-				return true;
 			}
 		}
 			return false;
@@ -152,9 +173,14 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		
 		void processOrder(Order o){
 			System.out.println("Processed Order.  Gave market $" + (int)o.cost);
-			o.market.msgTakeMoney(this, (int)o.cost);
+			o.market.MarketCashier.msgHereIsPayment(restaurant, o.cost);
 			cashierFunds-=(int)o.cost;
 			orders.remove(o);
+			stateChanged();
+		}
+		
+		void leave(){
+			active = false;
 			stateChanged();
 		}
 		
@@ -194,36 +220,38 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			}
 		}
 		
-		public void msgPayTheMarket(Market market, double currentOrderCost){
-			orders.add(new Order(market, currentOrderCost));
-			System.out.println("Market Order Added");
-			stateChanged();
-		}
-		
-
 		//utilities
 		public String toString(){
 			return name;
 		}
 
-		@Override //TODO INTEGRATION REQUIRED
 		public void msgHereIsTheBill(Market m, double bill,
 				Map<String, Double> price_list) {
-			// TODO Auto-generated method stub
-			
+			orders.add(new Order(m, price_list, bill));
+			System.out.println("Market Order Added");
+			stateChanged();
+		}
+		
+		public void msgPayInvoice(Market m, List<Item> currentOrder){
+			for(Order o: orders){
+				if(o.market == m){
+					o.setOrderItems(currentOrder);
+					o.orderState = MarketOrderState.payBill;
+					stateChanged();
+					return;
+				}
+			}
 		}
 
-		@Override //TODO INTEGRATION REQUIRED
+		@Override 
 		public void msgHereIsTheChange(Market m, double change) {
-			// TODO Auto-generated method stub
-			
+			cashierFunds+=change;
 		}
 
-		@Override  //TODO INTEGRATION REQUIRED
+		@Override
 		public void msgTransactionComplete(double amount, Double balance,
 				Double debt, int newAccountNumber) {
-			// TODO Auto-generated method stub
-			
+			//Never called
 		}
 
 		@Override
@@ -231,10 +259,9 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			return restaurant;
 		}
 
-		@Override  //TODO INTEGRATION REQUIRED
+		@Override
 		public void cmdFinishAndLeave() {
-			// TODO Auto-generated method stub
-			active = false;
+			command = Command.Leave;
 			stateChanged();
 		}	
 }

@@ -3,7 +3,7 @@ package city.restaurant.omar;
 import java.awt.event.ActionEvent;
 
 import java.awt.event.ActionListener;
-
+import java.util.Hashtable;
 import javax.swing.Timer;
 
 public class Order {
@@ -12,6 +12,7 @@ public class Order {
 	private String choice;
 	private int tableNumber;
 	private double cookTime;
+	private Hashtable<String, Double> cookTimes;
 	Timer foodTimer;
 	public enum OrderStatus{ pending, cooking, cooked, pickup};
 	OrderStatus status;
@@ -20,7 +21,14 @@ public class Order {
 		this.w = w;
 		this.choice = customer.choice;
 		this.tableNumber = tableNumber;
-		this.cookTime = c.cookInventory.get(choice).cookTime;
+		
+		cookTimes = new Hashtable<String, Double>();
+		cookTimes.put("Pizza", 1200.0);
+		cookTimes.put("Hot Dog", 1500.0);
+		cookTimes.put("Burger", 2000.0);
+		cookTimes.put("Filet Mignon", 3500.0);
+		this.cookTime = cookTimes.get(this.choice);
+				
 		this.c = customer;
 		status = OrderStatus.pending;
 	}
