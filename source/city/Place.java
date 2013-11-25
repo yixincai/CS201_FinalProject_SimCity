@@ -7,7 +7,7 @@ import gui.WorldViewBuilding;
  * The Restaurant, Bank, Market, House, Apartment classes should extend this.
  */
 public abstract class Place {
-	public String _name;
+	private String _name;
 	public void setName(String name) { _name = name; } 
 	WorldViewBuilding _worldViewBuilding;
 	

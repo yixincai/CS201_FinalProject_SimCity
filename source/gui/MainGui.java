@@ -135,11 +135,11 @@ public class MainGui extends JFrame
         _buildingInteriorAnimationPanels.add(bp3);
         
         //Initializing houses
-        for(int j = 1; j < 6; j++){
-            WorldViewBuilding b4 = _worldView.addBuilding(1, j, 20);
+        for(int i = 1; i < 6; i++){
+            WorldViewBuilding b4 = _worldView.addBuilding(1, i, 20);
     		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House", new city.home.gui.HomeAnimationPanel());
     		b4.setBuildingPanel(bp4);
-    		House house = new House("House", b4, bp4);
+    		House house = new House("House " + i, b4, bp4);
     		Directory.addPlace(house);
     		_buildingCardLayoutPanel.add( bp4, bp4.getName() );
     		cPanel.currentBuildingPanel.addBuilding(house.getName());
