@@ -39,7 +39,7 @@ public class BankHostRoleGui implements Gui {
 	}
 	
 	public void DoLeaveBank() {
-		// TODO
+		
 	}
 
 }

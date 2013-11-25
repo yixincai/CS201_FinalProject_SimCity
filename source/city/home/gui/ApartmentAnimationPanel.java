@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 @SuppressWarnings("serial")
 public class ApartmentAnimationPanel extends JPanel implements ActionListener {
@@ -23,6 +24,8 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public static final int STOVEY = 300;
     public static final int FRIDGEX = 550;
     public static final int FRIDGEY = 300;
+    public static final int TVX = 382;
+    public static final int TVY = 310;
     
     public static final int BEDX2 = 600;
     public static final int BEDY2 = 30;
@@ -30,6 +33,8 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public static final int STOVEY2 = 30;
     public static final int FRIDGEX2 = 550;
     public static final int FRIDGEY2 = 30;
+    public static final int TVX2 = 382;
+    public static final int TVY2 = 50;
     
     public static final int BEDX3 = 20;
     public static final int BEDY3 = 300;
@@ -37,6 +42,8 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public static final int STOVEY3 = 300;
     public static final int FRIDGEX3 = 80;
     public static final int FRIDGEY3 = 300;
+    public static final int TVX3 = 300;
+    public static final int TVY3 = 310;
     
     public static final int BEDX4 = 20;
     public static final int BEDY4 = 30;
@@ -44,6 +51,8 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public static final int STOVEY4 = 30;
     public static final int FRIDGEX4 = 80;
     public static final int FRIDGEY4 = 30;
+    public static final int TVX4 = 300;
+    public static final int TVY4 = 50;
     
     public static final int BEDWIDTH = 30;
     public static final int BEDHEIGHT = 30;
@@ -64,9 +73,12 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     
     public static final int WALLDIMH = 10;
     public static final int WALLDIMV = 150;
+    
+    public static final int TVDIM = 10;
 
     public static final int WINDOWX = 682;
     public static final int WINDOWY = 360;
+    
     
     private List<Gui> guis = new ArrayList<Gui>();
     
@@ -75,11 +87,17 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
  
-    	/*Timer timer = new Timer(10, this );
-    	timer.start(); */
+    	Timer timer = new Timer(10, this );
+    	timer.start(); 
     }
 
 	public void actionPerformed(ActionEvent e) {
+		
+		  for(Gui gui : guis) {
+	            if (gui.isPresent()) {
+	                gui.updatePosition();
+	            }
+	        }
 		repaint();  //Will have paintComponent called
 	}
 	
@@ -92,36 +110,33 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
 
         //Here is the table
 
+        //beds
         g2.setColor(Color.CYAN);
         g2.fillRect(BEDX, BEDY, BEDWIDTH, BEDHEIGHT);
         g2.fillRect(BEDX2, BEDY2, BEDWIDTH, BEDHEIGHT);
         g2.fillRect(BEDX3, BEDY3, BEDWIDTH, BEDHEIGHT);
         g2.fillRect(BEDX4, BEDY4, BEDWIDTH, BEDHEIGHT);
         
+        //stoves
         g2.setColor(Color.BLACK);
         g2.fillRect(STOVEX, STOVEY, STOVEDIM, STOVEDIM);
         g2.fillRect(STOVEX2, STOVEY2, STOVEDIM, STOVEDIM);
         g2.fillRect(STOVEX3, STOVEY3, STOVEDIM, STOVEDIM);
         g2.fillRect(STOVEX4, STOVEY4, STOVEDIM, STOVEDIM);
         
+        //fridges
         g2.setColor(Color.WHITE);
         g2.fillRect(FRIDGEX, FRIDGEY, FRIDGEDIM, FRIDGEDIM);
         g2.fillRect(FRIDGEX2, FRIDGEY2, FRIDGEDIM, FRIDGEDIM);
         g2.fillRect(FRIDGEX3, FRIDGEY3, FRIDGEDIM, FRIDGEDIM);
         g2.fillRect(FRIDGEX4, FRIDGEY4, FRIDGEDIM, FRIDGEDIM);
         
+        //walls
         g2.setColor(Color.BLUE);
         g2.fillRect(WALLX1, WALLY1, WALLDIMV, WALLDIMH);
         g2.fillRect(WALLX2, WALLY2, WALLDIMV, WALLDIMH);
         g2.fillRect(WALLX3, WALLY3, WALLDIMH, WALLDIMV);
         g2.fillRect(WALLX4, WALLY4, WALLDIMH, WALLDIMV);
-        
-
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
@@ -129,6 +144,7 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
             }
         }
     }
+    
     public void addGui(HomeOccupantGui gui) {
         guis.add(gui);
     }

@@ -29,11 +29,17 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 	    	setSize(WINDOWX, WINDOWY);
 	        setVisible(true);
 	 
-	    	/*Timer timer = new Timer(10, this );
-	    	timer.start(); */
+	    	Timer timer = new Timer(10, this );
+	    	timer.start();
 	    }
 
 		public void actionPerformed(ActionEvent e) {
+			for(Gui gui : guis) {
+	            if (gui.isPresent()) {
+	                gui.updatePosition();
+	            }
+	        }
+			
 			repaint();  //Will have paintComponent called
 		}
 		
@@ -48,12 +54,6 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 
 	        g2.setColor(Color.BLACK);
 	        g2.fillRect(TELLERDESKX, TELLERDESKY, TELLERDESKWIDTH, TELLERDESKHEIGHT);//200 and 250 need to be table params
-
-	        for(Gui gui : guis) {
-	            if (gui.isPresent()) {
-	                gui.updatePosition();
-	            }
-	        }
 
 	        for(Gui gui : guis) {
 	            if (gui.isPresent()) {
