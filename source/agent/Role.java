@@ -21,7 +21,7 @@ public abstract class Role
 	// ----------------------------- METHODS ------------------------------------
 	protected void stateChanged()
 	{
-		_person.stateChanged(); // it should be okay to perform extra scheduler calls in the person (since they all take place in one thread anyway)
+		if(_person != null) _person.stateChanged(); // it should be okay to perform extra scheduler calls in the person (since they all take place in one thread anyway)
 		//if(active) _person.stateChanged();
 	}
 	
