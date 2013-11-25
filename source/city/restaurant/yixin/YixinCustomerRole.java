@@ -7,14 +7,12 @@ import city.PersonAgent;
 import city.Place;
 import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.yixin.gui.YixinCustomerGui;
-import utilities.EventLog;
 
 /**
  * Restaurant customer agent.
  */
 public class YixinCustomerRole extends RestaurantCustomerRole{// implements Customer{
 	public YixinRestaurant restaurant;
-	public EventLog log = new EventLog();
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
@@ -441,12 +439,10 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 
 	@Override
 	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
 		
 	}
 	
 	public Place place() {
-		// TODO Auto-generated method stub
 		return restaurant;
 	}
 }

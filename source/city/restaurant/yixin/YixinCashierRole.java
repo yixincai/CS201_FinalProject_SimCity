@@ -2,10 +2,7 @@ package city.restaurant.yixin;
 
 import java.util.*;
 
-import utilities.EventLog;
-import utilities.LoggedEvent;
 import city.*;
-import city.bank.BankTellerRole;
 import city.market.*;
 import city.restaurant.RestaurantCashierRole;
 import city.restaurant.yixin.gui.YixinCashierGui;
@@ -14,7 +11,6 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	public YixinRestaurant restaurant;
 	public YixinCookRole cook;
 
-	public EventLog log = new EventLog();
 	private String name = "Cashier";
 	public List<CustomerBill> bills = Collections.synchronizedList(new ArrayList<CustomerBill>());
 	public List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
@@ -45,14 +41,12 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 
 	// Messages
 	public void msgComputeBill(YixinWaiterRole w, YixinCustomerRole c, String choice) {
-		log.add(new LoggedEvent("Received ComputeBill from waiter. Choice = "+ choice));
 		print("Bill Request received");
 		bills.add(new CustomerBill(w,c,choice));
 		stateChanged();
 	}
 
 	public void msgHereIsThePayment(YixinCustomerRole c, double check, double cash) {
-		log.add(new LoggedEvent("Received HereIsTheCheck from customer. Check = "+ check + " Payment = "+ cash));
 		print("Payment received");
 		for (CustomerBill bill : bills)
 			if (bill.customer == c){
@@ -64,7 +58,6 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	}
 
 	public void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list){
-		log.add(new LoggedEvent("Received HereIsTheBill from market. Bill = "+ bill));
 		print("Market bill received with amount of " + bill);
 		marketBills.add(new MarketBill(m, bill, price_list));
 		stateChanged();

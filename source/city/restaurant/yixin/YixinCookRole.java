@@ -7,13 +7,11 @@ import city.*;
 import city.market.*;
 import city.restaurant.*;
 import city.restaurant.yixin.gui.YixinCookGui;
-import utilities.EventLog;
 
 public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	public YixinRestaurant restaurant;
 	public YixinCashierRole cashier;
 
-	public EventLog log = new EventLog();
 	private String name = "TheBestCook";
 	public List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	public Map<String, Food> inventory = new HashMap<String, Food>();

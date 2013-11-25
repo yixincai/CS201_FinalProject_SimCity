@@ -3,7 +3,6 @@ package city.restaurant.yixin;
 import gui.WorldViewBuilding;
 
 import java.util.*;
-import java.util.concurrent.Semaphore;
 
 import agent.Role;
 import city.PersonAgent;
