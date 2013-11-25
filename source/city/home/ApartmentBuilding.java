@@ -28,8 +28,7 @@ public class ApartmentBuilding extends Place implements PlaceWithAnimation {
 		{
 			for(int roomNumber = 0; roomNumber < 4; roomNumber++) // starting out with a small number of rooms so we can fit them on the animation
 			{
-				Apartment a = new Apartment(this);
-				a.setNumber(floorNumber*100 + roomNumber);
+				Apartment a = new Apartment(this, floorNumber*100 + roomNumber);
 				_apartments.add(a);
 			}
 		}
