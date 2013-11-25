@@ -72,6 +72,8 @@ public class CommuterGui implements Gui {
 	public void goToCar(CarObject car, Place destination){
 		_transportationType = TransportationType.driving;
 		tFlag = true;
+		_xDestination = car.getXPosition();
+		_yDestination = car.getYPosition();
 	}
 	
 	
