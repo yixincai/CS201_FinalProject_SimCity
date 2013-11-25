@@ -120,5 +120,93 @@ public class BankTellerTest extends TestCase
 		assertTrue("Customer should have 400.0 in the bank but actually has " + customer.balance, customer.balance == (double)400);
 		assertTrue("Custoemr should owe no money but actually owes " + customer.amountOwed, customer.amountOwed == (double)0.0);	
 	}
+	
+	public void testOneNormalCustomerGetLoanScenario()
+	{
+		try {
+			this.setUp();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Check to make sure everything was created correctly (Preconditions)
+		assertTrue(host.log.size() == 0);
+		assertTrue(customer.log.size() == 0);
+		assertTrue(teller.myCustomers.size() == 0);
+		assertTrue(teller.myBusinessCustomers.size() == 0);
+		assertTrue(!teller.isOccupied());
+		assertTrue(host.isWaitingCustomersEmpty());
+		
+		//Now make the host send the customer to the bankTeller.
+		customer.msgCalledToDesk(teller);
+		assertTrue("customer log should read \"msgCalledToDesk recieved.\" but reads " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgCalledToDesk recieved"));
+		
+		//Now the customer and teller begin to interact
+		teller.msgIAmHere(customer);
+		assertTrue(teller.myCustomers.size() == 1);
+		assertTrue(teller.pickAndExecuteAnAction());
+		assertTrue("The customer should have logged \"msgHereIsInfoPickARequest recieved\" but actually logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgHereIsInfoPickARequest recieved"));
+		//now ask to get a loan
+		teller.msgHereIsMyRequest(customer, "withdraw loan", (double)100.0);
+		assertTrue(teller.pickAndExecuteAnAction());
+		waitForGui.schedule(new TimerTask(){
+			public void run()
+			{
+				
+			}
+		}, 5 * 1000);
+		assertTrue("Customer should have logged \"msgTransactionComplete received\" but logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgTransactionComplete recieved"));
+		assertTrue("Customer should have 100 bucks but actually has " + customer.cash, customer.cash == (double)100.0);
+		assertTrue("Customer should have 0.0 in the bank but actually has " + customer.balance, customer.balance == (double)0.0);
+		assertTrue("Custoemr should owe 100.0 but actually owes " + customer.amountOwed, customer.amountOwed == (double)100.0);	
+	}
+	
+	public void testOneNormalCustomerPayLoanScenario()
+	{
+		try {
+			this.setUp();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Check to make sure everything was created correctly (Preconditions)
+		assertTrue(host.log.size() == 0);
+		assertTrue(customer.log.size() == 0);
+		assertTrue(teller.myCustomers.size() == 0);
+		assertTrue(teller.myBusinessCustomers.size() == 0);
+		assertTrue(!teller.isOccupied());
+		assertTrue(host.isWaitingCustomersEmpty());
+		
+		//Now make the host send the customer to the bankTeller.
+		customer.msgCalledToDesk(teller);
+		assertTrue("customer log should read \"msgCalledToDesk recieved.\" but reads " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgCalledToDesk recieved"));
+		
+		//Now the customer and teller begin to interact
+		teller.msgIAmHere(customer);
+		assertTrue(teller.myCustomers.size() == 1);
+		assertTrue(teller.pickAndExecuteAnAction());
+		assertTrue("The customer should have logged \"msgHereIsInfoPickARequest recieved\" but actually logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgHereIsInfoPickARequest recieved"));
+		//now set it up as if the person took out a loan of 100 but can now pay for it
+		customer.cash = (double)100.0;
+		customer.balance = (double)0.0;
+		customer.amountOwed = (double)100.0;
+		teller.database.funds.put(customer.accNumber, (double)0.0);
+		teller.database.amountOwed.put(customer.accNumber, (double)100.0);
+		teller.msgHereIsMyRequest(customer, "pay loan", (double)100.0);
+		assertTrue(teller.pickAndExecuteAnAction());
+		waitForGui.schedule(new TimerTask(){
+			public void run()
+			{
+				
+			}
+		}, 5 * 1000);
+		assertTrue("Customer should have logged \"msgTransactionComplete received\" but logged " + customer.log.getLastLoggedEvent(), customer.log.containsString("msgTransactionComplete recieved"));
+		assertTrue("Customer should have no money but actually has " + customer.cash, customer.cash == (double)0.0);
+		assertTrue("Customer should have 0.0 in the bank but actually has " + customer.balance, customer.balance == (double)0.0);
+		assertTrue("Custoemr should owe no money but actually owes " + customer.amountOwed, customer.amountOwed == (double)0.0);	
+	}
+	
 
 }
