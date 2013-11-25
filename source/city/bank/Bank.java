@@ -51,7 +51,7 @@ public class Bank extends Place implements PlaceWithAnimation {
 	}
 	
 	public BankCustomerRole generateCustomerRole(PersonAgent p){
-		return (new BankCustomerRole(p, p.getAccountNumber(), this));
+		return (new BankCustomerRole(p, this));
 	}
 	
 	public void addTeller(PersonAgent p){ //
@@ -83,6 +83,6 @@ public class Bank extends Place implements PlaceWithAnimation {
 	}
 	
 	public BankCustomerRole generateBankCustomerRole(PersonAgent person){
-		return new BankCustomerRole(person, -1, this);
+		return new BankCustomerRole(person, this);
 	}
 }

@@ -36,7 +36,6 @@ public class PersonAgent extends Agent
 	private boolean _weekday_notWeekend;
 	private HomeOccupantRole _homeOccupantRole;
 	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house (now, just pays rent on apartment)
-	private int bankAccountNumber = -1;
 	
 	// State data:
 	public double _money;
@@ -281,8 +280,6 @@ public class PersonAgent extends Agent
 	// ---------------------- OTHER PROPERTIES -------------------------
 	public String getName() { return _name; }
 	public double money() { return _money; }
-	public int getAccountNumber() { return bankAccountNumber; }
-	public void setAccountNumber(int newAccntNum) { this.bankAccountNumber = newAccntNum;} 
 	public void changeMoney(double delta) { _money += delta; }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
 	public void setWorkDays(boolean weekday_notWeekend) {
