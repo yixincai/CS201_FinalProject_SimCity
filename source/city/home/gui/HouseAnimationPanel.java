@@ -47,11 +47,18 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
  
-    	/*Timer timer = new Timer(10, this );
-    	timer.start(); */
+    	Timer timer = new Timer(10, this );
+    	timer.start();
     }
 
 	public void actionPerformed(ActionEvent e) {
+		
+        for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+        }
+        
 		repaint();  //Will have paintComponent called
 	}
 	
@@ -71,12 +78,6 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(BEDWALLX, BEDWALLY, BEDWALLWIDTH, BEDWALLHEIGHT);
         g2.fillRect(BEDWALLX2, BEDWALLY2, BEDWALLWIDTH, BEDWALLHEIGHT);
         
-
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {

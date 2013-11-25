@@ -44,6 +44,12 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     }
     
 	public void actionPerformed(ActionEvent e) {
+        for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+        }
+		
 		repaint();  //Will have paintComponent called
 	}
 	
@@ -65,11 +71,6 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
                 g2.fillRect( 600, i*ICON_X , ICON_X, ICON_Y);        		
         }
         //here is the cooking area 
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
