@@ -111,7 +111,7 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
                 gui.updatePosition();
             }
         }
-
+        //TODO make guis a synchronized list
         for(Gui gui : guis)
         {
             if (gui.isPresent())

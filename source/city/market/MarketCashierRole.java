@@ -24,7 +24,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public List<RestaurantOrder> restaurantOrders = new ArrayList<RestaurantOrder>();
 	
 	Market market;
-	double moneyInHand, moneyInBank;
+	double moneyInHand = 1000, moneyInBank;
 	enum RoleState{WantToLeave,none}
 	RoleState role_state = RoleState.none;
 	public enum MoneyState{OrderedFromBank, none}
