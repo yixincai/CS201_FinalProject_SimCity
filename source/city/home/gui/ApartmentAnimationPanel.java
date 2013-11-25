@@ -12,59 +12,62 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import city.bank.gui.BankHostRoleGui;
-
+@SuppressWarnings("serial")
 public class ApartmentAnimationPanel extends JPanel implements ActionListener {
-    private final int BEDX = 600;
-    private final int BEDY = 300;
-    private final int STOVEX = 570;
-    private final int STOVEY = 300;
-    private final int FRIDGEX = 550;
-    private final int FRIDGEY = 300;
+	
+	// Note: I changed these to public so that they can be accessed by HouseOccupantGui and ApartmentOccupantGui --Eric
+	
+    public final int BEDX = 600;
+    public final int BEDY = 300;
+    public final int STOVEX = 570;
+    public final int STOVEY = 300;
+    public final int FRIDGEX = 550;
+    public final int FRIDGEY = 300;
     
-    private final int BEDX2 = 600;
-    private final int BEDY2 = 30;
-    private final int STOVEX2 = 570;
-    private final int STOVEY2 = 30;
-    private final int FRIDGEX2 = 550;
-    private final int FRIDGEY2 = 30;
+    public final int BEDX2 = 600;
+    public final int BEDY2 = 30;
+    public final int STOVEX2 = 570;
+    public final int STOVEY2 = 30;
+    public final int FRIDGEX2 = 550;
+    public final int FRIDGEY2 = 30;
     
-    private final int BEDX3 = 20;
-    private final int BEDY3 = 300;
-    private final int STOVEX3 = 60;
-    private final int STOVEY3 = 300;
-    private final int FRIDGEX3 = 80;
-    private final int FRIDGEY3 = 300;
+    public final int BEDX3 = 20;
+    public final int BEDY3 = 300;
+    public final int STOVEX3 = 60;
+    public final int STOVEY3 = 300;
+    public final int FRIDGEX3 = 80;
+    public final int FRIDGEY3 = 300;
     
-    private final int BEDX4 = 20;
-    private final int BEDY4 = 30;
-    private final int STOVEX4 = 60;
-    private final int STOVEY4 = 30;
-    private final int FRIDGEX4 = 80;
-    private final int FRIDGEY4 = 30;
+    public final int BEDX4 = 20;
+    public final int BEDY4 = 30;
+    public final int STOVEX4 = 60;
+    public final int STOVEY4 = 30;
+    public final int FRIDGEX4 = 80;
+    public final int FRIDGEY4 = 30;
     
-    private final int BEDWIDTH = 30;
-    private final int BEDHEIGHT = 30;
-    private final int STOVEDIM = 20;
-    private final int FRIDGEDIM = 20;
+    public final int BEDWIDTH = 30;
+    public final int BEDHEIGHT = 30;
+    public final int STOVEDIM = 20;
+    public final int FRIDGEDIM = 20;
     
-    private final int WALLX1 = 0;
-    private final int WALLY1 = 180;
+    public final int WALLX1 = 0;
+    public final int WALLY1 = 180;
     
-    private final int WALLX2 = 530;
-    private final int WALLY2 = 180;
+    public final int WALLX2 = 530;
+    public final int WALLY2 = 180;
     
-    private final int WALLX3 = 341;
-    private final int WALLY3 = 0;
+    public final int WALLX3 = 341;
+    public final int WALLY3 = 0;
     
-    private final int WALLX4 = 341;
-    private final int WALLY4 = 210;
+    public final int WALLX4 = 341;
+    public final int WALLY4 = 210;
     
-    private final int WALLDIMH = 10;
-    private final int WALLDIMV = 150;
+    public final int WALLDIMH = 10;
+    public final int WALLDIMV = 150;
 
-    private final int WINDOWX = 682;
-    private final int WINDOWY = 360;
+    public final int WINDOWX = 682;
+    public final int WINDOWY = 360;
+    
     private List<Gui> guis = new ArrayList<Gui>();
     
     public ApartmentAnimationPanel()

@@ -17,25 +17,32 @@ import city.bank.gui.BankCustomerRoleGui;
 import city.bank.gui.BankHostRoleGui;
 import city.bank.gui.BankTellerRoleGui;
 
-public class HomeAnimationPanel extends JPanel implements ActionListener {
-    private final int BEDX = 600;
-    private final int BEDY = 300;
-    private final int BEDWIDTH = 30;
-    private final int BEDHEIGHT = 30;
+@SuppressWarnings("serial")
+public class HouseAnimationPanel extends JPanel implements ActionListener {
+	
+	// Note: I changed these to public so that they can be accessed by HouseOccupantGui and ApartmentOccupantGui --Eric
+	
+	//TODO Omar, add a public static final int KITCHENX and KITCHENY (or you could just do stove/fridge, that would be fine) so that the HouseOccupantGui knows where to go)
+	
+    public static final int BEDX = 600;
+    public static final int BEDY = 300;
+    public static final int BEDWIDTH = 30;
+    public static final int BEDHEIGHT = 30;
     
-    private final int BEDWALLX = 400;
-    private final int BEDWALLY = 0;
-    private final int BEDWALLWIDTH = 10;
-    private final int BEDWALLHEIGHT = 160;
+    public static final int BEDWALLX = 400;
+    public static final int BEDWALLY = 0;
+    public static final int BEDWALLWIDTH = 10;
+    public static final int BEDWALLHEIGHT = 160;
     
-    private final int BEDWALLX2 = 400;
-    private final int BEDWALLY2 = 200;
-
-    private final int WINDOWX = 682;
-    private final int WINDOWY = 360;
-    private List<Gui> guis = new ArrayList<Gui>();
+    public static final int BEDWALLX2 = 400;
+    public static final int BEDWALLY2 = 200;
     
-    public HomeAnimationPanel()
+    public static final int WINDOWX = 682;
+    public static final int WINDOWY = 360;
+    
+    private static List<Gui> guis = new ArrayList<Gui>();
+    
+    public HouseAnimationPanel()
     {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
@@ -77,15 +84,7 @@ public class HomeAnimationPanel extends JPanel implements ActionListener {
             }
         }
     }
-    
-  /*  public void addGui(HomeBuyingRoleGui gui) {
+    public void addGui(HomeOccupantGui gui) {
         guis.add(gui);
     }
-
-    public void addGui(HomeRoleGui gui) {
-        guis.add(gui);
-    }
-    
-    public void addGui(HomeRoleGui gui) {
-        guis.add(gui); */
 }
