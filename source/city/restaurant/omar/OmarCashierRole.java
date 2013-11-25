@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
+import city.PersonAgent;
+import city.Place;
+import city.market.Item;
+import city.market.Market;
 import city.restaurant.RestaurantCashierRole;
+import city.restaurant.yixin.YixinRestaurant;
 
 public class OmarCashierRole extends RestaurantCashierRole {
 
@@ -14,14 +20,15 @@ public class OmarCashierRole extends RestaurantCashierRole {
 	 */
 		//Data
 		public double cashierFunds;
+		private OmarRestaurant restaurant;
 		public class MyCustomer { //similar to mycustomer in waiter
-			Waiter waiter;
-			Customer customer;
+			OmarWaiterRole waiter;
+			OmarCustomerRole customer;
 			String choice;
 			public CustomerState state;
 			double money;
 			
-			MyCustomer(Customer c, Waiter w, String choice){
+			MyCustomer(OmarCustomerRole c, OmarWaiterRole w, String choice){
 				waiter = w;
 				
 				this.customer = c;
@@ -31,6 +38,8 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		}
 		
 		public enum CustomerState {paying, paid, awaitingChange, canAfford, cantAfford};
+		enum Command{None, Leave};
+		Command command;
 
 		class Food {
 			String foodType;
@@ -45,13 +54,23 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			}
 		}
 		
+		
+		enum MarketOrderState{none, billReceived, payBill};
 		private class Order {
 			public Market market;
+			public Map<String, Double> price_list;
 			public double cost;
+			List<Item> orderItems;
+			MarketOrderState orderState = MarketOrderState.none;
 			
-			public Order(Market market2, double cost){
-				this.market = market2;
-				this.cost = cost;
+			public Order(Market market, Map<String, Double> price_list, double bill){
+				this.market = market;
+				this.price_list = price_list;
+				this.cost = bill;
+			}
+			
+			public void setOrderItems(List<Item> orderItems){
+				this.orderItems = orderItems;
 			}
 		}
 		
@@ -61,8 +80,10 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		public Menu menu;
 		private String name;
 //
-		public CashierAgent() {
-			super();
+		public OmarCashierRole(PersonAgent p, OmarRestaurant r) {
+			super(p);
+			command = Command.None;
+			this.restaurant = r;
 			cashierFunds = 10000;
 			menu = new Menu();
 			foodPrices = new Hashtable<String, Double>();
@@ -79,6 +100,19 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		 * Scheduler.  Determine what action is called for, and do it.
 		 */
 		public boolean pickAndExecuteAnAction() {
+			if(!restaurant.open || (orders.isEmpty() && myCustomers.isEmpty())){
+				leave();
+				return true;
+			}
+			synchronized(orders){
+				for(Order o: orders){
+					if(o.orderState == MarketOrderState.payBill){
+						processOrder(o);
+						return true;
+					}
+				}
+			}
+			
 		synchronized(myCustomers){
 			for(MyCustomer m: myCustomers){
 				if(m.state == CustomerState.paying){
@@ -103,12 +137,6 @@ public class OmarCashierRole extends RestaurantCashierRole {
 				}
 			}
 		}
-		synchronized(orders){
-			for(Order o: orders){
-				processOrder(o);
-				return true;
-			}
-		}
 			return false;
 		}
 
@@ -124,7 +152,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 				checkAmount = 19.99;
 			} else {
 				checkAmount = 34.99;
-			}
+			}//
 			m.waiter.msgHereIsCheck(m.customer, checkAmount);
 			m.state = CustomerState.awaitingChange;
 			stateChanged();
@@ -144,22 +172,27 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		}
 		
 		void processOrder(Order o){
-			Do("Processed Order.  Gave market $" + (int)o.cost);
-			o.market.msgTakeMoney(this, (int)o.cost);
+			System.out.println("Processed Order.  Gave market $" + (int)o.cost);
+			o.market.MarketCashier.msgHereIsPayment(restaurant, o.cost);
 			cashierFunds-=(int)o.cost;
 			orders.remove(o);
 			stateChanged();
 		}
 		
+		void leave(){
+			active = false;
+			stateChanged();
+		}
+		
 		//Messages
-		public void msgCustomerDoneAndNeedsToPay(Customer c, Waiter w, String choice){
+		public void msgCustomerDoneAndNeedsToPay(OmarCustomerRole c, OmarWaiterRole w, String choice){
 			MyCustomer m = new MyCustomer(c, w, choice);
 			myCustomers.add(m);
 			m.state = CustomerState.paying;
 			stateChanged();
 		}
 		
-		public void msgTakeMoney(Customer c, int customerMoney){
+		public void msgTakeMoney(OmarCustomerRole c, int customerMoney){
 			synchronized(myCustomers){
 			int i;
 			for(i = 0; i < myCustomers.size(); i++){
@@ -174,7 +207,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			}
 		}
 		
-		public void msgICantAffordMyMeal(Customer c){
+		public void msgICantAffordMyMeal(OmarCustomerRole c){
 			synchronized(myCustomers){
 			int i;
 			for(i = 0; i < myCustomers.size(); i++){
@@ -187,15 +220,48 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			}
 		}
 		
-		public void msgPayTheMarket(Market market, double currentOrderCost){
-			orders.add(new Order(market, currentOrderCost));
-			Do("Market Order Added");
-			stateChanged();
-		}
-		
-
 		//utilities
 		public String toString(){
 			return name;
+		}
+
+		public void msgHereIsTheBill(Market m, double bill,
+				Map<String, Double> price_list) {
+			orders.add(new Order(m, price_list, bill));
+			System.out.println("Market Order Added");
+			stateChanged();
+		}
+		
+		public void msgPayInvoice(Market m, List<Item> currentOrder){
+			for(Order o: orders){
+				if(o.market == m){
+					o.setOrderItems(currentOrder);
+					o.orderState = MarketOrderState.payBill;
+					stateChanged();
+					return;
+				}
+			}
+		}
+
+		@Override 
+		public void msgHereIsTheChange(Market m, double change) {
+			cashierFunds+=change;
+		}
+
+		@Override
+		public void msgTransactionComplete(double amount, Double balance,
+				Double debt, int newAccountNumber) {
+			//Never called
+		}
+
+		@Override
+		public Place place() {
+			return restaurant;
+		}
+
+		@Override
+		public void cmdFinishAndLeave() {
+			command = Command.Leave;
+			stateChanged();
 		}	
 }

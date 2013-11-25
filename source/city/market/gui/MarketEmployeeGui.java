@@ -43,10 +43,14 @@ public class MarketEmployeeGui extends JPanel implements Gui {
     }
 
     public void draw(Graphics2D g) {
-    	g.drawImage(image, xPos, yPos, xGap, yGap, this);
+		if(role.active){
+			g.fillRect(xPos, yPos, xGap, yGap);
+			//g.drawImage(image, xPos, yPos, xGap, yGap, this);
+		}
     }
     
 	public void PickUp(String item){
+		System.out.println("Getting things!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		if (item.equals("Meal")){
 			xDestination = 400;
 			yDestination = 50;
@@ -86,8 +90,8 @@ public class MarketEmployeeGui extends JPanel implements Gui {
 	}
 	
 	public void GoHome(){
-		xDestination = -xGap;
-		yDestination = -yGap;
+		xDestination = 400;
+		yDestination = 100;
 	}
 
     public boolean isPresent() {

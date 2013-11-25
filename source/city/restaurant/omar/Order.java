@@ -1,35 +1,39 @@
 package city.restaurant.omar;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+import java.awt.event.ActionListener;
+import java.util.Hashtable;
 import javax.swing.Timer;
 
-import restaurant.CookAgent;
-import restaurant.CustomerAgent;
-import restaurant.WaiterAgent;
-import restaurant.Order.OrderStatus;
-
 public class Order {
-	private WaiterAgent w;
-	private CustomerAgent c;
+	private OmarWaiterRole w;
+	private OmarCustomerRole c;
 	private String choice;
 	private int tableNumber;
 	private double cookTime;
+	private Hashtable<String, Double> cookTimes;
 	Timer foodTimer;
 	public enum OrderStatus{ pending, cooking, cooked, pickup};
 	OrderStatus status;
 
-	public Order(WaiterAgent w, int tableNumber, CookAgent c, CustomerAgent customer){
+	public Order(OmarWaiterRole w, int tableNumber, OmarCookRole c, OmarCustomerRole customer){
 		this.w = w;
 		this.choice = customer.choice;
 		this.tableNumber = tableNumber;
-		this.cookTime = c.cookInventory.get(choice).cookTime;
+		
+		cookTimes = new Hashtable<String, Double>();
+		cookTimes.put("Pizza", 1200.0);
+		cookTimes.put("Hot Dog", 1500.0);
+		cookTimes.put("Burger", 2000.0);
+		cookTimes.put("Filet Mignon", 3500.0);
+		this.cookTime = cookTimes.get(this.choice);
+				
 		this.c = customer;
 		status = OrderStatus.pending;
 	}
 	
-	public WaiterAgent getWaiter(){
+	public OmarWaiterRole getWaiter(){
 		return w;
 	}
 	
@@ -41,7 +45,7 @@ public class Order {
 		foodTimer.start();
 	}
 	
-	public void setWaiter(WaiterAgent w){
+	public void setWaiter(OmarWaiterRole w){
 		this.w = w;
 	}
 	
@@ -61,7 +65,7 @@ public class Order {
 		this.tableNumber = tableNumber;
 	}
 	
-	public CustomerAgent getCustomer(){
+	public OmarCustomerRole getCustomer(){
 		return c;
 	}
 	

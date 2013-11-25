@@ -34,6 +34,8 @@ public class LandlordRole extends Role {
 	}
 	List<MyHouse> _myHouses = new ArrayList<MyHouse>();
 	
+	
+	
 	// ------------------------------ CONSTRUCTOR & PROPERTIES ---------------------------
 	public LandlordRole(PersonAgent person)
 	{
@@ -62,7 +64,7 @@ public class LandlordRole extends Role {
 		}
 	}
 	@Override
-	public Place place() { return _person.homeRole().place(); }
+	public Place place() { return _person.homeOccupantRole().place(); }
 	
 	
 	

@@ -1,10 +1,8 @@
 package city.restaurant.omar;
 
-import restaurant.CustomerAgent;
-
 public class Table {
 	
-	CustomerAgent occupiedBy;
+	OmarCustomerRole occupiedBy;
 	int tableNumber;
 	
 	int tableX;
@@ -17,7 +15,7 @@ public class Table {
 		setUnoccupied();
 	}
 		
-	void setOccupant(CustomerAgent cust) {
+	void setOccupant(OmarCustomerRole cust) {
 		occupiedBy = cust;
 	}
 
@@ -25,7 +23,7 @@ public class Table {
 		occupiedBy = null;
 	}
 
-	CustomerAgent getOccupant() {
+	OmarCustomerRole getOccupant() {
 		return occupiedBy;
 	}
 

@@ -43,29 +43,32 @@ public abstract class Restaurant extends Place {
 		return cashier;
 	}
 	
-	public RestaurantCookRole tryAcquireCook() {
+	// ------------------------------------ FACTORIES & ROLE ACQUIRES ---------------------------------------------
+	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // Make a new CustomerRole, which is initialized with a pointer to the HostRole.
+	public abstract Role generateWaiterRole(PersonAgent person);
+	
+	public RestaurantCookRole tryAcquireCook(PersonAgent person) {
 		if(_cookSemaphore.tryAcquire()) {
+			cook.setPersonAgent(person);
 			return cook;
 		}
 		else return null;
 	}
 	
-	public RestaurantCashierRole tryAcquireCashier() {
+	public RestaurantCashierRole tryAcquireCashier(PersonAgent person) {
 		if(_cashierSemaphore.tryAcquire()) {
+			cashier.setPersonAgent(person);
 			return cashier;
 		}
 		else return null;
 	}
 	
-	public Role tryAcquireHost() {
+	public Role tryAcquireHost(PersonAgent person) {
 		if(_hostSemaphore.tryAcquire()) {
+			getHostRole().setPersonAgent(person);
 			return getHostRole();
 		}
 		else return null;
 	}
-	
-	// ------------------------------------ FACTORIES ---------------------------------------------
-	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // Make a new CustomerRole, which is initialized with a pointer to the HostRole.
-	public abstract Role generateWaiterRole();
 
 }

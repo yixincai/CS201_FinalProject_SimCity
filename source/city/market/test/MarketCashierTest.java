@@ -3,7 +3,9 @@ package city.market.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import city.Directory;
 import city.PersonAgent;
+import city.bank.Bank;
 import city.bank.BankTellerRole;
 import city.market.*;
 import city.market.test.mock.*;
@@ -17,7 +19,6 @@ public class MarketCashierTest  extends TestCase {
 	MarketCashierRole cashier;
 	MockMarketCustomer customer;
 	MockMarketEmployee employee;
-	BankTellerRole bankTeller;
 	
 	public void setUp() throws Exception{
 		super.setUp();
@@ -27,9 +28,10 @@ public class MarketCashierTest  extends TestCase {
 		cashier = market.MarketCashier;
 		cashier.setPersonAgent(p);
 		customer = new MockMarketCustomer("Customer1");
-		bankTeller = new BankTellerRole(p, null,0);
-		cashier.bankTeller = bankTeller;
-		bankTeller.makeDatabase();
+		Bank b = new Bank();
+		Directory.addPlace(b);
+		Directory.banks().get(0).tellers.get(0).makeDatabase();
+		Directory.banks().get(0).tellers.get(0).setPersonAgent(new PersonAgent("Dummy"));
 	}
 	
 	public void testOneNormalCustomerWithoutBankScenario(){

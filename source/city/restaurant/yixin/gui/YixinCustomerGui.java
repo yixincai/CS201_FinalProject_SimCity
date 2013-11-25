@@ -18,20 +18,20 @@ public class YixinCustomerGui extends JPanel implements Gui{
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant, GoToCashier};
 	private Command command=Command.noCommand;
 	private int count = 0;
-	
+
 	public static final int xTable1 = 450, xTable2 = 300, xTable3 = 150;
 	public static final int yTable = 100;
-    private final int GAPX = 30;
-    private final int GAPY = 30;
-    private final int OriginX = -60;
-    private final int OriginY = -60;
-    
-    private ImageIcon i = new ImageIcon("source/image/customer.jpg");
-    private Image image = i.getImage();
-    
-    private String choice;
-    private boolean show_choice = false;
-    
+	private final int GAPX = 30;
+	private final int GAPY = 30;
+	private final int OriginX = -60;
+	private final int OriginY = -60;
+
+	private ImageIcon i = new ImageIcon("source/image/customer.jpg");
+	private Image image = i.getImage();
+
+	private String choice;
+	private boolean show_choice = false;
+
 	public YixinCustomerGui(YixinCustomerRole c, int count){ 
 		agent = c;
 		xPos = OriginX;
@@ -68,11 +68,13 @@ public class YixinCustomerGui extends JPanel implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-		g.setColor(Color.BLUE);
-    	g.fillRect(xPos, yPos, GAPX, GAPY);    	
-		//g.drawImage(image, xPos, yPos, GAPX, GAPY, this);
-    	if (show_choice)
-    		g.drawString(this.choice, xDestination, yDestination + 40);
+		if(agent.active){
+			g.setColor(Color.BLUE);
+			g.fillRect(xPos, yPos, GAPX, GAPY);    	
+			//g.drawImage(image, xPos, yPos, GAPX, GAPY, this);
+			if (show_choice)
+				g.drawString(this.choice, xDestination, yDestination + 40);
+		}
 	}
 
 	public boolean isPresent() {
@@ -107,7 +109,7 @@ public class YixinCustomerGui extends JPanel implements Gui{
 		command = Command.GoToSeat;
 		show_choice = false;
 	}
-	
+
 	public void DoGoToCashier() {
 		show_choice = false;
 		choice = "";
@@ -115,7 +117,7 @@ public class YixinCustomerGui extends JPanel implements Gui{
 		yDestination = 70;
 		command = Command.GoToCashier;
 	}
-	
+
 	public void DoGoWaiting() {
 		show_choice = false;
 		choice = "";
@@ -123,7 +125,7 @@ public class YixinCustomerGui extends JPanel implements Gui{
 		yDestination = count*30+15;
 		command = Command.GoToCashier;
 	}
-	
+
 	public void DoGoToJail() {
 		xDestination = 50;
 		yDestination = 170;
@@ -138,11 +140,11 @@ public class YixinCustomerGui extends JPanel implements Gui{
 		this.choice = choice;
 		show_choice = true;
 	}
-	
+
 	public void DoExitRestaurant() {
 		xDestination = OriginX;
 		yDestination = OriginY;
 		command = Command.LeaveRestaurant;
 	}
-	
+
 }

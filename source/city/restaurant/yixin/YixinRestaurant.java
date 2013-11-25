@@ -3,13 +3,13 @@ package city.restaurant.yixin;
 import gui.WorldViewBuilding;
 
 import java.util.*;
-import java.util.concurrent.Semaphore;
 
 import agent.Role;
 import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
 import city.restaurant.*;
 import city.restaurant.yixin.gui.YixinAnimationPanel;
+import city.restaurant.yixin.gui.YixinWaiterGui;
 
 public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
@@ -43,6 +43,7 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		host = new YixinHostRole(null,this,"Host");
 		cook = new YixinCookRole(null,this);
 		((YixinCookRole)cook).cashier = (YixinCashierRole)cashier;
+		((YixinCashierRole)cashier).cook = (YixinCookRole)cook;
 	}
 
 	public boolean isOpen(){
@@ -63,17 +64,20 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	}
 
 	@Override
-	public Role generateWaiterRole() {
+	public Role generateWaiterRole(PersonAgent person) {
 		int i = (new Random()).nextInt(2);
 		YixinWaiterRole newWaiter;
 		if (i == 0)
-			newWaiter = new YixinNormalWaiterRole(null, this, "");
+			newWaiter = new YixinNormalWaiterRole(person, this, person.getName());
 		else
-			newWaiter = new YixinSharedDataWaiterRole(null, this, "");
+			newWaiter = new YixinSharedDataWaiterRole(person, this, person.getName());
 		newWaiter.setCashier((YixinCashierRole)cashier);
 		newWaiter.setCook((YixinCookRole)cook);
 		newWaiter.setHost(host);
 		waiter_count++;
+		YixinWaiterGui yixinWaiterGui = new YixinWaiterGui(newWaiter, waiter_count);
+		newWaiter.setGui(yixinWaiterGui);
+		getAnimationPanel().addGui(yixinWaiterGui);
 		return newWaiter;
 	}
 

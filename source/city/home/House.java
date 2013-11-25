@@ -1,11 +1,13 @@
 package city.home;
 
+import java.util.concurrent.Semaphore;
+
 import javax.swing.JPanel;
 
 import gui.BuildingInteriorAnimationPanel;
 import gui.WorldViewBuilding;
+import city.PersonAgent;
 import city.Place;
-import city.bank.gui.BankAnimationPanel;
 import city.home.gui.HomeAnimationPanel;
 import city.interfaces.PlaceWithAnimation;
 
@@ -13,6 +15,7 @@ public class House extends Place implements Home, PlaceWithAnimation {
 	
 	// ------------------------------------- DATA -----------------------------------
 	HomeAnimationPanel _animationPanel;
+	private Semaphore _occupiedSemaphore = new Semaphore(1, true);
 	
 	
 	
@@ -24,11 +27,19 @@ public class House extends Place implements Home, PlaceWithAnimation {
 		super("Home", wvb);
 		_animationPanel = (HomeAnimationPanel)bp.getBuildingAnimation();
 	}
-	public Place place() {
-		return this;
-	}
-	public JPanel getAnimationPanel() {
-		return _animationPanel;
-	}
+	public Place place() { return this; } // required in Home interface
+	public JPanel getAnimationPanel() { return _animationPanel; }
 	
+	
+	
+	// --------------------------------- METHODS ---------------------------------------
+	public HouseOccupantRole tryAcquireHomeOccupantRole(PersonAgent person)
+	{
+		if(_occupiedSemaphore.tryAcquire())
+		{
+			// possibly add a function to set the occupant of this House
+			return new HouseOccupantRole(person, this);
+		}
+		else return null;
+	}
 }

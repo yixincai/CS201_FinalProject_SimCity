@@ -30,6 +30,7 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     private Image grillimage = igrill.getImage();
     private ImageIcon irevolving = new ImageIcon("source/image/revolvingStand.jpg");
     private Image standimage = irevolving.getImage();
+    private String WA = "Waiting Area";
     
     public YixinAnimationPanel()
     {
@@ -57,6 +58,8 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(TABLEX1, TABLEY, GAPX, GAPY);//200 and 250 need to be table params
         g2.fillRect(TABLEX2, TABLEY, GAPX, GAPY);
         g2.fillRect(TABLEX3, TABLEY, GAPX, GAPY);
+    	g.drawString(WA, 30, 10);
+
         //here is the cooking area 
         /*
     	g.drawImage(plateimage, 70, 250, ICON_X, ICON_Y, this);

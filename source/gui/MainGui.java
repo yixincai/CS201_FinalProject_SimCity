@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -24,6 +25,7 @@ import city.home.Apartment;
 import city.home.ApartmentBuilding;
 import city.home.House;
 import city.market.Market;
+import city.restaurant.omar.OmarRestaurant;
 import city.restaurant.yixin.YixinRestaurant;
 import city.transportation.BusAgent;
 import city.transportation.BusStopObject;
@@ -102,6 +104,16 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(yr.getName()); // unsure if this is needed or not; I deleted it earlier
         _buildingInteriorAnimationPanels.add(bp);
         
+        //Omar's Restaurant
+        WorldViewBuilding b9 = _worldView.addBuilding(8, 3, 40);
+		BuildingInteriorAnimationPanel bp9 = new BuildingInteriorAnimationPanel(this, "Omar's Restaurant", new city.restaurant.omar.gui.OmarRestaurantAnimationPanel());
+		b9.setBuildingPanel(bp9);
+		OmarRestaurant or = new OmarRestaurant("Omar's Restaurant", b9, bp9);
+		Directory.addPlace(or);
+		_buildingCardLayoutPanel.add( bp9, bp9.getName() );
+		cPanel.currentBuildingPanel.addBuilding(or.getName()); // unsure if this is needed or not; I deleted it earlier
+        _buildingInteriorAnimationPanels.add(bp9);
+        
         //Bank
         WorldViewBuilding b2 = _worldView.addBuilding(10, 3, 40);
 		BuildingInteriorAnimationPanel bp2 = new BuildingInteriorAnimationPanel(this, "Bank", new city.bank.gui.BankAnimationPanel());
@@ -112,21 +124,22 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(bank.getName());
         _buildingInteriorAnimationPanels.add(bp2);
         
+        //Market
         WorldViewBuilding b3 = _worldView.addBuilding(10, 5, 40);
 		BuildingInteriorAnimationPanel bp3 = new BuildingInteriorAnimationPanel(this, "Market", new city.market.gui.MarketAnimationPanel());
 		b3.setBuildingPanel(bp3);
-		Market market = new Market("Market", b3, bp3);
+		Market market = new Market("Market", b3, bp3, _worldView);
 		Directory.addPlace(market);
 		_buildingCardLayoutPanel.add( bp3, bp3.getName() );
 		cPanel.currentBuildingPanel.addBuilding(market.getName());
         _buildingInteriorAnimationPanels.add(bp3);
         
         //Initializing houses
-        for(int j = 1; j < 6; j++){
-            WorldViewBuilding b4 = _worldView.addBuilding(1, j, 20);
+        for(int i = 1; i < 6; i++){
+            WorldViewBuilding b4 = _worldView.addBuilding(1, i, 20);
     		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House", new city.home.gui.HomeAnimationPanel());
     		b4.setBuildingPanel(bp4);
-    		House house = new House("House", b4, bp4);
+    		House house = new House("House " + i, b4, bp4);
     		Directory.addPlace(house);
     		_buildingCardLayoutPanel.add( bp4, bp4.getName() );
     		cPanel.currentBuildingPanel.addBuilding(house.getName());
@@ -179,7 +192,18 @@ public class MainGui extends JFrame
   	  this.add(cPanel, Component.RIGHT_ALIGNMENT);
   	  this.pack();		
   	  this.setVisible(true);
-	
+
+  	  // TODO Here, add scanning the configuration file.
+  	  
+  	  cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
+  	  cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
+  	  cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
+  	  cPanel.addPerson("Yixin3", 300, "Waiter", true, "house");
+  	  cPanel.addPerson("Yixin4", 300, "Bank Teller", true, "house");
+  	  cPanel.addPerson("Yixin5", 300, "Bank Host", true, "house");
+  	  cPanel.addPerson("Yixin6", 300, "Market Cashier", true, "house");
+  	  cPanel.addPerson("Yixin7", 300, "Market Employee", true, "house");
+
   	  Time.startTimer();
 	}
 	

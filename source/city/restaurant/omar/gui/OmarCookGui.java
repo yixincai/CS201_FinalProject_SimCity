@@ -1,41 +1,41 @@
 package city.restaurant.omar.gui;
 
+import gui.Gui;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class OmarCookGui {
+import city.restaurant.omar.OmarCookRole;
 
-	private static int XGRILL0 = 500; //change numbers to grill positions
-	private static int YGRILL0 = 400;
+public class OmarCookGui implements Gui {
+
+	private static int XGRILL0 = 550; //change numbers to grill positions
+	private static int YGRILL0 = 200;
 	
-	private static int XGRILL1 = 540;
-	private static int YGRILL1 = 400;
+	private static int XGRILL1 = 590;
+	private static int YGRILL1 = 200;
 	
-	private static int XGRILL2 = 580;
-	private static int YGRILL2 = 400;
+	private static int XGRILL2 = 630;
+	private static int YGRILL2 = 200;
 	
 	private static int GRILLOFFSETY = 20;
 	
-	private CookAgent agent = null;
+	private OmarCookRole agent = null;
 	private Color myColor = Color.CYAN;
 	private boolean flag = false;
 	
 	private String currentStatus = "";
 	private String pickupStatus = "";
 
-	private RestaurantGui gui;
-
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 
-	public OmarCookGui(CookAgent c, RestaurantGui gui){
+	public OmarCookGui(OmarCookRole c){
 		agent = c;
-		xPos = 540;
-		yPos = 440;
-		xDestination = 540;
-		yDestination = 440;
-		
-		this.gui = gui;
+		xPos = 590;
+		yPos = 240;
+		xDestination = 590;
+		yDestination = 240;
 	}
 
 	public void updatePosition() {
@@ -50,11 +50,11 @@ public class OmarCookGui {
 			yPos--;
 
 		if (xPos == xDestination && yPos == yDestination && flag) {
-			if(!(xPos == 540 && yPos == 440)){
+			if(!(xPos == 590 && yPos == 240)){
 				agent.msgArrived();
 			}
 				flag = false;
-				if(xPos == 540 && yPos == 340){
+				if(xPos == 590 && yPos == 140){
 					setPickupStatus("PICKUP");
 				}
 		}
@@ -65,7 +65,7 @@ public class OmarCookGui {
 		g.fillRect(xPos, yPos, 20, 20);
 		
 		g.drawString(currentStatus, xPos + 5, yPos - 5);
-		g.drawString(pickupStatus, 520, 340);
+		g.drawString(pickupStatus, 590, 140);
 	}
 	
 	public void setPickupStatus(String pickupStatus){
@@ -77,8 +77,8 @@ public class OmarCookGui {
 	}
 	
 	public void DoGoToFridge(){
-		xDestination = 560;
-		yDestination = 470;
+		xDestination = 610;
+		yDestination = 255;
 		
 		flag = true;
 	}
@@ -101,15 +101,15 @@ public class OmarCookGui {
 	
 	public void DoGoBackToRest(){
 		setCurrentStatus("");
-		xDestination = 540;
-		yDestination = 440;
+		xDestination = 590;
+		yDestination = 240;
 		flag = true;
 	}
 	
 	public void DoMoveFoodToPlatingArea(){
 		setPickupStatus("PICKUP");
-		xDestination = 540;
-		yDestination = 340;
+		xDestination = 590;
+		yDestination = 140;
 		flag = true;
 	}
 	
@@ -127,7 +127,6 @@ public class OmarCookGui {
 		this.myColor = c;
 	}
 
-	@Override
 	public boolean isPresent() {
 		// TODO Auto-generated method stub
 		return true;

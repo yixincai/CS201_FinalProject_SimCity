@@ -3,6 +3,7 @@ package city.market;
 import java.util.concurrent.Semaphore;
 
 import gui.BuildingInteriorAnimationPanel;
+import gui.WorldView;
 import gui.WorldViewBuilding;
 import city.PersonAgent;
 import city.Place;
@@ -22,37 +23,40 @@ public class Market extends Place implements PlaceWithAnimation {
 	private Semaphore _cashierSemaphore = new Semaphore(1, true);
 	private Semaphore _employeeSemaphore = new Semaphore(1, true);
 	
-	public Market(String s, WorldViewBuilding _worldViewBuilding, BuildingInteriorAnimationPanel map){
+	public Market(String s, WorldViewBuilding _worldViewBuilding, BuildingInteriorAnimationPanel map, WorldView worldView){
 		super("Market", _worldViewBuilding);
 		this.animationPanel = (MarketAnimationPanel)map.getBuildingAnimation();
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
-		truck = new TruckAgent(this);
+		truck = new TruckAgent(this, worldView);
+		truck.startThread();
 	}
 	//constructor for Yixin unit testing
 	public Market(){
 		super("Market", null);
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
-		truck = new TruckAgent(this);
+		truck = new TruckAgent(this, null);
 	}
 	//constructor for Ryan unit testing
 	public Market(String name){
 		super(name, null);
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
-		truck = new TruckAgent(this);
+		truck = new TruckAgent(this, null);
 	}
 	
-	public MarketCashierRole tryAcquireCashier(){
+	public MarketCashierRole tryAcquireCashier(PersonAgent person){
 		if (_cashierSemaphore.tryAcquire()){
+			MarketCashier.setPersonAgent(person);
 			return MarketCashier;
 		}
 		return null;
 	}
 
-	public MarketEmployeeRole tryAcquireEmployee(){
+	public MarketEmployeeRole tryAcquireEmployee(PersonAgent person){
 		if (_employeeSemaphore.tryAcquire()){
+			MarketEmployee.setPersonAgent(person);
 			return MarketEmployee;
 		}
 		return null;

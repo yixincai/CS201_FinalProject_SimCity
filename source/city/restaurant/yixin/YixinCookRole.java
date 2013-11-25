@@ -7,13 +7,11 @@ import city.*;
 import city.market.*;
 import city.restaurant.*;
 import city.restaurant.yixin.gui.YixinCookGui;
-import utilities.EventLog;
 
 public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	public YixinRestaurant restaurant;
 	public YixinCashierRole cashier;
 
-	public EventLog log = new EventLog();
 	private String name = "TheBestCook";
 	public List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	public Map<String, Food> inventory = new HashMap<String, Food>();
@@ -28,7 +26,6 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	private Semaphore atTable = new Semaphore(0,true);
 
 	public List<Item> invoice;	
-	public List<Market> markets = new ArrayList<Market>();
 	int market_count = 0;//switch to the next market if one cannot fulfill
 	Market current_market;
 
@@ -55,10 +52,6 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 
 	public String getName() {
 		return name;
-	}
-
-	public void addMarket(Market market) {
-		markets.add(market);
 	}
 
 	// Messages
@@ -95,7 +88,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 		//switch to another market
 		if (!fulfilled){
 			market_count++;
-			if (market_count == 3)
+			if (market_count == Directory.markets().size())
 				market_count = 0;
 		}
 		//check inventory
@@ -139,7 +132,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 				return true;
 			}
 			if(lowInFood && state == CookState.ableToOrder){
-				askForSupply(markets.get(market_count));
+				askForSupply(Directory.markets().get(market_count));
 				state =  CookState.none;
 				lowInFood = false;
 				return true;

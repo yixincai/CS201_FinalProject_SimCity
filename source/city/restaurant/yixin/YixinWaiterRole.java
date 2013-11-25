@@ -6,12 +6,9 @@ import java.util.concurrent.Semaphore;
 import agent.Role;
 import city.PersonAgent;
 import city.restaurant.yixin.gui.YixinWaiterGui;
-import utilities.EventLog;
-
 
 public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	public YixinRestaurant restaurant;
-	public EventLog log = new EventLog();
 	public List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	public YixinCookRole cook = null;
 	public YixinHostRole host = null;

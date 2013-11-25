@@ -3,12 +3,14 @@ package city;
 import java.util.List;
 import java.util.Random;
 
-// note: the gui packages are basically only here for the setOccupation() function (we will move the gui instantiation elsewhere) TODO
+
+
+// TODO the gui packages are basically only here for the setOccupation() function. We will move the gui instantiation elsewhere, probably to the roles' respective constructors.
 import city.home.HomeBuyingRole;
+import city.home.HomelessRole;
 import city.bank.*;
 import city.bank.gui.*;
 import city.home.*;
-import city.home.gui.*;
 import city.market.*;
 import city.market.gui.*;
 import city.restaurant.Restaurant;
@@ -31,12 +33,10 @@ public class PersonAgent extends Agent
 	private boolean _sentCmdFinishAndLeave = false;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
 	private CommuterRole _commuterRole = null;
-	private String _occupationType; // this should be "RestaurantCashier", "Cook", etc. (not specific to any restaurant type or instantiation)
 	private Role _occupation;
 	private boolean _weekday_notWeekend;
-	private HomeRole _homeRole;
-	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house
-	private int bankAccountNumber = -1;
+	private HomeOccupantRole _homeOccupantRole;
+	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house (now, just pays rent on apartment)
 	
 	// State data:
 	public double _money;
@@ -95,6 +95,7 @@ public class PersonAgent extends Agent
 	
 	
 	// ------------------------------------------- CONSTRUCTORS & PROPERTIES --------------------------------------------
+	// ------------------ CONSTRUCTORS & SETUP ---------------------
 	public PersonAgent(String name) { _name = name; }
 	/**
 	 * Constructor
@@ -107,30 +108,67 @@ public class PersonAgent extends Agent
 	{
 		_name = name; 
 		_money = money; 
-		setOccupation(occupationType);
+		acquireOccupation(occupationType);
 		acquireHome(housingType);
+		setNewCommuterRole();
 	}
-	public String getName() { return _name; }
-	public double money() { return _money; }
-	public int getAccountNumber() { return bankAccountNumber; }
-	public void setAccountNumber(int newAccntNum) { this.bankAccountNumber = newAccntNum;} 
-	public void changeMoney(double delta) { _money += delta; }
-	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
+	/** Sets _commuterRole to a new CommuterRole */
+	public void setNewCommuterRole()
+	{
+		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
+		_commuterRole.setDestination(_homeOccupantRole.place());
+		
+		_currentRole = _commuterRole;
+		_commuterRole.active = true;
+	}
+	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
+	 * @param homeType Either "house" or "apartment" */
 	public void acquireHome(String homeType)
 	{
 		if(homeType.equalsIgnoreCase("apartment"))
 		{
-			_homeBuyingRole = new ApartmentRenterRole(this);
+			List<ApartmentBuilding> apartmentBuildings = Directory.apartmentBuildings();
+			for(ApartmentBuilding b : apartmentBuildings)
+			{
+				List<Apartment> apartments = b.apartments();
+				for(Apartment a : apartments)
+				{
+					HomeOccupantRole newHomeOccupantRole = a.tryAcquireHomeOccupantRole(this);
+					if(newHomeOccupantRole != null)
+					{
+						_homeOccupantRole = newHomeOccupantRole;
+						_homeBuyingRole = a.generateHomeBuyingRole(this);
+						return;
+					}
+				}
+			}
+		}
+		else if(homeType.equalsIgnoreCase("house"))
+		{
+			List<House> houses = Directory.houses();
+			for(House h : houses)
+			{
+				HomeOccupantRole newHomeOccupantRole = h.tryAcquireHomeOccupantRole(this);
+				if(newHomeOccupantRole != null)
+				{
+					_homeOccupantRole = newHomeOccupantRole;
+					_homeBuyingRole = null; // will eventually change this to HomeOwnerRole
+					return;
+				}
+			}
 		}
 		else
 		{
-			_homeBuyingRole = null;
+			throw new IllegalArgumentException("Invalid value of homeType: " + homeType);
 		}
+		
+		print("Failed to acquire a(n) " + homeType + ".");
+		_homeOccupantRole = new HomelessRole(this);
+		_homeBuyingRole = null;
 	}
 	/** Sets the value of _occupation to a role that is requested by occupationType if possible; else it sets _occupation to a new waiter role from a randomly chosen restaurant. */
-	public void setOccupation(String occupationType) 
+	public void acquireOccupation(String occupationType) 
 	{
-		_occupationType = occupationType;
 		Role newOccupation = null;
 		List<Restaurant> restaurants = Directory.restaurants();
 		List<Bank> banks = Directory.banks();
@@ -144,7 +182,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Restaurant r : restaurants)
 				{
-					newOccupation = r.tryAcquireCashier();
+					newOccupation = r.tryAcquireCashier(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -159,7 +197,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Restaurant r : restaurants)
 				{
-					newOccupation = r.tryAcquireCook();
+					newOccupation = r.tryAcquireCook(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -174,7 +212,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Restaurant r : restaurants)
 				{
-					newOccupation = r.tryAcquireHost();
+					newOccupation = r.tryAcquireHost(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -189,7 +227,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Bank b : banks)
 				{
-					newOccupation = b.tryAcquireTeller();
+					newOccupation = b.tryAcquireTeller(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -204,7 +242,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Bank b : banks)
 				{
-					newOccupation = b.tryAcquireHost();
+					newOccupation = b.tryAcquireHost(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -219,7 +257,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Market m : markets)
 				{
-					newOccupation = m.tryAcquireCashier();
+					newOccupation = m.tryAcquireCashier(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -234,7 +272,7 @@ public class PersonAgent extends Agent
 				newOccupation = null;
 				for(Market m : markets)
 				{
-					newOccupation = m.tryAcquireEmployee();
+					newOccupation = m.tryAcquireEmployee(this);
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
@@ -248,16 +286,18 @@ public class PersonAgent extends Agent
 		}
 		// Set the occupation to waiter
 		// note: control reaches here either because the value of occupationType is "Waiter" or because no scarce jobs were found (waiter is an unlimited/non-scarce job)
-		_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole();
-		YixinWaiterGui yixinWaiterGui = new YixinWaiterGui((YixinWaiterRole)_occupation, ((YixinRestaurant)_occupation.place()).waiterCount());
-		((YixinWaiterRole)_occupation).setGui(yixinWaiterGui);
-		((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinWaiterGui);
+		_occupation = restaurants.get(/*(new Random()).nextInt(restaurants.size())*/0).generateWaiterRole(this);
 	}
+	// ---------------------- OTHER PROPERTIES -------------------------
+	public String getName() { return _name; }
+	public double money() { return _money; }
+	public void changeMoney(double delta) { _money += delta; }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
 	public void setWorkDays(boolean weekday_notWeekend) {
 		_weekday_notWeekend = weekday_notWeekend;
 	}
-	public HomeRole homeRole() { return _homeRole; }
+	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
+	public CommuterRole commuterRole() { return _commuterRole; }
 	
 	
 	
@@ -286,21 +326,21 @@ public class PersonAgent extends Agent
 					}
 				}
 			}
-			if(_currentRole == _homeRole && (_state.time() > 20 || _state.time() < 7))
+			if(_currentRole == _homeOccupantRole && (_state.time() > 20 || _state.time() < 7))
 			{
 				if(_state.nourishment() == NourishmentState.HUNGRY)
 				{
-					if(!_homeRole.cooking())
+					if(!_homeOccupantRole.cooking())
 					{
-						_homeRole.cmdCookAndEatFood();
+						_homeOccupantRole.cmdCookAndEatFood();
 						return true;
 					}
 				}
 				else
 				{
-					if(!_homeRole.sleeping())
+					if(!_homeOccupantRole.sleeping())
 					{
-						_homeRole.cmdGoToBed();
+						_homeOccupantRole.cmdGoToBed();
 						return true;
 					}
 				}
@@ -338,7 +378,7 @@ public class PersonAgent extends Agent
 				}
 				else if(_state.time() > 20 || _state.time() < 7) //could replace with variables for sleepTime and wakeTime
 				{
-					setNextRole(_homeRole);
+					setNextRole(_homeOccupantRole);
 					return true;
 				}
 				else if(_state.nourishment() == NourishmentState.HUNGRY)
@@ -356,10 +396,10 @@ public class PersonAgent extends Agent
 						}
 						else
 						{
-							if(_homeRole.haveFood())
+							if(_homeOccupantRole.haveFood())
 							{
-								_homeRole.cmdCookAndEatFood();
-								setNextRole(_homeRole);
+								_homeOccupantRole.cmdCookAndEatFood();
+								setNextRole(_homeOccupantRole);
 								return true;
 							}
 							else
@@ -448,7 +488,7 @@ public class PersonAgent extends Agent
 		System.out.println("Role set");
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
-		_commuterRole.msgGoToDestination(nextRole.place());
+		_commuterRole.cmdGoToDestination(nextRole.place());
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
 		stateChanged();

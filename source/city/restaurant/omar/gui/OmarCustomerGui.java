@@ -1,11 +1,15 @@
 package city.restaurant.omar.gui;
 
+import gui.Gui;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class OmarCustomerGui {
+import city.restaurant.omar.OmarCustomerRole;
 
-	private CustomerAgent agent = null;
+public class OmarCustomerGui implements Gui {
+
+	private OmarCustomerRole agent = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 	private boolean sentencedToDeath = false;
@@ -13,14 +17,14 @@ public class OmarCustomerGui {
 	
 	private String currentStatus = "Hungry";
 
-	private RestaurantGui gui;
+	private OmarRestaurantAnimationPanel gui;
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
 
-	public CustomerGui(CustomerAgent c, RestaurantGui gui){
+	public OmarCustomerGui(OmarCustomerRole c, OmarRestaurantAnimationPanel gui){
 		agent = c;
 		xPos = -40;
 		yPos = -40;
@@ -55,7 +59,7 @@ public class OmarCustomerGui {
 			else if (command==Command.LeaveRestaurant) {
 				agent.msgAnimationFinishedLeaveRestaurant();
 				isHungry = false;
-				gui.setCustomerEnabled(agent);
+				//gui.setCustomerEnabled(agent);
 			}
 			command=Command.noCommand;
 		}
@@ -95,8 +99,8 @@ public class OmarCustomerGui {
 	}
 
 	public void DoGoToSeat(int seatnumber, int tableNum) {
-    		xDestination = 200;
-    		yDestination = tableNum*100;
+    		xDestination = tableNum*100 + 100;
+    		yDestination = 100;
     		
     	;
 		command = Command.GoToSeat;
@@ -117,7 +121,7 @@ public class OmarCustomerGui {
 	public void DoDie(){
 		setCurrentStatus("Paying with Life");
 		xDestination = 450;
-		yDestination = 500;
+		yDestination = 200;
 		
 		sentencedToDeath = true;
 	}

@@ -1,7 +1,6 @@
 package city.transportation;
 
 import java.util.Random;
-import java.util.concurrent.Semaphore;
 
 import agent.Role;
 import city.Directory;
@@ -11,9 +10,7 @@ import city.transportation.gui.CommuterGui;
 import city.transportation.interfaces.Bus;
 import city.transportation.interfaces.Commuter;
 
-/**
- * There is one CommuterRole per person, and the CommuterRole is the one that 
- */
+/** There is one CommuterRole per person, and the CommuterRole is the one that gets the person to different places in the world view. */
 
 //NOTES when taking bus, must decide who finds which busstop is nearest to destination (commuter role or busagent)
 //		Connect to directory to find fare
@@ -49,45 +46,55 @@ public class CommuterRole extends Role implements Commuter{
 	CarState _cState = CarState.noCar; 
 	
 	//----------------------------------------------CONSTRUCTOR & PROPERTIES----------------------------------------
-	public CommuterRole(PersonAgent person, Place place){
+	public CommuterRole(PersonAgent person, Place initialPlace){
 		super(person);
 		_person = person;
-		_currentPlace = place;
+		_currentPlace = initialPlace;
+		_destination = null;
 		_car = null;
-		active = true;
-		// TODO Auto-generated constructor stub
+		_gui = new CommuterGui(this, initialPlace);
 	}
 	
+	public CommuterGui gui() { return _gui; }
 	public void setGui(CommuterGui gui) { _gui = gui; }
 	
 	public void setCar(CarObject car){_car = car;}
 	
 	public Place destination() { return _destination; }
-	public void setDestination(Place place) { _destination = place; msgGoToDestination(_destination); }
-	
-	public Place currentPlace() { return _currentPlace; }
+	public void setDestination(Place place) { cmdGoToDestination(_destination); }
 
-	public Place place() { return currentPlace(); }
-	
+	public Place place() { return currentPlace(); } // could replace this to return a home-like location that the CommuterRole defaults back to when PersonAgent sets its _nextRole to its _commuterRole.  This would of course require more changes to work correctly.
+	public Place currentPlace() { return _currentPlace; }
+	public void setCurrentPlace(Place place) { _currentPlace = place; }
+
 	public void setBusStop(BusStopObject busStop){_busStop = busStop;}
 	
 	//----------------------------------------------Command---------------------------------------------
-	
-	//----------------------------------------------Messages------------------------------------------
-	public void msgGoToDestination(Place place){ //Command to go to destination
+	public void cmdGoToDestination(Place destination){ //Command to go to destination
+		if(destination != null) {
+			print("Will go to " + destination.getName() + " at (" + destination.xPosition() + "," + destination.yPosition() + ").");
+		}
+		else {
+			print("Will go to null destination.");
+		}
 		_tState = TravelState.choosing;
-		_destination = place;
+		_destination = destination;
 		//System.out.println(_destination.xPosition() + " " + _destination.yPosition());
 		stateChanged();
-		print("Told to go to place " + place._name + " " + place.xPosition());
+	}
+	@Override
+	public void cmdFinishAndLeave() {
+		active = true;
+		stateChanged();
 	}
 	
+	//----------------------------------------------Messages------------------------------------------
 	//Bus Transportation messages
 	public void msgAtBusStop(BusStopObject busstop){ //GUI message
 		_tState = TravelState.atBusStop;
 		_currentPlace = busstop;
 		stateChanged();
-		print("Going to bus stop " + busstop._name);
+		print("Going to bus stop " + busstop.getName());
 	}
 	public void msgGetOnBus(double fare, Bus bus){
 		_tState = TravelState.busIsHere;
@@ -96,9 +103,10 @@ public class CommuterRole extends Role implements Commuter{
 		stateChanged();
 		print("Getting on bus " + bus.getName());
 	}
-	public void msgGetOffBus(BusStopObject busstop){
+	@Override
+	public void msgGetOffBus(Place busstop){
 		_tState = TravelState.busIsAtDestination;
-		_busStop = busstop;
+		_busStop = (BusStopObject)busstop;
 		stateChanged();
 		print("Getting off bus " + _bus.getName());
 	}
@@ -107,13 +115,13 @@ public class CommuterRole extends Role implements Commuter{
 	public void msgAtDestination(Place place){
 		_tState = TravelState.atDestination;
 		_currentPlace = place;
-		active = false;
+		//active = false;
 		stateChanged();
 	}
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
 		//At Destination
-		if(_destination.xPosition() == _gui.getX() && _destination.yPosition() == _gui.getY() && _tState == TravelState.atDestination){
+		if(_tState == TravelState.atDestination){
 			actAtDestination();
 			return true;
 		}
@@ -168,7 +176,7 @@ public class CommuterRole extends Role implements Commuter{
 	public void actChooseTransportation(){
 		print("Choosing mode of transport");
 		
-		if(_gui.getDistanceToDestination(_destination) > 300){
+		if(_gui.getManhattanDistanceToDestination(_destination) > 300){
 			if(_car != null){
 				_tState = TravelState.choseCar;
 			}
@@ -241,12 +249,7 @@ public class CommuterRole extends Role implements Commuter{
 	
 	public void actAtDestination(){
 		_tState = TravelState.done;
-	}
-	
-	@Override
-	public void cmdFinishAndLeave() {
-		active = true;
-		stateChanged();
+		active = false;
 	}
 	
 	//----------------------------------------------Hacks----------------------------------------
@@ -264,12 +267,6 @@ public class CommuterRole extends Role implements Commuter{
 			pTransport = PrefTransport.none;
 		}
 		
-		
-	}
-
-	@Override
-	public void msgGetOffBus(Place place) {
-		// TODO Auto-generated method stub
 		
 	}
 

@@ -7,7 +7,6 @@ import java.util.*;
 import city.PersonAgent;
 import city.Place;
 import city.restaurant.yixin.gui.YixinHostGui;
-import utilities.EventLog;
 
 /**
  * Restaurant Host Agent
@@ -15,7 +14,6 @@ import utilities.EventLog;
 
 public class YixinHostRole extends Role {//implements Host{
 	public YixinRestaurant restaurant;
-	public EventLog log = new EventLog();
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -269,7 +267,6 @@ public class YixinHostRole extends Role {//implements Host{
 	}
 	
 	public Place place() {
-		// TODO Auto-generated method stub
 		return restaurant;
 	}
 }
