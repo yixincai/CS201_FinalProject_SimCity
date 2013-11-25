@@ -113,7 +113,7 @@ public class CommuterRole extends Role implements Commuter{
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
 		//At Destination
-		if(_destination.xPosition() == _gui.getX() && _destination.yPosition() == _gui.getY() && _tState == TravelState.atDestination){
+		if(_tState == TravelState.atDestination){
 			actAtDestination();
 			return true;
 		}
