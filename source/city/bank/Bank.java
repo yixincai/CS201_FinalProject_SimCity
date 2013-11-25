@@ -16,7 +16,7 @@ public class Bank extends Place implements PlaceWithAnimation {
 	boolean open;
 	public List<BankTellerRole> tellers = new ArrayList<BankTellerRole>();
 	BankAnimationPanel _animationPanel;
-	
+	//complete
 	private BankHostRole _bankHostRole;
 	private Semaphore _tellerSemaphore = new Semaphore(1, true);
 	private Semaphore _hostSemaphore = new Semaphore(1, true);
