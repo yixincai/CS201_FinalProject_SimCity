@@ -122,7 +122,7 @@ public class TruckAgent extends Agent implements Truck{
 	public void PickFromDock(Package aPackage){
 		trState = truckState.docking;
 		out = true;
-		_gui.goToDockFrom(_market);
+		_gui.goToDock(aPackage._restaurant);
 		print("Going to dock");
 		try {
 			isMoving.acquire();
@@ -142,6 +142,7 @@ public class TruckAgent extends Agent implements Truck{
 		try {
 			isMoving.acquire();
 			//aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); //Make sure GUI shows that it's dropped off !important!
+			print("Delivered to restaurant " + aPackage._restaurant.getName());
 			trState = truckState.atRestaurant;
 			packages.remove(aPackage);
 			stateChanged();
@@ -157,6 +158,7 @@ public class TruckAgent extends Agent implements Truck{
 	    _gui.goToMarketParkingLot(_market);
 	    try {
 			isMoving.acquire();
+			print("Going Back to parking lot");
 			trState = truckState.parkingLot;
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

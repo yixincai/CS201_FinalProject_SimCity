@@ -26,8 +26,8 @@ public class TruckAgentGui implements Gui{
 	boolean isPresent;
 	boolean park;
 	
-	enum Point{Market, PointA, PointB, Restaurant, none};
-	Point _point = Point.Market;
+	enum Point{Dock, PointA, PointB, Restaurant, PointC, PointD, PointE, Market, Park, none};
+	Point _point = Point.Dock;
 	
 	List<Restaurant> restaurants;
 	
@@ -36,15 +36,15 @@ public class TruckAgentGui implements Gui{
 		_xPos = _market.xPosition() - 10;
 		_yPos = _market.yPosition();
 		_truck = truck;
-		isPresent = false;
+		isPresent = true;
 		park = false;
 		restaurants = Directory.restaurants();
 	}
 	
-	public void goToMarket(Market market) {
+	public void goToMarket(Market market) { //Unused method clean it
 		// TODO Auto-generated method stub
 		isPresent = true;
-		_point = Point.Market;
+		_point = Point.PointC;
 		_xDestination = market.xPosition();
 		_yDestination = market.yPosition();
 	}
@@ -53,25 +53,23 @@ public class TruckAgentGui implements Gui{
 		// TODO Auto-generated method stub
 		isPresent = true;
 		park = true;
-		_point = Point.Market;
-		_xPos = _market.xPosition() - 10;
-		_yPos = _market.yPosition();
+		_point = Point.PointC;
+		_xDestination = _market.xPosition()- 20;
 	}
 
 	public void goToDockFromParkingLot(Market market) {
 		// TODO Auto-generated method stub
 		isPresent = true;
-		_point = Point.Market;
+		_point = Point.Dock;
 		_xDestination = market.xPosition()- 10;
 		_yDestination = market.yPosition() + 15;
 	}
 	
-	public void goToDock(Market market) {
+	public void goToDock(Restaurant restaurant) {
 		// TODO Auto-generated method stub
 		isPresent = true;
-		_point = Point.Market;
-		_xDestination = market.xPosition()- 10;
-		_yDestination = market.yPosition() + 15;
+		_point = Point.PointC;
+		_xDestination = _market.xPosition()- 20;
 	}
 
 	public void goToDestination(Restaurant restaurant) {
@@ -96,27 +94,53 @@ public class TruckAgentGui implements Gui{
 		else if (_yPos > _yDestination)
 			_yPos--;
 		
+		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Dock){
+			_point = Point.none;
+			_truck.msgAtDestination();
+		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.PointA){
 			_point = Point.PointB;
 			_yDestination = _restaurant.yPosition() + 15;
 		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.PointB){
 			_point = Point.Restaurant;
-			if(_xPos > _restaurant.xPosition()){
-				_xDestination = _restaurant.xPosition() + 40;
-				_truck.msgAtDestination();
+			if(_xPos < _restaurant.xPosition()){
+				_xDestination = _restaurant.xPosition() - 10;
 			}
 			else{
-				_xDestination = _restaurant.xPosition() - 10;
-				_truck.msgAtDestination();
+				_xDestination = _restaurant.xPosition() + 40;
 			}
 		}
-		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Market){
+		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Restaurant){
+			_truck.msgAtDestination();
+		}
+		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.PointC){
+			_point = Point.PointD;
+			_yDestination = _market.yPosition() + 15;
+		}
+		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.PointD){
+			_point = Point.PointE;
+			_xDestination = _market.xPosition()- 10;
+			_yDestination = _market.yPosition() + 15;
+		}
+		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.PointE){
+			_point = Point.Market;
+			//_truck.msgAtDestination();
+		}
+		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Market && !park){
 			_point = Point.none;
 			_truck.msgAtDestination();
 		}
-		if(_xPos == _xDestination && _yPos == _yDestination && park){
+		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Market && park){
+			_point = Point.Park;
+			_xDestination = _market.xPosition()- 10;
+			_yDestination = _market.yPosition();
+			System.out.println("going to park");
+		}
+		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Park && park){
 			isPresent = false;
+			_point = Point.none;
+			park = false;
 			_truck.msgAtDestination();
 		}
 	}
