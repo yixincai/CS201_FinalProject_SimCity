@@ -3,6 +3,7 @@ package city;
 import java.util.List;
 import java.util.Random;
 
+
 // note: the gui packages are basically only here for the setOccupation() function (we will move the gui instantiation elsewhere) TODO
 import city.home.HomeBuyingRole;
 import city.bank.*;
@@ -106,7 +107,7 @@ public class PersonAgent extends Agent
 	{
 		_name = name; 
 		_money = money; 
-		setOccupation(occupationType);
+		acquireOccupation(occupationType);
 		acquireHome(housingType);
 	}
 	public String getName() { return _name; }
@@ -115,7 +116,8 @@ public class PersonAgent extends Agent
 	public void setAccountNumber(int newAccntNum) { this.bankAccountNumber = newAccntNum;} 
 	public void changeMoney(double delta) { _money += delta; }
 	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
-	/** Calls _homeOccupantRole.setHome(...) for a house or apartment */
+	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
+	 * @param homeType Either "house" or "apartment" */
 	public void acquireHome(String homeType) //TODO finish
 	{
 		if(homeType.equalsIgnoreCase("apartment"))
@@ -130,13 +132,13 @@ public class PersonAgent extends Agent
 					if(newHomeOccupantRole != null)
 					{
 						_homeOccupantRole = newHomeOccupantRole;
-						_homeBuyingRole = new ApartmentRenterRole(this,a);
+						_homeBuyingRole = a.generateHomeBuyingRole(this);
 						return;
 					}
 				}
 			}
 		}
-		else
+		else if(homeType.equalsIgnoreCase("house"))
 		{
 			List<House> houses = Directory.houses();
 			for(House h : houses)
@@ -150,9 +152,13 @@ public class PersonAgent extends Agent
 				}
 			}
 		}
+		else
+		{
+			throw new IllegalArgumentException();
+		}
 	}
 	/** Sets the value of _occupation to a role that is requested by occupationType if possible; else it sets _occupation to a new waiter role from a randomly chosen restaurant. */
-	public void setOccupation(String occupationType) 
+	public void acquireOccupation(String occupationType) 
 	{
 		Role newOccupation = null;
 		List<Restaurant> restaurants = Directory.restaurants();

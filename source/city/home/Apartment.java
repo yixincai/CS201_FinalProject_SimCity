@@ -29,6 +29,7 @@ public class Apartment implements Home
 	
 	
 	// --------------------------------- METHODS ---------------------------------------
+	// ---------- FACTORIES & TRYACQUIRES ----------
 	public ApartmentOccupantRole tryAcquireHomeOccupantRole(PersonAgent person)
 	{
 		if(_occupiedSemaphore.tryAcquire())
@@ -37,5 +38,9 @@ public class Apartment implements Home
 			return new ApartmentOccupantRole(person, this);
 		}
 		else return null;
+	}
+	public ApartmentRenterRole generateHomeBuyingRole(PersonAgent person)
+	{
+		return new ApartmentRenterRole(person, this);
 	}
 }

@@ -34,6 +34,8 @@ public class LandlordRole extends Role {
 	}
 	List<MyHouse> _myHouses = new ArrayList<MyHouse>();
 	
+	
+	
 	// ------------------------------ CONSTRUCTOR & PROPERTIES ---------------------------
 	public LandlordRole(PersonAgent person)
 	{
