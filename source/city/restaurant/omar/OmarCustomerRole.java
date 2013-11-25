@@ -6,7 +6,10 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
 
+import city.PersonAgent;
+import city.Place;
 import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.omar.gui.OmarCustomerGui;
 
 public class OmarCustomerRole extends RestaurantCustomerRole {
 	private String name;
@@ -18,13 +21,14 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	private static int chooseTime = 4000;
 	
 	private OmarCustomerGui customerGui;
+	private OmarRestaurant restaurant;
 	
 	int tableNum = -1;
 
 	// agent correspondents
-	private HostAgent host;
-	WaiterAgent waiter;
-	CashierAgent cashier;
+	private OmarHostRole host;
+	OmarWaiterRole waiter;
+	OmarCashierRole cashier;
 	Menu menu;
 	
 	String choice;
@@ -55,8 +59,9 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent(String name){
-		super();
+	public OmarCustomerRole(PersonAgent p, OmarRestaurant r, String name){
+		super(p);
+		this.restaurant = r;
 		this.name = name;
 		
 		if(name.equals("Cheap Earl")){
@@ -75,7 +80,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	/**
 	 * hack to establish connection to Host agent.
 	 */
-	public void setHost(HostAgent host) {
+	public void setHost(OmarHostRole host) {
 		this.host = host;
 	}
 
@@ -89,7 +94,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 		stateChanged();
 	}
 
-	public void msgFollowToTable(Menu menu, WaiterAgent w, int tableNum) {
+	public void msgFollowToTable(Menu menu, OmarWaiterRole w, int tableNum) {
 		event = AgentEvent.FollowWaiter;
 		
 		this.menu = menu;
@@ -133,7 +138,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 		stateChanged();
 	}
 	
-	public void msgHereIsCheck(CashierAgent cashier, double check){
+	public void msgHereIsCheck(OmarCashierRole cashier, double check){
 		System.out.println("Customer " +this.name+ " payment due: " + this.check);
 		this.cashier = cashier;
 		
@@ -164,7 +169,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
 		if (state == AgentState.DoingNothing && event == AgentEvent.GotHungry ){
 			state = AgentState.WaitingInRestaurant;
@@ -223,13 +228,13 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 
 	// Actions
 	private void goToRestaurant() {	//GOES TO RESTAURANT
-		Do("Going to restaurant");
+		System.out.println(this.name + ": Going to restaurant");
 		host.msgIWantFood(this);//send our instance, so he can respond to us
 		//he tells the host he's hungry
 		
 		if(this.name.equals("Crazy Steve")){
 			System.out.println("Crazy Steve can't afford anything on the menu, so he left");
-			host.msgLeavingWaitList(CustomerAgent.this);
+			host.msgLeavingWaitList(OmarCustomerRole.this);
 			state = AgentState.DoingNothing;
 			event = AgentEvent.DoneLeaving;
 			customerGui.leftWaitingList();
@@ -237,7 +242,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 		waitTimer = new Timer(10000, new ActionListener() { 
 			public void actionPerformed(ActionEvent e){
 				if(state == AgentState.WaitingInRestaurant && event == AgentEvent.GotHungry){
-					host.msgLeavingWaitList(CustomerAgent.this);
+					host.msgLeavingWaitList(OmarCustomerRole.this);
 					state = AgentState.DoingNothing;
 					event = AgentEvent.DoneLeaving;
 					customerGui.leftWaitingList();
@@ -247,7 +252,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	}
 
 	private void sitDown() {	//GETS SEATED
-		Do("Being seated. Going to table " + tableNum);
+		System.out.println(this.name + ": Being seated. Going to table " + tableNum);
 		customerGui.DoGoToSeat(1, tableNum);
 		try {
 			custSem.acquire();
@@ -266,13 +271,13 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	
 	private void notifyWaiter(){
 		customerGui.setCurrentStatus("Ready");
-		Do("Chose Food.  Called waiter " + waiter.toString() + " over.");
+		System.out.println(this.name + ": Chose Food.  Called waiter " + waiter.toString() + " over.");
 		waiter.msgReadyToOrder(this);
 	}
 	
 	private void tellWaiterOrder(){
 		customerGui.setCurrentStatus("Waiting");
-		Do("Told Waiter order");
+		System.out.println(this.name + ": Told Waiter order");
 		String choice;
 		int randomChoice = (int)(Math.random() * 4);
 		if(randomChoice == 0){
@@ -293,7 +298,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 
 	private void eatFood() {	//EATS HIS FOOD
 		customerGui.setCurrentStatus("Eating");
-		Do("Eating Food");
+		System.out.println(this.name + ": Eating Food");
 	
 		eatTimer = new Timer(5000, new ActionListener() { 
 			public void actionPerformed(ActionEvent event){
@@ -333,7 +338,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	}
 	
 	private void goDie(){
-		Do("Can't pay for food.  Guess I have to die now. :(");
+		System.out.println(this.name + ": Can't pay for food.  Guess I have to die now. :(");
 		customerGui.DoDie();
 		try {
 			custSem.acquire();
@@ -344,7 +349,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 
 	private void leaveTable() {	//LEAVES
 		customerGui.setCurrentStatus("Leaving");
-		Do("Leaving.");
+		System.out.println(this.name + ": Leaving.");
 		host.msgLeavingTable(this);
 		waiter.msgDoneEatingAndLeaving(this);
 		customerGui.DoExitRestaurant();
@@ -355,6 +360,8 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 		}
 		event = AgentEvent.DoneLeaving;
 		state = AgentState.DoingNothing;
+		active = false;
+		stateChanged();
 	}
 
 	// Accessors, etc.
@@ -385,5 +392,35 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	
 	public void msgArrived() {
 		custSem.release();
+	}
+
+	@Override
+	public void cmdGotHungry() {
+		print("I'm hungry");
+		event = AgentEvent.GotHungry;
+		stateChanged();
+	}
+
+	@Override
+	public Place place() {
+		return restaurant;
+	}
+
+	@Override
+	public void cmdFinishAndLeave() {
+		customerGui.setCurrentStatus("Leaving");
+		System.out.println(this.name + ": Leaving.");
+		host.msgLeavingTable(this);
+		waiter.msgDoneEatingAndLeaving(this);
+		customerGui.DoExitRestaurant();
+		try {
+			custSem.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		event = AgentEvent.DoneLeaving;
+		state = AgentState.DoingNothing;
+		active = false;
+		stateChanged();
 	}
 }
