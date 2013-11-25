@@ -54,6 +54,10 @@ public class TruckAgent extends Agent implements Truck{
 		worldView.addGui(_gui);
 	}
 	
+	public TruckAgent(Market market){
+		_market = market;
+	}
+	
 	public void setTruckAgentGui(TruckAgentGui gui){
 		_gui = gui;
 	}

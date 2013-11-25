@@ -2,6 +2,7 @@ package city.restaurant.yixin;
 
 import java.util.*;
 
+import utilities.LoggedEvent;
 import city.*;
 import city.market.*;
 import city.restaurant.RestaurantCashierRole;
@@ -42,12 +43,14 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	// Messages
 	public void msgComputeBill(YixinWaiterRole w, YixinCustomerRole c, String choice) {
 		print("Bill Request received");
+		log.add(new LoggedEvent("Received ComputeBill from waiter. Choice = "+ choice));
 		bills.add(new CustomerBill(w,c,choice));
 		stateChanged();
 	}
 
 	public void msgHereIsThePayment(YixinCustomerRole c, double check, double cash) {
 		print("Payment received");
+		log.add(new LoggedEvent("Received HereIsTheCheck from customer. Check = "+ check + " Payment = "+ cash));
 		for (CustomerBill bill : bills)
 			if (bill.customer == c){
 				bill.cash = cash;
@@ -59,6 +62,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 
 	public void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list){
 		print("Market bill received with amount of " + bill);
+		log.add(new LoggedEvent("Received HereIsTheBill from market. Bill = "+ bill));
 		marketBills.add(new MarketBill(m, bill, price_list));
 		stateChanged();
 	}
