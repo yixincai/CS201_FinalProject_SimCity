@@ -108,24 +108,28 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
 
         //Here is the table
 
+        //beds
         g2.setColor(Color.CYAN);
         g2.fillRect(BEDX, BEDY, BEDWIDTH, BEDHEIGHT);
         g2.fillRect(BEDX2, BEDY2, BEDWIDTH, BEDHEIGHT);
         g2.fillRect(BEDX3, BEDY3, BEDWIDTH, BEDHEIGHT);
         g2.fillRect(BEDX4, BEDY4, BEDWIDTH, BEDHEIGHT);
         
+        //stoves
         g2.setColor(Color.BLACK);
         g2.fillRect(STOVEX, STOVEY, STOVEDIM, STOVEDIM);
         g2.fillRect(STOVEX2, STOVEY2, STOVEDIM, STOVEDIM);
         g2.fillRect(STOVEX3, STOVEY3, STOVEDIM, STOVEDIM);
         g2.fillRect(STOVEX4, STOVEY4, STOVEDIM, STOVEDIM);
         
+        //fridges
         g2.setColor(Color.WHITE);
         g2.fillRect(FRIDGEX, FRIDGEY, FRIDGEDIM, FRIDGEDIM);
         g2.fillRect(FRIDGEX2, FRIDGEY2, FRIDGEDIM, FRIDGEDIM);
         g2.fillRect(FRIDGEX3, FRIDGEY3, FRIDGEDIM, FRIDGEDIM);
         g2.fillRect(FRIDGEX4, FRIDGEY4, FRIDGEDIM, FRIDGEDIM);
         
+        //walls
         g2.setColor(Color.BLUE);
         g2.fillRect(WALLX1, WALLY1, WALLDIMV, WALLDIMH);
         g2.fillRect(WALLX2, WALLY2, WALLDIMV, WALLDIMH);

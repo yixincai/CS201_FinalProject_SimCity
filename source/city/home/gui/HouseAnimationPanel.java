@@ -45,6 +45,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     
     private static final int TVX = 400;
     private static final int TVY = 100;
+    private static final int TVDIM = 10;
     
     public static final int WINDOWX = 682;
     public static final int WINDOWY = 360;
@@ -82,6 +83,15 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 
         g2.setColor(Color.CYAN);
         g2.fillRect(BEDX, BEDY, BEDWIDTH, BEDHEIGHT);
+        
+        g2.setColor(Color.ORANGE);
+        g2.fillRect(TVX, TVY, TVDIM, TVDIM);
+        
+        g2.setColor(Color.BLACK);
+        g2.fillRect(STOVEX, STOVEY, STOVEDIM, STOVEDIM);
+        
+        g2.setColor(Color.WHITE);
+        g2.fillRect(FRIDGEX, FRIDGEY, FRIDGEDIM, FRIDGEDIM);
         
         g2.setColor(Color.BLACK);
         g2.fillRect(BEDWALLX, BEDWALLY, BEDWALLWIDTH, BEDWALLHEIGHT);
