@@ -14,6 +14,7 @@ public abstract class Role
 	public Role(PersonAgent person) { _person = person; }
 	public void setPersonAgent(PersonAgent person) { _person = person; }
 	public abstract Place place();
+	public String toString() { return StringUtil.shortName(getClass()); }
 	
 	// ----------------------------- METHODS ------------------------------------
 	protected void stateChanged()

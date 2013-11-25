@@ -3,27 +3,18 @@ package city;
 import java.util.List;
 import java.util.Random;
 
-import city.bank.BankCustomerRole;
+// note: the gui packages are basically only here for the setOccupation() function (we will move the gui instantiation elsewhere) TODO
 import city.home.HomeBuyingRole;
-import city.bank.BankHostRole;
-import city.bank.BankTellerRole;
-import city.bank.Bank;
-import city.home.HomeRole;
-import city.market.Market;
-import city.market.MarketCashierRole;
-import city.market.MarketCustomerRole;
-import city.market.MarketEmployeeRole;
+import city.bank.*;
+import city.bank.gui.*;
+import city.home.*;
+import city.home.gui.*;
+import city.market.*;
+import city.market.gui.*;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
-import city.restaurant.yixin.YixinCashierRole;
-import city.restaurant.yixin.YixinCookRole;
-import city.restaurant.yixin.YixinCustomerRole;
-import city.restaurant.yixin.YixinHostRole;
-import city.restaurant.yixin.YixinNormalWaiterRole;
-import city.restaurant.yixin.YixinRestaurant;
-import city.restaurant.yixin.YixinWaiterRole;
-import city.restaurant.yixin.gui.YixinCashierGui;
-import city.restaurant.yixin.gui.YixinWaiterGui;
+import city.restaurant.yixin.*;
+import city.restaurant.yixin.gui.*;
 import city.transportation.CommuterRole;
 import agent.Agent;
 import agent.Role;
@@ -42,8 +33,6 @@ public class PersonAgent extends Agent
 	private CommuterRole _commuterRole = null;
 	private String _occupationType; // this should be "RestaurantCashier", "Cook", etc. (not specific to any restaurant type or instantiation)
 	private Role _occupation;
-	private double _occupationStartTime;
-	private double _occupationEndTime;
 	private boolean _weekday_notWeekend;
 	private HomeRole _homeRole;
 	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house
@@ -105,8 +94,15 @@ public class PersonAgent extends Agent
 	
 	
 	
-	// -------------------------------- CONSTRUCTORS & PROPERTIES ------------------------------------
+	// ------------------------------------------- CONSTRUCTORS & PROPERTIES --------------------------------------------
 	public PersonAgent(String name) { _name = name; }
+	/**
+	 * Constructor
+	 * @param name Name
+	 * @param money Initial amount of money
+	 * @param occupationType I.e. Restaurant Cashier or Restaurant Host or Bank Teller etc.
+	 * @param housingType House or Apartment
+	 */
 	public PersonAgent(String name, double money, String occupationType, String housingType) 
 	{
 		_name = name; 
@@ -122,85 +118,140 @@ public class PersonAgent extends Agent
 	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
 	public void acquireHome(String homeType)
 	{
-		
+		if(homeType.equalsIgnoreCase("apartment"))
+		{
+			_homeBuyingRole = new ApartmentRenterRole(this);
+		}
+		else
+		{
+			_homeBuyingRole = null;
+		}
 	}
+	/** Sets the value of _occupation to a role that is requested by occupationType if possible; else it sets _occupation to a new waiter role from a randomly chosen restaurant. */
 	public void setOccupation(String occupationType) 
 	{
 		_occupationType = occupationType;
+		Role newOccupation = null;
+		List<Restaurant> restaurants = Directory.restaurants();
+		List<Bank> banks = Directory.banks();
+		List<Market> markets = Directory.markets();
 		switch(occupationType)
 		{
+			// note: if control reaches a break statement, the new occupation will be a waiter.
 			case "Waiter":
-				_occupation = Directory.restaurants().get(0).generateWaiterRole();
-				new YixinNormalWaiterRole(this, (YixinRestaurant)Directory.restaurants().get(0) ,this._name);
-				YixinWaiterGui yixinWaiterGui = new YixinWaiterGui((YixinWaiterRole)_occupation, ((YixinRestaurant)_occupation.place()).Waiters.size());
-				((YixinNormalWaiterRole)_occupation).setGui(yixinWaiterGui);
-				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinWaiterGui);
-				break;
+				break; // waiter is generated right after this switch statement
 			case "Restaurant Cashier":
-				_occupation = new YixinCashierRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
-				YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)_occupation);
-				((YixinCashierRole)_occupation).setGui(yixinCashierGui);
-				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinCashierGui);
+				newOccupation = null;
+				for(Restaurant r : restaurants)
+				{
+					newOccupation = r.tryAcquireCashier();
+					if(newOccupation != null)
+					{
+						_occupation = newOccupation;
+						YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)_occupation);
+						((YixinCashierRole)_occupation).setGui(yixinCashierGui);
+						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinCashierGui);
+						return;
+					}
+				}
 				break;
 			case "Cook":
-				_occupation = new YixinCookRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
+				newOccupation = null;
+				for(Restaurant r : restaurants)
+				{
+					newOccupation = r.tryAcquireCook();
+					if(newOccupation != null)
+					{
+						_occupation = newOccupation;
+						YixinCookGui yixinCookGui = new YixinCookGui((YixinCookRole)_occupation);
+						((YixinCookRole)_occupation).setGui(yixinCookGui);
+						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinCookGui);
+						return;
+					}
+				}
 				break;
 			case "Restaurant Host":
-				_occupation = new YixinHostRole(this, (YixinRestaurant)Directory.restaurants().get(0) , this._name);
+				newOccupation = null;
+				for(Restaurant r : restaurants)
+				{
+					newOccupation = r.tryAcquireHost();
+					if(newOccupation != null)
+					{
+						_occupation = newOccupation;
+						YixinHostGui yixinHostGui = new YixinHostGui((YixinHostRole)_occupation);
+						((YixinHostRole)_occupation).setGui(yixinHostGui);
+						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinHostGui);
+						return;
+					}
+				}
 				break;
 			case "Bank Teller":
-				_occupation = new BankTellerRole(this, (Bank)Directory.banks().get(0), 0); // fix
+				newOccupation = null;
+				for(Bank b : banks)
+				{
+					newOccupation = b.tryAcquireTeller();
+					if(newOccupation != null)
+					{
+						_occupation = newOccupation;
+						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui();
+						((BankTellerRole)_occupation).setGui(bankTellerRoleGui);
+						((Bank)_occupation.place()).getAnimationPanel().addGui(bankTellerRoleGui);
+						return;
+					}
+				}
 				break;
 			case "Bank Host":
-				//_occupation = new BankHostRole(this, (Bank)Directory.banks().get(0), ((Bank)Directory.banks().get(0)).getTellers());
+				newOccupation = null;
+				for(Bank b : banks)
+				{
+					newOccupation = b.tryAcquireHost();
+					if(newOccupation != null)
+					{
+						_occupation = newOccupation;
+						BankHostRoleGui bankHostRoleGui = new BankHostRoleGui();
+						((BankHostRole)_occupation).setGui(bankHostRoleGui);
+						((Bank)_occupation.place()).getAnimationPanel().addGui(bankHostRoleGui);
+						return;
+					}
+				}
 				break;
 			case "Market Cashier":
-				_occupation = Directory.restaurants().get(0).generateWaiterRole();
-				new YixinNormalWaiterRole(this, (YixinRestaurant)Directory.restaurants().get(0) ,this._name);
-				YixinWaiterGui yixinWaiterGui = new YixinWaiterGui((YixinWaiterRole)_occupation, ((YixinRestaurant)_occupation.place()).Waiters.size());
-				((YixinNormalWaiterRole)_occupation).setGui(yixinWaiterGui);
-				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinWaiterGui);
-			//	_occupation = new MarketCashierRole(this, market);
+				newOccupation = null;
+				for(Market m : markets)
+				{
+					newOccupation = m.tryAcquireCashier();
+					if(newOccupation != null)
+					{
+						_occupation = newOccupation;
+						MarketCashierGui marketCashierGui = new MarketCashierGui((MarketCashierRole)_occupation);
+						((MarketCashierRole)_occupation).setGui(marketCashierGui);
+						((Market)_occupation.place()).getAnimationPanel().addGui(marketCashierGui);
+						return;
+					}
+				}
 				break;
 			case "Market Employee":
-			//	_occupation = new MarketEmployeeRole(this, market);
+				newOccupation = null;
+				for(Market m : markets)
+				{
+					newOccupation = m.tryAcquireEmployee();
+					if(newOccupation != null)
+					{
+						_occupation = newOccupation;
+						MarketEmployeeGui marketEmployeeGui = new MarketEmployeeGui((MarketEmployeeRole)_occupation);
+						((MarketEmployeeRole)_occupation).setGui(marketEmployeeGui);
+						((Market)_occupation.place()).getAnimationPanel().addGui(marketEmployeeGui);
+						return;
+					}
+				}
 				break;
 		}
-		/*
-		switch(occupationType)
-		{
-			case "Waiter":
-				_occupation = new YixinNormalWaiterRole(this, (YixinRestaurant)Directory.restaurants().get(0) ,this._name);
-				YixinWaiterGui yixinWaiterGui = new YixinWaiterGui((YixinWaiterRole)_occupation, ((YixinRestaurant)_occupation.place()).Waiters.size());
-				((YixinNormalWaiterRole)_occupation).setGui(yixinWaiterGui);
-				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinWaiterGui);
-				break;
-			case "Restaurant Cashier":
-				_occupation = new YixinCashierRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
-				YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)_occupation);
-				((YixinCashierRole)_occupation).setGui(yixinCashierGui);
-				((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinCashierGui);
-				break;
-			case "Cook":
-				_occupation = new YixinCookRole(this, (YixinRestaurant)Directory.restaurants().get(0) );
-				break;
-			case "Restaurant Host":
-				_occupation = new YixinHostRole(this, (YixinRestaurant)Directory.restaurants().get(0) , this._name);
-				break;
-			case "Bank Teller":
-				_occupation = new BankTellerRole(this, (Bank)Directory.banks().get(0));
-				break;
-			case "Bank Host":
-				_occupation = new BankHostRole(this, (Bank)Directory.banks().get(0), ((Bank)Directory.banks().get(0)).getTellers());
-				break;
-			case "Market Cashier":
-			//	_occupation = new MarketCashierRole(this, market);
-				break;
-			case "Market Employee":
-			//	_occupation = new MarketEmployeeRole(this, market);
-				break;
-		}
-		*/
+		// Set the occupation to waiter
+		// note: control reaches here either because the value of occupationType is "Waiter" or because no scarce jobs were found (waiter is an unlimited/non-scarce job)
+		_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole();
+		YixinWaiterGui yixinWaiterGui = new YixinWaiterGui((YixinWaiterRole)_occupation, ((YixinRestaurant)_occupation.place()).waiterCount());
+		((YixinWaiterRole)_occupation).setGui(yixinWaiterGui);
+		((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinWaiterGui);
 	}
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
 	public void setWorkDays(boolean weekday_notWeekend) {

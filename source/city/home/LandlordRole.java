@@ -32,7 +32,7 @@ public class LandlordRole extends Role {
 		double owedAmount = 0;
 		MyHouseState state = MyHouseState.VACANT;
 	}
-	List<MyHouse> _myHouses;
+	List<MyHouse> _myHouses = new ArrayList<MyHouse>();
 	
 	// ------------------------------ CONSTRUCTOR & PROPERTIES ---------------------------
 	public LandlordRole(PersonAgent person)

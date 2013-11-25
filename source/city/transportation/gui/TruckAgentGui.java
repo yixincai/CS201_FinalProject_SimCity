@@ -49,7 +49,7 @@ public class TruckAgentGui {
 
 	public void goToDock(Market market) {
 		// TODO Auto-generated method stub
-		isPresent = false;
+		isPresent = true;
 		_xDestination = market.xPosition();
 		_yDestination = market.yPosition();
 	}

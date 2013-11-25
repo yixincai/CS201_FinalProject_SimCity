@@ -20,6 +20,9 @@ import javax.swing.JPanel;
 import city.Directory;
 import city.Time;
 import city.bank.Bank;
+import city.home.Apartment;
+import city.home.ApartmentBuilding;
+import city.home.House;
 import city.market.Market;
 import city.restaurant.yixin.YixinRestaurant;
 import city.transportation.BusAgent;
@@ -118,18 +121,28 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(market.getName());
         _buildingInteriorAnimationPanels.add(bp3);
         
-        //Going to be houses
-        for(int i = 2; i < 6; i+=2){
-        	for(int j = 1; j < 6; j++){
-                WorldViewBuilding b4 = _worldView.addBuilding(i, j, 20);
-        		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "BankHouse", new city.bank.gui.BankAnimationPanel());
-        		b4.setBuildingPanel(bp4);
-        		Bank bankTemp = new Bank("Bank", b4, bp4);
-        		Directory.addPlace(bankTemp);
-        		_buildingCardLayoutPanel.add( bp4, bp4.getName() );
-        		cPanel.currentBuildingPanel.addBuilding(bankTemp.getName());
-                _buildingInteriorAnimationPanels.add(bp4);
-        	}
+        //Initializing houses
+        for(int j = 1; j < 6; j++){
+            WorldViewBuilding b4 = _worldView.addBuilding(1, j, 20);
+    		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House", new city.home.gui.HomeAnimationPanel());
+    		b4.setBuildingPanel(bp4);
+    		House house = new House("House", b4, bp4);
+    		Directory.addPlace(house);
+    		_buildingCardLayoutPanel.add( bp4, bp4.getName() );
+    		cPanel.currentBuildingPanel.addBuilding(house.getName());
+            _buildingInteriorAnimationPanels.add(bp4);
+        }
+        
+        //Initializing apartments
+        for(int i = 1; i < 6; i++){
+        	 WorldViewBuilding b4 = _worldView.addBuilding(2, i, 20);
+     		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment", new city.home.gui.ApartmentAnimationPanel());
+     		b4.setBuildingPanel(bp4);
+     		ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
+     		Directory.addPlace(apartment);
+     		_buildingCardLayoutPanel.add( bp4, bp4.getName() );
+     		cPanel.currentBuildingPanel.addBuilding(apartment.getName());
+             _buildingInteriorAnimationPanels.add(bp4);
         }
         
         

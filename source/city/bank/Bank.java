@@ -3,31 +3,42 @@ import gui.WorldViewBuilding;
 import gui.BuildingInteriorAnimationPanel;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
 import city.Place;
 import city.bank.gui.BankAnimationPanel;
-import city.bank.interfaces.BankTeller;
-import city.restaurant.yixin.gui.YixinAnimationPanel;
+import city.bank.interfaces.*;
+import city.interfaces.PlaceWithAnimation;
 
-public class Bank extends Place {
+public class Bank extends Place implements PlaceWithAnimation {
 
 	boolean open;
-	public List<BankTellerRole> tellers;
+	public List<BankTellerRole> tellers = new ArrayList<BankTellerRole>();
 	public BankHostRole host;
 	BankAnimationPanel _animationPanel;
+	
+	private BankTellerRole _bankTellerRole;
+	private BankHostRole _bankHostRole;
+	private Semaphore _tellerSemaphore = new Semaphore(1, true);
+	private Semaphore _hostSemaphore = new Semaphore(1, true);
 	
 	public Bank(String name, WorldViewBuilding wvb, BuildingInteriorAnimationPanel bp){
 		super("Bank", wvb);
 		this._animationPanel = (BankAnimationPanel)bp.getBuildingAnimation();
-	/*	BankTellerRole teller = new BankTellerRole(null,this);
+		List<BankTeller> tellers_for_host = new ArrayList<BankTeller>();
+		BankTellerRole teller = new BankTellerRole(null,this, 0);
 		tellers.add(teller);
-		
-		BankHostRole host = new BankHostRole(null,this, tellers); */
+		tellers_for_host.add(teller);
+		host = new BankHostRole(null,this, tellers_for_host);
 	}
 		
 	public Bank() {
 		super("Bank", null);
+	}
+
+	public BankAnimationPanel getAnimationPanel() {
+		return _animationPanel;
 	}
 
 	public void updateBankStatus(){
@@ -47,5 +58,27 @@ public class Bank extends Place {
 	
 	public List<BankTellerRole> getTellers(){
 		return tellers;
+	}
+	
+	
+	
+	// -------------------- FACTORIES/TRY-ACQUIRES ------------------
+	
+	public BankTellerRole tryAcquireTeller(){
+		if (_tellerSemaphore.tryAcquire()){
+			return _bankTellerRole;
+		}
+		return null;
+	}
+
+	public BankHostRole tryAcquireHost(){
+		if (_hostSemaphore.tryAcquire()){
+			return _bankHostRole;
+		}
+		return null;
+	}
+	
+	public BankCustomerRole generateBankCustomerRole(PersonAgent person){
+		return new BankCustomerRole(person, -1, this);
 	}
 }

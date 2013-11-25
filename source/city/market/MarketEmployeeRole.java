@@ -25,6 +25,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		this.market = m;
 	}
 	
+	public void setGui(MarketEmployeeGui g) {
+		gui = g;
+	}
+	
 	public void msgAnimationFinished() {
 		//from animation
 		atDestination.release();

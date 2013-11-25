@@ -281,6 +281,9 @@ public class BankTellerRole extends Role implements BankTeller {
 	public void setOccupied(boolean occupied){
 		this.occupied = occupied;
 	}
+	public void setGui(BankTellerRoleGui g){
+		gui = g;
+	}
 	
 	
 	
