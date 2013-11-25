@@ -54,7 +54,7 @@ public class CommuterRole extends Role implements Commuter{
 		super(person);
 		_person = person;
 		_currentPlace = place;
-		_destination = new House("Dummy", null);
+		_destination = _person.homeRole().place();
 		_car = null;
 		active = true;
 		// TODO Auto-generated constructor stub

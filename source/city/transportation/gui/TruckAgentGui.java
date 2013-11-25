@@ -58,7 +58,7 @@ public class TruckAgentGui implements Gui{
 		_yPos = _market.yPosition();
 	}
 
-	public void goToDock(Market market) {
+	public void goToDockFromParkingLot(Market market) {
 		// TODO Auto-generated method stub
 		isPresent = true;
 		_point = Point.Market;

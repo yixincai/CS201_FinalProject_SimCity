@@ -81,7 +81,7 @@ public class TruckAgent extends Agent implements Truck{
 				return true;
 			}
 			if(temp.pState == packageState.atMarket && trState == truckState.parkingLot){
-				PickFromDock(temp);
+				PickFromDockFromParkingLot(temp);
 				return true;
 			}
 			if(temp.pState == packageState.atMarket && trState == truckState.atRestaurant){
@@ -98,10 +98,27 @@ public class TruckAgent extends Agent implements Truck{
 	}
 	
 	//----------------------------------------------Actions------------------------------------------
+	public void PickFromDockFromParkingLot(Package aPackage){
+		trState = truckState.docking;
+		out = true;
+		_gui.goToDockFromParkingLot(_market);
+		print("Going to dock");
+		try {
+			isMoving.acquire();
+			//_market.msgPickUpItems();
+			print("Picked up");
+			aPackage.pState = packageState.inTruck;
+			stateChanged();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void PickFromDock(Package aPackage){
 		trState = truckState.docking;
 		out = true;
-		_gui.goToDock(_market);
+		_gui.goToDockFrom(_market);
 		print("Going to dock");
 		try {
 			isMoving.acquire();
