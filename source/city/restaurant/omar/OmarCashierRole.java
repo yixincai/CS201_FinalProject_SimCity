@@ -152,7 +152,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 				checkAmount = 19.99;
 			} else {
 				checkAmount = 34.99;
-			}
+			}//
 			m.waiter.msgHereIsCheck(m.customer, checkAmount);
 			m.state = CustomerState.awaitingChange;
 			stateChanged();
