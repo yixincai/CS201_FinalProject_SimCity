@@ -1,9 +1,13 @@
 package city.restaurant.omar.gui;
 
+import gui.Gui;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class OmarCookGui {
+import city.restaurant.omar.OmarCookRole;
+
+public class OmarCookGui implements Gui {
 
 	private static int XGRILL0 = 500; //change numbers to grill positions
 	private static int YGRILL0 = 400;
@@ -16,26 +20,22 @@ public class OmarCookGui {
 	
 	private static int GRILLOFFSETY = 20;
 	
-	private CookAgent agent = null;
+	private OmarCookRole agent = null;
 	private Color myColor = Color.CYAN;
 	private boolean flag = false;
 	
 	private String currentStatus = "";
 	private String pickupStatus = "";
 
-	private RestaurantGui gui;
-
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 
-	public OmarCookGui(CookAgent c, RestaurantGui gui){
+	public OmarCookGui(OmarCookRole c){
 		agent = c;
 		xPos = 540;
 		yPos = 440;
 		xDestination = 540;
 		yDestination = 440;
-		
-		this.gui = gui;
 	}
 
 	public void updatePosition() {
@@ -127,7 +127,6 @@ public class OmarCookGui {
 		this.myColor = c;
 	}
 
-	@Override
 	public boolean isPresent() {
 		// TODO Auto-generated method stub
 		return true;

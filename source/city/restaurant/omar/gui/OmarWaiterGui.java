@@ -1,11 +1,17 @@
 package city.restaurant.omar.gui;
 
+import gui.Gui;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class OmarWaiterGui {
+import city.restaurant.omar.OmarCustomerRole;
+import city.restaurant.omar.OmarWaiterRole;
+import city.restaurant.omar.Table;
 
-	private WaiterAgent agent = null;
+public class OmarWaiterGui implements Gui {
+
+	private OmarWaiterRole agent = null;
 	private boolean gotAct = false;
 	
 	RestaurantGui gui;
@@ -28,7 +34,7 @@ public class OmarWaiterGui {
 	private int HOMEX = 0;
 	private int HOMEY = 0;
 
-	    public OmarWaiterGui(WaiterAgent agent, RestaurantGui gui) {
+	    public OmarWaiterGui(OmarWaiterRole agent, RestaurantGui gui) {
 	        this.agent = agent;
 	        this.gui = gui;
 	    }
@@ -72,21 +78,21 @@ public class OmarWaiterGui {
 	    	currentStatus = newStatus;
 	    }
 	    
-	    public void DoGetCustomer(CustomerAgent customer, Table table){
+	    public void DoGetCustomer(OmarCustomerRole customer, Table table){
 	    	xDestination = -1 * TOFFSET + 100;
 	    	yDestination = -1 * TOFFSET + 30;
 	    	
 	    	gotAct = true;
 	    }
 	    
-	    public void DoBringToTable(CustomerAgent customer, Table table) {
+	    public void DoBringToTable(OmarCustomerRole customer, Table table) {
 	    	xDestination = table.getY() + TOFFSET;
 	    	yDestination = table.getX() - TOFFSET;
 	    	
 	    	gotAct = true;
 	    }
 	    
-	    public void DoTakeCustomerOrder(CustomerAgent c, Table table){
+	    public void DoTakeCustomerOrder(OmarCustomerRole c, Table table){
 	    	xDestination = table.getY() + TOFFSET;
 	    	yDestination = table.getX() - TOFFSET;
 	    	
@@ -107,7 +113,7 @@ public class OmarWaiterGui {
 	    	gotAct = true;
 	    }
 	    
-	    public void DoGiveCustomerFood(CustomerAgent c, Table table){
+	    public void DoGiveCustomerFood(OmarCustomerRole c, Table table){
 	    	xDestination = table.getY() + TOFFSET;
 	    	yDestination = table.getX() - TOFFSET;
 	    	
@@ -122,7 +128,7 @@ public class OmarWaiterGui {
 	    	gotAct = true;
 	    }
 	    
-	    public void DoGiveCorrectBillToCustomer(CustomerAgent c, Table table){
+	    public void DoGiveCorrectBillToCustomer(OmarCustomerRole c, Table table){
 	    	setCurrentStatus("Check");
 	    	xDestination = table.getY() + TOFFSET;
 	    	yDestination = table.getX() - TOFFSET;

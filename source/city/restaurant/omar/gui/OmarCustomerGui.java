@@ -1,11 +1,15 @@
 package city.restaurant.omar.gui;
 
+import gui.Gui;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class OmarCustomerGui {
+import city.restaurant.omar.OmarCustomerRole;
 
-	private CustomerAgent agent = null;
+public class OmarCustomerGui implements Gui {
+
+	private OmarCustomerRole agent = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 	private boolean sentencedToDeath = false;
@@ -20,7 +24,7 @@ public class OmarCustomerGui {
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
 
-	public CustomerGui(CustomerAgent c, RestaurantGui gui){
+	public OmarCustomerGui(OmarCustomerRole c, RestaurantGui gui){
 		agent = c;
 		xPos = -40;
 		yPos = -40;

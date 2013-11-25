@@ -9,12 +9,18 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
 
-public class OmarWaiterRole {
+import agent.Role;
+import city.PersonAgent;
+import city.Place;
+import city.restaurant.omar.gui.OmarWaiterGui;
+
+public class OmarWaiterRole extends Role {
 
 	//Data
-	CookAgent cook;
-	HostAgent host;
-	CashierAgent cashier;
+	OmarCookRole cook;
+	OmarHostRole host;
+	OmarCashierRole cashier;
+	OmarRestaurant restaurant;
 	
 	String name;
 	public boolean wantBreak; //these booleans are needed for going on break
@@ -33,21 +39,22 @@ public class OmarWaiterRole {
 			eating, paying, awaitingCheck,hasCorrectBill, paid, leaving};
 	
 	private class MyCustomer{
-		  public CustomerAgent customer;
+		  public OmarCustomerRole customer;
 		  public Table table;
 		  public String choice;
 		  double check;
 		
 		  MycustomerState myCustomerState;
 		  
-		  public MyCustomer(CustomerAgent customer, Table table){
+		  public MyCustomer(OmarCustomerRole customer, Table table){
 			  this.customer = customer;
 			  this.table = table;
 		  }
 	}
 	
-	public WaiterAgent(CookAgent cook, HostAgent host, String name){
-		super();
+	public OmarWaiterRole(PersonAgent p, OmarRestaurant r, OmarCookRole cook, OmarHostRole host, String name){
+		super(p);
+		this.restaurant = r;
 		this.cook = cook;
 		this.host = host;
 		this.name = name;
@@ -55,7 +62,7 @@ public class OmarWaiterRole {
 		onBreak = false;
 	}
 	
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		
 		if(wantBreak){
 			host.wantBreak(this);
@@ -155,7 +162,7 @@ public class OmarWaiterRole {
 	}
 	
 	public void breakRejected(){
-		Do("Can't go on break.  Only one waiter");
+		System.out.println(this.name + ": Can't go on break.  Only one waiter");
 		waiterGui.setWaiterBreakBoxEnabled();
 		wantBreak = false;
 	}
@@ -173,7 +180,7 @@ public class OmarWaiterRole {
 		DoSeatCustomer(m.customer, m.table);
 	}
 	
-	private void DoSeatCustomer(CustomerAgent customer, Table table) {
+	private void DoSeatCustomer(OmarCustomerRole customer, Table table) {
 		print("Seating " + customer + " at " + table);
 		waiterGui.DoBringToTable(customer, table); 
 		try {
@@ -201,14 +208,14 @@ public class OmarWaiterRole {
 			e.printStackTrace();
 		}
 		m.customer.menu.menuItems.remove(m.customer.choice);
-		Do("What do you want instead");
+		System.out.println(this.name + ": What do you want instead");
 		m.myCustomerState = MycustomerState.ordering;
 		m.customer.msgNeedReorder();
 	}
 	
-	public void giveOrderToCook(MyCustomer m, CookAgent c){
+	public void giveOrderToCook(MyCustomer m, OmarCookRole c){
 		waiterGui.setCurrentStatus("Giving Order");
-		Do("Gave " + m.customer.getName() + "'s order " + m.choice + " to cook " + c.name);
+		System.out.println("Gave " + m.customer.getName() + "'s order " + m.choice + " to cook " + c.name);
 		waiterGui.DoGiveOrderToCook();
 		try {
 			waiterSem.acquire();
@@ -235,7 +242,7 @@ public class OmarWaiterRole {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-			Do("Gave " + m.customer.getName() + " his order: " + m.choice);
+		System.out.println("Gave " + m.customer.getName() + " his order: " + m.choice);
 			 
 		m.customer.msgHereIsYourFood(m.choice);
 		m.myCustomerState = MycustomerState.eating;
@@ -274,12 +281,12 @@ public class OmarWaiterRole {
 	}
 
 	//Messages
-	public void msgNeedRechoose(CustomerAgent customer){
+	public void msgNeedRechoose(OmarCustomerRole customer){
 	synchronized(myCustomers){
 		for(MyCustomer m: myCustomers){
 			if(m.customer == customer){
 				m.myCustomerState = MycustomerState.needToReorder;
-				Do("Out of the Selection");
+				System.out.println("Out of the Selection");
 				stateChanged();
 				return;
 			}
@@ -287,16 +294,16 @@ public class OmarWaiterRole {
 	}
 	}
 	
-	public void msgSeatCustomer(CustomerAgent c, Table table){
+	public void msgSeatCustomer(OmarCustomerRole c, Table table){
 		MyCustomer m = new MyCustomer(c, table);
 		m.myCustomerState = MycustomerState.waiting;
 		myCustomers.add(m);
 		
-		Do("Seating customer " + c.getName() + " at table " + table.tableNumber);
+		System.out.println("Seating customer " + c.getName() + " at table " + table.tableNumber);
 		  stateChanged();
 	}
 	
-	public void msgReadyToOrder(CustomerAgent c){
+	public void msgReadyToOrder(OmarCustomerRole c){
 	synchronized(myCustomers){
 		for(MyCustomer m: myCustomers){
 			if(m.customer == c){
@@ -308,7 +315,7 @@ public class OmarWaiterRole {
 	}
 	}
 
-	public void msgHereIsMyChoice(CustomerAgent c, String choice){
+	public void msgHereIsMyChoice(OmarCustomerRole c, String choice){
 	synchronized(myCustomers){
 		for(MyCustomer myC : myCustomers){
 			if(myC.customer == c){
@@ -333,7 +340,7 @@ public class OmarWaiterRole {
 	}
 	}
 	
-	public void msgDoneEatingAndReadyToPay(CustomerAgent c){
+	public void msgDoneEatingAndReadyToPay(OmarCustomerRole c){
 	synchronized(myCustomers){
 		for(MyCustomer m: myCustomers){
 			if(m.customer == c){
@@ -345,7 +352,7 @@ public class OmarWaiterRole {
 	}
 	}
 	
-	public void msgHereIsCheck(Customer customer, double checkAmount) {
+	public void msgHereIsCheck(OmarCustomerRole customer, double checkAmount) {
 	synchronized(myCustomers){
 		for(MyCustomer m: myCustomers){
 			if(m.customer == customer){
@@ -358,7 +365,7 @@ public class OmarWaiterRole {
 	}	
 	}
 	
-	public void msgCustomerPaidWithLabor(Customer customer) {
+	public void msgCustomerPaidWithLabor(OmarCustomerRole customer) {
 	synchronized(myCustomers){
 		for(MyCustomer m:myCustomers){
 			if(m.customer == customer){
@@ -370,7 +377,7 @@ public class OmarWaiterRole {
 	}
 	}
 	
-	public void msgDoneEatingAndLeaving(CustomerAgent c){
+	public void msgDoneEatingAndLeaving(OmarCustomerRole c){
 	synchronized(myCustomers){
 		for(MyCustomer myC : myCustomers){
 			if(myC.customer == c){
@@ -410,7 +417,7 @@ public class OmarWaiterRole {
 		this.wantBreak = wantBreak;
 	}
 	
-	public void setCashier(CashierAgent cashier){
+	public void setCashier(OmarCashierRole cashier){
 		this.cashier = cashier;
 	}
 	
@@ -429,5 +436,16 @@ public class OmarWaiterRole {
 	
 	public void setHomePosition(int x, int y){
 		waiterGui.setHomePosition(x, y);
+	}
+
+	@Override
+	public Place place() {
+		return restaurant;
+	}
+
+	@Override //TODO INTEGRATION COMPLETE
+	public void cmdFinishAndLeave() {
+		active = false;
+		stateChanged();
 	}
 }
