@@ -42,6 +42,7 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		host = new YixinHostRole(null,this,"Host");
 		cook = new YixinCookRole(null,this);
 		((YixinCookRole)cook).cashier = (YixinCashierRole)cashier;
+		((YixinCashierRole)cashier).cook = (YixinCookRole)cook;
 	}
 
 	public boolean isOpen(){
