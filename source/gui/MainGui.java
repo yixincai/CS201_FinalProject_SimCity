@@ -135,11 +135,11 @@ public class MainGui extends JFrame
         _buildingInteriorAnimationPanels.add(bp3);
         
         //Initializing houses
-        for(int j = 1; j < 6; j++){
-            WorldViewBuilding b4 = _worldView.addBuilding(1, j, 20);
+        for(int i = 1; i < 6; i++){
+            WorldViewBuilding b4 = _worldView.addBuilding(1, i, 20);
     		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House", new city.home.gui.HomeAnimationPanel());
     		b4.setBuildingPanel(bp4);
-    		House house = new House("House", b4, bp4);
+    		House house = new House("House " + i, b4, bp4);
     		Directory.addPlace(house);
     		_buildingCardLayoutPanel.add( bp4, bp4.getName() );
     		cPanel.currentBuildingPanel.addBuilding(house.getName());
@@ -192,7 +192,14 @@ public class MainGui extends JFrame
   	  this.add(cPanel, Component.RIGHT_ALIGNMENT);
   	  this.pack();		
   	  this.setVisible(true);
-	
+//  	  cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Restaurant Cashier", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Cook", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Waiter", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Bank Teller", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Bank Host", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Market Cashier", true, "house");
+//  	  cPanel.addPerson("Yixin", 300, "Market Employee", true, "house");
   	  Time.startTimer();
 	}
 	

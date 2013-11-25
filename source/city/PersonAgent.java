@@ -4,12 +4,11 @@ import java.util.List;
 import java.util.Random;
 
 
-// note: the gui packages are basically only here for the setOccupation() function (we will move the gui instantiation elsewhere) TODO
+// TODO the gui packages are basically only here for the setOccupation() function. We will move the gui instantiation elsewhere, probably to the roles' respective constructors.
 import city.home.HomeBuyingRole;
 import city.bank.*;
 import city.bank.gui.*;
 import city.home.*;
-import city.home.gui.*;
 import city.market.*;
 import city.market.gui.*;
 import city.restaurant.Restaurant;
@@ -109,8 +108,17 @@ public class PersonAgent extends Agent
 		_money = money; 
 		acquireOccupation(occupationType);
 		acquireHome(housingType);
+		setNewCommuterRole();
 	}
-	public void setCommuterRole(CommuterRole commuterRole) { _commuterRole = commuterRole; _currentRole = _commuterRole; _commuterRole.active = true; }
+	/** Sets _commuterRole to a new CommuterRole */
+	public void setNewCommuterRole()
+	{
+		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
+		_commuterRole.setDestination(_homeOccupantRole.place());
+		
+		_currentRole = _commuterRole;
+		_commuterRole.active = true;
+	}
 	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
 	 * @param homeType Either "house" or "apartment" */
 	public void acquireHome(String homeType)
@@ -286,6 +294,7 @@ public class PersonAgent extends Agent
 		_weekday_notWeekend = weekday_notWeekend;
 	}
 	public HomeOccupantRole homeRole() { return _homeOccupantRole; }
+	public CommuterRole commuterRole() { return _commuterRole; }
 	
 	
 	
@@ -476,7 +485,7 @@ public class PersonAgent extends Agent
 		System.out.println("Role set");
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
-		_commuterRole.msgGoToDestination(nextRole.place());
+		_commuterRole.cmdGoToDestination(nextRole.place());
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
 		stateChanged();

@@ -6,7 +6,7 @@ import city.transportation.BusStopObject;
 
 public interface Commuter {
 	
-	public void msgGoToDestination(Place place);
+	public void cmdGoToDestination(Place place);
 	
 	//Bus Transportation messages
 	public void msgAtBusStop(BusStopObject busstop);
