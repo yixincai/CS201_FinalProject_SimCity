@@ -8,8 +8,7 @@ import agent.Role;
 import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
 import city.restaurant.*;
-import city.restaurant.yixin.gui.YixinAnimationPanel;
-import city.restaurant.yixin.gui.YixinWaiterGui;
+import city.restaurant.yixin.gui.*;
 
 public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
@@ -58,9 +57,13 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		//TODO make a new customer that is initialized with a PersonAgent of person
 		count++;
 		if (count > 10){
-			count = 1;
+			count = -1;
 		}
-		return (new YixinCustomerRole(person, this, person.getName(), count-1));
+		YixinCustomerRole customer = new YixinCustomerRole(person, this, person.getName(), count);
+		YixinCustomerGui yixinCustomerGui = new YixinCustomerGui(customer,count);
+		customer.setGui(yixinCustomerGui);
+		getAnimationPanel().addGui(yixinCustomerGui);
+		return customer;
 	}
 
 	@Override
@@ -100,6 +103,27 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	
 	public YixinAnimationPanel getAnimationPanel() {
 		return this._animationPanel;
+	}
+
+	@Override
+	public void generateCashierGui() {
+		YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)cashier);
+		((YixinCashierRole)cashier).setGui(yixinCashierGui);
+		getAnimationPanel().addGui(yixinCashierGui);
+	}
+
+	@Override
+	public void generateCookGui() {
+		YixinCookGui yixinCookGui = new YixinCookGui((YixinCookRole)cook);
+		((YixinCookRole)cook).setGui(yixinCookGui);
+		getAnimationPanel().addGui(yixinCookGui);		
+	}
+
+	@Override
+	public void generateHostGui() {
+		YixinHostGui hostGui = new YixinHostGui(host);
+		host.setGui(hostGui);
+		getAnimationPanel().addGui(hostGui);		
 	}
 
 }
