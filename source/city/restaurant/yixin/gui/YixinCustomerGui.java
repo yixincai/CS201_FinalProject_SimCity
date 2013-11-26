@@ -9,7 +9,7 @@ import city.restaurant.yixin.YixinCustomerRole;
 public class YixinCustomerGui extends JPanel implements Gui{
 
 	private YixinCustomerRole agent = null;
-	private boolean isPresent = false;
+	private boolean isPresent = true;
 	private boolean isHungry = false;
 
 	//private HostAgent host;

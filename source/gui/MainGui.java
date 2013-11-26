@@ -206,15 +206,22 @@ public class MainGui extends JFrame
 
   	  // TODO Here, add scanning the configuration file.
   	  
-  	  cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
+  	  cPanel.addPerson("Omar", 300, "Bank Teller", true, "house");
+  	  cPanel.addPerson("Omar1", 300, "Bank Host", true, "house");
+  	  cPanel.addPerson("Omar2", 300, "Bank Customer", true, "house");
+  	  cPanel.addPerson("Omar3", 300, "Bank Customer", true, "house");
+  	  cPanel.addPerson("Omar4", 300, "Bank Customer", true, "apartment");
+  	  cPanel.addPerson("Omar5", 300, "Bank Customer", true, "apartment");
+  	  
+ /* 	  cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
   	  cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
   	  cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
-  	  cPanel.addPerson("Yixin3", 300, "Yixin Waiter", true, "house");
- // 	  cPanel.addPerson("Yixin4", 300, "Yixin Customer", true, "apartment");
- // 	  cPanel.addPerson("Yixin5", 300, "Bank Teller", true, "apartment");
- // 	  cPanel.addPerson("Yixin6", 300, "Bank Host", true, "apartment");
+  	  cPanel.addPerson("Yixin3", 300, "Waiter", true, "house");
+  	  cPanel.addPerson("Yixin4", 300, "Yixin Customer", true, "apartment");
+  	  cPanel.addPerson("Yixin5", 300, "Bank Teller", true, "apartment");
+  	  cPanel.addPerson("Yixin6", 300, "Bank Host", true, "apartment");
   	  cPanel.addPerson("Yixin7", 300, "Market Cashier", true, "apartment");
-  	  cPanel.addPerson("Yixin8", 300, "Market Employee", true, "apartment");
+  	  cPanel.addPerson("Yixin8", 300, "Market Employee", true, "apartment");*/
  // 	  cPanel.addPerson("Yixin9", 300, "Restaurant Host", true, "apartment");
  // 	  cPanel.addPerson("Yixin10", 300, "Restaurant Cashier", true, "apartment");
  // 	  cPanel.addPerson("Yixin11", 300, "Cook", true, "apartment");
@@ -231,7 +238,6 @@ public class MainGui extends JFrame
 	 cPanel.addPerson("Yixin16", 300, "Cook", true, "house");
 	 cPanel.addPerson("Yixin17", 300, "Ryan Waiter", true, "house");
 	 cPanel.addPerson("Yixin18", 300, "Ryan Customer", true, "apartment");
-  	  
   	  Time.startTimer();
 	}
 	

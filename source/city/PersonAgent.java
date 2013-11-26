@@ -166,8 +166,8 @@ public class PersonAgent extends Agent
 		{
 			// note: if control reaches a break statement, the new occupation will be a waiter.
 			case "Waiter":
-				_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
-				break; // waiter is generated right after this switch statement
+				_occupation = restaurants.get(0).generateWaiterRole(this);
+				return; // waiter is generated right after this switch statement
 			case "Restaurant Cashier":
 				newOccupation = null;
 				for(Restaurant r : restaurants)
@@ -212,7 +212,7 @@ public class PersonAgent extends Agent
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
-						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui();
+						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui((BankTellerRole)_occupation);
 						((BankTellerRole)_occupation).setGui(bankTellerRoleGui);
 						((Bank)_occupation.place()).animationPanel().addGui(bankTellerRoleGui);
 						return;
@@ -227,7 +227,7 @@ public class PersonAgent extends Agent
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
-						BankHostRoleGui bankHostRoleGui = new BankHostRoleGui();
+						BankHostRoleGui bankHostRoleGui = new BankHostRoleGui((BankHostRole)_occupation);
 						((BankHostRole)_occupation).setGui(bankHostRoleGui);
 						((Bank)_occupation.place()).animationPanel().addGui(bankHostRoleGui);
 						return;
@@ -267,40 +267,51 @@ public class PersonAgent extends Agent
 			// BEGIN HACKS
 			case "Market Customer":
 				_occupation = markets.get(0).generateCustomerRole(this);
-				break;
+				return;
 			case "Yixin Customer":
 				_occupation = restaurants.get(0).generateCustomerRole(this);
-				break;
+				return;
 			case "Omar Customer":
 				_occupation = restaurants.get(1).generateCustomerRole(this);
-				break;
+				return;
 			case "Ryan Customer":
 				_occupation = restaurants.get(2).generateCustomerRole(this);
-				break;
+				return;
+			case "Bank Customer":
+				_occupation = banks.get(0).generateCustomerRole(this);
+				((BankCustomerRole)_occupation).cmdRequest("Deposit",100);
+				return;
 			case "Yixin Waiter":
 				_occupation = restaurants.get(0).generateWaiterRole(this);
-				break;
+				return;
 			case "Omar Waiter":
 				_occupation = restaurants.get(1).generateWaiterRole(this);
-				break;
+				return;
 			case "Ryan Waiter":
 				_occupation = restaurants.get(2).generateWaiterRole(this);
-				break;
+				return;
+
 		}
 		// note: control reaches here because no jobs were found, or occupationType.equals("none")
-		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateCustomerRole(this);
+		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
 		_occupation = newOccupation;
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------
 	public String getName() { return _name; }
 	public double money() { return _money; }
-	public void changeMoney(double delta) { _money += delta; }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
 	public void setWorkDays(boolean weekday_notWeekend) {
 		_weekday_notWeekend = weekday_notWeekend;
 	}
 	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
 	public CommuterRole commuterRole() { return _commuterRole; }
+	
+	// ------------------------------------------------ COMMANDS -----------------------------------------------------------
+	public void cmdChangeMoney(double delta) { _money += delta; }
+	public void cmdNoLongerHungry()
+	{
+		//TODO change hunger state, set timer to change the state to hungry again
+	}
 	
 	
 	
@@ -313,8 +324,7 @@ public class PersonAgent extends Agent
 		
 		if(_currentRole.active)
 		{
-			//print("Current Role Active");
-			// Finish role because you have to get to work:
+			// Finish current role because you have to get to work:
 			if(workingToday() && !_sentCmdFinishAndLeave)
 			{
 				if(_occupation != null)
@@ -365,13 +375,11 @@ public class PersonAgent extends Agent
 			// print("About to call _currentRole (" + _currentRole.toString() + ") scheduler.");
 			if(_currentRole.pickAndExecuteAnAction())
 			{ 
-				// print("_currentRole (" + _currentRole.toString() + ") scheduler called an action.");
 				return true;
 			}
 		}
 		else // i.e. _currentRole.active == false
 		{
-			print("Just finished a role. _currentRole: " + _currentRole.toString() + "; _nextRole: " + _nextRole.toString() + ".");
 			// note: if we get here, a role just finished leaving.
 			_sentCmdFinishAndLeave = false;
 			
@@ -380,7 +388,7 @@ public class PersonAgent extends Agent
 				// commuter role must have just reached the destination; we need to shift the current role from the commuter role to whatever next role is.
 				_currentRole = _nextRole;
 				_currentRole.active = true;
-				if(_currentRole == _homeOccupantRole) //TODO I'm a little skeptical of this if-statement (maybe a better place would be to call _homeOccupantRole.cmdGotHome() before calling setNextRole(_homeOccupantRole)
+				if(_currentRole == _homeOccupantRole) //TODO I'm a little skeptical of this if-statement.  Maybe a better place would be to call _homeOccupantRole.cmdGotHome() before calling setNextRole(_homeOccupantRole)
 				{
 					// i.e. if we just got home
 					_homeOccupantRole.cmdGotHome();
@@ -414,7 +422,10 @@ public class PersonAgent extends Agent
 						Random rand = new Random();
 						if(rand.nextInt(4) == 0)
 						{
-							goToRestaurant();
+							if(goToRestaurant())
+							{
+								return true;
+							}
 						}
 						else
 						{
@@ -427,32 +438,11 @@ public class PersonAgent extends Agent
 							else
 							{
 								buyMealsFromMarket(3); // 3 meals
+								return true;
 							}
 						}
 					}
 				}
-				
-				/*
-				// Decide whether or not to go to the bank
-				for(Role r : _roles)
-				{
-					if(r instanceof BankCustomerRole)
-					{
-						BankCustomerRole bcr = (BankCustomerRole)r;
-						
-						if(true) //if I want to go to the bank
-						{
-							//bcr.cmd....();
-							_nextRole = bcr;
-							_commuterRole.setDestination(bcr.place());
-							_currentRole = _commuterRole;
-							_currentRole.active = true;
-							return true;
-						}
-					}
-				}*/
-				
-				//_nextRole = _HomeRole;
 			}
 		}
 		
@@ -554,11 +544,11 @@ public class PersonAgent extends Agent
 		// if no YixinCustomerRole in _roles, choose a Restaurant from the Directory, and get a new YixinCustomerRole from it
 		for(Role r : _roles)
 		{
-			if(r instanceof YixinCustomerRole)
+			if(r instanceof RestaurantCustomerRole)
 			{
-				YixinCustomerRole ycr = (YixinCustomerRole)r;
-				ycr.cmdGotHungry();
-				setNextRole(ycr);
+				RestaurantCustomerRole restaurantCustomerRole = (RestaurantCustomerRole)r;
+				restaurantCustomerRole.cmdGotHungry();
+				setNextRole(restaurantCustomerRole);
 				return true;
 			}
 		}

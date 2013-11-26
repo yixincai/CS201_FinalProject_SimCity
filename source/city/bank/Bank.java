@@ -60,6 +60,10 @@ public class Bank extends Place implements PlaceWithAnimation {
 		return tellers;
 	}
 	
+	public BankHostRole getHost(){
+		return _bankHostRole;
+	}
+	
 	
 	
 	// -------------------- FACTORIES/TRY-ACQUIRES ------------------

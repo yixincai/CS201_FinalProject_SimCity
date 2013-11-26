@@ -1,9 +1,12 @@
 package city.home;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
 import city.Place;
+import city.Time;
 import city.home.gui.HomeOccupantGui;
 import agent.Role;
 
@@ -30,6 +33,8 @@ public abstract class HomeOccupantRole extends Role
 	
 	private Semaphore _reachedDestination = new Semaphore(0, true);
 	
+	private Timer _alarmClock = new Timer();
+	
 	
 	
 	// --------------------------- CONSTRUCTOR & PROPERTIES --------------------------
@@ -43,7 +48,8 @@ public abstract class HomeOccupantRole extends Role
 	public State state() { return _state; }
 	public boolean sleeping() { return _state == State.SLEEPING; }
 	public boolean cooking() { return _state == State.COOKING; }
-	public boolean haveFood() { return _mealCount > 0; } //TODO implement _mealCount;
+	public boolean haveFood() { return _mealCount > 0; }
+	public void addMeals(int addMealCount) { _mealCount += addMealCount; }
 	public HomeOccupantGui gui() { return _gui; }
 	public Place place()
 	{
@@ -115,7 +121,7 @@ public abstract class HomeOccupantRole extends Role
 		{
 			if(_command == Command.COOK_AND_EAT_FOOD)
 			{
-				actStartCooking();
+				actCookAndEat();
 				return true;
 			}
 			else if(_command == Command.GO_TO_BED)
@@ -136,8 +142,7 @@ public abstract class HomeOccupantRole extends Role
 		}
 		else if(_state == State.COOKING)
 		{
-			// note: don't check for commands except possibly LEAVE
-			//TODO finish cooking scenario
+			// note: the whole cook and eat scenario takes place in one action, in HomeOccupantGui, so we shouldn't ever get here
 		}
 		else if(_state == State.SLEEPING)
 		{
@@ -166,14 +171,17 @@ public abstract class HomeOccupantRole extends Role
 		_state = State.IDLE;
 		_gui.doGotHome();
 	}
-	private void actStartCooking()
+	private void actCookAndEat()
 	{
 		print("Starting to cook.");
 		_state = State.COOKING;
 		
-		_gui.doGoToKitchen();
+		_mealCount--;
+		_gui.doCookAndEatFood(); // calls a bunch of sequential actions for the animation
 		waitForGuiToReachDestination();
-		//_gui.doCookAndEatFood(); //TODO figure out this implementation
+		_person.cmdNoLongerHungry();
+		_state = State.IDLE;
+		_gui.doGoIdle();
 	}
 	private void actWatchTv()
 	{
@@ -188,7 +196,13 @@ public abstract class HomeOccupantRole extends Role
 		_state = State.SLEEPING;
 		_gui.doGoToBed();
 		waitForGuiToReachDestination();
-		//TODO set a timer to call msgAlarmClockRang
+		
+		_alarmClock.schedule(
+				new TimerTask() {
+					public void run() { msgAlarmClockRang(); }
+				},
+				Time.getRealTime(8) // number of real milliseconds in 8 simulation hours
+				);
 	}
 	private void actWakeUp()
 	{
