@@ -18,6 +18,8 @@ public class RyanCashierGui implements Gui{
 	
 	public RyanCashierGui(RyanCashierRole agent){
 		this.agent = agent;
+		xDestination = 200;
+		yDestination = 20;
 	}
 	
 	public int getxPos(){
