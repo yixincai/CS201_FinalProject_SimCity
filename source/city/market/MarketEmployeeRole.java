@@ -36,6 +36,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 	
 	public void cmdFinishAndLeave() {
+		print("person tells employee to finish and leave");
 		role_state = RoleState.WantToLeave;
 		stateChanged();
 	}

@@ -307,7 +307,8 @@ public class PersonAgent extends Agent
 	@Override
 	protected boolean pickAndExecuteAnAction() {
 		// here, check for and do emergencies/important actions
-		
+		if (_name.equals("Yixin7"))
+			System.out.println("***************************");
 		if(_currentRole.active)
 		{
 			//System.out.println("Current Role Active");

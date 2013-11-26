@@ -195,15 +195,15 @@ public class MainGui extends JFrame
   	  this.setVisible(true);
 
   	  // TODO Here, add scanning the configuration file.
-  	  
+  	  cPanel.addPerson("Yixin6", 300, "Market Cashier", true, "house");
+  	  cPanel.addPerson("Yixin7", 300, "Market Employee", true, "house");
   	  cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
   	  cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
   	  cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
   	  cPanel.addPerson("Yixin3", 300, "Waiter", true, "house");
   	  cPanel.addPerson("Yixin4", 300, "Bank Teller", true, "house");
   	  cPanel.addPerson("Yixin5", 300, "Bank Host", true, "house");
-  	  cPanel.addPerson("Yixin6", 300, "Market Cashier", true, "house");
-  	  cPanel.addPerson("Yixin7", 300, "Market Employee", true, "house");
+
 
   	  Time.startTimer();
 	}

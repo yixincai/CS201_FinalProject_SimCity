@@ -16,7 +16,7 @@ public abstract class Agent
     
     // For pausing agents:
     private Semaphore pauseSemaphore = new Semaphore(0, true);
-    private boolean pauseBoolean = false;
+    //private boolean pauseBoolean = false;
     
     // TEST
     public EventLog log = new EventLog();
@@ -29,21 +29,24 @@ public abstract class Agent
      */
     public void stateChanged()
     {
+    	if (getName().equals("Yixin7")) print("should wake up!!!!!!!!!");
+        sleepSemaphore.release();
+        sleepSemaphore.release();
         sleepSemaphore.release();
     }
     
-    public void pause()
-    {
-    	pauseBoolean = true;
-    	print("[paused]");
-    }
-    
-    public void resume()
-    {
-    	pauseBoolean = false;
-    	pauseSemaphore.release();
-    	print("[resumed]");
-    }
+//    public void pause()
+//    {
+//    	pauseBoolean = true;
+//    	print("[paused]");
+//    }
+//    
+//    public void resume()
+//    {
+//    	pauseBoolean = false;
+//    	pauseSemaphore.release();
+//    	print("[resumed]");
+//    }
 
     /**
      * This is the scheduler.
@@ -153,10 +156,10 @@ public abstract class Agent
                 try
                 {
                 	// Freeze here if pausing
-                	if(pauseBoolean) pauseSemaphore.acquire();
+//                	if(pauseBoolean) pauseSemaphore.acquire();
                     // The agent sleeps here until someone calls stateChanged(), which causes a call to stateChange.give(), which wakes up agent.
                     sleepSemaphore.acquire();
-                    // print("[woke up]"); // for debug tracking
+                    if (getName().equals("Yixin7")) print("[woke up]"); // for debug tracking
                     // The next while clause is the key to the control flow.  When the agent wakes up it will call the scheduler repeatedly until the scheduler returns false.
                     while (pickAndExecuteAnAction());
                 }
@@ -169,6 +172,7 @@ public abstract class Agent
                     print("Unexpected exception caught in Agent thread:", e);
                 }
             }
+            print("dead");
         }
 
         private void stopAgent()
