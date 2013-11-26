@@ -3,10 +3,13 @@ package city.restaurant.tanner;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import city.Directory;
 import city.PersonAgent;
 import city.Place;
 import city.market.Item;
@@ -14,6 +17,7 @@ import city.market.Market;
 import city.market.interfaces.MarketCashier;
 import city.restaurant.RestaurantCookRole;
 import city.restaurant.tanner.MarketOrder.OrderState;
+import city.restaurant.tanner.Order.State;
 import city.restaurant.tanner.gui.TannerRestaurantCookRoleGui;
 import city.restaurant.tanner.interfaces.TannerRestaurantCashier;
 import city.restaurant.tanner.interfaces.TannerRestaurantCook;
@@ -33,6 +37,8 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 	TannerRestaurantCookRoleGui myGui;
 	TannerRestaurantCashier cashier;
 	TannerRestaurant restaurant;
+	Market markets;
+	boolean canOrder = true;
 	
 	
 //----------------------------------------Constructors-----------------------------------------------------------------	
@@ -45,6 +51,7 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 		doingAction = new Semaphore(0, true);	
 		this.cashier = cashier;
 		restaurant = rest;
+		markets = Directory.markets().get(0);
 		
 	}
 	
@@ -83,28 +90,36 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 	@Override
 	public void msgOrderFulfillment(Market m, List<Item> order) 
 	{
-
-	}
-
-	@Override
-	public void msgThisIsWhatIHave(int[] ItemsGiven, MarketCashier m)
-	{
 		synchronized(marketOrders)
 		{
 			for(int i = 0; i < marketOrders.size(); i++)
 			{
 				if(marketOrders.get(i).market == m)
 				{
-					marketOrders.get(i).whatIGot = ItemsGiven;
+					marketOrders.get(i).whatIGot = order ;
 					marketOrders.get(i).orderState = OrderState.orderRecieved;
-					for(int j = 0; j < marketOrders.get(i).whatIGot.length; j++)
+					for(int j = 0; j < marketOrders.get(i).whatIGot.size(); j++)
 					{
-						restaurant.menu.get(j).stock += marketOrders.get(i).whatIGot[j];
+						for(int k = 1; k <= restaurant.numDishes; k++)
+						{
+							if(restaurant.menu.get(k).dishName == marketOrders.get(i).whatIGot.get(j).name)
+							{
+								restaurant.menu.get(k).stock += marketOrders.get(i).whatIGot.get(j).amount;
+							}
+						}
 					}
-					stateChanged();
+					
 				}
 			}
-		}		
+		}
+		canOrder = true;
+		stateChanged();
+	}
+
+	@Override
+	public void msgThisIsWhatIHave(int[] ItemsGiven, MarketCashier m)
+	{
+		//this message has been replaced by msgorderFulfillment
 	}
 
 	@Override
@@ -115,7 +130,7 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 	}
 
 	@Override
-	public void msgHereIsTheBill(float amount, MarketCashier m) 
+	public void msgHereIsTheBill(double amount, MarketCashier m) 
 	{
 		synchronized(marketOrders)
 		{
@@ -135,13 +150,161 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 //------------------------------------------Scheduler-----------------------------------------------------------------
 
 	@Override
-	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
+	public boolean pickAndExecuteAnAction() 
+	{
+		try {
+			if(CheckStock())
+			{
+				PlaceNewMarketOrder();
+				return true;
+			}
+			
+			if(marketOrders.size() > 0)
+			{
+				synchronized(marketOrders)
+				{
+					for(int i = 0; i < marketOrders.size(); i++)
+					{
+						if(marketOrders.get(i).orderState == OrderState.orderRecieved)
+						{
+							AskForMarketOrderPrice(marketOrders.get(i));
+							return true;
+						}
+					}
+				}
+				
+				synchronized(marketOrders)
+				{
+					for(int i = 0; i < marketOrders.size(); i++)
+					{
+						if(marketOrders.get(i).orderState == OrderState.readyToPay)
+						{
+							PayMarket(marketOrders.get(i));
+							return true;
+						}
+					}
+				}
+			}
+			
+			else if(orders.size() > 0)
+			{
+				synchronized(orders)
+				{
+					for(int i = 0; i < orders.size(); i++)
+					{
+						if(orders.get(i).orderState == State.orderReady)
+						{
+							PlateOrder(orders.get(i));
+							return true;
+						}
+					}
+				}
+				
+				synchronized(orders)
+				{
+					for(int i = 0; i < orders.size(); i++)
+					{
+						if(orders.get(i).orderState == State.orderPending)
+						{
+							CookOrder(orders.get(i));
+							return true;
+						}
+					}
+				}
+			}
+		} catch (ConcurrentModificationException e) {
+			return false;
+		}
+		
 		return false;
 	}
 
 //------------------------------------------Actions------------------------------------------------------------------
 	
+	private boolean CheckStock()
+	{
+		boolean needMoreFood = false;
+		for(int i = 0; i < restaurant.menu.size(); i++)
+		{
+			if(restaurant.menu.get(i+1).stock <= restaurant.menu.get(i+1).buffer)
+			{
+				needMoreFood = true;
+			}
+		}
+		return needMoreFood;
+	}
+	
+	private void AskForMarketOrderPrice(MarketOrder mo)
+	{
+	}
+	
+	private void PayMarket(MarketOrder mo)
+	{
+	}
+	
+	private void PlaceNewMarketOrder()
+	{
+		print("Ordering from market");
+		List<Item> groceryList = new ArrayList<Item>();
+		for(int i = 1; i <= restaurant.numDishes; i++)
+		{
+			if(restaurant.menu.get(i).stock < restaurant.menu.get(i).buffer)
+			{
+				groceryList.add(new Item(restaurant.menu.get(i).dishName, restaurant.menu.get(i).max-restaurant.menu.get(i).stock));
+			}
+		}
+		markets.MarketCashier.msgPlaceOrder(restaurant, groceryList);
+		canOrder = false;
+	}
+	
+	private void CookOrder(final Order o)
+	{
+		print("Cook food");
+		myGui.DoGoToIngredients();
+		try {
+			doingAction.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		myGui.DoGoToGrills();
+		try {
+			doingAction.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		o.orderState = State.orderCooking;
+		cookTimer.schedule(new TimerTask() {
+			public void run()
+			{
+				o.orderState = State.orderReady;
+				stateChanged();
+			}
+		}, (long) (restaurant.menu.get(o.choice).cookTime) * 1000);
+		
+	}
+	
+	private void PlateOrder(Order o)
+	{
+		print("Plate Food");
+		myGui.DoGoToGrills();
+		try {
+			doingAction.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		myGui.DoGoToHeatLamp();
+		try {
+			doingAction.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		o.waiter.msgOrderIsReady(o.choice, o.tableNumber);
+		orders.remove(o);
+	}
 	
 //------------------------------------------Commands-----------------------------------------------------------------
 	
@@ -159,13 +322,13 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 class MarketOrder
 {
 	Market market;
-	int[] whatIOrdered;
-	int[] whatIGot;
-	float cost;
+	List<Item> whatIOrdered;
+	List<Item> whatIGot;
+	double cost;
 	public enum OrderState {orderSubmitted, orderRecieved, readyToPay}
 	OrderState orderState;
 	
-	public MarketOrder(int[] order, Market m)
+	public MarketOrder(List<Item> order, Market m)
 	{
 		whatIOrdered = order;
 		market = m;
