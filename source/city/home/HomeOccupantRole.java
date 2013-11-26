@@ -1,9 +1,12 @@
 package city.home;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
 import city.Place;
+import city.Time;
 import city.home.gui.HomeOccupantGui;
 import agent.Role;
 
@@ -29,6 +32,8 @@ public abstract class HomeOccupantRole extends Role
 	protected HomeOccupantGui _gui;
 	
 	private Semaphore _reachedDestination = new Semaphore(0, true);
+	
+	private Timer _alarmClock = new Timer();
 	
 	
 	
@@ -173,7 +178,9 @@ public abstract class HomeOccupantRole extends Role
 		
 		_gui.doGoToKitchen();
 		waitForGuiToReachDestination();
-		//_gui.doCookAndEatFood(); //TODO figure out this implementation
+		_mealCount--;
+		_gui.doCookAndEatFood();
+		waitForGuiToReachDestination();
 	}
 	private void actWatchTv()
 	{
@@ -188,7 +195,13 @@ public abstract class HomeOccupantRole extends Role
 		_state = State.SLEEPING;
 		_gui.doGoToBed();
 		waitForGuiToReachDestination();
-		//TODO set a timer to call msgAlarmClockRang
+		
+		_alarmClock.schedule(
+				new TimerTask() {
+					public void run() { msgAlarmClockRang(); }
+				},
+				Time.getRealTime(8) // number of real milliseconds in 8 simulation hours
+				);
 	}
 	private void actWakeUp()
 	{

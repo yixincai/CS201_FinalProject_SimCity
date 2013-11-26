@@ -63,27 +63,30 @@ public abstract class HomeOccupantGui implements Gui {
 		doGoIdle();
 	}
 	public void doGoToKitchen() {
-		//TODO set destination
+		_destinationX = kitchenX();
+		_destinationY = kitchenY();
 		_goingSomewhere = true;
 	}
 	public void doWatchTv() {
 		doGoIdle();
 	}
 	public void doGoToBed() {
-		//TODO set destination
+		_destinationX = bedX();
+		_destinationY = bedY();
 		_goingSomewhere = true;
 	}
 	public void doWakeUp() {
 		doGoIdle();
 	}
 	public void doLeaveHome() {
-		//TODO set destination (make an allowance for calling setPresent(false) when you get there???)
+		_destinationX = frontDoorX();
+		_destinationY = frontDoorY();
 		_goingSomewhere = true;
 	}
 	
 	
 	
-	// ------------------------------------ METHODS ----------------------------------------
+	// ------------------------------------ ANIMATION ----------------------------------------
 	@Override
 	public void updatePosition() {
 		// Update position
@@ -94,12 +97,18 @@ public abstract class HomeOccupantGui implements Gui {
 		else if (_positionY > _destinationY) _positionY--;
 		
 		// Check if reached destination
-		if(_positionX == _destinationX && _positionY == _destinationY && _goingSomewhere){
-			_goingSomewhere = false;
-			setPresent(false);
-			_role.msgReachedDestination();
+		if(_positionX == _destinationX && _positionY == _destinationY)
+		{
+			if(_goingSomewhere)
+			{
+				_goingSomewhere = false;
+				_role.msgReachedDestination();
+			}
+			if(_destinationX == frontDoorX() && _destinationY == frontDoorY())
+			{
+				setPresent(false);
+			}
 		}
-		// TODO if(reached destination && destination is front door) { setPresent(false); } (also see restaurant.gui.WaiterGui)
 	}
 	@Override
 	public void draw(Graphics2D g) {
