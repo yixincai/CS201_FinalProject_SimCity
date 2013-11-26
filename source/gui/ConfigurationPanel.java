@@ -42,11 +42,14 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 		configLabel = new JLabel("Configurations:");
 		description = new JPanel();
 		description.setBorder(BorderFactory.createTitledBorder("Config Description"));
+		SpringLayout descriptionLayout = new SpringLayout();
+		description.setLayout(descriptionLayout);
 		startButton = new JButton("Start");
-		config1Description = "Scenario 1: Initialize a bank interaction.\n Three bank customers,"
-				+ "one bank host, and one bank teller are put into the world.\nThey will go home and"
-				+ "then head over to the bank and proceed to make deposits (since it's their first time\n"
-				+ "to the bank, naturally they can't withdraw or do any other bank actions.";
+		
+		config1Description = "<html><br>Scenario 1: Initialize a bank interaction.</br><br>Three bank customers,"
+				+ " one bank host, and one bank teller are put into the world.</br><br>  They will go home and"
+				+ " then head over to the bank and proceed to make deposits (since it's their first time"
+				+ " to the bank, </br><br> naturally they can't withdraw or do any other bank actions.</br></html>";
 		config2Description = "WRITE CONFIGURATION 2 DESCRIPTION HERE";
 		config3Description = "WRITE CONFIGURATION 3 DESCRIPTION HERE";
 		config4Description = "WRITE CONFIGURATION 4 DESCRIPTION HERE";
@@ -78,6 +81,10 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 		layout.putConstraint(SpringLayout.EAST, startButton, -5, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, startButton, -35, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, startButton, -5, SpringLayout.SOUTH, this);
+		//Description Label
+		descriptionLayout.putConstraint(SpringLayout.WEST, descriptionText, 10, SpringLayout.WEST, description);
+		descriptionLayout.putConstraint(SpringLayout.EAST, descriptionText, -10, SpringLayout.EAST, description);
+		
 	}
 	
 	@Override
