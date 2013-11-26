@@ -38,9 +38,13 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		this.bank = bank;
 		//set values above through personAgent, possible
 		
+		this.bankHost = bank.getHost();
 		state = State.DoingNothing;
 		event = Event.None;
 		bankCustSem = new Semaphore(0, true);
+		
+		this.gui = new BankCustomerRoleGui(this);
+		bank.animationPanel().addGui(gui);
 	}
 	
 	// --------------------- ACCESSORS ---------------
@@ -170,19 +174,19 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		  }
 		  teller.msgIAmHere(this);
 		  state = State.AtTeller;
-		  stateChanged();
+		 // stateChanged();
 	}
 	private void actGiveRequest(){
 		teller.msgHereIsMyRequest(this, request, accountNumber);
 		state = State.GaveRequest;
-		 stateChanged();
+		// stateChanged();
 	}
 	private void actGiveNewRequest(){
 		//may trigger robbery
 		//pick new request using logic tied to accountFunds and amountOwed
 		  //teller.msgHereIsMyRequest(String newRequest, int accountNumber);
 		  state = State.GaveRequest;
-		  stateChanged();
+		//  stateChanged();
 	}
 	private void actLeaveBank(){
 		  bankHost.msgLeavingBank(teller);
@@ -196,7 +200,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		  state = State.DoingNothing;
 		  active = false;
 		  //send message to person agent to set role inactive, DO NOT SET EVENT TO NONE, THIS WILL RESTART PROCESS
-		  stateChanged();
+		//  stateChanged();
 	}
 	private void actLeaveBankWithoutTransaction(){
 		gui.DoLeaveBank();
@@ -207,7 +211,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		}
 		state = State.DoingNothing;
 		active = false;
-		stateChanged();
+		//stateChanged();
 	}
 	private void actRobBank(){
 		gui.DoRobBank();
@@ -218,7 +222,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	public void releaseSemaphore(){
 		bankCustSem.release();
-		stateChanged();
+		//stateChanged();
 	}
 
 	@Override
