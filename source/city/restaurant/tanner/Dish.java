@@ -4,7 +4,7 @@ package city.restaurant.tanner;
 public class Dish {
 
 	float cookTime;
-	String dishName;
+	public String dishName;
 	int menuNumber;
 	int stock;
 	int buffer;

@@ -13,7 +13,7 @@ public interface TannerRestaurantCook
 	
 	public void msgAllOutOfGoods(MarketCashier m);
 	
-	public void msgHereIsTheBill(float amount, MarketCashier m);
+	public void msgHereIsTheBill(double amount, MarketCashier m);
 
 	public Point getPosition();
 }
