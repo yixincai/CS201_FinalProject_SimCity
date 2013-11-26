@@ -10,13 +10,14 @@ import city.interfaces.PlaceWithAnimation;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.omar.gui.OmarRestaurantAnimationPanel;
+import city.restaurant.omar.gui.OmarWaiterGui;
+import city.restaurant.yixin.gui.YixinWaiterGui;
 
 public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 
 	public RevolvingStand revolving_stand = new RevolvingStand();
 	//count stands for the number of waiting list
 	int count = -1;
-	int waiter_count = -1;
 	boolean open;
 	public OmarHostRole host;
 	private List<Table> tables;
@@ -69,9 +70,11 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		if (i == 0)
 			newWaiter = new OmarWaiterRole(person, this,cook, host, null);
 		else
-			newWaiter = new OmarWaiterRole(person, this, cook, host, null);
+			newWaiter = new OmarSharedDataWaiterRole(person, this, cook, host, null);
 		newWaiter.setCashier((OmarCashierRole)cashier);
-		waiter_count++;
+		OmarWaiterGui waiterGui = new OmarWaiterGui(newWaiter, _animationPanel);
+		newWaiter.setGui(waiterGui);
+		getAnimationPanel().addGui(waiterGui);
 		return newWaiter;
 	}
 
@@ -86,10 +89,6 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	@Override
 	public Role getHostRole() {
 		return host;
-	}
-
-	public int waiterCount(){
-		return waiter_count;
 	}
 	
 	public OmarRestaurantAnimationPanel getAnimationPanel() {
