@@ -5,9 +5,14 @@ import java.util.Map;
 import city.PersonAgent;
 import city.Place;
 import city.market.Market;
+import city.market.interfaces.MarketCashier;
 import city.restaurant.RestaurantCashierRole;
+import city.restaurant.tanner.interfaces.TannerRestaurantCashier;
+import city.restaurant.tanner.interfaces.TannerRestaurantCustomer;
+import city.restaurant.tanner.interfaces.TannerRestaurantWaiter;
 
-public class TannerRestaurantCashierRole extends RestaurantCashierRole {
+public class TannerRestaurantCashierRole extends RestaurantCashierRole implements TannerRestaurantCashier
+{
 
 	public TannerRestaurantCashierRole(PersonAgent person, TannerRestaurant rest) {
 		super(person);
@@ -50,6 +55,39 @@ public class TannerRestaurantCashierRole extends RestaurantCashierRole {
 	public void cmdFinishAndLeave() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void msgComputeBill(int choice, TannerRestaurantCustomer customer,
+			TannerRestaurantWaiter w) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsMyPayment(float bill, float cash,
+			TannerRestaurantCustomer c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgIDontHaveEnoughMoney(float bill, float cash,
+			TannerRestaurantCustomer c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsAMarketBill(float amount, MarketCashier m) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsYourChange(float change, MarketCashier m) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

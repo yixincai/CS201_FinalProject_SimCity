@@ -11,7 +11,8 @@ import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.tanner.gui.TannerRestaurantAnimationPanel;
 
-public class TannerRestaurant extends Restaurant {
+public class TannerRestaurant extends Restaurant
+{
 	
 //------------------------------------DATA----------------------------------------------------------------
 	TannerRestaurantHostRole host;
