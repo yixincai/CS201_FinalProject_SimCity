@@ -25,28 +25,5 @@ public class CarObject {
 	public void atDestination(){
 		_commuter.msgAtDestination(null);
 	}
-	
-	
-	//Position
-	int _xPos;
-	int _yPos;
-	
-	CarObject(int x, int y){
-		_xPos = x;
-		_yPos = y;
-	}
-	
-	public void setPosition(int x, int y){
-		_xPos = x;
-		_yPos = y;
-	}
-	
-	public int getXPosition(){
-		return _xPos;
-	}
-	
-	public int getYPosition(){
-		return _yPos;
-	}
 
 }

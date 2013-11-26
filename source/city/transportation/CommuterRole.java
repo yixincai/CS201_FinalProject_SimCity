@@ -23,7 +23,7 @@ public class CommuterRole extends Role implements Commuter{
 	BusStopObject _busStop;
 //	Semaphore commuterSem = new Semaphore(0, true);
 
-	public CarObject _car = new CarObject();
+	public CarObject _car = null;
 	public Bus _bus;
 	public double _fare;
 	CommuterGui _gui;
