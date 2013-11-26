@@ -337,16 +337,17 @@ public class PersonAgent extends Agent
 				}
 			}
 			
-			// Call current role's scheduler
+			// ================================================== Call current role's scheduler =============================================
+			print("About to call _currentRole (" + _currentRole.toString() + ") scheduler.");
 			if(_currentRole.pickAndExecuteAnAction())
 			{ 
-				System.out.println("Current Role Scheduler called an action.");
+				// print("_currentRole (" + _currentRole.toString() + ") scheduler called an action.");
 				return true;
 			}
 		}
 		else // i.e. _currentRole.active == false
 		{
-			print("Just finished a role");
+			print("Just finished a role. _currentRole: " + _currentRole.toString() + "; _nextRole: " + _nextRole.toString() + ".");
 			// note: if we get here, a role just finished leaving.
 			_sentCmdFinishAndLeave = false;
 			
@@ -357,6 +358,7 @@ public class PersonAgent extends Agent
 				_currentRole.active = true;
 				if(_currentRole == _homeOccupantRole)
 				{
+					// i.e. if we just got home
 					_homeOccupantRole.cmdGotHome();
 				}
 				return true;
@@ -366,13 +368,14 @@ public class PersonAgent extends Agent
 				// note: the program will only get to here if we just finished a role that is not transportation role.
 				// Choose the next role to do.  Set _nextRole to the next role you will do, set _currentRole to _commuterRole
 				
-				if(_occupation != null && workingToday() && timeToBeAtWork()) //TODO add JoblessRole
+				if(_occupation != null && workingToday() && timeToBeAtWork())
 				{
 					setNextRole(_occupation);
 					return true;
 				}
-				else if(_state.time() > 20 || _state.time() < 7) //could replace with variables for sleepTime and wakeTime
+				else if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime()) //could replace with variables for sleepTime and wakeTime
 				{
+					_homeOccupantRole.cmdGoToBed();
 					setNextRole(_homeOccupantRole);
 					return true;
 				}
@@ -399,7 +402,7 @@ public class PersonAgent extends Agent
 							}
 							else
 							{
-								goToMarket(3); // 3 meals
+								buyMealsFromMarket(3); // 3 meals
 							}
 						}
 					}
@@ -495,7 +498,7 @@ public class PersonAgent extends Agent
 		_currentRole.active = true;
 		stateChanged();
 	}
-	private boolean goToMarket(int meals)
+	private boolean buyMealsFromMarket(int meals)
 	{
 		// Search for a MarketCustomerRole in _roles, use that;
 		// if no MarketCustomerRole in _roles, choose a Market from the Directory, and get a new MarketCustomerRole from it
