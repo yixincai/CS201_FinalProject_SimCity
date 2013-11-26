@@ -2,6 +2,7 @@ package city.restaurant.tanner;
 
 import city.PersonAgent;
 import city.Place;
+import city.restaurant.tanner.MyCustomer.customerState;
 import city.restaurant.tanner.interfaces.TannerRestaurantCashier;
 import city.restaurant.tanner.interfaces.TannerRestaurantCook;
 import city.restaurant.tanner.interfaces.TannerRestaurantCustomer;
@@ -18,9 +19,20 @@ public class TannerRestaurantSharedDataWaiterRole extends TannerRestaurantBaseWa
 	}
 
 	@Override
-	protected void SubmitOrder(MyCustomer c) {
-		// TODO Auto-generated method stub
-		
+	protected void SubmitOrder(MyCustomer c) 
+	{
+		print("Process order");
+		c.currentState = customerState.orderIn; 
+		myGUI.DoGoToRevolvingStand();
+		try {
+			doingAction.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        Order o = new Order(this, c.order, c.tableNumber);
+        print("Trying to put order on revolving stand");
+        restaurant.revolvingStand.insert(o);		
 	}
 
 }

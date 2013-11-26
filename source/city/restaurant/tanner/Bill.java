@@ -10,7 +10,7 @@ public class Bill
 	public double amount;
 	public TannerRestaurantWaiter waiter;
 	public TannerRestaurantCustomer customer;
-	public enum BillState {computed, pending, paid};
+	public enum BillState {computed, pending, paid, settled};
 	public BillState state;
 	public double changeDue;
 	public double amountShort;

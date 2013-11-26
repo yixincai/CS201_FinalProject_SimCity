@@ -100,7 +100,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		 * Scheduler.  Determine what action is called for, and do it.
 		 */
 		public boolean pickAndExecuteAnAction() {
-			if(!restaurant.open || (orders.isEmpty() && myCustomers.isEmpty())){
+			if(!restaurant.open && orders.isEmpty() && myCustomers.isEmpty()){
 				leave();
 				return true;
 			}

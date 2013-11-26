@@ -30,4 +30,34 @@ public class TannerRestaurantCustomerRoleGui implements Gui {
 		return false;
 	}
 
+	public void DoGoToWaitArea() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void DoGoToSeat(int tableNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void DoLookAtMenu() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void DoEatFood() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void DoGoToFront() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void DoExitRestaurant() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

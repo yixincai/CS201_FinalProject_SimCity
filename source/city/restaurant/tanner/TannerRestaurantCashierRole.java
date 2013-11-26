@@ -1,10 +1,10 @@
 package city.restaurant.tanner;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
 
-import restaurant.Bill;
 import utilities.LoggedEvent;
 import city.PersonAgent;
 import city.Place;
@@ -13,6 +13,7 @@ import city.market.Market;
 import city.market.interfaces.MarketCashier;
 import city.restaurant.RestaurantCashierRole;
 import city.restaurant.tanner.Bill.BillState;
+import city.restaurant.tanner.MarketBill.MarketBillState;
 import city.restaurant.tanner.gui.TannerRestaurantCashierRoleGui;
 import city.restaurant.tanner.interfaces.TannerRestaurantCashier;
 import city.restaurant.tanner.interfaces.TannerRestaurantCook;
@@ -179,32 +180,78 @@ public class TannerRestaurantCashierRole extends RestaurantCashierRole implement
 	@Override
 	public boolean pickAndExecuteAnAction() 
 	{
-		else if(bills.size() > 0)
-		{
-			synchronized(bills)
+		try {
+			if(marketBills.size() >0)
 			{
-				for(int i = 0; i < bills.size(); i++)
+				if(myMoney > 0)
 				{
-					if(bills.get(i).state == BillState.computed)
+					synchronized(marketBills)
 					{
-						ComputeBill(bills.get(i));
-						return true;
+						for(int i = 0; i < marketBills.size(); i++)
+						{
+							if(marketBills.get(i).billState == MarketBillState.invoiceReceived)
+							{
+								PayMarketBill(marketBills.get(i));
+								return true;
+							}
+						}
+					}
+					
+					synchronized(marketBills)
+					{
+						for(int i = 0; i < marketBills.size(); i++)
+						{
+							if(marketBills.get(i).billState == MarketBillState.changeReceived)
+							{
+								
+							}
+						}
 					}
 				}
 			}
-			
-			synchronized(bills)
+			else if(bills.size() > 0)
 			{
-				for(int i = 0; i < bills.size(); i++)
+				synchronized(bills)
 				{
-					if(bills.get(i).state == BillState.paid)
+					for(int i = 0; i < bills.size(); i++)
 					{
-						SettleUp(bills.get(i));
-						return true;
+						if(bills.get(i).state == BillState.computed)
+						{
+							ComputeBill(bills.get(i));
+							return true;
+						}
+					}
+				}
+				
+				synchronized(bills)
+				{
+					for(int i = 0; i < bills.size(); i++)
+					{
+						if(bills.get(i).state == BillState.paid)
+						{
+							SettleUp(bills.get(i));
+							return true;
+						}
+					}
+				}
+				
+				synchronized(bills)
+				{
+					for(int i = 0; i < bills.size(); i++)
+					{
+						if(bills.get(i).state == BillState.settled)
+						{
+							bills.remove(bills.get(i));
+							return true;
+						}
 					}
 				}
 			}
+		} catch (ConcurrentModificationException e) {
+			e.printStackTrace();
+			return false;
 		}
+		return false;
 	}
 	
 //-----------------------------------------Actions-------------------------------------------------------------
@@ -231,6 +278,29 @@ public class TannerRestaurantCashierRole extends RestaurantCashierRole implement
 			log.add(new LoggedEvent("Telling customer he/she owes us"));
 			b.customer.msgYouOweUs(b.amountShort);
 			b.state = BillState.paid;
+		}
+	}
+	
+	private void PayMarketBill(MarketBill mb)
+	{
+		double amount = 0;
+		for (Item item : mb.invoice)
+			amount += (item.amount * mb.price_list.get(item.name));
+		if (Math.abs(mb.amount - amount) > 0.02)
+			print("Incorrect bill calculation by market");
+		else 
+			print("Correct bill calculation by market. Paying Market Bill");
+		if (myMoney >= mb.amount){
+			myMoney -= mb.amount;
+			print("Remaining money is " + myMoney);
+			mb.market.MarketCashier.msgHereIsPayment(restaurant, mb.amount);
+			mb.billState = MarketBillState.none;
+		}
+		else {
+			marketBills.get(0).amount -= myMoney;
+			mb.market.MarketCashier.msgHereIsPayment(restaurant, myMoney);
+			myMoney = 0;
+			print("Do not have enough money with " + mb.amount +" debt");
 		}
 	}
 //-----------------------------------------Commands------------------------------------------------------------
