@@ -2,11 +2,17 @@ package city.restaurant.tanner;
 
 import java.util.Map;
 
+import city.PersonAgent;
 import city.Place;
 import city.market.Market;
 import city.restaurant.RestaurantCashierRole;
 
 public class TannerRestaurantCashierRole extends RestaurantCashierRole {
+
+	public TannerRestaurantCashierRole(PersonAgent person, TannerRestaurant rest) {
+		super(person);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public void msgHereIsTheBill(Market m, double bill,

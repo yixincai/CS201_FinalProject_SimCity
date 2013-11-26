@@ -1,9 +1,17 @@
 package city.restaurant.tanner;
 
+import city.PersonAgent;
 import city.Place;
+import city.restaurant.tanner.interfaces.TannerRestaurantCashier;
+import city.restaurant.tanner.interfaces.TannerRestaurantCook;
 import agent.Role;
 
 public class TannerRestaurantSharedDataWaiterRole extends Role {
+
+	public TannerRestaurantSharedDataWaiterRole(PersonAgent person, TannerRestaurant rest, TannerRestaurantCook cook, TannerRestaurantCashier cashier, String name) {
+		super(person);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public Place place() {

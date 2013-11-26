@@ -1,9 +1,15 @@
 package city.restaurant.tanner;
 
+import city.PersonAgent;
 import city.Place;
 import agent.Role;
 
 public class TannerRestaurantHostRole extends Role {
+
+	public TannerRestaurantHostRole(PersonAgent person, TannerRestaurant rest) {
+		super(person);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public Place place() {
