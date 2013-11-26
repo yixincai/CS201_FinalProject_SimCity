@@ -5,10 +5,6 @@ import java.util.ConcurrentModificationException;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
-import restaurant.Global;
-import restaurant.CustomerAgent.Event;
-import restaurant.CustomerAgent.State;
-import restaurant.test.mock.LoggedEvent;
 import city.PersonAgent;
 import city.Place;
 import city.restaurant.RestaurantCustomerRole;
