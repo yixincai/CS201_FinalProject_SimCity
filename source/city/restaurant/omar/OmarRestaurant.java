@@ -75,7 +75,9 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		newWaiter.setCashier((OmarCashierRole)cashier);
 		OmarWaiterGui waiterGui = new OmarWaiterGui(newWaiter, _animationPanel);
 		newWaiter.setGui(waiterGui);
+		waiterGui.setHomePosition(Waiters.size() * 50, 70);
 		getAnimationPanel().addGui(waiterGui);
+		Waiters.add(newWaiter);
 		return newWaiter;
 	}
 

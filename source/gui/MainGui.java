@@ -204,7 +204,7 @@ public class MainGui extends JFrame
   	  cPanel.addPerson("Yixin5", 300, "Bank Host", true, "house");
   	  cPanel.addPerson("Yixin6", 300, "Market Cashier", true, "house");
   	  cPanel.addPerson("Yixin7", 300, "Market Employee", true, "house");
-
+  	  cPanel.addPerson("Yixin8", 300, "Waiter", true, "house");
   	  Time.startTimer();
 	}
 	

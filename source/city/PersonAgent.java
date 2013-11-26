@@ -1,25 +1,17 @@
 package city;
 
-import java.util.List;
-import java.util.Random;
-
-
+import java.util.*;
 
 // TODO the gui packages are basically only here for the setOccupation() function. We will move the gui instantiation elsewhere, probably to the roles' respective constructors.
-import city.home.HomeBuyingRole;
-import city.home.HomelessRole;
+import city.home.*;
 import city.bank.*;
 import city.bank.gui.*;
-import city.home.*;
 import city.market.*;
 import city.market.gui.*;
-import city.restaurant.Restaurant;
-import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.*;
 import city.restaurant.yixin.*;
-import city.restaurant.yixin.gui.*;
 import city.transportation.CommuterRole;
-import agent.Agent;
-import agent.Role;
+import agent.*;
 
 public class PersonAgent extends Agent
 {
@@ -277,7 +269,7 @@ public class PersonAgent extends Agent
 		}
 		// Set the occupation to waiter
 		// note: control reaches here either because the value of occupationType is "Waiter" or because no scarce jobs were found (waiter is an unlimited/non-scarce job)
-		_occupation = restaurants.get(/*(new Random()).nextInt(restaurants.size())*/0).generateWaiterRole(this);
+		_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------
 	public String getName() { return _name; }

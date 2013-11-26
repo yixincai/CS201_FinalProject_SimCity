@@ -77,6 +77,7 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		newWaiter.setCashier((YixinCashierRole)cashier);
 		newWaiter.setCook((YixinCookRole)cook);
 		newWaiter.setHost(host);
+		Waiters.add(newWaiter);
 		waiter_count++;
 		YixinWaiterGui yixinWaiterGui = new YixinWaiterGui(newWaiter, waiter_count);
 		newWaiter.setGui(yixinWaiterGui);
