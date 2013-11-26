@@ -104,6 +104,7 @@ public class PersonAgent extends Agent
 		if(_occupation != null) print("Acquired occupation " + _occupation.toString() + ".");
 		else print("Acquired null occupation.");
 		acquireHome(housingType);
+		_homeOccupantRole.cmdCookAndEatFood();
 		generateAndSetCommuterRole();
 		setNextRole(_homeOccupantRole);
 	}
@@ -392,11 +393,6 @@ public class PersonAgent extends Agent
 				// commuter role must have just reached the destination; we need to shift the current role from the commuter role to whatever next role is.
 				_currentRole = _nextRole;
 				_currentRole.active = true;
-				if(_currentRole == _homeOccupantRole) //TODO I'm a little skeptical of this if-statement.  Maybe a better place would be to call _homeOccupantRole.cmdGotHome() before calling setNextRole(_homeOccupantRole)
-				{
-					// i.e. if we just got home
-					_homeOccupantRole.cmdGotHome();
-				}
 				return true;
 			}
 			else
