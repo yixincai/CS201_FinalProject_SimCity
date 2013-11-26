@@ -54,6 +54,22 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	
 	// ------------------------------ COMMANDS ---------------------------------
+	public void cmdRequest(String request, double amount) {
+		switch(request) {
+		case "Withdraw":
+			cmdWithdraw(amount);
+			return;
+		case "Deposit":
+			cmdDeposit(amount);
+			return;
+		case "Withdraw Loan":
+			cmdWithdrawLoan(amount);
+			return;
+		case "Pay Loan":
+			cmdPayLoan(amount);
+			return;
+		}
+	}
 	public void cmdWithdraw(double amount) {
 		request = "Withdraw";
 		this.amount = amount;
