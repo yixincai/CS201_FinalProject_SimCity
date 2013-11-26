@@ -63,14 +63,16 @@ public class OmarWaiterGui implements Gui {
 	    }
 
 	    public void draw(Graphics2D g) {
-	        g.setColor(Color.MAGENTA);
-	        g.fillRect(xPos, yPos, TOFFSET, TOFFSET);
-	        
-	        if(xPos == HOMEX && yPos == HOMEY){
-	        	g.drawString("Home", xPos + 5, yPos - 5);
-	        } else {
-	        	g.drawString(currentStatus, xPos + 5, yPos - 5);
-	        }
+	    	if(agent.active){
+		        g.setColor(Color.MAGENTA);
+		        g.fillRect(xPos, yPos, TOFFSET, TOFFSET);
+		        
+		        if(xPos == HOMEX && yPos == HOMEY){
+		        	g.drawString("Home", xPos + 5, yPos - 5);
+		        } else {
+		        	g.drawString(currentStatus, xPos + 5, yPos - 5);
+		        }
+	    	}
 	    }
 
 	    public boolean isPresent() {
