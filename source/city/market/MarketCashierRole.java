@@ -50,7 +50,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	@Override
 	public Place place() {
-		// TODO Auto-generated method stub
 		return market;
 	}
 	
