@@ -119,7 +119,7 @@ public class RyanRestaurantAnimationPanel extends JPanel implements ActionListen
         }
     }
 
-    public void addGui(CustomerGui gui) {
+    public void addGui(RyanCustomerGui gui) {
         guis.add(gui);
     }
 

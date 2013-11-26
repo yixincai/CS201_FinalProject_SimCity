@@ -13,6 +13,7 @@ import java.util.Timer;
 import java.util.Random;
 
 import agent.Agent;
+import agent.Role;
 import restaurant.interfaces.*;
 import restaurant.CookAgent.DishState;
 import restaurant.HostAgent.Seat;
@@ -59,7 +60,7 @@ public class RyanWaiterRole extends Role{
 		}
 	}
 	
-	public RyanWaiterRole(String name, RyanCookRole cook, Cashier cashier){
+	public RyanWaiterRole(String name, RyanRestaurant restaurant, RyanCookRole cook, RyanCashierRole cashier){
 		super();
 		this.cook = cook;
 		this.cashier = cashier;
