@@ -23,7 +23,7 @@ public class CommuterRole extends Role implements Commuter{
 	BusStopObject _busStop;
 //	Semaphore commuterSem = new Semaphore(0, true);
 
-	public CarObject _car = new CarObject();
+	public CarObject _car = new CarObject(this);
 	public Bus _bus;
 	public double _fare;
 	CommuterGui _gui;
@@ -61,7 +61,7 @@ public class CommuterRole extends Role implements Commuter{
 	public void setCar(CarObject car){_car = car;}
 	
 	public Place destination() { return _destination; }
-	public void setDestination(Place place) { cmdGoToDestination(_destination); }
+	public void setDestination(Place place) { cmdGoToDestination(place); }
 
 	public Place place() { return currentPlace(); } // could replace this to return a home-like location that the CommuterRole defaults back to when PersonAgent sets its _nextRole to its _commuterRole.  This would of course require more changes to work correctly.
 	public Place currentPlace() { return _currentPlace; }
@@ -79,7 +79,6 @@ public class CommuterRole extends Role implements Commuter{
 		}
 		_tState = TravelState.choosing;
 		_destination = destination;
-		//System.out.println(_destination.xPosition() + " " + _destination.yPosition());
 		stateChanged();
 	}
 	@Override

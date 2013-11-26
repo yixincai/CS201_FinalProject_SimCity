@@ -33,11 +33,12 @@ public class House extends Place implements Home, PlaceWithAnimation {
 	
 	
 	// --------------------------------- METHODS ---------------------------------------
-	public HouseOccupantRole tryAcquireHomeOccupantRole(PersonAgent person)
+	public HouseOccupantRole tryGenerateHomeOccupantRole(PersonAgent person)
 	{
 		if(_occupiedSemaphore.tryAcquire())
 		{
 			// possibly add a function to set the occupant of this House
+			//TODO add the creation of the correct HomeOccupantGui to the new HouseOccupantRole
 			return new HouseOccupantRole(person, this);
 		}
 		else return null;

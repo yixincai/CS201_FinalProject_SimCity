@@ -108,7 +108,6 @@ public class PersonAgent extends Agent
 	public void setNewCommuterRole()
 	{
 		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
-		if(_homeOccupantRole == null) print("_HomeOccupantRole is null. BBBBLLLLLEEEEEHHHHHHH");
 		_commuterRole.setDestination(_homeOccupantRole.place());
 		
 		_currentRole = _commuterRole;
@@ -126,7 +125,7 @@ public class PersonAgent extends Agent
 				List<Apartment> apartments = b.apartments();
 				for(Apartment a : apartments)
 				{
-					HomeOccupantRole newHomeOccupantRole = a.tryAcquireHomeOccupantRole(this);
+					HomeOccupantRole newHomeOccupantRole = a.tryGenerateHomeOccupantRole(this);
 					if(newHomeOccupantRole != null)
 					{
 						_homeOccupantRole = newHomeOccupantRole;
@@ -141,7 +140,7 @@ public class PersonAgent extends Agent
 			List<House> houses = Directory.houses();
 			for(House h : houses)
 			{
-				HomeOccupantRole newHomeOccupantRole = h.tryAcquireHomeOccupantRole(this);
+				HomeOccupantRole newHomeOccupantRole = h.tryGenerateHomeOccupantRole(this);
 				if(newHomeOccupantRole != null)
 				{
 					_homeOccupantRole = newHomeOccupantRole;

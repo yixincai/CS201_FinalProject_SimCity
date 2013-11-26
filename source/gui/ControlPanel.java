@@ -54,6 +54,7 @@ public class ControlPanel extends JTabbedPane {
 		Directory.addPerson(newPerson);
 		mainGui.getWorldView().addGui(newPerson.commuterRole().gui());
 		this.setSelectedComponent(currentPersonPanel);
+		//good up to here
 		newPerson.startThread();
 	}
 }
