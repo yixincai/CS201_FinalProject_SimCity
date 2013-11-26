@@ -97,6 +97,9 @@ public class TannerRestaurantCashierRole extends RestaurantCashierRole implement
 		return false;
 	}
 	
+//-----------------------------------------Actions-------------------------------------------------------------
+	
+	
 //-----------------------------------------Commands------------------------------------------------------------
 	
 	@Override
