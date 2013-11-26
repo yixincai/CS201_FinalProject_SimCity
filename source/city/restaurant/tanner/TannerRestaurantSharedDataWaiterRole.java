@@ -9,9 +9,19 @@ import city.restaurant.tanner.interfaces.TannerRestaurantHost;
 import city.restaurant.tanner.interfaces.TannerRestaurantWaiter;
 import agent.Role;
 
-public class TannerRestaurantSharedDataWaiterRole extends Role implements TannerRestaurantWaiter 
+public class TannerRestaurantSharedDataWaiterRole extends TannerRestaurantRegularWaiterRole 
 {
+
+	public TannerRestaurantSharedDataWaiterRole(PersonAgent person,
+			TannerRestaurant rest, TannerRestaurantCook cook,
+			TannerRestaurantCashier cashier, String name) {
+		super(person, rest, cook, cashier, name);
+	}
 	
+	
+	
+
+/*
 //-------------------------------------------------Data--------------------------------------------------------------------------------------------------------------------
 
 	
@@ -110,4 +120,5 @@ public class TannerRestaurantSharedDataWaiterRole extends Role implements Tanner
 		// TODO Auto-generated method stub
 
 	}
+*/
 }
