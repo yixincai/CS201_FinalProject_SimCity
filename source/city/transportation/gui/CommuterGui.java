@@ -17,13 +17,10 @@ public class CommuterGui implements Gui {
 	int _xPos, _yPos;
 	Place _destination;
 	int _xDestination, _yDestination;
-	boolean tFlag = false;
+	boolean _goingSomewhere = false;
 	boolean isPresent = true;
 	
 	CommuterRole _commuter;
-	
-	enum TransportationType{goToCar, atCar, walking, driving, ridingBus, none};
-	TransportationType _transportationType = TransportationType.none;
 	
 	//----------------------------------Constructor & Setters & Getters----------------------------------
 	public CommuterGui(CommuterRole commuter, Place initialPlace) {
@@ -50,45 +47,44 @@ public class CommuterGui implements Gui {
 		this.isPresent = present;
 	}
 	
+	public int getX(){
+		return _xPos;
+	}
+	
+	public int getY(){
+		return _yPos;
+	}
+	
 	//Walking gui-------------------------------------------------------------------------------------------
 	public void walkToLocation(Place destination){
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
-		tFlag = true;
+		setPresent(true);
+		_goingSomewhere = true;
 		System.out.println("destination X: " + placeX(destination));
 		System.out.println("destination Y: " + placeY(destination));
 		_xDestination = placeX(destination);
 		_yDestination = placeY(destination);
-		_transportationType = TransportationType.walking;
 	}
 	
+	/*
 	//Bus gui
 	public void goToBusStop(BusStopObject busstop){
-		_transportationType = TransportationType.ridingBus;
-		tFlag = true;
+		_goingSomewhere = true;
+		setPresent(true);
 	}
 	
 	//Car gui
 	public void goToCar(CarObject car, Place destination){
-		tFlag = true;
-		_transportationType = TransportationType.goToCar;
+		_goingSomewhere = true;
 		_xDestination = car.getXPosition();
 		_yDestination = car.getYPosition();
+		setPresent(true);
 	}
 	
 	public void atCar(){
-		_transportationType = TransportationType.atCar;
 		setPresent(false);
 		_commuter.msgAtCar();
-	}
-	
-	
-	//at destination message
-	public void atDestination(){
-		_commuter.msgAtDestination(_destination);
-		_transportationType = TransportationType.none;
-		tFlag = false;
-		setPresent(false);
 	}
 	
 	
@@ -101,14 +97,8 @@ public class CommuterGui implements Gui {
 		_yPos = busstop.yPosition();
 		setPresent(true);
 	}
+	*/
 	
-	public int getX(){
-		return _xPos;
-	}
-	
-	public int getY(){
-		return _yPos;
-	}
 	
 	
 	//------------------------------------------Animation---------------------------------------
@@ -124,12 +114,10 @@ public class CommuterGui implements Gui {
 		else if (_yPos > _yDestination)
 			_yPos--;
 		
-		if(_xPos == _xDestination && _yPos == _yDestination && tFlag){
-			atDestination();
-		}
-		if(_xPos == _xDestination && _yPos == _yDestination && _transportationType == TransportationType.goToCar){
-			isPresent = false;
-			atCar();
+		if(_xPos == _xDestination && _yPos == _yDestination && _goingSomewhere){
+			_goingSomewhere = false;
+			setPresent(false);
+			_commuter.msgReachedDestination();
 		}
 	}
 

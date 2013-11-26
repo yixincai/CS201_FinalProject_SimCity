@@ -1,9 +1,9 @@
 package city.transportation;
 
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 import agent.Role;
-import city.Directory;
 import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.CommuterGui;
@@ -38,12 +38,14 @@ public class CommuterRole extends Role implements Commuter{
 	Random _generator = new Random();
 	
 	//Transportation Hacks
-	enum PrefTransport{none, legs, bus, car};
+	enum PrefTransport{none, walk, bus, car};
 	PrefTransport pTransport = PrefTransport.none;
 	
 	//Probably won't need -> not 100% sure though
 	enum CarState{noCar, hasCar, usingCar};
 	CarState _cState = CarState.noCar; 
+	
+	private Semaphore _reachedDestination = new Semaphore(0, true);
 	
 	//----------------------------------------------CONSTRUCTOR & PROPERTIES----------------------------------------
 	public CommuterRole(PersonAgent person, Place initialPlace){
@@ -82,12 +84,17 @@ public class CommuterRole extends Role implements Commuter{
 		stateChanged();
 	}
 	@Override
-	public void cmdFinishAndLeave() {
-		//active = true; // shouldn't need this
-		stateChanged();
-	}
+	public void cmdFinishAndLeave() { }
+	
+	
 	
 	//----------------------------------------------Messages------------------------------------------
+	public void msgReachedDestination() {
+		_reachedDestination.release();
+		// no stateChanged() because this message is to release the semaphore
+	}
+	
+	
 	//Bus Transportation messages
 	public void msgAtBusStop(BusStopObject busstop){ //GUI message
 		_tState = TravelState.atBusStop;
@@ -102,6 +109,7 @@ public class CommuterRole extends Role implements Commuter{
 		stateChanged();
 		print("Getting on bus " + bus.getName());
 	}
+	
 	@Override
 	public void msgGetOffBus(Place busstop){
 		_currentPlace = busstop;
@@ -125,13 +133,18 @@ public class CommuterRole extends Role implements Commuter{
 		//active = false;
 		stateChanged();
 	}
+	
+	
+	
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
+		/*
 		//At Destination
 		if(_tState == TravelState.atDestination){
 			actAtDestination();
 			return true;
 		}
+		*/
 	
 		//Choosing
 		if(_tState == TravelState.choosing){
@@ -145,6 +158,7 @@ public class CommuterRole extends Role implements Commuter{
 			return true;
 		}
 		
+		/*
 		//Riding Bus
 		if(_tState == TravelState.choseBus){
 			actGoToBusStop();
@@ -176,10 +190,8 @@ public class CommuterRole extends Role implements Commuter{
 			actDriving();
 			return true;
 		}
+		*/
 		
-
-		
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -188,6 +200,9 @@ public class CommuterRole extends Role implements Commuter{
 	public void actChooseTransportation(){
 		print("Choosing mode of transport");
 		
+		_tState = TravelState.choseWalking;
+		
+		/*
 		if(_gui.getManhattanDistanceToDestination(_destination) > 300){
 			if(_car != null){
 				_tState = TravelState.choseCar;
@@ -196,14 +211,15 @@ public class CommuterRole extends Role implements Commuter{
 				_tState = TravelState.choseBus;
 			}
 			else{
-				_tState = TravelState.walking;
+				_tState = TravelState.choseWalking;
 			}
 		}
 		else{
 			_tState = TravelState.choseWalking;
 		}
 		
-		if(pTransport == PrefTransport.legs){
+		// note: when testing, you can force one of these (default value is TravelState.none)
+		if(pTransport == PrefTransport.walk){
 			_tState = TravelState.choseWalking;
 		}
 		if(pTransport == PrefTransport.bus){
@@ -212,10 +228,7 @@ public class CommuterRole extends Role implements Commuter{
 		if(pTransport == PrefTransport.car){
 			_tState = TravelState.choseCar;
 		}
-		
-//		_tState = TravelState.choseWalking;
-//		pTransport = PrefTransport.legs;
-		stateChanged();
+		*/
 	}
 	public void actChooseNewTransportation(){ //Choosing when previous form of transportation doesn't work (Mostly for bus)
 		_tState = TravelState.none;
@@ -225,8 +238,11 @@ public class CommuterRole extends Role implements Commuter{
 	public void actWalking(){
 		_tState = TravelState.walking;
 		_gui.walkToLocation(_destination);
+		waitForGuiToReachDestination();
+		active = false;
 	}
 	
+	/*
 	//Bus
 	public void actGoToBusStop(){
 		_tState = TravelState.goingToBusStop;
@@ -268,11 +284,12 @@ public class CommuterRole extends Role implements Commuter{
 		_tState = TravelState.done;
 		active = false;
 	}
+	*/
 	
 	//----------------------------------------------Hacks----------------------------------------
-	public void chooseTransportation(int choice){
+	public void setPreferredTransportation(int choice){
 		if(choice == 0){
-			pTransport = PrefTransport.legs;
+			pTransport = PrefTransport.walk;
 		}
 		else if(choice == 1){
 			pTransport = PrefTransport.bus;
@@ -285,6 +302,18 @@ public class CommuterRole extends Role implements Commuter{
 		}
 		
 		
+	}
+	
+	
+	
+	// ------------------------------------------ UTILITIES -----------------------------------
+	private void waitForGuiToReachDestination() {
+		try {
+			_reachedDestination.acquire();
+		}
+		catch(InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

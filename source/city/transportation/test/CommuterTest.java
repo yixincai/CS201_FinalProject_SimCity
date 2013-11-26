@@ -73,7 +73,7 @@ public class CommuterTest extends TestCase{
 		
 		//Set Up Message to go to Bus
 		commuter.cmdGoToDestination(market);
-		commuter.chooseTransportation(1);
+		commuter.setPreferredTransportation(1);
 		
 		//Check if it received correctly (Choosing to go to Bus Stop)
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.choosing);
@@ -147,7 +147,7 @@ public class CommuterTest extends TestCase{
 		
 		//Set Up Message to go to Bus
 		commuter.cmdGoToDestination(market);
-		commuter.chooseTransportation(0);
+		commuter.setPreferredTransportation(0);
 		
 		//Check if it received correctly (Choosing to go to Bus Stop)
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.choosing);
@@ -174,7 +174,7 @@ public class CommuterTest extends TestCase{
 		//Set Up Message to go to Bus
 		commuter.cmdGoToDestination(market);
 		commuter.setCar(car);
-		commuter.chooseTransportation(2);
+		commuter.setPreferredTransportation(2);
 		
 		//Check if it received correctly (Choosing to go to Bus Stop)
 		assertEquals("Travel state should be none, it isn't", commuter._tState, TravelState.choosing);
