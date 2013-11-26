@@ -24,5 +24,5 @@ public interface TannerRestaurantCustomer
 	
 	public void msgHereIsYourChange(double changeAmount);
 	
-	public void msgYouOweUs(float debt);
+	public void msgYouOweUs(double amountShort);
 }

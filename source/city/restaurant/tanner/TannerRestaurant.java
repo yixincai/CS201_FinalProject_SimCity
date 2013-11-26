@@ -52,6 +52,7 @@ public class TannerRestaurant extends Restaurant
 	int count = -1;
 	int waiter_count = -1;
 	List<TannerRestaurantWaiter> waiters;
+	public double currentFunds;
 	
 	
 	public TannerRestaurant(String name, WorldViewBuilding worldViewBuilding, BuildingInteriorAnimationPanel animationPanel)
@@ -60,23 +61,31 @@ public class TannerRestaurant extends Restaurant
 		this.animationPanel = (TannerRestaurantAnimationPanel)animationPanel.getBuildingAnimation();
 		waiters = new ArrayList<TannerRestaurantWaiter>();
 		host = new TannerRestaurantHostRole(null, this, "Host");
-		cashier = new TannerRestaurantCashierRole(null, this);
+		cashier = new TannerRestaurantCashierRole(null, this, "Cashier");
 		cook = new TannerRestaurantCookRole(null, this, cashier, "Money Bags");	
+		currentFunds = 10000.0;
+		cashier.setCook(cook);
 	}
 
 	//For Unit testing DO NOT DELETE
 	public TannerRestaurant() 
 	{
 		super("Tanner's Restaurant");
-		cashier = new TannerRestaurantCashierRole(null,this);
+		cashier = new TannerRestaurantCashierRole(null,this, "Cashier");
 		host = new TannerRestaurantHostRole(null,this,"Host");
 		cook = new TannerRestaurantCookRole(null, this, cashier, "Money Bags");
+		currentFunds = 10000.0;
 	}
 
 	@Override
 	public Role getHostRole() 
 	{
 		return this.host;
+	}
+	
+	public double getMoney()
+	{
+		return currentFunds;
 	}
 
 	@Override
