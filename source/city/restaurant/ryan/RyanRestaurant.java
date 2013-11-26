@@ -11,6 +11,7 @@ import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.ryan.gui.RyanRestaurantAnimationPanel;
 import city.restaurant.yixin.ProducerConsumerMonitor;
+import city.restaurant.ryan.*;
 
 public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
@@ -60,15 +61,14 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		if (count > 10){
 			count = 1;
 		}
-		return (new RyanCustomerRole(person, this, person.getName(), count-1));
+		return (new RyanCustomerRole(person, this, person.getName()));
 	}
-
-	@Override
+	
 	public Role generateWaiterRole() {
 		int i = (new Random()).nextInt(2);
 		RyanWaiterRole newWaiter;
 		if (i == 0)
-			newWaiter = new RyanWaiterRole(null, this, "");
+			newWaiter = new RyanWaiterRole("", this, null, null);
 		else
 			newWaiter = new RyanSharedDataWaiterRole(null, this, "");
 		newWaiter.setCashier((RyanCashierRole)cashier);
@@ -95,7 +95,7 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		return waiter_count;
 	}
 	
-	public RyanAnimationPanel getAnimationPanel() {
+	public RyanRestaurantAnimationPanel getAnimationPanel() {
 		return this._animationPanel;
 	}
 
@@ -103,5 +103,23 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 	public Role generateWaiterRole(PersonAgent person) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void generateCashierGui() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void generateCookGui() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void generateHostGui() {
+		// TODO Auto-generated method stub
+		
 	}
 }

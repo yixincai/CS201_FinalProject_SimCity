@@ -133,7 +133,7 @@ public class RestaurantPanel extends JPanel {
 
     	if (type.equals("Customers")) {
     		RyanCustomerRole c = new RyanCustomerRole(name, cashier);	
-    		CustomerGui cg = new CustomerGui(c, gui);
+    		RyanCustomerGui cg = new RyanCustomerGui(c, gui);
 
     		gui.animationPanel.addGui(cg);// dw
     		c.setHost(host);

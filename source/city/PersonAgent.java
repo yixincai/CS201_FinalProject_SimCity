@@ -108,6 +108,7 @@ public class PersonAgent extends Agent
 	public void setNewCommuterRole()
 	{
 		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
+		if(_homeOccupantRole == null) print("_HomeOccupantRole is null. BBBBLLLLLEEEEEHHHHHHH");
 		_commuterRole.setDestination(_homeOccupantRole.place());
 		
 		_currentRole = _commuterRole;
