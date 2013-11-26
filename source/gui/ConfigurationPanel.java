@@ -43,7 +43,10 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 		description = new JPanel();
 		description.setBorder(BorderFactory.createTitledBorder("Config Description"));
 		startButton = new JButton("Start");
-		config1Description = "WRITE CONFIGURATION 1 DESCRIPTION HERE";
+		config1Description = "Scenario 1: Initialize a bank interaction.\n Three bank customers,"
+				+ "one bank host, and one bank teller are put into the world.\nThey will go home and"
+				+ "then head over to the bank and proceed to make deposits (since it's their first time\n"
+				+ "to the bank, naturally they can't withdraw or do any other bank actions.";
 		config2Description = "WRITE CONFIGURATION 2 DESCRIPTION HERE";
 		config3Description = "WRITE CONFIGURATION 3 DESCRIPTION HERE";
 		config4Description = "WRITE CONFIGURATION 4 DESCRIPTION HERE";
@@ -114,6 +117,13 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 	
 	public void startConfiguration()
 	{
+		if(configBox.getSelectedIndex() == 0){
+			cPanel.addPerson("Teller", 300, "Bank Teller", true, "house");
+			cPanel.addPerson("Host", 300, "Bank Host", true, "house");
+			cPanel.addPerson("Omar", 300, "Bank Customer", true, "house");
+			cPanel.addPerson("Omar2", 300, "Bank Customer", true, "house");
+			cPanel.addPerson("Omar3", 300, "Bank Customer", true, "apartment");
+		}
 		System.out.println("Config Start Button Pressed.");
 	}
 
