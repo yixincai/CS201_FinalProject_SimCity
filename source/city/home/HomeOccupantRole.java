@@ -17,10 +17,10 @@ public abstract class HomeOccupantRole extends Role
 
 
 	private enum Command { NONE, WATCH_TV, COOK_AND_EAT_FOOD, GO_TO_BED, WAKE_UP, LEAVE }
-	private Command _command = Command.NONE;
+	private Command _command = Command.NONE; // Maybe change this to a list of Command so we can keep track of multiple sequential commands
 	
 	private enum Event { NONE, ALARM_CLOCK_RANG, GOT_HOME, }
-	private Event _event = Event.NONE;
+	private Event _event = Event.GOT_HOME;
 	
 	public enum State { AWAY, IDLE, COOKING, SLEEPING, LEAVING }
 	private State _state = State.AWAY;
@@ -69,11 +69,6 @@ public abstract class HomeOccupantRole extends Role
 	
 	// --------------------------------- COMMANDS & MESSAGES -----------------------------------
 	// note: commands are only from PersonAgent
-	public void cmdGotHome()
-	{
-		_event = Event.GOT_HOME;
-		stateChanged();
-	}
 	public void cmdWatchTv()
 	{
 		_command = Command.WATCH_TV;
@@ -92,6 +87,11 @@ public abstract class HomeOccupantRole extends Role
 	public void cmdFinishAndLeave()
 	{
 		_command = Command.LEAVE;
+		stateChanged();
+	}
+	public void msgGotHome()
+	{
+		_event = Event.GOT_HOME;
 		stateChanged();
 	}
 	public void msgReachedDestination() // from HomeOccupantGui
@@ -138,7 +138,7 @@ public abstract class HomeOccupantRole extends Role
 			else if(_command == Command.WATCH_TV)
 			{
 				actWatchTv();
-				return true;
+				return false;
 			}
 		}
 		else if(_state == State.COOKING)
@@ -169,12 +169,17 @@ public abstract class HomeOccupantRole extends Role
 	{
 		// note: the whole getting-home process does not change the command, so you will be able to set a command then get home.
 		print("Just got home.");
+		// don't change _command
+		// Note: _event had the value of GOT_HOME when this method got called; no longer need it to be that
+		_event = Event.NONE;
 		_state = State.IDLE;
 		_gui.doGotHome();
 	}
 	private void actCookAndEat()
 	{
 		print("Starting to cook.");
+		_command = Command.NONE;
+		_event = Event.NONE;
 		_state = State.COOKING;
 		
 		_mealCount--;
@@ -187,6 +192,8 @@ public abstract class HomeOccupantRole extends Role
 	private void actWatchTv()
 	{
 		print("Watching TV");
+		_command = Command.NONE;
+		// do we need to reset _event?
 		_state = State.IDLE;
 		
 		_gui.doWatchTv();
@@ -194,6 +201,8 @@ public abstract class HomeOccupantRole extends Role
 	private void actGoToBed()
 	{
 		print("Going to bed.");
+		_command = Command.NONE;
+		// do we need to reset _event?
 		_state = State.SLEEPING;
 		_gui.doGoToBed();
 		waitForGuiToReachDestination();
@@ -208,6 +217,8 @@ public abstract class HomeOccupantRole extends Role
 	private void actWakeUp()
 	{
 		print("Waking up.");
+		// do we need to reset _command?
+		_event = Event.NONE;
 		_state = State.IDLE;
 		_gui.doWakeUp();
 	}
