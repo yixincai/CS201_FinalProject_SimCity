@@ -27,8 +27,8 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	JScrollPane buildingButtons;
 	ControlPanel cPanel;	
 	BuildingInteriorAnimationPanel currentBuildingPanel = null;
-	private static int WIDTH = 1024/3;
-	private static int HEIGHT = 720;
+	private final int WIDTH = 1024/3;
+	private final int HEIGHT = 720;
 	
 	public CurrentBuildingPanel(ControlPanel cp)
 	{

@@ -28,8 +28,8 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 	JLabel currentRoleField;
 	JScrollPane peopleButtons;
 	ControlPanel cPanel;
-	private static int WIDTH = 1024/3;
-	private static int HEIGHT = 720;
+	private final int WIDTH = 1024/3;
+	private final int HEIGHT = 720;
 	
 	public CurrentPersonPanel(ControlPanel cp)
 	{

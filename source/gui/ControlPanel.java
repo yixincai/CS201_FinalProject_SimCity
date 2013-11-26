@@ -26,6 +26,7 @@ public class ControlPanel extends JTabbedPane {
 	
 	CreatePersonPanel newPersonPanel;
 	CurrentPersonPanel currentPersonPanel;
+	ConfigurationPanel configPanel;
 	public CurrentBuildingPanel currentBuildingPanel;
 	MainGui mainGui;
 	
@@ -36,9 +37,11 @@ public class ControlPanel extends JTabbedPane {
 		newPersonPanel = new CreatePersonPanel(this);
 		currentPersonPanel = new CurrentPersonPanel(this);
 		currentBuildingPanel = new CurrentBuildingPanel(this);
+		configPanel = new ConfigurationPanel(this);
 		this.addTab("Current Person", null, currentPersonPanel, "Info about the currently selected person.");
 		this.addTab("Current Building", null, currentBuildingPanel, "Info about the currently selected building.");
 		this.addTab("New Person", null, newPersonPanel, "Create a new citizen of SimCity201.");
+		this.addTab("Configuration", null, configPanel, "Configure SimCity to a preset scenario");
 		this.setPreferredSize(new Dimension(1024/3, 720));
 	}
 	
