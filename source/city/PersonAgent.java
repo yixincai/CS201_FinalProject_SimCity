@@ -342,7 +342,7 @@ public class PersonAgent extends Agent
 			
 			// Call current role's scheduler
 			if(_currentRole.pickAndExecuteAnAction()) { 
-				System.out.println("Current Role Scheduler called");
+				System.out.println("Current Role Scheduler called an action.");
 				return true; 
 			}
 		}

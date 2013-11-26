@@ -9,19 +9,13 @@ package gui;
  */
 
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JTabbedPane;
 
 import city.Directory;
 import city.PersonAgent;
-import city.bank.BankCustomerRole;
-import city.home.House;
-import city.restaurant.yixin.YixinCustomerRole;
-import city.transportation.CommuterRole;
-import city.transportation.gui.CommuterGui;
 
+@SuppressWarnings("serial")
 public class ControlPanel extends JTabbedPane {
 	
 	CreatePersonPanel newPersonPanel;
@@ -54,7 +48,6 @@ public class ControlPanel extends JTabbedPane {
 		Directory.addPerson(newPerson);
 		mainGui.getWorldView().addGui(newPerson.commuterRole().gui());
 		this.setSelectedComponent(currentPersonPanel);
-		//good up to here
 		newPerson.startThread();
 	}
 }
