@@ -16,9 +16,12 @@ public class TannerRestaurant extends Restaurant {
 //------------------------------------DATA----------------------------------------------------------------
 	TannerRestaurantHostRole host;
 	TannerRestaurantCashierRole cashier;
+	TannerRestaurantCookRole cook;
 	private int bussinessAccountNumber = -1;
 	public static Map<Integer, Table> tableMap = new HashMap<Integer, Table>();
+	public static Map<Integer, Dish> menu = new HashMap<Integer, Dish>();
 	public static int numTables = 3;
+	public static int numDishes = 4;
 	TannerRestaurantAnimationPanel animationPanel;
 	
 	
@@ -26,8 +29,10 @@ public class TannerRestaurant extends Restaurant {
 	{
 		super(name, worldViewBuilding);
 		this.animationPanel = (TannerRestaurantAnimationPanel)animationPanel.getBuildingAnimation();
-		host = new TannerRestaurantHostRole(null, this);
+		host = new TannerRestaurantHostRole(null, this, "Host");
 		cashier = new TannerRestaurantCashierRole(null, this);
+		cook = new TannerRestaurantCookRole(null, this, cashier);
+		
 		
 		
 	}

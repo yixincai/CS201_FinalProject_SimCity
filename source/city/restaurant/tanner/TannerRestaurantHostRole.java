@@ -6,7 +6,7 @@ import agent.Role;
 
 public class TannerRestaurantHostRole extends Role {
 
-	public TannerRestaurantHostRole(PersonAgent person, TannerRestaurant rest) {
+	public TannerRestaurantHostRole(PersonAgent person, TannerRestaurant rest, String name) {
 		super(person);
 		// TODO Auto-generated constructor stub
 	}
