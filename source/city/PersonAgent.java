@@ -166,8 +166,8 @@ public class PersonAgent extends Agent
 		{
 			// note: if control reaches a break statement, the new occupation will be a waiter.
 			case "Waiter":
-				_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
-				break; // waiter is generated right after this switch statement
+				_occupation = restaurants.get(0).generateWaiterRole(this);
+				return; // waiter is generated right after this switch statement
 			case "Restaurant Cashier":
 				newOccupation = null;
 				for(Restaurant r : restaurants)
@@ -267,22 +267,22 @@ public class PersonAgent extends Agent
 			// BEGIN HACKS
 			case "Market Customer":
 				_occupation = markets.get(0).generateCustomerRole(this);
-				break;
+				return;
 			case "Yixin Customer":
 				_occupation = restaurants.get(0).generateCustomerRole(this);
-				break;
+				return;
 			case "Omar Customer":
 				_occupation = restaurants.get(1).generateCustomerRole(this);
-				break;
+				return;
 			case "Yixin Waiter":
 				_occupation = restaurants.get(0).generateWaiterRole(this);
-				break;
+				return;
 			case "Omar Waiter":
 				_occupation = restaurants.get(1).generateWaiterRole(this);
-				break;
+				return;
 		}
 		// note: control reaches here because no jobs were found, or occupationType.equals("none")
-		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateCustomerRole(this);
+		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
 		_occupation = newOccupation;
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------
@@ -359,13 +359,11 @@ public class PersonAgent extends Agent
 			// print("About to call _currentRole (" + _currentRole.toString() + ") scheduler.");
 			if(_currentRole.pickAndExecuteAnAction())
 			{ 
-				// print("_currentRole (" + _currentRole.toString() + ") scheduler called an action.");
 				return true;
 			}
 		}
 		else // i.e. _currentRole.active == false
 		{
-			print("Just finished a role. _currentRole: " + _currentRole.toString() + "; _nextRole: " + _nextRole.toString() + ".");
 			// note: if we get here, a role just finished leaving.
 			_sentCmdFinishAndLeave = false;
 			

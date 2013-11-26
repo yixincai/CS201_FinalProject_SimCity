@@ -26,6 +26,7 @@ public class YixinCashierGui extends JPanel implements Gui {
 	}
 
 	public void draw(Graphics2D g) {
+		g.setColor(Color.pink);
 		if(agent.active){
 			g.fillRect(xPos, yPos, xGap, yGap);    	
 			//g.drawImage(image, xPos, yPos, xGap, yGap, this);

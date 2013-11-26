@@ -51,6 +51,9 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 		this.money = 0;
 		this.name = name;
 		this.count = count;
+		this.restaurant = r;
+		//hard code
+		event = AgentEvent.gotHungry;
 	}
 
 	/**
@@ -264,7 +267,7 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		host.msgIWantFood(this,count);//send our instance, so he can respond to us
+		restaurant.host.msgIWantFood(this,count);//send our instance, so he can respond to us
 	}
 	
 	private void ThinkAboutLeaving(){
@@ -272,7 +275,6 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 		int choice = r.nextInt(2);
 		print("The random number is " + choice);
 		if (choice == 0){
-			print("I want to leave the restaurant");
 			host.msgIAmLeaving(this);
 			print("I want to leave the restaurant");
 			state = AgentState.Leaving;
