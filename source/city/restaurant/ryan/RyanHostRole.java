@@ -2,16 +2,15 @@ package city.restaurant.ryan;
 
 import agent.Agent;
 import agent.Role;
-import restaurant.WaiterAgent;
-import restaurant.WaiterAgent.customerState;
-import restaurant.gui.HostGui;
-import restaurant.interfaces.Customer;
 
 import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import city.PersonAgent;
 import city.Place;
+import city.restaurant.ryan.gui.RyanHostGui;
+import city.restaurant.yixin.YixinRestaurant;
 /**
  * Restaurant Host Agent
  */
@@ -44,11 +43,11 @@ public class RyanHostRole extends Role {
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
 
-	public HostGui hostGui = null;
+	public RyanHostGui hostGui = null;
 
-	public RyanHostRole(String name) {
-		super();
-
+	public RyanHostRole(PersonAgent p, RyanRestaurant r, String name) {
+		super(p);
+		
 		this.name = name;
 		
 		// make some tables
@@ -58,11 +57,7 @@ public class RyanHostRole extends Role {
 		
 		for (int s = 1; s <= NSEATS; s++) {
 			seats.add(new Seat(s, (10+25*(s-1)), 5));//how you add to a collections
-		}
-	}
-	public RyanHostRole(Object object, RyanRestaurant ryanRestaurant,
-			String string) {
-		// TODO Auto-generated constructor stub
+		}	
 	}
 	//Messages
 	public void addWaiter(RyanWaiterRole waiter){
@@ -251,7 +246,7 @@ public class RyanHostRole extends Role {
 	}
 	
 	public void TablesAreFull(RyanCustomerRole customer){
-		Do(customer.getName() + ", the tables are full.");
+		print(customer.getName() + ", the tables are full.");
 		customer.patient = true;
 		customer.msgTablesAreFull();
 	}
@@ -354,11 +349,11 @@ public class RyanHostRole extends Role {
 		}
 	}
 	
-	public void setGui(HostGui gui) {
+	public void setGui(RyanHostGui gui) {
 		hostGui = gui;
 	}
 
-	public HostGui getGui() {
+	public RyanHostGui getGui() {
 		return hostGui;
 	}
 	
