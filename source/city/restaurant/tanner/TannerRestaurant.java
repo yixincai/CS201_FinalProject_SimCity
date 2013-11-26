@@ -113,6 +113,27 @@ public class TannerRestaurant extends Restaurant
 		host.addWaiter(newWaiter);
 		return (Role) newWaiter;
 	}
+	
+	public void updateAccountNumber(int newAccNumber)
+	{
+		this.bussinessAccountNumber = newAccNumber;
+	}
+	
+	public int getAccountNumber()
+	{
+		return this.bussinessAccountNumber;
+	}
+	
+	public int waiterCount()
+	{
+		return waiter_count;
+	}
+	
+	public TannerRestaurantAnimationPanel animationPanel()
+	{
+		return animationPanel;
+	}
+	
 
 	@Override
 	public void generateCashierGui() 
