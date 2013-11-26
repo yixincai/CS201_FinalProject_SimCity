@@ -78,14 +78,14 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	
 	public void updateInfo(JButton selected)
 	{
-		for(int i = 0; i < Directory.places().size(); i++)
+		List<Place> places = Directory.places();
+		for(Place p : places)
 		{
-			Place tempPlace = Directory.places().get(i);
-			if(tempPlace.getName() == selected.getText())
+			if(p.getName() == selected.getText())
 			{
-				buildingName.setText("Building Name: " + Directory.places().get(i).getName());
+				buildingName.setText("Building Name: " + p.getName());
 			//	buildingMoney.setText("Building Money: Need a money field in places");
-				tempPlace.getBuilding().displayBuilding();
+				p.getBuilding().displayBuilding();
 			}
 		}
 	}

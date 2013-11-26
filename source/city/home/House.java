@@ -9,6 +9,7 @@ import gui.WorldViewBuilding;
 import city.PersonAgent;
 import city.Place;
 import city.home.gui.HouseAnimationPanel;
+import city.home.gui.HouseOccupantGui;
 import city.interfaces.PlaceWithAnimation;
 
 public class House extends Place implements Home, PlaceWithAnimation {
@@ -36,6 +37,7 @@ public class House extends Place implements Home, PlaceWithAnimation {
 		{
 			// possibly add a function to set the occupant of this House
 			HouseOccupantRole newRole = new HouseOccupantRole(person, this);
+			newRole.setGui(new HouseOccupantGui(newRole));
 			_animationPanel.addGui(newRole.gui());
 			return newRole;
 		}

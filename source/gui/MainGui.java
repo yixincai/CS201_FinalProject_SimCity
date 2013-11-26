@@ -102,7 +102,7 @@ public class MainGui extends JFrame
 		YixinRestaurant yr = new YixinRestaurant("Yixin's Restaurant", b, bp);
 		Directory.addPlace(yr);
 		_buildingCardLayoutPanel.add( bp, bp.getName() );
-		cPanel.currentBuildingPanel.addBuilding(yr.getName()); // unsure if this is needed or not; I deleted it earlier
+		cPanel.currentBuildingPanel.addBuilding(yr.getName());
 		_buildingInteriorAnimationPanels.add(bp);
 		
 		//Omar's Restaurant
@@ -112,7 +112,7 @@ public class MainGui extends JFrame
 		OmarRestaurant or = new OmarRestaurant("Omar's Restaurant", b9, bp9);
 		Directory.addPlace(or);
 		_buildingCardLayoutPanel.add( bp9, bp9.getName() );
-		cPanel.currentBuildingPanel.addBuilding(or.getName()); // unsure if this is needed or not; I deleted it earlier
+		cPanel.currentBuildingPanel.addBuilding(or.getName());
 		_buildingInteriorAnimationPanels.add(bp9);
 		
 		//Ryan Restaurant
@@ -122,7 +122,7 @@ public class MainGui extends JFrame
 		RyanRestaurant rr = new RyanRestaurant("Ryan's Restaurant", bR, bpR);
 		Directory.addPlace(rr);
 		_buildingCardLayoutPanel.add( bpR, bpR.getName() );
-		cPanel.currentBuildingPanel.addBuilding(rr.getName()); // unsure if this is needed or not; I deleted it earlier
+		cPanel.currentBuildingPanel.addBuilding(rr.getName());
 		_buildingInteriorAnimationPanels.add(bpR);
 		
 		//Bank
@@ -255,7 +255,7 @@ public class MainGui extends JFrame
 	public WorldView getWorldView() { return _worldView; }
 	
 	 public void displayBuildingPanel(BuildingInteriorAnimationPanel bp ) {
-		System.out.println( bp.getName() );
+		//System.out.println("MainGui: showing building " + bp.getName() + "'s AnimationPanel." );
 		((CardLayout) _buildingCardLayoutPanel.getLayout()).show(_buildingCardLayoutPanel, bp.getName());
 		cPanel.updateBuildingInfo(bp);
 	 }

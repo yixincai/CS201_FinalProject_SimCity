@@ -102,6 +102,10 @@ public abstract class HomeOccupantGui implements Gui {
 	// ------------------------------------ ANIMATION ----------------------------------------
 	@Override
 	public void updatePosition() {
+		//System.out.println("HomeOccupantGui.updatePosition() \n"
+		//		+ "   _positionX: " + _positionX + "   _destinationX: " + _destinationX + "\n"
+		//		+ "   _positionY: " + _positionY + "   _destinationY: " + _destinationY);
+		
 		// Update position
 		if (_positionX < _destinationX) _positionX++;
 		else if (_positionX > _destinationX) _positionX--;
@@ -130,6 +134,7 @@ public abstract class HomeOccupantGui implements Gui {
 	}
 	@Override
 	public void draw(Graphics2D g) {
+		System.out.println("HomeOccupantGui.draw(...)");
 		if(_isPresent){
 			g.setColor(Color.GREEN);
 			g.fillRect(_positionX, _positionY, 20, 20);

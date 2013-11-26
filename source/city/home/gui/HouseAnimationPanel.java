@@ -26,83 +26,82 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	public static final int FRIDGEY = 100;
 	public static final int FRIDGEDIM = 20;
 	
-    public static final int BEDX = 600;
-    public static final int BEDY = 300;
-    public static final int BEDWIDTH = 30;
-    public static final int BEDHEIGHT = 30;
-    
-    public static final int BEDWALLX = 400;
-    public static final int BEDWALLY = 0;
-    public static final int BEDWALLWIDTH = 10;
-    public static final int BEDWALLHEIGHT = 160;
-    
-    public static final int BEDWALLX2 = 400;
-    public static final int BEDWALLY2 = 200;
-    
-    public static final int TVX = 400;
-    public static final int TVY = 100;
-    public static final int TVDIM = 10;
+	public static final int BEDX = 600;
+	public static final int BEDY = 300;
+	public static final int BEDWIDTH = 30;
+	public static final int BEDHEIGHT = 30;
+	
+	public static final int BEDWALLX = 400;
+	public static final int BEDWALLY = 0;
+	public static final int BEDWALLWIDTH = 10;
+	public static final int BEDWALLHEIGHT = 160;
+	
+	public static final int BEDWALLX2 = 400;
+	public static final int BEDWALLY2 = 200;
+	
+	public static final int TVX = 400;
+	public static final int TVY = 100;
+	public static final int TVDIM = 10;
 
-    public static final int FRONTDOORX = 100;
-    public static final int FRONTDOORY = 340;
-    
-    public static final int WINDOWX = 682;
-    public static final int WINDOWY = 360;
-    
-    private List<Gui> _guis = new ArrayList<Gui>();
-    
-    public HouseAnimationPanel()
-    {
-    	setSize(WINDOWX, WINDOWY);
-        setVisible(true);
+	public static final int FRONTDOORX = 100;
+	public static final int FRONTDOORY = 340;
+	
+	public static final int WINDOWX = 682;
+	public static final int WINDOWY = 360;
+	
+	private List<Gui> _guis = new ArrayList<Gui>();
+	
+	public HouseAnimationPanel()
+	{
+		setSize(WINDOWX, WINDOWY);
+		setVisible(true);
  
-    	Timer timer = new Timer(10, this );
-    	timer.start();
-    }
+		Timer timer = new Timer(10, this );
+		timer.start();
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		
-        for(Gui gui : _guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
-        
+		for(Gui gui : _guis) {
+			gui.updatePosition();
+		}
+		
 		repaint();  //Will have paintComponent called
 	}
 	
-    public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+	public void paintComponent(Graphics g) {
+		Graphics2D g2 = (Graphics2D)g;
 
-        //Clear the screen by painting a rectangle the size of the frame
-        g2.setColor(getBackground());
-        g2.fillRect(0, 0, WINDOWX, WINDOWY );
+		//Clear the screen by painting a rectangle the size of the frame
+		g2.setColor(getBackground());
+		g2.fillRect(0, 0, WINDOWX, WINDOWY );
 
-        //Here is the table
+		//Here is the table
 
-        g2.setColor(Color.CYAN);
-        g2.fillRect(BEDX, BEDY, BEDWIDTH, BEDHEIGHT);
-        
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(TVX, TVY, TVDIM, TVDIM);
-        
-        g2.setColor(Color.BLACK);
-        g2.fillRect(STOVEX, STOVEY, STOVEDIM, STOVEDIM);
-        
-        g2.setColor(Color.WHITE);
-        g2.fillRect(FRIDGEX, FRIDGEY, FRIDGEDIM, FRIDGEDIM);
-        
-        g2.setColor(Color.BLACK);
-        g2.fillRect(BEDWALLX, BEDWALLY, BEDWALLWIDTH, BEDWALLHEIGHT);
-        g2.fillRect(BEDWALLX2, BEDWALLY2, BEDWALLWIDTH, BEDWALLHEIGHT);
-        
+		g2.setColor(Color.CYAN);
+		g2.fillRect(BEDX, BEDY, BEDWIDTH, BEDHEIGHT);
+		
+		g2.setColor(Color.ORANGE);
+		g2.fillRect(TVX, TVY, TVDIM, TVDIM);
+		
+		g2.setColor(Color.BLACK);
+		g2.fillRect(STOVEX, STOVEY, STOVEDIM, STOVEDIM);
+		
+		g2.setColor(Color.WHITE);
+		g2.fillRect(FRIDGEX, FRIDGEY, FRIDGEDIM, FRIDGEDIM);
+		
+		g2.setColor(Color.BLACK);
+		g2.fillRect(BEDWALLX, BEDWALLY, BEDWALLWIDTH, BEDWALLHEIGHT);
+		g2.fillRect(BEDWALLX2, BEDWALLY2, BEDWALLWIDTH, BEDWALLHEIGHT);
+		
 
-        for(Gui gui : _guis) {
-               gui.draw(g2);
-        }
-    }
-    
-    public void addGui(HomeOccupantGui gui) {
-        _guis.add(gui);
-    }
+		for(Gui gui : _guis) {
+			System.out.println("HouseAnimationPanel: about to draw a gui.");
+			gui.draw(g2);
+		}
+	}
+	
+	public void addGui(HomeOccupantGui gui) {
+		_guis.add(gui);
+	}
 }

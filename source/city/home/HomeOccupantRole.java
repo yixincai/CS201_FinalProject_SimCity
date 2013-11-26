@@ -51,6 +51,7 @@ public abstract class HomeOccupantRole extends Role
 	public boolean haveFood() { return _mealCount > 0; }
 	public void addMeals(int addMealCount) { _mealCount += addMealCount; }
 	public HomeOccupantGui gui() { return _gui; }
+	public void setGui(HomeOccupantGui gui) { _gui = gui; }
 	public Place place()
 	{
 		if(_home != null)
