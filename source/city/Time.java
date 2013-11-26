@@ -54,7 +54,7 @@ public class Time {
 			time = 0;
 			incrementDay();
 		}
-		System.out.printf("Time- %.0f:%.0f", (double)((int)(time)), 60.0*(time - ((int)time)));
+		System.out.printf("Day: " + today() + "; Time- %.0f:%.0f", (double)((int)(time)), 60.0*(time - ((int)time)));
 		if(60.0*(time - ((int)time)) == 0){
 			System.out.print("0");
 		}
