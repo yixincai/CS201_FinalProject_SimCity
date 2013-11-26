@@ -4,16 +4,17 @@ import city.home.ApartmentOccupantRole;
 
 public class ApartmentOccupantGui extends HomeOccupantGui {
 	
+	// -------------------------------- CONSTRUCTOR & PROPERTIES --------------------------------
 	public ApartmentOccupantGui(ApartmentOccupantRole role)
 	{
-		_role = role;
+		super(role);
 	}
-	
-	private ApartmentOccupantRole _role;
+	// Note: this method can't throw an exception because when this class is instantiated, it has to take in an ApartmentOccupantRole (if it doesn't, an exception will be thrown in the constructor), so _role must be an instanceof ApartmentOccupantRole
+	private ApartmentOccupantRole apartmentOccupantRole() { return (ApartmentOccupantRole)_role; }
 
 	@Override
 	protected int bedX() {
-		switch(_role.apartmentNumber())
+		switch(apartmentOccupantRole().apartmentNumber())
 		{
 		case 0:
 			return ApartmentAnimationPanel.BEDX;
@@ -29,7 +30,7 @@ public class ApartmentOccupantGui extends HomeOccupantGui {
 
 	@Override
 	protected int bedY() {
-		switch(_role.apartmentNumber())
+		switch(apartmentOccupantRole().apartmentNumber())
 		{
 		case 0:
 			return ApartmentAnimationPanel.BEDY;
@@ -45,7 +46,7 @@ public class ApartmentOccupantGui extends HomeOccupantGui {
 
 	@Override
 	protected int kitchenX() {
-		switch(_role.apartmentNumber())
+		switch(apartmentOccupantRole().apartmentNumber())
 		{
 		case 0:
 			return ApartmentAnimationPanel.STOVEX;
@@ -61,7 +62,7 @@ public class ApartmentOccupantGui extends HomeOccupantGui {
 
 	@Override
 	protected int kitchenY() {
-		switch(_role.apartmentNumber())
+		switch(apartmentOccupantRole().apartmentNumber())
 		{
 		case 0:
 			return ApartmentAnimationPanel.STOVEY;
@@ -77,13 +78,33 @@ public class ApartmentOccupantGui extends HomeOccupantGui {
 
 	@Override
 	protected int idleX() {
-		// TODO Auto-generated method stub
+		switch(apartmentOccupantRole().apartmentNumber())
+		{
+		case 0:
+			return ApartmentAnimationPanel.TVY;
+		case 1:
+			return ApartmentAnimationPanel.TVY2;
+		case 2:
+			return ApartmentAnimationPanel.TVY3;
+		case 3:
+			return ApartmentAnimationPanel.TVY4;
+		}
 		return 0;
 	}
 
 	@Override
 	protected int idleY() {
-		// TODO Auto-generated method stub
+		switch(apartmentOccupantRole().apartmentNumber())
+		{
+		case 0:
+			return ApartmentAnimationPanel.TVX;
+		case 1:
+			return ApartmentAnimationPanel.TVX2;
+		case 2:
+			return ApartmentAnimationPanel.TVX3;
+		case 3:
+			return ApartmentAnimationPanel.TVX4;
+		}
 		return 0;
 	}
 

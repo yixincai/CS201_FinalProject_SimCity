@@ -1,6 +1,14 @@
 package city.home.gui;
 
+import city.home.ApartmentOccupantRole;
+import city.home.HouseOccupantRole;
+
 public class HouseOccupantGui extends HomeOccupantGui {
+	
+	public HouseOccupantGui(HouseOccupantRole role)
+	{
+		super(role);
+	}
 
 	@Override
 	protected int bedX() {
@@ -14,26 +22,22 @@ public class HouseOccupantGui extends HomeOccupantGui {
 
 	@Override
 	protected int kitchenX() {
-		//TODO implement with Omar's new values for kitchen
-		return 0;
+		return HouseAnimationPanel.STOVEX;
 	}
 
 	@Override
 	protected int kitchenY() {
-		//TODO implement with Omar's new values for kitchen
-		return 0;
+		return HouseAnimationPanel.STOVEY;
 	}
 
 	@Override
 	protected int idleX() {
-		//TODO implement with Omar's new values for idle
-		return 0;
+		return HouseAnimationPanel.TVX;
 	}
 
 	@Override
 	protected int idleY() {
-		//TODO implement with Omar's new values for idle
-		return 0;
+		return HouseAnimationPanel.TVY;
 	}
 
 }
