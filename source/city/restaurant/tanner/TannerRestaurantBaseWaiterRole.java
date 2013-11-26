@@ -6,8 +6,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
-import restaurant.MyCustomer;
-import restaurant.test.mock.EventLog;
 import agent.Role;
 import city.PersonAgent;
 import city.Place;
@@ -63,64 +61,177 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 //------------------------------------------Messages---------------------------------------------------------
 	
 	@Override
-	public void msgHereIsANewCustomer(TannerRestaurantCustomer c,
-			int tableNumber, TannerRestaurantHost h, TannerRestaurantCook co) {
-		// TODO Auto-generated method stub
-
+	public void msgHereIsANewCustomer(TannerRestaurantCustomer c, int tableNumber, TannerRestaurantHost h, TannerRestaurantCook co) 
+	{
+		MyCustomer mc = new MyCustomer(tableNumber, c, restaurant);
+		myCustomers.add(mc);
+		host = h;
+		cook = co;
+		mc.currentState = customerState.waitingToBeSeated;
+		stateChanged();
 	}
 
 	@Override
-	public void msgImReadyToOrder(TannerRestaurantCustomer c) {
-		// TODO Auto-generated method stub
-
+	public void msgImReadyToOrder(TannerRestaurantCustomer c) 
+	{
+		int index = 0;
+		for(int i = 0; i < myCustomers.size(); i++)
+		{
+			if(myCustomers.get(i).customer == c)
+			{
+				index = i;
+				break;
+			}
+		}
+		myCustomers.get(index).currentState = customerState.waitingToOrder;
+		stateChanged();
 	}
 
 	@Override
-	public void msgHereIsMyOrder(TannerRestaurantCustomer c, int choice) {
-		// TODO Auto-generated method stub
-
+	public void msgHereIsMyOrder(TannerRestaurantCustomer c, int choice)
+	{
+		int index = 0;
+		for(int i = 0; i < myCustomers.size(); i++)
+		{
+			if(myCustomers.get(i).customer == c)
+			{
+				index = i;
+				break;
+			}
+			
+		}
+		myCustomers.get(index).order = choice;
+		myCustomers.get(index).currentState = customerState.orderPending;
+		stateChanged();
 	}
 
 	@Override
-	public void msgICantAffordAnything(TannerRestaurantCustomer c) {
-		// TODO Auto-generated method stub
-
+	public void msgICantAffordAnything(TannerRestaurantCustomer c) 
+	{
+		int index = 0;
+		for(int i = 0; i < myCustomers.size(); i++)
+		{
+			if(myCustomers.get(i).customer == c)
+			{
+				index = i;
+				break;
+			}
+			
+		}
+		myCustomers.get(index).currentState = customerState.leaving;
+		stateChanged();
 	}
 
 	@Override
-	public void msgThatChoiceIsOutOfStock(int choice, int tableNumber) {
-		// TODO Auto-generated method stub
-
+	public void msgThatChoiceIsOutOfStock(int choice, int tableNumber) 
+	{
+		int index = 0;
+		for(int i = 0; i < myCustomers.size(); i++)
+		{
+			if(myCustomers.get(i).tableNumber == tableNumber)
+			{
+				index = i;
+				break;
+			}
+			
+		}
+		ArrayList<Integer> newMenu = new ArrayList<Integer>();
+		for(int i = 0; i < myCustomers.get(index).menu.size(); i++)
+		{
+			if(myCustomers.get(index).menu.get(i) == choice)
+			{
+				continue;
+			}
+			else
+			{
+				newMenu.add(myCustomers.get(i).menu.get(i));
+			}
+		}
+		myCustomers.get(index).currentState = customerState.waitingToReorder;
+		stateChanged();
 	}
 
 	@Override
-	public void msgHereIsMyReOrder(TannerRestaurantCustomer c, int choice) {
-		// TODO Auto-generated method stub
-
+	public void msgHereIsMyReOrder(TannerRestaurantCustomer c, int choice) 
+	{
+		int index = 0;
+		for(int i = 0; i < myCustomers.size(); i++)
+		{
+			if(myCustomers.get(i).customer == c)
+			{
+				index = i;
+				break;
+			}
+			
+		}
+		myCustomers.get(index).order = choice;
+		myCustomers.get(index).currentState = customerState.orderPending;
+		stateChanged();
 	}
 
 	@Override
-	public void msgOrderIsReady(int choice, int tableNumber) {
-		// TODO Auto-generated method stub
-
+	public void msgOrderIsReady(int choice, int tableNumber) 
+	{
+		int index = 0;
+		for(int i = 0; i < myCustomers.size(); i++)
+		{
+			if(myCustomers.get(i).table == restaurant.tableMap.get(tableNumber))
+			{
+				index = i;
+				break;
+			}
+		}
+		myCustomers.get(index).currentState = customerState.orderReady;
+		stateChanged();
 	}
 
 	@Override
-	public void msgIWouldLikeTheCheck(TannerRestaurantCustomer c, int choice) {
-		// TODO Auto-generated method stub
-
+	public void msgIWouldLikeTheCheck(TannerRestaurantCustomer c, int choice) 
+	{
+		int index = 0;
+		for(int i = 0; i < myCustomers.size(); i++)
+		{
+			if(myCustomers.get(i).currentState == customerState.eating)
+			{
+				index = i;
+				break;
+			}
+		}
+		myCustomers.get(index).currentState = customerState.waitingForCheck;
+		stateChanged();
 	}
 
 	@Override
-	public void msgHereIsTheChek(float amount, TannerRestaurantCustomer c) {
-		// TODO Auto-generated method stub
-
+	public void msgHereIsTheChek(double amount, TannerRestaurantCustomer c) 
+	{
+		int index = 0;
+		for(int i = 0; i < myCustomers.size(); i++)
+		{
+			if(myCustomers.get(i).customer == c)
+			{
+				index = i;
+				break;
+			}
+		}
+		myCustomers.get(index).billAmount = amount;
+		myCustomers.get(index).currentState = customerState.paying;
+		stateChanged();	
 	}
 
 	@Override
-	public void msgGoodBye(TannerRestaurantCustomer c) {
-		// TODO Auto-generated method stub
-
+	public void msgGoodBye(TannerRestaurantCustomer c) 
+	{
+		int index = 0;
+		for(int i = 0; i < myCustomers.size(); i++)
+		{
+			if(myCustomers.get(i).customer == c)
+			{
+				index = i;
+				break;
+			}
+		}
+		myCustomers.get(index).currentState = customerState.leaving;
+		stateChanged();
 	}
 	
 //-----------------------------------------Scheduler---------------------------------------------------------

@@ -19,7 +19,7 @@ public interface TannerRestaurantWaiter
 	
 	public void msgIWouldLikeTheCheck(TannerRestaurantCustomer c, int choice);
 	
-	public void msgHereIsTheChek(float amount, TannerRestaurantCustomer c);
+	public void msgHereIsTheChek(double amount, TannerRestaurantCustomer c);
 	
 	public void msgGoodBye(TannerRestaurantCustomer c);
 }
