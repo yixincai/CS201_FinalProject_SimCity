@@ -46,9 +46,14 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 	ButtonGroup housing = new ButtonGroup();
 	JLabel workSchedule = new JLabel("Work Schedule:");
 	JLabel housingSituation = new JLabel("Housing:");
+	private final int WIDTH = 1024/3;
+	private final int HEIGHT = 720;
 	
 	public CreatePersonPanel(ControlPanel cp)
 	{
+		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		this.setMaximumSize(new Dimension(WIDTH, HEIGHT));
+		this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		cPanel = cp;
 		SpringLayout layout = new SpringLayout();
 		this.setLayout(layout);
