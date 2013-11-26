@@ -7,11 +7,11 @@ public interface TannerRestaurantCashier
 {
 	public void msgComputeBill(int choice, TannerRestaurantCustomer customer, TannerRestaurantWaiter w);
 	
-	public void msgHereIsMyPayment(float bill, float cash, TannerRestaurantCustomer c);
+	public void msgHereIsMyPayment(double billAmount, double myMoney, TannerRestaurantCustomer c);
 	
-	public void msgIDontHaveEnoughMoney(float bill, float cash, TannerRestaurantCustomer c);
+	public void msgIDontHaveEnoughMoney(double billAmount, double myMoney, TannerRestaurantCustomer c);
 	
-	public void msgHereIsAMarketBill(float amount, MarketCashier m);
+	public void msgHereIsAMarketBill(double amount, MarketCashier m);
 	
-	public void msgHereIsYourChange(float change, MarketCashier m);
+	public void msgHereIsYourChange(double change, MarketCashier m);
 }
