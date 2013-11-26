@@ -10,6 +10,10 @@ public interface TannerRestaurantCustomer
 	
 	public void msgFollowMeToTable(int tableNumber, ArrayList<Integer> menu, TannerRestaurantWaiter w);
 	
+	public void msgAnimationFinishedSeat();
+	
+	public void msgFiguredOutMyOrder();
+	
 	public void msgWhatWouldYouLike();
 	
 	public void msgYourChoiceIsOutOfStock(ArrayList<Integer> menu);

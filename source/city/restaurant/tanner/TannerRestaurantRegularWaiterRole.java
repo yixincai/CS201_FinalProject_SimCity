@@ -17,4 +17,10 @@ public class TannerRestaurantRegularWaiterRole extends TannerRestaurantBaseWaite
 		super(person, rest, name);
 	}
 
+	@Override
+	protected void SubmitOrder(MyCustomer c) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
