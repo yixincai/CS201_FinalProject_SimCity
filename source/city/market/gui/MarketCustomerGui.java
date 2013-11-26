@@ -12,10 +12,10 @@ public class MarketCustomerGui extends JPanel implements Gui {
 
     private MarketCustomerRole role = null;
 
-    private int xPos = 300, yPos = 30;//default waiter position
+    private int xPos = -50, yPos = -50;//default waiter position
     public static int xGap = 40;
     public static int yGap = 40;
-    private int xDestination = 300, yDestination = 30;//default waiter position
+    private int xDestination = -50, yDestination = -50;//default waiter position
 	private enum Command {noCommand, GoToSeat};
 	private Command command=Command.noCommand;
     
@@ -44,6 +44,7 @@ public class MarketCustomerGui extends JPanel implements Gui {
 
     public void draw(Graphics2D g) {
 		if(role.active){
+			g.setColor(Color.GRAY);
 			g.fillRect(xPos, yPos, xGap, yGap);
 			//g.drawImage(image, xPos, yPos, xGap, yGap, this);
 		}
@@ -56,10 +57,14 @@ public class MarketCustomerGui extends JPanel implements Gui {
 	}
 
 	public void GoToWaitingArea(){
+		xDestination = 50;
+		yDestination = 50;
 		command = Command.GoToSeat;
 	}
 	
 	public void LeaveMarket(){
+		xDestination = -50;
+		yDestination = -50;
 		command = Command.GoToSeat;
 	}
 

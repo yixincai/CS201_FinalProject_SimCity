@@ -16,7 +16,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	List<Item> orderFulfillment;
 	Map<String, Double> price_list;
 	
-	double money, payment, debt;
+	double money = 500, payment, debt;
 	public enum CustomerState {wantToBuy, needPay, pickUpItems, payNextTime, none}
 	public CustomerState state = CustomerState.none;
 
@@ -25,6 +25,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	public MarketCustomerRole(PersonAgent person, Market m){
 		super(person);
 		this.market = m;
+		cmdBuyFood(3);
 	}
 
 	public void setGui(MarketCustomerGui g) {
@@ -63,6 +64,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 	
 	public void msgHereIsGoodAndChange(List<Item> orderFulfillment, double change){
+		print("Received change from cashier.");
 		this.orderFulfillment = orderFulfillment;
 		money += change;
 		state = CustomerState.pickUpItems;
@@ -77,7 +79,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 
 	public boolean pickAndExecuteAnAction(){
-
 		if(state == CustomerState.wantToBuy){
 			buyFromMarket();
 			state = CustomerState.none;
@@ -108,15 +109,17 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		if (Math.abs(bill - payment) > 0.02)
 			System.out.println("Incorrect bill calculation by market");
 		*/
+		print("Pay Market.");
 		DoGoToCashier();
-		market.MarketCashier.msgPay(this, money);
 		DoGoToWaitingArea();
+		market.MarketCashier.msgPay(this, money);
 		money = 0;
 	}
 	
 	public void buyFromMarket(){
-		DoGoToWaitingArea();
+		DoGoToCashier();
 		market.MarketCashier.msgPlaceOrder(this, order);
+		DoGoToWaitingArea();
 	}
 	
 	public void payBackMarket(){
@@ -127,6 +130,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 	
 	public void pickUpItems(){
+		print("Go pick up items.");
 		DoGoToCashier();
 		DoLeaveMarket();
 		active = false;
