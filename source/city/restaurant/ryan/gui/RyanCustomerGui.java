@@ -5,7 +5,7 @@ import restaurant.HostAgent;
 
 import java.awt.*;
 
-public class CustomerGui implements Gui{
+public class RyanCustomerGui implements Gui{
 
 	private RyanCustomerRole agent = null;
 	private boolean isPresent = false;
@@ -28,7 +28,7 @@ public class CustomerGui implements Gui{
 	
 	Dimension CashierPos = new Dimension(200, 65);
 
-	public CustomerGui(RyanCustomerRole c, RestaurantGui gui){ //HostAgent m) {
+	public RyanCustomerGui(RyanCustomerRole c, RestaurantGui gui){ //HostAgent m) {
 		agent = c;
 		xPos = -40;
 		yPos = -40;

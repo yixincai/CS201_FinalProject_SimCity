@@ -10,8 +10,12 @@ public class CarObject {
 	CommuterRole _commuter;
 	CarObjectGui _gui;
 	
-	public CarObject(){
-		
+	public CarObject(CommuterRole commuter){
+		_commuter = commuter;
+	}
+	
+	public void setCarGui(CarObjectGui gui){
+		_gui = gui;
 	}
 	
 	public void goToDestination(Place destination){

@@ -1,11 +1,6 @@
 package city.restaurant.ryan;
 
-import restaurant.gui.CustomerGui;
-import restaurant.gui.Gui;
-import restaurant.gui.RestaurantGui;
-import restaurant.interfaces.*;
 import agent.Agent;
-import restaurant.Menu;
 
 import java.awt.Dimension;
 import java.util.List;
@@ -16,8 +11,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Random;
 
+import city.PersonAgent;
 import city.Place;
 import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.ryan.gui.RyanCustomerGui;
+import city.restaurant.yixin.YixinRestaurant;
 
 /**
  * Restaurant customer agent.
@@ -28,7 +26,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	private int money;
 	private double payment;
 	Timer timer = new Timer();
-	private CustomerGui customerGui;
+	private RyanCustomerGui customerGui;
 	String choice;
 	boolean patient;
 	boolean bad;
@@ -46,8 +44,8 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	// agent correspondents
 	private RyanHostRole host;
 	
-	private Waiter waiter;
-	private Cashier cashier;
+	private RyanWaiterRole waiter;
+	private RyanCashierRole cashier;
 
 	//    private boolean isHungry = false; //hack for gui
 	public enum AgentState
@@ -65,8 +63,8 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public RyanCustomerRole(String name, RyanCashierRole cashier){
-		super();
+	public RyanCustomerRole(PersonAgent p, RyanRestaurant r, String name){
+		super(p);
 		this.name = name;
 		this.cashier = cashier;
 		patient = true;
@@ -113,7 +111,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	}
 	
 	public void msgTablesAreFull(){
-		Do("Leaving");
+		print("Leaving");
 		event = AgentEvent.tableFull;
 	}
 	
@@ -129,7 +127,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 		stateChanged();
 	}
 
-	public void msgFollowMe(int tablenumber, Waiter waiter, List<Menu> wMenu) { //include menu later
+	public void msgFollowMe(int tablenumber, RyanWaiterRole waiter, List<Menu> wMenu) { //include menu later
 		this.waiter = waiter;
 		tableNumber = tablenumber;
 		cMenu = wMenu;
@@ -139,13 +137,13 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	
 	public void msgAnimationFinishedGoToSeat() {
 		//from animation
-		Do("At table " + tableNumber);
+		print("At table " + tableNumber);
 		event = AgentEvent.seated;
 		stateChanged();
 	}
 	
 	public void msgWhatsYourOrder(){
-		Do("I am ordering");
+		print("I am ordering");
 		event = AgentEvent.order;
 		stateChanged();
 	}
@@ -159,26 +157,26 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	}
 	
 	public void msgHeresYourFood(){
-		Do("Got food from " + waiter.getName());
+		print("Got food from " + waiter.getName());
 		event = AgentEvent.served;
 		stateChanged();
 	}
 	
 	public void msgHeresYourCheck(double payment){
-		Do("Thank you, " + waiter.getName());
+		print("Thank you, " + waiter.getName());
 		this.payment = payment;
 		event = AgentEvent.gotCheck;
 		stateChanged();
 	}
 	
 	public void msgAnimationFinishedGoToCashier(){
-		Do("At cashier");
+		print("At cashier");
 		event = AgentEvent.atCashier;
 		stateChanged();
 	}
 	
 	public void msgPaymentDone(double payment){
-		Do("Done paying and leaving");
+		print("Done paying and leaving");
 		event = AgentEvent.doneLeaving;
 		stateChanged();
 	}
@@ -193,7 +191,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
 
 		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
@@ -261,7 +259,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 
 	// Actions
 	private void goToRestaurant() {
-		Do("Going to restaurant");
+		print("Going to restaurant");
 		host.msgIWantFood(this);//send our instance, so he can respond to us
 	}
 	
@@ -288,11 +286,11 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	
 	private void Choose(){
 		//add timer;
-		Do("Choosing");
+		print("Choosing");
 		customerGui.setState(6);
 		timer.schedule(new TimerTask() {
 			public void run() {
-				Do("Ready to order, " + waiter.getName());
+				print("Ready to order, " + waiter.getName());
 				Chosen();
 			}
 		},
@@ -309,7 +307,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 		if(bad) money = 1000;
 		while(!chosen){
 			if(cMenu.isEmpty()){
-				Do("Too poor");
+				print("Too poor");
 				leaveTable();
 				chosen = true;
 			}
@@ -332,21 +330,21 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	}
 	
 	private void Order(){
-		Do("I'll order " + choice);
+		print("I'll order " + choice);
 		customerGui.setChoice(choice);
 		customerGui.setState(2);
 		waiter.msgMyOrder(choice, this);
 	}
 
 	private void EatFood() {
-		Do("Eating Food " + choice);
+		print("Eating Food " + choice);
 		customerGui.setState(3);
 		timer.schedule(new TimerTask() {
 			Object cookie = 1;
 			public void run() {
 				//print("Done eating, cookie=" + cookie);
 				event = AgentEvent.doneEating;
-				Do("Finshed Eating");
+				print("Finshed Eating");
 				sendDoneEatingMessage();
 				//isHungry = false;
 			}
@@ -362,18 +360,18 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	
 	private void PayOrRun(){ // Add run function here
 		if(money > payment){
-			Do("Going to cashier");
+			print("Going to cashier");
 			customerGui.setState(4);
 			customerGui.DoGoToCashier();
 		}
 		else if(money < payment){
-			Do("Running Away");
+			print("Running Away");
 			leaveTable();
 		}
 	}
 	
 	private void PayCashier(){
-		Do("Paying Cashier");
+		print("Paying Cashier");
 		money -= payment;
 		cashier.msgHeresMoney(this, payment);
 		payment = 0;
@@ -385,7 +383,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 			waiter.msgLeaving(this);
 		}
 		else if(!bad){
-			Do("Leaving.");
+			print("Leaving.");
 			waiter.msgLeaving(this);
 			customerGui.setState(5);	
 		}
@@ -412,11 +410,11 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 		return "customer " + getName();
 	}
 
-	public void setGui(CustomerGui g) {
+	public void setGui(RyanCustomerGui g) {
 		customerGui = g;
 	}
 
-	public CustomerGui getGui() {
+	public RyanCustomerGui getGui() {
 		return customerGui;
 	}
 

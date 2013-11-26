@@ -18,7 +18,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	public MarketCashierGui gui;
 		
-	public EventLog log = new EventLog();
 	public Map<String, Good> inventory = new HashMap<String, Good>();
 	public List<CustomerOrder> customers = new ArrayList<CustomerOrder>(); 
 	public List<RestaurantOrder> restaurantOrders = new ArrayList<RestaurantOrder>();
