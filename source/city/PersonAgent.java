@@ -39,7 +39,7 @@ public class PersonAgent extends Agent
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
 	class State
 	{
-		NourishmentState nourishment; //TODO implement value for hunger
+		NourishmentState nourishment = NourishmentState.FULL; //TODO implement value for hunger
 		double nourishmentLevel;
 		NourishmentState nourishment() { return nourishment; }
 		
@@ -101,6 +101,8 @@ public class PersonAgent extends Agent
 		_name = name; 
 		_money = money; 
 		acquireOccupation(occupationType);
+		if(_occupation != null) print("Acquired occupation " + _occupation.toString() + ".");
+		else print("Acquired null occupation.");
 		acquireHome(housingType);
 		generateAndSetCommuterRole();
 		setNextRole(_homeOccupantRole);
@@ -284,8 +286,11 @@ public class PersonAgent extends Agent
 			case "Omar Waiter":
 				_occupation = restaurants.get(1).generateWaiterRole(this);
 				return;
+			case "None":
+				_occupation = null;
+				return;
 		}
-		// note: control reaches here because no jobs were found, or occupationType.equals("none")
+		// note: control reaches here because no jobs were found
 		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
 		_occupation = newOccupation;
 	}
@@ -396,6 +401,12 @@ public class PersonAgent extends Agent
 				if(_occupation != null && workingToday() && timeToBeAtWork())
 				{
 					setNextRole(_occupation);
+					return true;
+				}
+				else if(_occupation == null) //DEBUG
+				{
+					_homeOccupantRole.cmdGoToBed();
+					setNextRole(_homeOccupantRole);
 					return true;
 				}
 				else if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime()) //could replace with variables for sleepTime and wakeTime
