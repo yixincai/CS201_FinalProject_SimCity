@@ -291,13 +291,19 @@ public class PersonAgent extends Agent
 	// ---------------------- OTHER PROPERTIES -------------------------
 	public String getName() { return _name; }
 	public double money() { return _money; }
-	public void changeMoney(double delta) { _money += delta; }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
 	public void setWorkDays(boolean weekday_notWeekend) {
 		_weekday_notWeekend = weekday_notWeekend;
 	}
 	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
 	public CommuterRole commuterRole() { return _commuterRole; }
+	
+	// ------------------------------------------------ COMMANDS -----------------------------------------------------------
+	public void cmdChangeMoney(double delta) { _money += delta; }
+	public void cmdNoLongerHungry()
+	{
+		//TODO change hunger state, set timer to change the state to hungry again
+	}
 	
 	
 	
@@ -375,7 +381,7 @@ public class PersonAgent extends Agent
 				// commuter role must have just reached the destination; we need to shift the current role from the commuter role to whatever next role is.
 				_currentRole = _nextRole;
 				_currentRole.active = true;
-				if(_currentRole == _homeOccupantRole) //TODO I'm a little skeptical of this if-statement (maybe a better place would be to call _homeOccupantRole.cmdGotHome() before calling setNextRole(_homeOccupantRole)
+				if(_currentRole == _homeOccupantRole) //TODO I'm a little skeptical of this if-statement.  Maybe a better place would be to call _homeOccupantRole.cmdGotHome() before calling setNextRole(_homeOccupantRole)
 				{
 					// i.e. if we just got home
 					_homeOccupantRole.cmdGotHome();
