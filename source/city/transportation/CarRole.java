@@ -4,14 +4,16 @@ import java.awt.Dimension;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-import agent.PersonAgent;
+import city.Place;
+import city.PersonAgent;
+import city.transportation.gui.CarObjectGui;
 
 public class CarRole {
 	List<String> destinations;
 	Dimension currentPos;
 	CommuterRole commuter;
 	Semaphore isMoving;
-	CarGui gui;
+	CarObjectGui gui;
 	enum carState{notMoving, turnedOn, moving};
 	carState cState = carState.notMoving;
 	
@@ -21,6 +23,7 @@ public class CarRole {
 	
 	public Place place() {
 		//return _currentPlace; //TODO need to implement _currentPlace (in constructor, data member, etc) 
+		return null;
 	}
 	
 	public void msgGotInCar(PersonAgent person, String destination){
@@ -43,10 +46,10 @@ public class CarRole {
 	
 	public void GoToDestination(String destination){
 	    cState = carState.moving;
-	    Gui.goToDestination(destination);
-	    isMoving.acquire(); //release sent by gui
+	//    gui.goToDestination(destination);
+	//    isMoving.acquire(); //release sent by gui
 	    cState = carState.notMoving;
-	    person.atDestination(destination);
+///	    commuter.atDestination(destination);
 	    destinations.remove(destination);
 	}
 	
