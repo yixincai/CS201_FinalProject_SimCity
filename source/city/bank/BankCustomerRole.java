@@ -120,6 +120,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 * @param amountReceived The amount of money received from the teller.  If the transaction was a deposit, this amount will be negative.
 	 */
 	public void msgTransactionComplete(double amountReceived, double funds, double amountOwed){
+			print("Transaction complete!");
 		  event = Event.ApprovedTransaction;
 		  _person.cmdChangeMoney(amountReceived);
 		  this.accountFunds = funds;

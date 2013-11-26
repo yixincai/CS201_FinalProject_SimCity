@@ -86,7 +86,7 @@ public class BankTellerRole extends Role implements BankTeller {
 		}
 	}
 	
-	enum CustomerState { None, Arrived, GivingRequest, GivenRequest};
+	enum CustomerState { None, Arrived, GivingRequest, GivenRequest, Done};
 	
 	//Messages
 	public void msgIAmHere(BankCustomer c){
@@ -96,6 +96,7 @@ public class BankTellerRole extends Role implements BankTeller {
 		  stateChanged();
 	}
 	public void msgHereIsMyRequest(BankCustomer c, String request, double amount){
+		   print("Customer " + c.toString() + " requested: " + request);
 		  for(MyCustomer m: myCustomers){
 			if(m.customer == c){
 		  	m.customerState = CustomerState.GivenRequest;
@@ -180,7 +181,6 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	
 	private void actProcessRequest(MyCustomer m){  //handle multiple requests, MAKE SURE TO ADD CHECK TO SEE IF THEY CAN DO ACTION
-		print("Customer " + m.customer.toString() + " requested: " + m.request);
 		if(m.request.equalsIgnoreCase("Deposit")){ //not checked
 			double currentFunds = database.funds.remove(m.accountNumber);
 			database.funds.put(m.accountNumber, currentFunds + m.amount);
@@ -215,6 +215,8 @@ public class BankTellerRole extends Role implements BankTeller {
 				e.printStackTrace();
 			}
 		}
+		
+		m.customerState = CustomerState.None;
 	}
 	
 	private void actProcessWireRequest(MyBusinessCustomer m){
