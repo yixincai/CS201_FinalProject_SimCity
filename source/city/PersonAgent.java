@@ -108,7 +108,6 @@ public class PersonAgent extends Agent
 	public void setNewCommuterRole()
 	{
 		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
-		if(_homeOccupantRole == null) print("_HomeOccupantRole is null. BBBBLLLLLEEEEEHHHHHHH");
 		_commuterRole.setDestination(_homeOccupantRole.place());
 		
 		_currentRole = _commuterRole;
@@ -126,7 +125,7 @@ public class PersonAgent extends Agent
 				List<Apartment> apartments = b.apartments();
 				for(Apartment a : apartments)
 				{
-					HomeOccupantRole newHomeOccupantRole = a.tryAcquireHomeOccupantRole(this);
+					HomeOccupantRole newHomeOccupantRole = a.tryGenerateHomeOccupantRole(this);
 					if(newHomeOccupantRole != null)
 					{
 						_homeOccupantRole = newHomeOccupantRole;
@@ -141,7 +140,7 @@ public class PersonAgent extends Agent
 			List<House> houses = Directory.houses();
 			for(House h : houses)
 			{
-				HomeOccupantRole newHomeOccupantRole = h.tryAcquireHomeOccupantRole(this);
+				HomeOccupantRole newHomeOccupantRole = h.tryGenerateHomeOccupantRole(this);
 				if(newHomeOccupantRole != null)
 				{
 					_homeOccupantRole = newHomeOccupantRole;
@@ -170,6 +169,7 @@ public class PersonAgent extends Agent
 		{
 			// note: if control reaches a break statement, the new occupation will be a waiter.
 			case "Waiter":
+				_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
 				break; // waiter is generated right after this switch statement
 			case "Restaurant Cashier":
 				newOccupation = null;
@@ -267,10 +267,14 @@ public class PersonAgent extends Agent
 					}
 				}
 				break;
+			// BEGIN HACKS
+			case "Market Customer":
+				//TODO add restaurant and bank customer stuff etc.
+				break;
 		}
-		// Set the occupation to waiter
-		// note: control reaches here either because the value of occupationType is "Waiter" or because no scarce jobs were found (waiter is an unlimited/non-scarce job)
-		_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
+		// note: control reaches here because no jobs were found, or occupationType.equals("none")
+		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateCustomerRole(this);
+		
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------
 	public String getName() { return _name; }
