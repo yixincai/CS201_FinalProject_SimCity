@@ -2,6 +2,7 @@ package city.home.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.concurrent.Semaphore;
 
 import city.home.HomeOccupantRole;
 import gui.Gui;
@@ -16,6 +17,9 @@ public abstract class HomeOccupantGui implements Gui {
 	protected HomeOccupantRole _role;
 	protected boolean _goingSomewhere = false;
 	protected boolean _isPresent = false;
+	
+	protected Semaphore _finishedAction = new Semaphore(0, true);
+	protected boolean _doingAction = false;
 	
 	private int _positionX = 0;
 	private int _positionY = 0;
@@ -62,28 +66,40 @@ public abstract class HomeOccupantGui implements Gui {
 		setPresent(true);
 		doGoIdle();
 	}
-	public void doGoToKitchen() {
-		//TODO set destination
-		_goingSomewhere = true;
+	public void doCookAndEatFood() {
+		_doingAction = true;
+		_destinationX = kitchenX();
+		_destinationY = kitchenY();
+		waitForActionToFinish();
+		_doingAction = true;
+		_destinationX = kitchenX() - 20;
+		waitForActionToFinish();
+		_doingAction = true;
+		_destinationX = kitchenX();
+		waitForActionToFinish();
+		// TODO add a kitchen table, possibly add a string for which food he has
+		_role.msgReachedDestination();
 	}
 	public void doWatchTv() {
 		doGoIdle();
 	}
 	public void doGoToBed() {
-		//TODO set destination
+		_destinationX = bedX();
+		_destinationY = bedY();
 		_goingSomewhere = true;
 	}
 	public void doWakeUp() {
 		doGoIdle();
 	}
 	public void doLeaveHome() {
-		//TODO set destination (make an allowance for calling setPresent(false) when you get there???)
+		_destinationX = frontDoorX();
+		_destinationY = frontDoorY();
 		_goingSomewhere = true;
 	}
 	
 	
 	
-	// ------------------------------------ METHODS ----------------------------------------
+	// ------------------------------------ ANIMATION ----------------------------------------
 	@Override
 	public void updatePosition() {
 		// Update position
@@ -94,12 +110,23 @@ public abstract class HomeOccupantGui implements Gui {
 		else if (_positionY > _destinationY) _positionY--;
 		
 		// Check if reached destination
-		if(_positionX == _destinationX && _positionY == _destinationY && _goingSomewhere){
-			_goingSomewhere = false;
-			setPresent(false);
-			_role.msgReachedDestination();
+		if(_positionX == _destinationX && _positionY == _destinationY)
+		{
+			if(_goingSomewhere)
+			{
+				_goingSomewhere = false;
+				_role.msgReachedDestination();
+			}
+			if(_doingAction)
+			{
+				_doingAction = false;
+				_finishedAction.release();
+			}
+			if(_destinationX == frontDoorX() && _destinationY == frontDoorY())
+			{
+				setPresent(false);
+			}
 		}
-		// TODO if(reached destination && destination is front door) { setPresent(false); } (also see restaurant.gui.WaiterGui)
 	}
 	@Override
 	public void draw(Graphics2D g) {
@@ -107,5 +134,14 @@ public abstract class HomeOccupantGui implements Gui {
 			g.setColor(Color.GREEN);
 			g.fillRect(_positionX, _positionY, 20, 20);
 		}
+	}
+	
+	
+	
+	// ----------------------------------- UTILITIES ---------------------------------------------
+	protected void waitForActionToFinish()
+	{
+		try { _finishedAction.acquire(); }
+		catch (InterruptedException e) { e.printStackTrace(); }
 	}
 }
