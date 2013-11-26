@@ -7,11 +7,8 @@ import java.util.Random;
 import agent.Role;
 import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
-import city.restaurant.Restaurant;
-import city.restaurant.RestaurantCustomerRole;
-import city.restaurant.omar.gui.OmarRestaurantAnimationPanel;
-import city.restaurant.omar.gui.OmarWaiterGui;
-import city.restaurant.yixin.gui.YixinWaiterGui;
+import city.restaurant.*;
+import city.restaurant.omar.gui.*;
 
 public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 
@@ -60,7 +57,11 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
-		return (new OmarCustomerRole(person, this, person.getName()));
+		OmarCustomerRole customer = new OmarCustomerRole(person, this, person.getName());
+		OmarCustomerGui customerGui = new OmarCustomerGui(customer, _animationPanel);
+		customer.setGui(customerGui);
+		getAnimationPanel().addGui(customerGui);
+		return customer;
 	}
 
 	@Override
@@ -93,5 +94,22 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	
 	public OmarRestaurantAnimationPanel getAnimationPanel() {
 		return this._animationPanel;
+	}
+
+	@Override
+	public void generateCashierGui() {
+		//TODO create cashier gui later
+	}
+
+	@Override
+	public void generateCookGui() {
+		OmarCookGui cashierGui = new OmarCookGui((OmarCookRole)cook);
+		((OmarCookRole)cook).setGui(cashierGui);
+		getAnimationPanel().addGui(cashierGui);
+	}
+
+	@Override
+	public void generateHostGui() {
+		//TODO create cashier gui later	
 	}
 }

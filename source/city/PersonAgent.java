@@ -186,9 +186,6 @@ public class PersonAgent extends Agent
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
-						YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)_occupation);
-						((YixinCashierRole)_occupation).setGui(yixinCashierGui);
-						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinCashierGui);
 						return;
 					}
 				}
@@ -201,9 +198,6 @@ public class PersonAgent extends Agent
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
-						YixinCookGui yixinCookGui = new YixinCookGui((YixinCookRole)_occupation);
-						((YixinCookRole)_occupation).setGui(yixinCookGui);
-						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinCookGui);
 						return;
 					}
 				}
@@ -216,9 +210,6 @@ public class PersonAgent extends Agent
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
-						YixinHostGui yixinHostGui = new YixinHostGui((YixinHostRole)_occupation);
-						((YixinHostRole)_occupation).setGui(yixinHostGui);
-						((YixinRestaurant)_occupation.place()).getAnimationPanel().addGui(yixinHostGui);
 						return;
 					}
 				}
