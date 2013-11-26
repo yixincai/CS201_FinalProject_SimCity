@@ -14,7 +14,7 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     private final int TABLEX1 = 450;
     private final int TABLEX2 = 300;
     private final int TABLEX3 = 150;
-    private final int TABLEY = 100;
+    private final int TABLEY = 150;
     private final int GAPX = 50;
     private final int GAPY = 50;
     private final int ICON_X = 30;

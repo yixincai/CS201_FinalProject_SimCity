@@ -26,13 +26,13 @@ public class BusAgent extends Agent implements Bus{
 	
 	BusStopObject currentDestination;
 	int _busStopNum;
-	List<Commuter> currentBusStopList = new ArrayList<Commuter>();
+	public List<Commuter> currentBusStopList = new ArrayList<Commuter>();
 	Semaphore busSem = new Semaphore(0, true);
 	
 	static double _fare;
 	double _register;
 
-	static int capacity;
+	static int capacity = 20;
 	private int numPeople = 0;
 	private int expectedPeople = 0;
 
@@ -115,6 +115,7 @@ public class BusAgent extends Agent implements Bus{
 	
 	//----------------------------------------------Actions----------------------------------------
 	public void GoToFirstBusStop(){
+		System.out.println("Start");
 		bState = BusState.moving;
 		_gui.goToBusStop(_busStops.get(_busStopNum));
 		try {
@@ -140,12 +141,13 @@ public class BusAgent extends Agent implements Bus{
 		System.out.println("Bus: Picking up from " + currentDestination.getName());
 		currentBusStopList = currentDestination.getList();
 		bState = BusState.pickingup;
-	    while(getExpectedPeople() <= capacity && currentBusStopList.size() > 0){
-	    	for(Commuter comm: currentBusStopList){
+    	for(Commuter comm: currentBusStopList){
+    		if(getExpectedPeople() < capacity){
+	    		System.out.println("Picked up");
 	    		comm.msgGetOnBus(_fare, this);
 	            setExpectedPeople(getExpectedPeople() + 1);
-	        }
-	    }
+    		}
+        }
 	    stateChanged();
 	}
 
@@ -203,5 +205,18 @@ public class BusAgent extends Agent implements Bus{
 	public void setNumPeople(int numPeople) {
 		this.numPeople = numPeople;
 	}
+	
+	public BusStopObject getCurrentBusStop(){
+		return currentDestination;
+	}
+	
+	public void setCapacity(int num){
+		capacity = num;
+	}
+	
+	public int getCapacity(){
+		return capacity;
+	}
+	
 	
 }

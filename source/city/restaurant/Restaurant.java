@@ -6,6 +6,9 @@ import gui.WorldViewBuilding;
 import agent.Role;
 import city.PersonAgent;
 import city.Place;
+import city.restaurant.yixin.YixinCashierRole;
+import city.restaurant.yixin.YixinRestaurant;
+import city.restaurant.yixin.gui.YixinCashierGui;
 
 public abstract class Restaurant extends Place {
 	
@@ -46,10 +49,14 @@ public abstract class Restaurant extends Place {
 	// ------------------------------------ FACTORIES & ROLE ACQUIRES ---------------------------------------------
 	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // Make a new CustomerRole, which is initialized with a pointer to the HostRole.
 	public abstract Role generateWaiterRole(PersonAgent person);
+	public abstract void generateCashierGui();
+	public abstract void generateCookGui();
+	public abstract void generateHostGui();
 	
 	public RestaurantCookRole tryAcquireCook(PersonAgent person) {
 		if(_cookSemaphore.tryAcquire()) {
 			cook.setPersonAgent(person);
+			generateCookGui();
 			return cook;
 		}
 		else return null;
@@ -58,6 +65,7 @@ public abstract class Restaurant extends Place {
 	public RestaurantCashierRole tryAcquireCashier(PersonAgent person) {
 		if(_cashierSemaphore.tryAcquire()) {
 			cashier.setPersonAgent(person);
+			generateCashierGui();
 			return cashier;
 		}
 		else return null;
