@@ -192,6 +192,18 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 					}
 				}
 			}
+			
+			Order order = restaurant.revolvingStand.remove();
+			if (order!=null){
+				myGui.DoGoToRevolvingStand();
+				orders.add(order);
+				return true;
+			}
+			else
+			{
+				
+			}
+			
 		} catch (ConcurrentModificationException e) {
 			return false;
 		}

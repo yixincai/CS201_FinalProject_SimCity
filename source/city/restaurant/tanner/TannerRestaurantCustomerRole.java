@@ -156,7 +156,7 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 	}
 
 	@Override
-	public void msgYouOweUs(float debt) 
+	public void msgYouOweUs(double debt) 
 	{
 		myEvent = Event.payed;
 		myMoney = 0;
