@@ -212,7 +212,7 @@ public class PersonAgent extends Agent
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
-						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui();
+						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui((BankTellerRole)_occupation);
 						((BankTellerRole)_occupation).setGui(bankTellerRoleGui);
 						((Bank)_occupation.place()).animationPanel().addGui(bankTellerRoleGui);
 						return;
@@ -227,7 +227,7 @@ public class PersonAgent extends Agent
 					if(newOccupation != null)
 					{
 						_occupation = newOccupation;
-						BankHostRoleGui bankHostRoleGui = new BankHostRoleGui();
+						BankHostRoleGui bankHostRoleGui = new BankHostRoleGui((BankHostRole)_occupation);
 						((BankHostRole)_occupation).setGui(bankHostRoleGui);
 						((Bank)_occupation.place()).animationPanel().addGui(bankHostRoleGui);
 						return;
@@ -273,6 +273,9 @@ public class PersonAgent extends Agent
 				return;
 			case "Omar Customer":
 				_occupation = restaurants.get(1).generateCustomerRole(this);
+				return;
+			case "Bank Customer":
+				_occupation = banks.get(0).generateCustomerRole(this);
 				return;
 			case "Yixin Waiter":
 				_occupation = restaurants.get(0).generateWaiterRole(this);

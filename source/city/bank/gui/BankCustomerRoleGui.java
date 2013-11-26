@@ -15,7 +15,7 @@ public class BankCustomerRoleGui implements Gui {
 	private boolean flag = true;
 	private int xPos, yPos;
 	private int xDestination, yDestination;
-	private int lineX = 382;
+	private int lineX = 352;
 	private int lineY = 180;
 	private int tellerX = 572;
 	private int tellerY = 195;
@@ -50,17 +50,23 @@ public class BankCustomerRoleGui implements Gui {
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.green);
-		g.fillRect(xPos, yPos, 20, 20);
+		if(isPresent()){
+			g.setColor(Color.green);
+			g.fillRect(xPos, yPos, 20, 20);
+		}
 	}
 
 	@Override
 	public boolean isPresent() {
-		// TODO Auto-generated method stub
-		return true;
+		if(agent.active){
+			return true;
+		}
+		
+		return false;
 	}
 
 	public void DoGoToLine() {
+		isPresent = true;
 		xDestination = lineX;
 		yDestination = lineY;
 		flag = false;
