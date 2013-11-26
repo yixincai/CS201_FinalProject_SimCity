@@ -24,13 +24,13 @@ public class MarketCustomerTest  extends TestCase {
 	
 	public void testNormalCustomerScenario(){
 
-		assertEquals("Customer should be in none state. It doesn't.", customer.state, MarketCustomerRole.CustomerState.none);
-		assertFalse("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
+		assertEquals("Customer should be in none state. It doesn't.", customer.state, MarketCustomerRole.CustomerState.wantToBuy);
+//		assertFalse("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
 		
 		//send first message to customer
 		customer.cmdBuyFood(5);
 		assertEquals("Customer should be in wantToBuy state. It doesn't.", customer.state, MarketCustomerRole.CustomerState.wantToBuy);
-		
+		customer.msgAnimationFinished();		
 		customer.msgAnimationFinished();
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
 
