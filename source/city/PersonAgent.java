@@ -346,7 +346,7 @@ public class PersonAgent extends Agent
 		}
 		else // i.e. _currentRole.active == false
 		{
-			System.out.println("Just finished a role");
+			print("Just finished a role");
 			// note: if we get here, a role just finished leaving.
 			_sentCmdFinishAndLeave = false;
 			
