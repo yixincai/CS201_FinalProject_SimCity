@@ -266,12 +266,24 @@ public class PersonAgent extends Agent
 				break;
 			// BEGIN HACKS
 			case "Market Customer":
-				//TODO add restaurant and bank customer stuff etc.
+				_occupation = markets.get(0).generateCustomerRole(this);
+				break;
+			case "Yixin Customer":
+				_occupation = restaurants.get(0).generateCustomerRole(this);
+				break;
+			case "Omar Customer":
+				_occupation = restaurants.get(1).generateCustomerRole(this);
+				break;
+			case "Yixin Waiter":
+				_occupation = restaurants.get(0).generateWaiterRole(this);
+				break;
+			case "Omar Waiter":
+				_occupation = restaurants.get(1).generateWaiterRole(this);
 				break;
 		}
 		// note: control reaches here because no jobs were found, or occupationType.equals("none")
 		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateCustomerRole(this);
-		
+		_occupation = newOccupation;
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------
 	public String getName() { return _name; }
@@ -295,7 +307,7 @@ public class PersonAgent extends Agent
 		
 		if(_currentRole.active)
 		{
-			//System.out.println("Current Role Active");
+			//print("Current Role Active");
 			// Finish role because you have to get to work:
 			if(workingToday() && !_sentCmdFinishAndLeave)
 			{
@@ -340,13 +352,13 @@ public class PersonAgent extends Agent
 			// Call current role's scheduler
 			if(_currentRole.pickAndExecuteAnAction())
 			{ 
-				System.out.println("Current Role Scheduler called an action.");
+				print("Current Role Scheduler called an action.");
 				return true;
 			}
 		}
 		else // i.e. _currentRole.active == false
 		{
-			System.out.println("Just finished a role");
+			print("Just finished a role");
 			// note: if we get here, a role just finished leaving.
 			_sentCmdFinishAndLeave = false;
 			

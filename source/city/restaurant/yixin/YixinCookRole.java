@@ -107,6 +107,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	 */
 	public boolean pickAndExecuteAnAction() {
 		try{
+			print("----------------------------------------------");
 			for (Order order : orders){
 				if (order.state == Order.OrderState.Cooked){
 					returnOrder(order);
