@@ -11,30 +11,26 @@ import agent.Role;
 
 public class TannerRestaurantRegularWaiterRole extends Role implements TannerRestaurantWaiter
 {
+	
+//----------------------------------------------Data--------------------------------------------------------------------------------------------------------------
+	
+//-------------------------------------------Constructor----------------------------------------------------------------------------------------------------------
 
 	public TannerRestaurantRegularWaiterRole(PersonAgent person, TannerRestaurant rest, TannerRestaurantCook cook, TannerRestaurantCashier cashier, String name) {
 		super(person);
 		// TODO Auto-generated constructor stub
 	}
 
+//--------------------------------------------Accessors-----------------------------------------------------------------------------------------------------------
+	
 	@Override
 	public Place place() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-
-	}
-
+//--------------------------------------------Messages-------------------------------------------------------------------------------------------------------------
+	
 	@Override
 	public void msgHereIsANewCustomer(TannerRestaurantCustomer c,
 			int tableNumber, TannerRestaurantHost h, TannerRestaurantCook co) {
@@ -95,5 +91,23 @@ public class TannerRestaurantRegularWaiterRole extends Role implements TannerRes
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+//--------------------------------------------Scheduler------------------------------------------------------------------------------------------------------------
+	
+	@Override
+	public boolean pickAndExecuteAnAction() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
+//--------------------------------------------Actions--------------------------------------------------------------------------------------------------------------
+	
+//--------------------------------------------Commands-------------------------------------------------------------------------------------------------------------
+	
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+
+	}
 }

@@ -9,29 +9,24 @@ import agent.Role;
 
 public class TannerRestaurantHostRole extends Role implements TannerRestaurantHost 
 {
+	
+//-------------------------------------------Data---------------------------------------------------------------------------
 
 	public TannerRestaurantHostRole(PersonAgent person, TannerRestaurant rest, String name) {
 		super(person);
 		// TODO Auto-generated constructor stub
 	}
 
+//-----------------------------------------Accessors-------------------------------------------------------------------------	
+
 	@Override
 	public Place place() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-
-	}
+	
+	
+//-----------------------------------------Messages-----------------------------------------------------------------------------	
 
 	@Override
 	public void msgHowLongIsTheWait(TannerRestaurantCustomer c) {
@@ -56,5 +51,24 @@ public class TannerRestaurantHostRole extends Role implements TannerRestaurantHo
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+//-----------------------------------------Scheduler--------------------------------------------------------------------------
+	
+	@Override
+	public boolean pickAndExecuteAnAction() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+//-----------------------------------------Actions----------------------------------------------------------------------------
+	
+//-----------------------------------------Commands---------------------------------------------------------------------------
+	
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
 
+	}
 }

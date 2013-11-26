@@ -10,36 +10,25 @@ import city.restaurant.tanner.interfaces.TannerRestaurantWaiter;
 
 public class TannerRestaurantCustomerRole extends RestaurantCustomerRole implements TannerRestaurantCustomer
 {
+	
+//-----------------------------------------------Data----------------------------------------------------------
 
+	
+//---------------------------------------------Constructor-----------------------------------------------------	
 	public TannerRestaurantCustomerRole(PersonAgent person, TannerRestaurant rest, String name) {
 		super(person);
 		// TODO Auto-generated constructor stub
 	}
-
-	@Override
-	public void cmdGotHungry() {
-		// TODO Auto-generated method stub
-
-	}
+	
+//---------------------------------------------Accessors--------------------------------------------------------
 
 	@Override
 	public Place place() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-
-	}
-
+	
+//---------------------------------------------Messages----------------------------------------------------------
 	@Override
 	public void msgImHungry() {
 		// TODO Auto-generated method stub
@@ -94,5 +83,28 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 		// TODO Auto-generated method stub
 		
 	}
+	
+//---------------------------------------------Scheduler--------------------------------------------------------
 
+	@Override
+	public boolean pickAndExecuteAnAction() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+//----------------------------------------------Actions--------------------------------------------------------
+	
+//----------------------------------------------Commands-------------------------------------------------------
+
+	@Override
+	public void cmdGotHungry() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+
+	}
 }

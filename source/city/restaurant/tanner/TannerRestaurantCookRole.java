@@ -15,40 +15,34 @@ import city.restaurant.tanner.interfaces.TannerRestaurantWaiter;
 public class TannerRestaurantCookRole extends RestaurantCookRole implements TannerRestaurantCook
 {
 
+//--------------------------------------------Data---------------------------------------------------------------------
+	
+//----------------------------------------Constructors-----------------------------------------------------------------	
 	public TannerRestaurantCookRole(PersonAgent person, TannerRestaurant rest, TannerRestaurantCashierRole cashier) {
 		super(person);
 		// TODO Auto-generated constructor stub
 	}
-
-	@Override
-	public void msgOrderFulfillment(Market m, List<Item> order) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
+//-----------------------------------------Accessors------------------------------------------------------------------
+	
 	@Override
 	public Place place() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
-	public boolean pickAndExecuteAnAction() {
+	public Point getPosition() {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
+//------------------------------------------Messages------------------------------------------------------------------
+	
 	@Override
-	public void cmdFinishAndLeave() {
+	public void msgOrderFulfillment(Market m, List<Item> order) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void msgHereIsANewOrder(int choice, int tableNumber,
-			TannerRestaurantWaiter w) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -69,10 +63,30 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 		
 	}
 
+	
+//------------------------------------------Scheduler-----------------------------------------------------------------
+
 	@Override
-	public Point getPosition() {
+	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
+//------------------------------------------Actions------------------------------------------------------------------
+	
+	
+//------------------------------------------Commands-----------------------------------------------------------------
+	
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void msgHereIsANewOrder(int choice, int tableNumber,
+			TannerRestaurantWaiter w) {
+		// TODO Auto-generated method stub
+		
+	}
 }
