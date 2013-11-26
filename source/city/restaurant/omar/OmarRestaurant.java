@@ -15,7 +15,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	public RevolvingStand revolving_stand = new RevolvingStand();
 	//count stands for the number of waiting list
 	int count = -1;
-	boolean open;
+	boolean open = true;
 	public OmarHostRole host;
 	private List<Table> tables;
 	private int businessAccountNumber = -1;
@@ -77,6 +77,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		waiterGui.setHomePosition(Waiters.size() * 50, 70);
 		animationPanel().addGui(waiterGui);
 		Waiters.add(newWaiter);
+		host.waiters.add(newWaiter);
 		return newWaiter;
 	}
 

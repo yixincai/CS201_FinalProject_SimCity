@@ -41,6 +41,7 @@ public class OmarHostRole extends Role {
 
 	// Messages
 	public void msgIWantFood(OmarCustomerRole cust) { // 1 receives messages from hungry customers, puts them on list
+		print("Receive IWantFood from customer");
 		waitingCustomers.add(cust);
 		stateChanged();
 	}

@@ -75,6 +75,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 		if(name.equals("Darth Vader")){
 			this.money = 13;
 		}
+		cmdGotHungry();
 	}
 
 	/**
@@ -228,8 +229,8 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 
 	// Actions
 	private void goToRestaurant() {	//GOES TO RESTAURANT
-		System.out.println(this.name + ": Going to restaurant");
-		host.msgIWantFood(this);//send our instance, so he can respond to us
+		print("Going to restaurant");
+		restaurant.host.msgIWantFood(this);//send our instance, so he can respond to us
 		//he tells the host he's hungry
 		
 		if(this.name.equals("Crazy Steve")){
@@ -242,7 +243,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 		waitTimer = new Timer(10000, new ActionListener() { 
 			public void actionPerformed(ActionEvent e){
 				if(state == AgentState.WaitingInRestaurant && event == AgentEvent.GotHungry){
-					host.msgLeavingWaitList(OmarCustomerRole.this);
+					restaurant.host.msgLeavingWaitList(OmarCustomerRole.this);
 					state = AgentState.DoingNothing;
 					event = AgentEvent.DoneLeaving;
 					customerGui.leftWaitingList();
@@ -350,7 +351,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	private void leaveTable() {	//LEAVES
 		customerGui.setCurrentStatus("Leaving");
 		System.out.println(this.name + ": Leaving.");
-		host.msgLeavingTable(this);
+		restaurant.host.msgLeavingTable(this);
 		waiter.msgDoneEatingAndLeaving(this);
 		customerGui.DoExitRestaurant();
 		try {

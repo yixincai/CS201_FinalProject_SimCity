@@ -10,7 +10,7 @@ import city.restaurant.omar.OmarCustomerRole;
 public class OmarCustomerGui implements Gui {
 
 	private OmarCustomerRole agent = null;
-	private boolean isPresent = false;
+	private boolean isPresent = true;
 	private boolean isHungry = false;
 	private boolean sentencedToDeath = false;
 	private Color myColor = Color.GREEN;
