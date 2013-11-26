@@ -102,16 +102,13 @@ public class PersonAgent extends Agent
 		_money = money; 
 		acquireOccupation(occupationType);
 		acquireHome(housingType);
-		setNewCommuterRole();
+		generateAndSetCommuterRole();
+		setNextRole(_homeOccupantRole);
 	}
 	/** Sets _commuterRole to a new CommuterRole */
-	public void setNewCommuterRole()
+	public void generateAndSetCommuterRole()
 	{
 		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
-		_commuterRole.setDestination(_homeOccupantRole.place());
-		
-		_currentRole = _commuterRole;
-		_commuterRole.active = true;
 	}
 	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
 	 * @param homeType Either "house" or "apartment" */
@@ -341,21 +338,21 @@ public class PersonAgent extends Agent
 			}
 			
 			// Call current role's scheduler
-			if(_currentRole.pickAndExecuteAnAction()) { 
+			if(_currentRole.pickAndExecuteAnAction())
+			{ 
 				System.out.println("Current Role Scheduler called an action.");
-				return true; 
+				return true;
 			}
 		}
 		else // i.e. _currentRole.active == false
 		{
-			System.out.println("Here");
+			System.out.println("Just finished a role");
 			// note: if we get here, a role just finished leaving.
 			_sentCmdFinishAndLeave = false;
 			
 			if(_currentRole == _commuterRole)
 			{
-				if(timeToBeAtWork()) setNextRole(_occupation); // do we need this?
-				// commuter role must have just reached the destination
+				// commuter role must have just reached the destination; we need to shift the current role from the commuter role to whatever next role is.
 				_currentRole = _nextRole;
 				_currentRole.active = true;
 				return true;
@@ -454,6 +451,12 @@ public class PersonAgent extends Agent
 	}
 	private void actIWhale()
 	{
+		print("\n");
+		print("\n");
+		print("\n");
+		print("\n");
+		print("\n");
+		print("\n");
 		print("*_____________________________________*");
 	}
 	
@@ -462,8 +465,11 @@ public class PersonAgent extends Agent
 	// ------------------------------------------ UTILITIES -------------------------------------
 	private boolean workingToday()
 	{
+		return true;
+		/*// Commenting this out because we're currently not taking account of weekends
 		return ((_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && !_weekday_notWeekend) ||
 				(!(_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && _weekday_notWeekend);
+				*/
 	}
 	private boolean timeToBeAtWork()
 	{
@@ -479,10 +485,8 @@ public class PersonAgent extends Agent
 	}
 	private void setNextRole(Role nextRole)
 	{
-		System.out.println("Role set");
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
-		_commuterRole.cmdGoToDestination(nextRole.place());
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
 		stateChanged();
