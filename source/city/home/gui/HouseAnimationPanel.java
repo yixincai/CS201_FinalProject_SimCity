@@ -13,10 +13,6 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import city.bank.gui.BankCustomerRoleGui;
-import city.bank.gui.BankHostRoleGui;
-import city.bank.gui.BankTellerRoleGui;
-
 @SuppressWarnings("serial")
 public class HouseAnimationPanel extends JPanel implements ActionListener {
 	
@@ -43,9 +39,9 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     public static final int BEDWALLX2 = 400;
     public static final int BEDWALLY2 = 200;
     
-    private static final int TVX = 400;
-    private static final int TVY = 100;
-    private static final int TVDIM = 10;
+    public static final int TVX = 400;
+    public static final int TVY = 100;
+    public static final int TVDIM = 10;
     
     public static final int WINDOWX = 682;
     public static final int WINDOWY = 360;
