@@ -1,6 +1,7 @@
 package city.restaurant.ryan;
 
 import agent.Agent;
+import agent.Role;
 import restaurant.WaiterAgent;
 import restaurant.WaiterAgent.customerState;
 import restaurant.gui.HostGui;
@@ -9,6 +10,8 @@ import restaurant.interfaces.Customer;
 import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import city.Place;
 /**
  * Restaurant Host Agent
  */
@@ -124,7 +127,7 @@ public class RyanHostRole extends Role {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.********************************************************************************************************************************************
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		/* Think of this next rule as:
             Does there exist a table and customer,
             so that table is unoccupied and customer is waiting.
@@ -462,6 +465,17 @@ public class RyanHostRole extends Role {
 			this.x = x;
 			this.y = y;
 		}
+		
+	}
+
+	@Override
+	public Place place() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
 		
 	}
 	

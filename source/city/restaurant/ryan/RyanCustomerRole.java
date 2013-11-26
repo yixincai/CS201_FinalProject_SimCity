@@ -16,6 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Random;
 
+import city.Place;
 import city.restaurant.RestaurantCustomerRole;
 
 /**
@@ -417,6 +418,24 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 
 	public CustomerGui getGui() {
 		return customerGui;
+	}
+
+	@Override
+	public void cmdGotHungry() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Place place() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

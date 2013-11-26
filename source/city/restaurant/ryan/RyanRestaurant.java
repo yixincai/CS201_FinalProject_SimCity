@@ -9,6 +9,7 @@ import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.ryan.gui.RyanRestaurantAnimationPanel;
 import city.restaurant.yixin.ProducerConsumerMonitor;
 
 public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
@@ -20,14 +21,14 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 	public RyanHostRole host;
 	private int businessAccountNumber = -1;
 	public List<RyanWaiterRole> Waiters = new ArrayList<RyanWaiterRole>();
-	private RyanAnimationPanel _animationPanel;
+	private RyanRestaurantAnimationPanel _animationPanel;
 	
 	// ------------- CONSTRUCTOR & PROPERTIES
 	
 	public RyanRestaurant(String name, gui.WorldViewBuilding worldViewBuilding, gui.BuildingInteriorAnimationPanel animationPanel){
 		super(name, worldViewBuilding);
 
-		this._animationPanel = (RyanAnimationPanel)animationPanel.getBuildingAnimation();
+		this._animationPanel = (RyanRestaurantAnimationPanel)animationPanel.getBuildingAnimation();
 
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
 		cashier = new RyanCashierRole(null,this);
@@ -96,5 +97,11 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 	
 	public RyanAnimationPanel getAnimationPanel() {
 		return this._animationPanel;
+	}
+
+	@Override
+	public Role generateWaiterRole(PersonAgent person) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
