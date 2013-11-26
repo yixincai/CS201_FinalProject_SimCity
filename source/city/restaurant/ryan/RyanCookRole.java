@@ -111,7 +111,8 @@ public class RyanCookRole extends RestaurantCookRole{
 		isCMoving.release();
 	}
 	
-	public void msgFinished(){
+	public void msgFinishedOrder(Order order){
+		getOrder(order).dishState = DishState.cooked;
 		stateChanged();
 	}
 	
@@ -213,10 +214,20 @@ public class RyanCookRole extends RestaurantCookRole{
     	}
 	}
 	
-	public void CookFood(Order currentOrder){
+	public void CookFood(final Order currentOrder){
 		print("Cooking food " + currentOrder.choice + " for " + currentOrder.customer.getName());
 		currentOrder.dishState = DishState.cooking;
-		currentOrder.cookTimer(cookTimes.get(currentOrder.choice));
+		//currentOrder.cookTimer(cookTimes.get(currentOrder.choice));
+		
+		System.out.println("Timer on");
+		timer.schedule(new TimerTask() {
+			public void run() {
+				System.out.println("Timer off");
+				msgFinishedOrder(currentOrder);
+			}
+		},
+		cookTimes.get(currentOrder.choice));
+		
 		for(Food temp: Foods){
 			if(currentOrder.choice.equals(temp.type)){
 				temp.amount--;
@@ -324,6 +335,15 @@ public class RyanCookRole extends RestaurantCookRole{
 		return null;
 	}
 	
+	public Order getOrder(Order order){
+		for(Order temp: Orders){
+			if(temp == order){
+				return temp;
+			}
+		}
+		return null;
+	}
+	
 	public class Order{
 		RyanWaiterRole waiter;
 		RyanCustomerRole customer;
@@ -336,18 +356,6 @@ public class RyanCookRole extends RestaurantCookRole{
 			this.waiter = waiter;
 			this.customer = customer;
 			this.choice = choice;
-		}
-		
-		public void cookTimer(int time){
-			print("Timer on");
-			timer.schedule(new TimerTask() {
-				public void run() {
-					print("Timer off");
-					dishState = DishState.cooked;
-					msgFinished();
-				}
-			},
-			time);
 		}
 		
 	}
