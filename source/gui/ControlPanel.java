@@ -49,19 +49,9 @@ public class ControlPanel extends JTabbedPane {
 
 	public void addPerson(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) //TODO finish with new person instantiation stuff
 	{
-		//DEBUG
-			for(House h : Directory.houses()) {
-				System.out.println("Found house with name: " + h.getName());
-			}
 		currentPersonPanel.addPerson(name);
 		PersonAgent newPerson = new PersonAgent(name, money, occupationType, housingType);
 		Directory.addPerson(newPerson);
-		// The old way:
-		// CommuterRole newCommuterRole = new CommuterRole(newPerson, null);
-		// newPerson.setCommuterRole(newCommuterRole);
-		// CommuterGui newCommuterGui = new CommuterGui(newCommuterRole);
-		// newCommuterRole.setGui(newCommuterGui);
-		// mainGui.getWorldView().addGui(newCommuterGui);
 		mainGui.getWorldView().addGui(newPerson.commuterRole().gui());
 		this.setSelectedComponent(currentPersonPanel);
 		newPerson.startThread();

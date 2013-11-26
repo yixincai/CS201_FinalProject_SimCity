@@ -170,6 +170,7 @@ public class PersonAgent extends Agent
 		{
 			// note: if control reaches a break statement, the new occupation will be a waiter.
 			case "Waiter":
+				_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
 				break; // waiter is generated right after this switch statement
 			case "Restaurant Cashier":
 				newOccupation = null;
@@ -267,10 +268,14 @@ public class PersonAgent extends Agent
 					}
 				}
 				break;
+			// BEGIN HACKS
+			case "Market Customer":
+				//TODO add restaurant and bank customer stuff etc.
+				break;
 		}
-		// Set the occupation to waiter
-		// note: control reaches here either because the value of occupationType is "Waiter" or because no scarce jobs were found (waiter is an unlimited/non-scarce job)
-		_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
+		// note: control reaches here because no jobs were found, or occupationType.equals("none")
+		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateCustomerRole(this);
+		
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------
 	public String getName() { return _name; }
