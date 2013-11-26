@@ -317,15 +317,21 @@ public class PersonAgent extends Agent
 					{
 						// note: you're currently at you job.
 						// If your shift just finished, leave.
-						if(!timeToBeAtWork()) finishAndLeaveCurrentRole();
-						return true;
+						if(!timeToBeAtWork())
+						{
+							finishAndLeaveCurrentRole();
+							return true;
+						}
 					}
 					else
 					{
 						// note: you're not currently at your job.
 						// If you need to go to work, finish your current role.
-						if(timeToBeAtWork()) finishAndLeaveCurrentRole();
-						return true;
+						if(timeToBeAtWork())
+						{
+							finishAndLeaveCurrentRole();
+							return true;
+						}
 					}
 				}
 			}
@@ -368,7 +374,7 @@ public class PersonAgent extends Agent
 				// commuter role must have just reached the destination; we need to shift the current role from the commuter role to whatever next role is.
 				_currentRole = _nextRole;
 				_currentRole.active = true;
-				if(_currentRole == _homeOccupantRole)
+				if(_currentRole == _homeOccupantRole) //TODO I'm a little skeptical of this if-statement (maybe a better place would be to call _homeOccupantRole.cmdGotHome() before calling setNextRole(_homeOccupantRole)
 				{
 					// i.e. if we just got home
 					_homeOccupantRole.cmdGotHome();
