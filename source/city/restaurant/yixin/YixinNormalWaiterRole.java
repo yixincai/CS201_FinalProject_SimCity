@@ -22,10 +22,5 @@ public class YixinNormalWaiterRole extends YixinWaiterRole{
 		role_state = RoleState.WantToLeave;
 		stateChanged();		
 	}
-	
-	public Place place() {
-		// TODO Auto-generated method stub
-		return restaurant;
-	}
 }
 
