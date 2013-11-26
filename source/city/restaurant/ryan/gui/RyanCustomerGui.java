@@ -1,9 +1,8 @@
 package city.restaurant.ryan.gui;
 
-import restaurant.CustomerAgent;
-import restaurant.HostAgent;
-
 import java.awt.*;
+
+import city.restaurant.ryan.RyanCustomerRole;
 
 public class RyanCustomerGui implements Gui{
 
@@ -12,7 +11,6 @@ public class RyanCustomerGui implements Gui{
 	private boolean isHungry = false;
 
 	//private HostAgent host;
-	RestaurantGui gui;
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
@@ -28,14 +26,13 @@ public class RyanCustomerGui implements Gui{
 	
 	Dimension CashierPos = new Dimension(200, 65);
 
-	public RyanCustomerGui(RyanCustomerRole c, RestaurantGui gui){ //HostAgent m) {
+	public RyanCustomerGui(RyanCustomerRole c){ //HostAgent m) {
 		agent = c;
 		xPos = -40;
 		yPos = -40;
 		xDestination = -40;
 		yDestination = -40;
 		//maitreD = m;
-		this.gui = gui;
 	}
 
 	public void updatePosition() {
@@ -79,7 +76,7 @@ public class RyanCustomerGui implements Gui{
 				agent.msgAnimationFinishedLeaveRestaurant();
 				System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
-				gui.setCustomerEnabled(agent);
+				//gui.setCustomerEnabled(agent);
 				state = State.nothing;
 			}
 			command=Command.noCommand;

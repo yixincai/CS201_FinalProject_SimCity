@@ -1,11 +1,11 @@
 package city.restaurant.ryan.gui;
 
-import restaurant.CustomerAgent;
-import restaurant.HostAgent;
-
 import java.awt.*;
 
-public class HostGui implements Gui {
+import city.restaurant.ryan.RyanCustomerRole;
+import city.restaurant.ryan.RyanHostRole;
+
+public class RyanHostGui implements Gui {
 
     private RyanHostRole agent = null;
 
@@ -17,7 +17,7 @@ public class HostGui implements Gui {
     
     public boolean offScreen = false;
 
-    public HostGui(RyanHostRole agent) {
+    public RyanHostGui(RyanHostRole agent) {
         this.agent = agent;
     }
 

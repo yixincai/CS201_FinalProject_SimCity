@@ -23,11 +23,11 @@ public class RestaurantPanel extends JPanel {
 	
     //Host, cook, waiters and customers
     public RyanHostRole host = new RyanHostRole("Host 1");
-    private HostGui hostGui = new HostGui(host);
+    private RyanHostGui hostGui = new RyanHostGui(host);
     public RyanCashierRole cashier = new RyanCashierRole("Cashier 1");
-    private CashierGui cashierGui = new CashierGui(cashier, gui, new Dimension(200,20));
+    private RyanCashierGui cashierGui = new RyanCashierGui(cashier, gui, new Dimension(200,20));
     private RyanCookRole cook = new RyanCookRole("Cook 1");
-    private CookGui cookGui = new CookGui(cook, gui, new Dimension(550, 130));
+    private RyanCookGui cookGui = new RyanCookGui(cook, gui, new Dimension(550, 130));
     private MarketAgent market1 = new MarketAgent("Market 1");
     private MarketAgent market2 = new MarketAgent("Market 2");
     private MarketAgent market3 = new MarketAgent("Market 3");
@@ -144,7 +144,7 @@ public class RestaurantPanel extends JPanel {
     	if (type.equals("Waiters")) {
     		waiterPosition += 25;
     		RyanWaiterRole w = new RyanWaiterRole(name, cook, cashier);	
-    		WaiterGui wg = new WaiterGui(w, gui, 10, waiterPosition);
+    		RyanWaiterGui wg = new RyanWaiterGui(w, gui, 10, waiterPosition);
 
     		gui.animationPanel.addGui(wg);// dw
     		w.setGui(wg);
