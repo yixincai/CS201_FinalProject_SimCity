@@ -2,6 +2,7 @@ package city.home.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.concurrent.Semaphore;
 
 import city.home.HomeOccupantRole;
 import gui.Gui;
@@ -16,6 +17,9 @@ public abstract class HomeOccupantGui implements Gui {
 	protected HomeOccupantRole _role;
 	protected boolean _goingSomewhere = false;
 	protected boolean _isPresent = false;
+	
+	protected Semaphore _finishedAction = new Semaphore(0, true);
+	protected boolean _doingAction = false;
 	
 	private int _positionX = 0;
 	private int _positionY = 0;
@@ -62,10 +66,19 @@ public abstract class HomeOccupantGui implements Gui {
 		setPresent(true);
 		doGoIdle();
 	}
-	public void doGoToKitchen() {
+	public void doCookAndEatFood() {
+		_doingAction = true;
 		_destinationX = kitchenX();
 		_destinationY = kitchenY();
-		_goingSomewhere = true;
+		waitForActionToFinish();
+		_doingAction = true;
+		_destinationX = kitchenX() - 20;
+		waitForActionToFinish();
+		_doingAction = true;
+		_destinationX = kitchenX();
+		waitForActionToFinish();
+		// TODO add a kitchen table, possibly add a string for which food he has
+		_role.msgReachedDestination();
 	}
 	public void doWatchTv() {
 		doGoIdle();
@@ -104,6 +117,11 @@ public abstract class HomeOccupantGui implements Gui {
 				_goingSomewhere = false;
 				_role.msgReachedDestination();
 			}
+			if(_doingAction)
+			{
+				_doingAction = false;
+				_finishedAction.release();
+			}
 			if(_destinationX == frontDoorX() && _destinationY == frontDoorY())
 			{
 				setPresent(false);
@@ -116,5 +134,14 @@ public abstract class HomeOccupantGui implements Gui {
 			g.setColor(Color.GREEN);
 			g.fillRect(_positionX, _positionY, 20, 20);
 		}
+	}
+	
+	
+	
+	// ----------------------------------- UTILITIES ---------------------------------------------
+	protected void waitForActionToFinish()
+	{
+		try { _finishedAction.acquire(); }
+		catch (InterruptedException e) { e.printStackTrace(); }
 	}
 }

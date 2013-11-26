@@ -48,7 +48,8 @@ public abstract class HomeOccupantRole extends Role
 	public State state() { return _state; }
 	public boolean sleeping() { return _state == State.SLEEPING; }
 	public boolean cooking() { return _state == State.COOKING; }
-	public boolean haveFood() { return _mealCount > 0; } //TODO implement _mealCount;
+	public boolean haveFood() { return _mealCount > 0; }
+	public void addMeals(int addMealCount) { _mealCount += addMealCount; }
 	public HomeOccupantGui gui() { return _gui; }
 	public Place place()
 	{
@@ -120,7 +121,7 @@ public abstract class HomeOccupantRole extends Role
 		{
 			if(_command == Command.COOK_AND_EAT_FOOD)
 			{
-				actStartCooking();
+				actCookAndEat();
 				return true;
 			}
 			else if(_command == Command.GO_TO_BED)
@@ -141,8 +142,7 @@ public abstract class HomeOccupantRole extends Role
 		}
 		else if(_state == State.COOKING)
 		{
-			// note: don't check for commands except possibly LEAVE
-			//TODO finish cooking scenario
+			// note: the whole cook and eat scenario takes place in one action, in HomeOccupantGui, so we shouldn't ever get here
 		}
 		else if(_state == State.SLEEPING)
 		{
@@ -171,16 +171,17 @@ public abstract class HomeOccupantRole extends Role
 		_state = State.IDLE;
 		_gui.doGotHome();
 	}
-	private void actStartCooking()
+	private void actCookAndEat()
 	{
 		print("Starting to cook.");
 		_state = State.COOKING;
 		
-		_gui.doGoToKitchen();
-		waitForGuiToReachDestination();
 		_mealCount--;
-		_gui.doCookAndEatFood();
+		_gui.doCookAndEatFood(); // calls a bunch of sequential actions for the animation
 		waitForGuiToReachDestination();
+		_person.cmdNoLongerHungry();
+		_state = State.IDLE;
+		_gui.doGoIdle();
 	}
 	private void actWatchTv()
 	{

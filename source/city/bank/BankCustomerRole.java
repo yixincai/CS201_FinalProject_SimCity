@@ -101,7 +101,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	public void msgTransactionComplete(double amountReceived, double funds, double amountOwed){
 		  event = Event.ApprovedTransaction;
-		  _person.changeMoney(amountReceived);
+		  _person.cmdChangeMoney(amountReceived);
 		  this.accountFunds = funds;
 		  this.amountOwed = amountOwed;
 		  //or event = WantsAnotherRequest; && state = giveNewRequest; //send another request
