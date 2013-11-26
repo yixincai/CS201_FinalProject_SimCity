@@ -1,6 +1,7 @@
 package city.restaurant.tanner;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
 
@@ -179,72 +180,78 @@ public class TannerRestaurantCashierRole extends RestaurantCashierRole implement
 	@Override
 	public boolean pickAndExecuteAnAction() 
 	{
-		if(marketBills.size() >0)
-		{
-			if(myMoney > 0)
+		try {
+			if(marketBills.size() >0)
 			{
-				synchronized(marketBills)
+				if(myMoney > 0)
 				{
-					for(int i = 0; i < marketBills.size(); i++)
+					synchronized(marketBills)
 					{
-						if(marketBills.get(i).billState == MarketBillState.invoiceReceived)
+						for(int i = 0; i < marketBills.size(); i++)
 						{
-							PayMarketBill(marketBills.get(i));
+							if(marketBills.get(i).billState == MarketBillState.invoiceReceived)
+							{
+								PayMarketBill(marketBills.get(i));
+								return true;
+							}
+						}
+					}
+					
+					synchronized(marketBills)
+					{
+						for(int i = 0; i < marketBills.size(); i++)
+						{
+							if(marketBills.get(i).billState == MarketBillState.changeReceived)
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			else if(bills.size() > 0)
+			{
+				synchronized(bills)
+				{
+					for(int i = 0; i < bills.size(); i++)
+					{
+						if(bills.get(i).state == BillState.computed)
+						{
+							ComputeBill(bills.get(i));
 							return true;
 						}
 					}
 				}
 				
-				synchronized(marketBills)
+				synchronized(bills)
 				{
-					for(int i = 0; i < marketBills.size(); i++)
+					for(int i = 0; i < bills.size(); i++)
 					{
-						if(marketBills.get(i).billState == MarketBillState.changeReceived)
+						if(bills.get(i).state == BillState.paid)
 						{
-							
+							SettleUp(bills.get(i));
+							return true;
+						}
+					}
+				}
+				
+				synchronized(bills)
+				{
+					for(int i = 0; i < bills.size(); i++)
+					{
+						if(bills.get(i).state == BillState.settled)
+						{
+							bills.remove(bills.get(i));
+							return true;
 						}
 					}
 				}
 			}
+		} catch (ConcurrentModificationException e) {
+			e.printStackTrace();
+			return false;
 		}
-		else if(bills.size() > 0)
-		{
-			synchronized(bills)
-			{
-				for(int i = 0; i < bills.size(); i++)
-				{
-					if(bills.get(i).state == BillState.computed)
-					{
-						ComputeBill(bills.get(i));
-						return true;
-					}
-				}
-			}
-			
-			synchronized(bills)
-			{
-				for(int i = 0; i < bills.size(); i++)
-				{
-					if(bills.get(i).state == BillState.paid)
-					{
-						SettleUp(bills.get(i));
-						return true;
-					}
-				}
-			}
-			
-			synchronized(bills)
-			{
-				for(int i = 0; i < bills.size(); i++)
-				{
-					if(bills.get(i).state == BillState.settled)
-					{
-						bills.remove(bills.get(i));
-						return true;
-					}
-				}
-			}
-		}
+		return false;
 	}
 	
 //-----------------------------------------Actions-------------------------------------------------------------

@@ -2,6 +2,7 @@ package city.restaurant.tanner;
 
 import city.PersonAgent;
 import city.Place;
+import city.restaurant.tanner.MyCustomer.customerState;
 import city.restaurant.tanner.interfaces.TannerRestaurantCashier;
 import city.restaurant.tanner.interfaces.TannerRestaurantCook;
 import city.restaurant.tanner.interfaces.TannerRestaurantCustomer;
@@ -18,9 +19,17 @@ public class TannerRestaurantRegularWaiterRole extends TannerRestaurantBaseWaite
 	}
 
 	@Override
-	protected void SubmitOrder(MyCustomer c) {
-		// TODO Auto-generated method stub
-		
+	protected void SubmitOrder(MyCustomer c) 
+	{
+		print("Submit order to cook");
+		myGUI.DoGoToCook(cook.getPosition());
+		try {
+			doingAction.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		c.currentState = customerState.orderIn;
 	}
 
 }
