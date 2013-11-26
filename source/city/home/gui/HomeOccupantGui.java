@@ -134,7 +134,6 @@ public abstract class HomeOccupantGui implements Gui {
 	}
 	@Override
 	public void draw(Graphics2D g) {
-		System.out.println("HomeOccupantGui.draw(...)");
 		if(_isPresent){
 			g.setColor(Color.GREEN);
 			g.fillRect(_positionX, _positionY, 20, 20);

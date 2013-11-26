@@ -96,7 +96,6 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 		
 
 		for(Gui gui : _guis) {
-			System.out.println("HouseAnimationPanel: about to draw a gui.");
 			gui.draw(g2);
 		}
 	}
