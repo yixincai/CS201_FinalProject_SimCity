@@ -13,10 +13,6 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import city.bank.gui.BankCustomerRoleGui;
-import city.bank.gui.BankHostRoleGui;
-import city.bank.gui.BankTellerRoleGui;
-
 @SuppressWarnings("serial")
 public class HouseAnimationPanel extends JPanel implements ActionListener {
 	
@@ -43,14 +39,17 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     public static final int BEDWALLX2 = 400;
     public static final int BEDWALLY2 = 200;
     
-    private static final int TVX = 400;
-    private static final int TVY = 100;
-    private static final int TVDIM = 10;
+    public static final int TVX = 400;
+    public static final int TVY = 100;
+    public static final int TVDIM = 10;
+
+    public static final int FRONTDOORX = 100;
+    public static final int FRONTDOORY = 340;
     
     public static final int WINDOWX = 682;
     public static final int WINDOWY = 360;
     
-    private static List<Gui> guis = new ArrayList<Gui>();
+    private List<Gui> _guis = new ArrayList<Gui>();
     
     public HouseAnimationPanel()
     {
@@ -63,7 +62,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		
-        for(Gui gui : guis) {
+        for(Gui gui : _guis) {
             if (gui.isPresent()) {
                 gui.updatePosition();
             }
@@ -98,13 +97,12 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(BEDWALLX2, BEDWALLY2, BEDWALLWIDTH, BEDWALLHEIGHT);
         
 
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.draw(g2);
-            }
+        for(Gui gui : _guis) {
+               gui.draw(g2);
         }
     }
-  /*  public void addGui(HomeOccupantGui gui) {
-        guis.add(gui);
-    } */
+    
+    public void addGui(HomeOccupantGui gui) {
+        _guis.add(gui);
+    }
 }

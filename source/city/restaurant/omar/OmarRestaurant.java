@@ -18,7 +18,6 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	boolean open;
 	public OmarHostRole host;
 	private List<Table> tables;
-	public OmarCookRole cook;
 	private int businessAccountNumber = -1;
 	public List<OmarWaiterRole> Waiters = new ArrayList<OmarWaiterRole>();
 	private OmarRestaurantAnimationPanel _animationPanel;
@@ -60,7 +59,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		OmarCustomerRole customer = new OmarCustomerRole(person, this, person.getName());
 		OmarCustomerGui customerGui = new OmarCustomerGui(customer, _animationPanel);
 		customer.setGui(customerGui);
-		getAnimationPanel().addGui(customerGui);
+		animationPanel().addGui(customerGui);
 		return customer;
 	}
 
@@ -69,14 +68,14 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		int i = (new Random()).nextInt(2);
 		OmarWaiterRole newWaiter;
 		if (i == 0)
-			newWaiter = new OmarWaiterRole(person, this,cook, host, null);
+			newWaiter = new OmarWaiterRole(person, this,(OmarCookRole)cook, host, null);
 		else
-			newWaiter = new OmarSharedDataWaiterRole(person, this, cook, host, null);
+			newWaiter = new OmarSharedDataWaiterRole(person, this, (OmarCookRole)cook, host, null);
 		newWaiter.setCashier((OmarCashierRole)cashier);
 		OmarWaiterGui waiterGui = new OmarWaiterGui(newWaiter, _animationPanel);
 		newWaiter.setGui(waiterGui);
 		waiterGui.setHomePosition(Waiters.size() * 50, 70);
-		getAnimationPanel().addGui(waiterGui);
+		animationPanel().addGui(waiterGui);
 		Waiters.add(newWaiter);
 		return newWaiter;
 	}
@@ -94,7 +93,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		return host;
 	}
 	
-	public OmarRestaurantAnimationPanel getAnimationPanel() {
+	public OmarRestaurantAnimationPanel animationPanel() {
 		return this._animationPanel;
 	}
 
@@ -107,7 +106,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	public void generateCookGui() {
 		OmarCookGui cashierGui = new OmarCookGui((OmarCookRole)cook);
 		((OmarCookRole)cook).setGui(cashierGui);
-		getAnimationPanel().addGui(cashierGui);
+		animationPanel().addGui(cashierGui);
 	}
 
 	@Override

@@ -9,12 +9,16 @@ import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.ryan.gui.RyanCashierGui;
+import city.restaurant.ryan.gui.RyanCookGui;
+import city.restaurant.ryan.gui.RyanCustomerGui;
+import city.restaurant.ryan.gui.RyanHostGui;
 import city.restaurant.ryan.gui.RyanRestaurantAnimationPanel;
+import city.restaurant.ryan.gui.*;
 import city.restaurant.yixin.ProducerConsumerMonitor;
-import city.restaurant.ryan.*;
 
 public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
-	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor();
+	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor(); //WHAT IS THIS?
 	//count stands for the number of waiting list
 	int count = -1;
 	int waiter_count = -1;
@@ -45,6 +49,7 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		host = new RyanHostRole(null,this,"Host");
 		cook = new RyanCookRole(null,this);
 		((RyanCookRole)cook).cashier = (RyanCashierRole)cashier;
+		((RyanCashierRole)cashier).cook = (RyanCookRole)cook;
 	}
 
 	public boolean isOpen(){
@@ -57,18 +62,19 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
 		//TODO make a new customer that is initialized with a PersonAgent of person
-		count++;
-		if (count > 10){
-			count = 1;
-		}
-		return (new RyanCustomerRole(person, this, person.getName()));
+		RyanCustomerRole customer = new RyanCustomerRole(person, this, person.getName());
+		RyanCustomerGui RyanCustomerGui = new RyanCustomerGui(customer);
+		customer.setGui(RyanCustomerGui);
+		getAnimationPanel().addGui(RyanCustomerGui);
+		return customer;
 	}
 	
-	public Role generateWaiterRole() {
+	@Override
+	public Role generateWaiterRole(PersonAgent person) {
 		int i = (new Random()).nextInt(2);
 		RyanWaiterRole newWaiter;
 		if (i == 0)
-			newWaiter = new RyanWaiterRole("", this, null, null);
+			newWaiter = new RyanWaiterRole(person, this, person.getName());
 		else
 			newWaiter = new RyanSharedDataWaiterRole(null, this, "");
 		newWaiter.setCashier((RyanCashierRole)cashier);
@@ -95,31 +101,32 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		return waiter_count;
 	}
 	
-	public RyanRestaurantAnimationPanel getAnimationPanel() {
+	public RyanRestaurantAnimationPanel animationPanel() {
 		return this._animationPanel;
-	}
-
-	@Override
-	public Role generateWaiterRole(PersonAgent person) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
 	public void generateCashierGui() {
 		// TODO Auto-generated method stub
-		
+		RyanCashierGui RyanCashierGui = new RyanCashierGui((RyanCashierRole)cashier);
+		((RyanCashierRole)cashier).setGui(RyanCashierGui);
+		getAnimationPanel().addGui(RyanCashierGui);
 	}
 
 	@Override
 	public void generateCookGui() {
 		// TODO Auto-generated method stub
-		
+		RyanCookGui RyanCookGui = new RyanCookGui((RyanCookRole)cook);
+		((RyanCookRole)cook).setGui(RyanCookGui);
+		getAnimationPanel().addGui(RyanCookGui);
 	}
 
 	@Override
 	public void generateHostGui() {
 		// TODO Auto-generated method stub
+		RyanHostGui hostGui = new RyanHostGui(host);
+		host.setGui(hostGui);
+		getAnimationPanel().addGui(hostGui);	
 		
 	}
 }

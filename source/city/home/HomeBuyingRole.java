@@ -12,6 +12,6 @@ public abstract class HomeBuyingRole extends Role
 	
 	
 	// ------------------------ CONSTRUCTOR & PROPERTIES --------------------------
-	public HomeBuyingRole(PersonAgent person, Place place) { super(person, place); }
+	public HomeBuyingRole(PersonAgent person) { super(person); }
 	public void setLandlord(LandlordRole landlord) { _landlord = landlord; }
 }

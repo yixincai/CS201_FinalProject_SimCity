@@ -20,25 +20,24 @@ public class House extends Place implements Home, PlaceWithAnimation {
 	
 	
 	// ------------------------- CONSTRUCTOR & PROPERTIES -----------------------------
-	public House(String name, WorldViewBuilding worldViewBuilding) {
-		super(name, worldViewBuilding);
-	}
 	public House(String name, WorldViewBuilding wvb, BuildingInteriorAnimationPanel bp){
-		super("Home", wvb);
+		super(name, wvb);
 		_animationPanel = (HouseAnimationPanel)bp.getBuildingAnimation();
 	}
 	public Place place() { return this; } // required in Home interface
-	public JPanel getAnimationPanel() { return _animationPanel; }
+	public JPanel animationPanel() { return _animationPanel; }
 	
 	
 	
 	// --------------------------------- METHODS ---------------------------------------
-	public HouseOccupantRole tryAcquireHomeOccupantRole(PersonAgent person)
+	public HouseOccupantRole tryGenerateHomeOccupantRole(PersonAgent person)
 	{
 		if(_occupiedSemaphore.tryAcquire())
 		{
 			// possibly add a function to set the occupant of this House
-			return new HouseOccupantRole(person, this);
+			HouseOccupantRole newRole = new HouseOccupantRole(person, this);
+			_animationPanel.addGui(newRole.gui());
+			return newRole;
 		}
 		else return null;
 	}

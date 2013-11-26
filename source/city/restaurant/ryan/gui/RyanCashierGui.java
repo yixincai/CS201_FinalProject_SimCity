@@ -1,25 +1,19 @@
 package city.restaurant.ryan.gui;
 
-import restaurant.CashierAgent;
-
 import java.awt.*;
 
-public class CashierGui implements Gui{
+import city.restaurant.ryan.RyanCashierRole;
+
+public class RyanCashierGui implements Gui{
 	private RyanCashierRole agent = null;
-	RestaurantGui gui;
 	
 	int xPos = 90; 
 	int yPos = 20;
 	int xDestination = 90;
 	int yDestination = 20;
 	
-	CashierGui(RyanCashierRole agent, RestaurantGui gui, Dimension dimension){
+	public RyanCashierGui(RyanCashierRole agent){
 		this.agent = agent;
-		this.gui = gui;
-		yPos = dimension.height;
-		xPos = dimension.width;
-		yDestination = dimension.height;
-		xDestination = dimension.width;
 	}
 	
 	public int getxPos(){
