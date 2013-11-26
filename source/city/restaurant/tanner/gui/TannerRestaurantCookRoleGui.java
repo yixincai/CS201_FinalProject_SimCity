@@ -30,4 +30,24 @@ public class TannerRestaurantCookRoleGui implements Gui {
 		return false;
 	}
 
+	public void DoGoToRevolvingStand() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void DoGoToIngredients() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void DoGoToGrills() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void DoGoToHeatLamp() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
