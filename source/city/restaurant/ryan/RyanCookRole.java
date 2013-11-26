@@ -9,6 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import city.Directory;
 import city.PersonAgent;
 import city.Place;
 import city.market.Item;
@@ -19,36 +20,49 @@ import agent.Agent;
 
 public class RyanCookRole extends RestaurantCookRole{
 	String name;
-	List<Order> Orders = new ArrayList<Order>();
-	List<Food> Foods = new ArrayList<Food>();
-	List<MarketAgent> Markets = new ArrayList<MarketAgent>();
+	public RyanRestaurant restaurant;
+	List<RyanOrder> orders = new ArrayList<RyanOrder>();
+	List<Food> foods = new ArrayList<Food>();
+
 	List<Grill> grills = new ArrayList<Grill>();
 	List<Plate> plates = new ArrayList<Plate>();
+	
 	Timer timer = new Timer();
+	Timer timer1 = new Timer();
 	Map<String, Integer> cookTimes = new HashMap<String, Integer>();
 	enum DishState{check, grabSupplies, gotofridge, cook, cooking, cooked, plating, plated, waiting, taken};
-	enum InventoryState{fine, ordering, restocking, ordered};
+	
+	enum OrderState{ableToOrder,OrderReceived,waitingToCheckout,none};
+	OrderState orderState = OrderState.ableToOrder;
+	
+	enum CheckState{notChecked,Checked};
+	CheckState checkState = CheckState.notChecked;	
 	
 	Semaphore isCMoving = new Semaphore(0, true);
 	
 	RyanCookGui gui;
 	public RyanCashierRole cashier;
 	
+	public List<Item> invoice;	
+	int market_count = 0;//switch to the next market if one cannot fulfill
+	Market currentMarket;
+	
 	
 	//Constructor
 	public RyanCookRole(String name, PersonAgent p, RyanRestaurant r){
 		super(p);
 		this.name = name;
+		restaurant = r;
 		
 		cookTimes.put("Steak", 2500);
 		cookTimes.put("Chicken", 1000);
 		cookTimes.put("Salad", 500);
 		cookTimes.put("Pizza", 750);
 		
-		Foods.add(new Food("Steak", 20, 5, 2000));
-		Foods.add(new Food("Chicken", 20, 5, 1000));
-		Foods.add(new Food("Pizza", 20, 5, 1000));
-		Foods.add(new Food("Salad", 20, 5, 500));
+		foods.add(new Food("Steak", 20, 5, 2000));
+		foods.add(new Food("Chicken", 20, 5, 1000));
+		foods.add(new Food("Pizza", 20, 5, 1000));
+		foods.add(new Food("Salad", 20, 5, 500));
 		
 		grills.add(new Grill(1));
 		grills.add(new Grill(2));
@@ -68,10 +82,10 @@ public class RyanCookRole extends RestaurantCookRole{
 		cookTimes.put("Salad", 500);
 		cookTimes.put("Pizza", 750);
 		
-		Foods.add(new Food("Steak", 20, 5, 2000));
-		Foods.add(new Food("Chicken", 20, 5, 1000));
-		Foods.add(new Food("Pizza", 20, 5, 1000));
-		Foods.add(new Food("Salad", 20, 5, 500));
+		foods.add(new Food("Steak", 20, 5, 2000));
+		foods.add(new Food("Chicken", 20, 5, 1000));
+		foods.add(new Food("Pizza", 20, 5, 1000));
+		foods.add(new Food("Salad", 20, 5, 500));
 		
 		grills.add(new Grill(1));
 		grills.add(new Grill(2));
@@ -88,17 +102,37 @@ public class RyanCookRole extends RestaurantCookRole{
 	
 	//Messages******************************************************************************************************************************************************************************************************************
 	
-	public void msgGivenStock(String choice, int given, int amount){
-		Food temp = getFood(choice);
-		print("Given " + temp.given + " of food " + choice);
-		temp.given = given;
-		temp.state = InventoryState.restocking;
-		temp.left = amount - given;
+	public void msgOrderFulfillment(Market m, List<Item> order) {
+		// TODO Auto-generated method stub
+		print("Market response received");
+		orderState = OrderState.OrderReceived;
+		currentMarket = m;
+		invoice = order;
+		boolean fulfilled = true;
+		for (Item item : order){
+			getFood(item.name).amount += item.amount;
+			if (getFood(item.name).amount < getFood(item.name).capacity)
+				fulfilled = false;
+		}
+		//switch to another market
+		if (!fulfilled){
+			market_count++;
+			if (market_count == Directory.markets().size())
+				market_count = 0;
+		}
+	}
+	
+	public void msgOrderFinished(){
+		orderState = OrderState.ableToOrder;
+	}
+	
+	public void notifyCook(){
 		stateChanged();
+		checkState = CheckState.notChecked;
 	}
 	
 	public void msgTryToCookOrder(RyanWaiterRole waiter, RyanCustomerRole customer, String choice){
-		Orders.add(new Order(waiter, customer, choice));
+		orders.add(new RyanOrder(waiter, customer, choice));
 		print("Adding order for " + customer.getName());
 		stateChanged();
 	}
@@ -111,7 +145,7 @@ public class RyanCookRole extends RestaurantCookRole{
 		isCMoving.release();
 	}
 	
-	public void msgFinishedOrder(Order order){
+	public void msgFinishedOrder(RyanOrder order){
 		getOrder(order).dishState = DishState.cooked;
 		stateChanged();
 	}
@@ -121,7 +155,7 @@ public class RyanCookRole extends RestaurantCookRole{
 	}
 	
 	public void msgGrabbedDish(RyanWaiterRole waiter, RyanCustomerRole customer){
-		for(Order order: Orders){
+		for(RyanOrder order: orders){
 			if(order.customer == customer){
 				print("Clearing dish for " + customer.getCustomerName() + " at " + order.pNumber);
 				gui.ClearPlate(order.pNumber);
@@ -134,8 +168,17 @@ public class RyanCookRole extends RestaurantCookRole{
 
 	//Scheduler******************************************************************************************************************************************************************************************************************
 	public boolean pickAndExecuteAnAction() {
-		synchronized(Orders){
-			for(Order temp: Orders){
+		synchronized(foods){
+			for(Food temp: foods){
+				if(temp.amount <= temp.lowLevel && orderState == OrderState.ableToOrder){
+					Restock();
+					return true;
+				}
+			}			
+		}
+		
+		synchronized(orders){
+			for(RyanOrder temp: orders){
 				if(temp.dishState == DishState.taken){
 					ClearPlate(temp);
 					return true;
@@ -162,16 +205,27 @@ public class RyanCookRole extends RestaurantCookRole{
 				}
 			}
 		}
-		synchronized(Foods){
-			for(Food temp: Foods){
-				if(temp.amount <= temp.lowLevel && temp.state == InventoryState.fine && temp.market < Markets.size()){
-					Restock(temp);
+		RyanOrder order = restaurant.revolvingStand.remove();
+		if (order!=null){
+			//DoGoToRevolvingStand(); add animation and gui
+			orders.add(order);
+			CheckInventory(order);
+			return true;
+		}
+		
+		if (checkState == CheckState.notChecked){
+			timer1.schedule(new TimerTask() {
+				public void run() {
+					print("Notify the cook to check revolving stand");
+					notifyCook();
 				}
-				if(temp.state == InventoryState.restocking){
-					print("Order received of " + temp.type);
-					fillInventory(temp);
-				}
-			}
+			}, 10000);
+			checkState = CheckState.Checked;
+		}
+		
+		if(orderState == OrderState.OrderReceived){
+			giveInvoice();
+			return true;
 		}
 		gui.gotoHome();
 		return false;
@@ -179,16 +233,13 @@ public class RyanCookRole extends RestaurantCookRole{
 	
 	//Actions*******************************************************************************************************************************************************************************
 	//Cooking Actions
-	public void CheckInventory(Order currentOrder){
-		for(int i = 0; i < Foods.size(); i++){
-			Food temp = Foods.get(i);
+	public void CheckInventory(RyanOrder currentOrder){
+		for(int i = 0; i < foods.size(); i++){
+			Food temp = foods.get(i);
 			if(currentOrder.choice.equals(temp.type)){
 				if(temp.amount <= 0){
-					if(temp.state == InventoryState.fine && temp.market < Markets.size()){
-						Restock(temp);
-					}
 					currentOrder.waiter.msgOutofOrder(currentOrder.choice, currentOrder.customer);
-					Orders.remove(currentOrder);
+					orders.remove(currentOrder);
 				}
 				else if(temp.amount > 0){
 					currentOrder.dishState = DishState.grabSupplies;
@@ -198,7 +249,7 @@ public class RyanCookRole extends RestaurantCookRole{
 		}
 	}
 	
-	public void GrabSupplies(Order order, Grill grill){
+	public void GrabSupplies(RyanOrder order, Grill grill){
 		try{
 			print("Going to fridge to get supplies for " + order.choice + " by " + order.customer.getName());
 			order.dishState = DishState.gotofridge;
@@ -214,7 +265,7 @@ public class RyanCookRole extends RestaurantCookRole{
     	}
 	}
 	
-	public void CookFood(final Order currentOrder){
+	public void CookFood(final RyanOrder currentOrder){
 		print("Cooking food " + currentOrder.choice + " for " + currentOrder.customer.getName());
 		currentOrder.dishState = DishState.cooking;
 		//currentOrder.cookTimer(cookTimes.get(currentOrder.choice));
@@ -228,7 +279,7 @@ public class RyanCookRole extends RestaurantCookRole{
 		},
 		cookTimes.get(currentOrder.choice));
 		
-		for(Food temp: Foods){
+		for(Food temp: foods){
 			if(currentOrder.choice.equals(temp.type)){
 				temp.amount--;
 				print("Stock of " + temp.type + " at: " + temp.amount);
@@ -236,7 +287,7 @@ public class RyanCookRole extends RestaurantCookRole{
 		}
 	}
 	
-	public void PlateFood(Order order, Plate plate){
+	public void PlateFood(RyanOrder order, Plate plate){
 		try{
 			print("Plating " + order.choice + " for " + order.customer.getName());
 			order.dishState = DishState.plating;
@@ -256,52 +307,40 @@ public class RyanCookRole extends RestaurantCookRole{
     	}
 	}
 	
-	public void ClearPlate(Order order){
+	public void ClearPlate(RyanOrder order){
 		print("Clearing");
 		Plate plate = getPlate(order.pNumber);
 		plate.occupied = false;
-		Orders.remove(order);
+		orders.remove(order);
 	}
 	
-	//Resupply Actions
-	public void Restock(Food food){
-		food.state = InventoryState.ordering;
-		print("Restocking " + food.type);
-		print("Inventory at " + food.amount);
-		if(food.market < Markets.size()){
-			Markets.get(food.market).msgPlaceOrder(food.type, (int) (food.capacity - food.amount));
-		}
-		
-	}
-	
-	public void fillInventory(Food food){
-		food.amount += food.given;
-		food.given = 0;
-		print("New stock for " + food.type + " is " + food.amount);
-		food.state = InventoryState.fine;
-		if(food.left > 0){
-			food.market++;
-			if(food.market < Markets.size()){
-				food.state = InventoryState.ordering;
-				print("Order not fulfilled completely: ");
-				print("Ordering from " + Markets.get(food.market).getName() + ": " + food.left + " " + food.type);
-				Markets.get(food.market).msgPlaceOrder(food.type, food.left);	
+	//Resupply Actions	
+	public void Restock(){
+		List<Item> order = new ArrayList<Item>();
+		for(Food temp: foods){
+			if(temp.amount <= temp.lowLevel){
+				print("Restocking " + temp.type);
+				order.add(new Item(temp.type, (int) (temp.capacity - temp.amount)));
 			}
 		}
+		currentMarket.MarketCashier.msgPlaceOrder(restaurant, order);
+		orderState =  OrderState.none;
+	}
+	
+	public void giveInvoice(){
+		orderState =  OrderState.waitingToCheckout;
+		cashier.msgHereIsTheInvoice(currentMarket, invoice);
+		print("Giving invoice to cashier");
 	}
 	
 	//Utilities*******************************************************************************************************************************************************************************
 	public void setStockToZero(String choice){
-		for(Food food: Foods){
+		for(Food food: foods){
 			if(food.type == choice){
 				food.amount = 0;
 			}
 		}
 		stateChanged();
-	}
-	
-	public void addMarket(MarketAgent market){
-		Markets.add(market);
 	}
 	
 	public Grill getGrill(int number){
@@ -327,7 +366,7 @@ public class RyanCookRole extends RestaurantCookRole{
 	}
 	
 	public Food getFood(String type){
-		for(Food temp: Foods){
+		for(Food temp: foods){
 			if(temp.type.equals(type)){
 				return temp;
 			}
@@ -335,8 +374,8 @@ public class RyanCookRole extends RestaurantCookRole{
 		return null;
 	}
 	
-	public Order getOrder(Order order){
-		for(Order temp: Orders){
+	public RyanOrder getOrder(RyanOrder order){
+		for(RyanOrder temp: orders){
 			if(temp == order){
 				return temp;
 			}
@@ -344,27 +383,10 @@ public class RyanCookRole extends RestaurantCookRole{
 		return null;
 	}
 	
-	public class Order{
-		RyanWaiterRole waiter;
-		RyanCustomerRole customer;
-		String choice;
-		int gNumber;
-		int pNumber;
-		DishState dishState = DishState.check;
-		
-		public Order(RyanWaiterRole waiter, RyanCustomerRole customer, String choice){
-			this.waiter = waiter;
-			this.customer = customer;
-			this.choice = choice;
-		}
-		
-	}
-	
 	public class Food{
 		String type;
 		int amount;
 		int lowLevel;
-		InventoryState state;
 		int given;
 		int left;
 		int capacity;
@@ -381,7 +403,6 @@ public class RyanCookRole extends RestaurantCookRole{
 				level = 5;
 			}
 			capacity = level*5;
-			state = InventoryState.fine;
 		}
 		
 		public int foodAmount(){
@@ -406,12 +427,6 @@ public class RyanCookRole extends RestaurantCookRole{
 		Plate(int number){
 			this.number = number;
 		}
-	}
-
-	@Override
-	public void msgOrderFulfillment(Market m, List<Item> order) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

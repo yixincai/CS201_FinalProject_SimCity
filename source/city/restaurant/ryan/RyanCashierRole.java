@@ -9,9 +9,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import utilities.LoggedEvent;
 import city.PersonAgent;
 import city.Place;
 import city.bank.Bank;
+import city.market.Item;
 import city.market.Market;
 import city.restaurant.RestaurantCashierRole;
 import city.restaurant.ryan.gui.RyanCashierGui;
@@ -31,6 +33,9 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	
 	enum ReceiptState{Calculate, Ready, Paying, Done}
 	enum BillState{Received, Paying, AskforLoan, Loaned, Paid};
+	
+	enum RoleState{WantToLeave,none}
+	RoleState roleState = RoleState.none;
 	
 	public RyanCashierRole(PersonAgent p, RyanRestaurant r){
 		super(p);
@@ -69,11 +74,47 @@ public class RyanCashierRole extends RestaurantCashierRole {
 		}
 	}
 	
-	public void msgHeresBill(Market market, String choice, double price){
-		print("Received bill for " + choice + " of amount " + price + " from " + market.getName());
-		bills.add(new Bill(market, choice, price));
+	@Override
+	public void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list){
+		print("Market bill received with amount of " + bill);
+		log.add(new LoggedEvent("Received HereIsTheBill from market. Bill = "+ bill));
+		bills.add(new Bill(m, bill, price_list));
 		stateChanged();
 	}
+
+	public void msgHereIsTheChange(Market m, double change){
+		print("Market change received with amount of " + change);
+		register += change;
+		for (Bill bill : bills){
+			if (bill.market == m)
+				bill.state = MarketBill.BillState.changeReceived;
+		}
+		stateChanged();
+	}
+
+	public void msgHereIsTheInvoice(Market m, List<Item> invoice) {
+		for (Bill bill : bills){
+			if (bill.market == m){
+				bill.state = MarketBill.BillState.invoiceReceived;
+				bill.invoice = invoice;
+			}
+		}
+		stateChanged();		
+	}
+	
+	public void msgTransactionComplete(double amount, Double balance, Double debt, int newAccountNumber){
+		_restaurant.updateAccountNumber(newAccountNumber);
+		money_state = MoneyState.none;
+		register = amount;
+		bankBalance = balance;
+		bankDebt = debt;
+	}
+	
+//	public void msgHeresBill(Market market, String choice, double price){
+//		print("Received bill for " + choice + " of amount " + price + " from " + market.getName());
+//		bills.add(new Bill(market, choice, price));
+//		stateChanged();
+//	}
 	
 	public void msgHereIsLoan(double amount){
 		print("Received loan of " + amount + " from the bank");
@@ -116,6 +157,14 @@ public class RyanCashierRole extends RestaurantCashierRole {
 				}
 			}
 		}
+		
+		if (bills.size() == 0 && receipts.size() == 0 && role_state == RoleState.WantToLeave){
+			LeaveRestaurant();
+			roleState = RoleState.none;
+			active = false;
+			return true;
+		}
+		
 		return false;
 	}
 	
@@ -137,45 +186,49 @@ public class RyanCashierRole extends RestaurantCashierRole {
 		}
 	}
 	
-	public void startPaying(Bill bill){
-		synchronized(bills){
-			print("register has " + register);
-			bill.bState = BillState.Paying;
-			if(bill.cost <= register){
-				bill.bState = BillState.Paid;
-				register -= bill.cost;
-				print("Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName());
-				bill.market.msgHeresPayment(bill.choice, bill.cost);
-				bills.remove(bill);
-			}
-			else if(bill.cost > register){
-				print("Not enough money to pay for " + bill.choice + " asking for loan");
-				bill.bState = BillState.AskforLoan;
-				bank.msgAskForLoan(this, bill.cost);
-			}
-		}
+	public void LeaveRestaurant(){
+		gui.LeaveRestaurant();
 	}
 	
-	public void payWithLoan(Bill bill){
-		synchronized(bills){
-			print("register has " + register);
-			bill.bState = BillState.Paying;
-			if(bill.cost <= register){
-				bill.bState = BillState.Paid;
-				register -= bill.cost;
-				print("Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName() + " with loan from Bank");
-				bill.market.msgHeresPayment(bill.choice, bill.cost);
-				bills.remove(bill);
-			}
-		}
-	}
-	
-	public void PayBackLoans(){
-		register -= loans;
-		print("Register now has " + register);
-		bank.msgPayBackForLoan(this, loans);
-		loans = 0;
-	}
+//	public void startPaying(Bill bill){
+//		synchronized(bills){
+//			print("register has " + register);
+//			bill.bState = BillState.Paying;
+//			if(bill.cost <= register){
+//				bill.bState = BillState.Paid;
+//				register -= bill.cost;
+//				print("Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName());
+//				bill.market.msgHeresPayment(bill.choice, bill.cost);
+//				bills.remove(bill);
+//			}
+//			else if(bill.cost > register){
+//				print("Not enough money to pay for " + bill.choice + " asking for loan");
+//				bill.bState = BillState.AskforLoan;
+//				bank.msgAskForLoan(this, bill.cost);
+//			}
+//		}
+//	}
+//	
+//	public void payWithLoan(Bill bill){
+//		synchronized(bills){
+//			print("register has " + register);
+//			bill.bState = BillState.Paying;
+//			if(bill.cost <= register){
+//				bill.bState = BillState.Paid;
+//				register -= bill.cost;
+//				print("Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName() + " with loan from Bank");
+//				bill.market.msgHeresPayment(bill.choice, bill.cost);
+//				bills.remove(bill);
+//			}
+//		}
+//	}
+//	
+//	public void PayBackLoans(){
+//		register -= loans;
+//		print("Register now has " + register);
+//		bank.msgPayBackForLoan(this, loans);
+//		loans = 0;
+//	}
 	
 	//Utility******************************************************************************************************************************************************************
 	public String getName(){
@@ -206,6 +259,40 @@ public class RyanCashierRole extends RestaurantCashierRole {
 		}
 		print("Bill search returned null");
 		return null;
+	}
+
+	@Override
+	public Place place() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void cmdFinishAndLeave() {
+		roleState = RoleState.WantToLeave;
+		stateChanged();
+	}
+	
+	public class Bill{
+		Market market;
+		String choice;
+		double cost;
+		BillState bState = BillState.Received;
+		public Map<String, Double> price_list;
+		
+		Bill(Market market, double cost){
+			this.market = market;
+			this.choice = choice;
+			this.cost = cost;
+		}
+		
+		public double getCost(){
+			return cost;
+		}
+		
+		public String getChoice(){
+			return choice;
+		}
 	}
 	
 	public class Receipt{
@@ -243,59 +330,6 @@ public class RyanCashierRole extends RestaurantCashierRole {
 		public double getPayment(){
 			return payment;
 		}
-		
-	}
-	
-	public class Bill{
-		Market market;
-		String choice;
-		double cost;
-		BillState bState = BillState.Received; 
-		
-		Bill(Market market, String choice, double cost){
-			this.market = market;
-			this.choice = choice;
-			this.cost = cost;
-		}
-		
-		public double getCost(){
-			return cost;
-		}
-		
-		public String getChoice(){
-			return choice;
-		}
-	}
-
-	@Override
-	public void msgHereIsTheBill(Market m, double bill,
-			Map<String, Double> price_list) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgHereIsTheChange(Market m, double change) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgTransactionComplete(double amount, Double balance,
-			Double debt, int newAccountNumber) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Place place() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
 		
 	}
 }

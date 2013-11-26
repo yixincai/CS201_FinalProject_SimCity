@@ -22,7 +22,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
      * 2) the infoPanel about the clicked Customer (created just below)
      */
 	JFrame animationFrame = new JFrame("Restaurant Animation");
-	RyanRestaurantAnimationPanel animationPanel = new RyanRestaurantAnimationPanel();
+	RyanAnimationPanel animationPanel = new RyanAnimationPanel();
 	static private JPanel menuPanel = new JPanel();
 	
     private RestaurantPanel restPanel = new RestaurantPanel(this);

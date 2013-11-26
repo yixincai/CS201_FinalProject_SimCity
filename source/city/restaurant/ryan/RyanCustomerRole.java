@@ -103,8 +103,10 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 		return name;
 	}
 	
-	// Messages
-	public void gotHungry() {//from animation
+	// Messages	
+	@Override
+	public void cmdGotHungry() {
+		// TODO Auto-generated method stub
 		print("I'm hungry");
 		event = AgentEvent.gotHungry;
 		stateChanged();
@@ -416,12 +418,6 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 
 	public RyanCustomerGui getGui() {
 		return customerGui;
-	}
-
-	@Override
-	public void cmdGotHungry() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
