@@ -2,14 +2,11 @@ package city.market;
 
 import java.util.concurrent.Semaphore;
 
-import gui.BuildingInteriorAnimationPanel;
-import gui.WorldView;
-import gui.WorldViewBuilding;
-import city.PersonAgent;
-import city.Place;
+import gui.*;
+import city.*;
 import city.interfaces.PlaceWithAnimation;
-import city.market.gui.MarketAnimationPanel;
-import city.restaurant.yixin.gui.YixinAnimationPanel;
+import city.market.gui.*;
+import city.restaurant.yixin.gui.*;
 import city.transportation.TruckAgent;
 
 public class Market extends Place implements PlaceWithAnimation {
@@ -74,7 +71,11 @@ public class Market extends Place implements PlaceWithAnimation {
 	}
 	
 	public MarketCustomerRole generateCustomerRole(PersonAgent p){
-		return (new MarketCustomerRole(p,this));
+		MarketCustomerRole customer = new MarketCustomerRole(p,this);
+		MarketCustomerGui gui = new MarketCustomerGui(customer);
+		customer.setGui(gui);
+		animationPanel().addGui(gui);
+		return customer;
 	}
 	
 	public MarketCashierRole getCashier(){
