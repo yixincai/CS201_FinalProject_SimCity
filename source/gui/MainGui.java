@@ -6,7 +6,6 @@ package gui;
  */
 
 import java.awt.CardLayout;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -27,6 +26,7 @@ import city.home.ApartmentBuilding;
 import city.home.House;
 import city.market.Market;
 import city.restaurant.omar.OmarRestaurant;
+import city.restaurant.ryan.RyanRestaurant;
 import city.restaurant.yixin.YixinRestaurant;
 import city.transportation.BusAgent;
 import city.transportation.BusStopObject;
@@ -114,6 +114,16 @@ public class MainGui extends JFrame
 		_buildingCardLayoutPanel.add( bp9, bp9.getName() );
 		cPanel.currentBuildingPanel.addBuilding(or.getName()); // unsure if this is needed or not; I deleted it earlier
         _buildingInteriorAnimationPanels.add(bp9);
+        
+        //Ryan Restaurant
+        WorldViewBuilding bR = _worldView.addBuilding(8, 1, 40);
+		BuildingInteriorAnimationPanel bpR = new BuildingInteriorAnimationPanel(this, "Ryan's Restaurant", new city.restaurant.ryan.gui.RyanAnimationPanel());
+		bR.setBuildingPanel(bpR);
+		RyanRestaurant rr = new RyanRestaurant("Ryan's Restaurant", bR, bpR);
+		Directory.addPlace(rr);
+		_buildingCardLayoutPanel.add( bpR, bpR.getName() );
+		cPanel.currentBuildingPanel.addBuilding(rr.getName()); // unsure if this is needed or not; I deleted it earlier
+        _buildingInteriorAnimationPanels.add(bpR);
         
         //Bank
         WorldViewBuilding b2 = _worldView.addBuilding(10, 3, 40);
@@ -211,6 +221,17 @@ public class MainGui extends JFrame
  // 	  cPanel.addPerson("Yixin12", 300, "Omar Waiter", true, "apartment");
  // 	  cPanel.addPerson("Yixin13", 300, "Omar Customer", true, "apartment");
  // 	  cPanel.addPerson("Yixin14", 300, "Market Customer", true, "apartment");
+  	 
+  	 cPanel.addPerson("Yixin20", 300, "Restaurant Host", true, "house");
+ 	 cPanel.addPerson("Yixin21", 300, "Restaurant Cashier", true, "house");
+	 cPanel.addPerson("Yixin22", 300, "Cook", true, "house");
+  	  
+  	 cPanel.addPerson("Yixin19", 300, "Restaurant Host", true, "house");
+  	 cPanel.addPerson("Yixin15", 300, "Restaurant Cashier", true, "house");
+	 cPanel.addPerson("Yixin16", 300, "Cook", true, "house");
+	 cPanel.addPerson("Yixin17", 300, "Ryan Waiter", true, "house");
+	 cPanel.addPerson("Yixin18", 300, "Ryan Customer", true, "apartment");
+  	  
   	  Time.startTimer();
 	}
 	

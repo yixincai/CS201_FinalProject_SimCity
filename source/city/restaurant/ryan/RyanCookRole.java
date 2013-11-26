@@ -38,6 +38,9 @@ public class RyanCookRole extends RestaurantCookRole{
 	enum CheckState{notChecked,Checked};
 	CheckState checkState = CheckState.notChecked;	
 	
+	enum RoleState{WantToLeave,none}
+	RoleState roleState = RoleState.none;
+	
 	Semaphore isCMoving = new Semaphore(0, true);
 	
 	RyanCookGui gui;
@@ -227,6 +230,14 @@ public class RyanCookRole extends RestaurantCookRole{
 			giveInvoice();
 			return true;
 		}
+		
+		if (orders.size() == 0 && orderState == OrderState.none && roleState == RoleState.WantToLeave){
+			gui.LeaveRestaurant();
+			roleState = RoleState.none;
+			active = false;
+			return true;
+		}
+		
 		gui.gotoHome();
 		return false;
 	}
@@ -437,8 +448,8 @@ public class RyanCookRole extends RestaurantCookRole{
 
 	@Override
 	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-		
+		roleState = RoleState.WantToLeave;
+		stateChanged();		
 	}
 	
 }

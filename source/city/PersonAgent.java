@@ -274,11 +274,17 @@ public class PersonAgent extends Agent
 			case "Omar Customer":
 				_occupation = restaurants.get(1).generateCustomerRole(this);
 				break;
+			case "Ryan Customer":
+				_occupation = restaurants.get(2).generateCustomerRole(this);
+				break;
 			case "Yixin Waiter":
 				_occupation = restaurants.get(0).generateWaiterRole(this);
 				break;
 			case "Omar Waiter":
 				_occupation = restaurants.get(1).generateWaiterRole(this);
+				break;
+			case "Ryan Waiter":
+				_occupation = restaurants.get(2).generateWaiterRole(this);
 				break;
 		}
 		// note: control reaches here because no jobs were found, or occupationType.equals("none")

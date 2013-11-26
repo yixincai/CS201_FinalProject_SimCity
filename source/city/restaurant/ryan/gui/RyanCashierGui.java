@@ -3,7 +3,6 @@ package city.restaurant.ryan.gui;
 import java.awt.*;
 
 import city.restaurant.ryan.RyanCashierRole;
-import city.restaurant.ryan.gui.RyanCustomerGui.Command;
 import city.restaurant.ryan.gui.RyanCustomerGui.State;
 
 public class RyanCashierGui implements Gui{

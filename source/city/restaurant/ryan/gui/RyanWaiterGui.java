@@ -1,12 +1,10 @@
 package city.restaurant.ryan.gui;
 
-import restaurant.CustomerAgent;
-import restaurant.WaiterAgent;
-import restaurant.gui.CustomerGui.State;
-
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+
+import city.restaurant.ryan.RyanWaiterRole;
 
 public class RyanWaiterGui implements Gui {
 
@@ -16,7 +14,7 @@ public class RyanWaiterGui implements Gui {
 	private boolean check = false;
 	private String food;
      
-	RestaurantGui gui;
+	//RestaurantGui gui;
 
     private int xPos = -20, yPos = 150;//default waiter position
     private int xDestination = -20, yDestination = 200;//default start position
@@ -30,16 +28,11 @@ public class RyanWaiterGui implements Gui {
     
     public boolean offScreen = false;
 
-    public RyanWaiterGui(RyanWaiterRole agent, RestaurantGui gui, int x, int y) {
+    public RyanWaiterGui(RyanWaiterRole agent, int count) {
         this.agent = agent;
-        this.gui = gui;
-        xDestination = x;
-        yDestination = y;
-        HomePosition = new Dimension(x,y);
-    }
-    
-    public void OffBreak(){
-    	gui.setWaiterEnabled(agent);
+        xDestination = 10;
+        yDestination = 80 + 25*count;
+        HomePosition = new Dimension(xDestination,yDestination);
     }
     
     public void updatePosition() {

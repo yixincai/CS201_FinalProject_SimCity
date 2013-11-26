@@ -10,12 +10,13 @@ import city.interfaces.PlaceWithAnimation;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.ryan.gui.*;
+import city.restaurant.ryan.gui.RyanWaiterGui;
 
 public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 	public RyanRevolvingStand revolvingStand = new RyanRevolvingStand(); //WHAT IS THIS?
 	//count stands for the number of waiting list
 	int count = -1;
-	int waiter_count = -1;
+	int waiter_count = 0;
 	boolean open;
 	public RyanHostRole host;
 	private int businessAccountNumber = -1;
@@ -75,6 +76,9 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		newWaiter.setCook((RyanCookRole)cook);
 		newWaiter.setHost(host);
 		waiter_count++;
+		RyanWaiterGui RyanWaiterGui = new RyanWaiterGui(newWaiter, waiter_count);
+		newWaiter.setGui(RyanWaiterGui);
+		animationPanel().addGui(RyanWaiterGui);
 		return newWaiter;
 	}
 
@@ -101,7 +105,6 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 
 	@Override
 	public void generateCashierGui() {
-		// TODO Auto-generated method stub
 		RyanCashierGui RyanCashierGui = new RyanCashierGui((RyanCashierRole)cashier);
 		((RyanCashierRole)cashier).setGui(RyanCashierGui);
 		animationPanel().addGui(RyanCashierGui);
@@ -109,7 +112,6 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 
 	@Override
 	public void generateCookGui() {
-		// TODO Auto-generated method stub
 		RyanCookGui RyanCookGui = new RyanCookGui((RyanCookRole)cook);
 		((RyanCookRole)cook).setGui(RyanCookGui);
 		animationPanel().addGui(RyanCookGui);
@@ -117,7 +119,6 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 
 	@Override
 	public void generateHostGui() {
-		// TODO Auto-generated method stub
 		RyanHostGui hostGui = new RyanHostGui(host);
 		host.setGui(hostGui);
 		animationPanel().addGui(hostGui);	
