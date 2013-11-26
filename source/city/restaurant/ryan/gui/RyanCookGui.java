@@ -5,11 +5,9 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.*;
 
-import restaurant.CookAgent;
-import restaurant.gui.*;
-import restaurant.gui.CustomerGui.State;
+import city.restaurant.ryan.RyanCookRole;
 
-public class CookGui implements Gui{
+public class RyanCookGui implements Gui{
 	private RyanCookRole agent = null;
 	RestaurantGui gui;
 	
@@ -34,14 +32,13 @@ public class CookGui implements Gui{
 	enum Command{noCommand, goToFridge, goToGrill, goToGrill1, goToPlating};
 	Command command = Command.noCommand;
 	
-	CookGui(RyanCookRole agent, RestaurantGui gui, Dimension dimension){
+	public RyanCookGui(RyanCookRole agent){
 		this.agent = agent;
-		this.gui = gui;
-		home = dimension;
-		yPos = dimension.height;
-		xPos = dimension.width;
-		yDestination = dimension.height;
-		xDestination = dimension.width;
+//		home = dimension;
+//		yPos = dimension.height;
+//		xPos = dimension.width;
+//		yDestination = dimension.height;
+//		xDestination = dimension.width;
 		
 		plates.add(new Plate(1, 500, 115));
 		plates.add(new Plate(2, 500, 140));

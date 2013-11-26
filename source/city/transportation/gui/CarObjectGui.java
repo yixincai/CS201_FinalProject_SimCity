@@ -17,6 +17,21 @@ public class CarObjectGui implements Gui {
 	boolean isPresent;
 	boolean driving = false;
 	
+	CarObjectGui(){
+		
+	}
+	
+	CarObjectGui(int x, int y){
+		_xPos = x;
+		_yPos = y;
+	}
+	
+	public void goToDestination(int x, int y){
+		driving = true;
+		_xDestination = x;
+		_yDestination = y;
+	}
+	
 	public void goToDestination(Place destination){
 		driving = true;
 		_xDestination = destination.xPosition();

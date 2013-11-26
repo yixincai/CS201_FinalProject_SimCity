@@ -9,36 +9,42 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import city.PersonAgent;
 import city.Place;
+import city.bank.Bank;
 import city.market.Market;
 import city.restaurant.RestaurantCashierRole;
-import restaurant.gui.CashierGui;
-import restaurant.interfaces.*;
+import city.restaurant.ryan.gui.RyanCashierGui;
 import agent.Agent;
 
 public class RyanCashierRole extends RestaurantCashierRole {
 	String name;
-	CashierGui gui;
+	RyanCashierGui gui;
+	RyanRestaurant _restaurant;
 	Bank bank;
 	public List<Receipt> receipts = new ArrayList<Receipt>();
 	public List<Bill> bills = new ArrayList<Bill>();
-	double register = 75;
+	public double register, bankBalance, bankDebt;
 	double loans;
 	Menu menu;
+	public RyanCookRole cook;
 	
 	enum ReceiptState{Calculate, Ready, Paying, Done}
 	enum BillState{Received, Paying, AskforLoan, Loaned, Paid};
 	
-	public RyanCashierRole(String name){
+	public RyanCashierRole(PersonAgent p, RyanRestaurant r){
+		super(p);
 		this.name = name;
 		menu = new Menu();
+		
+		_restaurant = r;
+		register = 130.0;
+		bankBalance = 0;
+		bankDebt = 0;
 	}
 	
-	public RyanCashierRole(Object object, RyanRestaurant ryanRestaurant) {
-		// TODO Auto-generated constructor stub
-	}
 
-	public void setGui(CashierGui gui){
+	public void setGui(RyanCashierGui gui){
 		this.gui = gui;
 	}
 	
@@ -47,13 +53,13 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	}
 	
 	//Messages******************************************************************************************************************************************************************
-	public void msgMakeReceipt(Waiter waiter, Customer customer, String choice){
+	public void msgMakeReceipt(RyanWaiterRole waiter, RyanCustomerRole customer, String choice){
 		receipts.add(new Receipt(waiter, customer, choice));
 		stateChanged();
 	}
 	
-	public void msgHeresMoney(Customer customer, double payment){
-		Do("Receiving Payment");
+	public void msgHeresMoney(RyanCustomerRole customer, double payment){
+		print("Receiving Payment");
 		for(Receipt temp: receipts){
 			if(temp.customer == customer){
 				temp.payment = payment;
@@ -64,13 +70,13 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	}
 	
 	public void msgHeresBill(Market market, String choice, double price){
-		Do("Received bill for " + choice + " of amount " + price + " from " + market.getName());
+		print("Received bill for " + choice + " of amount " + price + " from " + market.getName());
 		bills.add(new Bill(market, choice, price));
 		stateChanged();
 	}
 	
 	public void msgHereIsLoan(double amount){
-		Do("Received loan of " + amount + " from the bank");
+		print("Received loan of " + amount + " from the bank");
 		register += amount;
 		loans += amount;
 		Bill bill = searchLoan(amount);
@@ -115,7 +121,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	
 	//Actions*********************************************************************************************************************************************************************************************
 	public void calculatePayment(Receipt receipt){
-		Do("Calculating receipt for " + receipt.customer.getName());
+		print("Calculating receipt for " + receipt.customer.getName());
 		receipt.state = ReceiptState.Ready;
 		receipt.amount = menu.getPrice(receipt.choice);
 		receipt.waiter.msgHeresReceipt(receipt.customer, receipt.amount);
@@ -124,8 +130,8 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	public void receivePayment(Receipt receipt){
 		if(receipt.amount == receipt.payment){
 			register += receipt.amount;
-			Do("Payment for " + receipt.customer.getName() + " is completed");
-			Do("Register is at " + register);
+			print("Payment for " + receipt.customer.getName() + " is completed");
+			print("Register is at " + register);
 			receipt.customer.msgPaymentDone(receipt.amount);
 			receipts.remove(receipt);
 		}
@@ -133,17 +139,17 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	
 	public void startPaying(Bill bill){
 		synchronized(bills){
-			Do("register has " + register);
+			print("register has " + register);
 			bill.bState = BillState.Paying;
 			if(bill.cost <= register){
 				bill.bState = BillState.Paid;
 				register -= bill.cost;
-				Do("Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName());
+				print("Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName());
 				bill.market.msgHeresPayment(bill.choice, bill.cost);
 				bills.remove(bill);
 			}
 			else if(bill.cost > register){
-				Do("Not enough money to pay for " + bill.choice + " asking for loan");
+				print("Not enough money to pay for " + bill.choice + " asking for loan");
 				bill.bState = BillState.AskforLoan;
 				bank.msgAskForLoan(this, bill.cost);
 			}
@@ -152,12 +158,12 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	
 	public void payWithLoan(Bill bill){
 		synchronized(bills){
-			Do("register has " + register);
+			print("register has " + register);
 			bill.bState = BillState.Paying;
 			if(bill.cost <= register){
 				bill.bState = BillState.Paid;
 				register -= bill.cost;
-				Do("Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName() + " with loan from Bank");
+				print("Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName() + " with loan from Bank");
 				bill.market.msgHeresPayment(bill.choice, bill.cost);
 				bills.remove(bill);
 			}
@@ -166,7 +172,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	
 	public void PayBackLoans(){
 		register -= loans;
-		Do("Register now has " + register);
+		print("Register now has " + register);
 		bank.msgPayBackForLoan(this, loans);
 		loans = 0;
 	}
@@ -178,7 +184,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	
 	public void addCash(double money){
 		register += money;
-		Do("Register now at " + register);
+		print("Register now at " + register);
 		stateChanged();
 	}
 	
@@ -198,31 +204,31 @@ public class RyanCashierRole extends RestaurantCashierRole {
 				}
 			}
 		}
-		Do("Bill search returned null");
+		print("Bill search returned null");
 		return null;
 	}
 	
 	public class Receipt{
-		Customer customer;
-		Waiter waiter;
+		RyanCustomerRole customer;
+		RyanWaiterRole waiter;
 		String choice;
 		double amount;
 		double payment;
 		ReceiptState state;
 		int table; 
 		
-		Receipt(Waiter waiter, Customer customer, String choice){
+		Receipt(RyanWaiterRole waiter, RyanCustomerRole customer, String choice){
 			this.waiter = waiter;
 			this.customer = customer;
 			this.choice = choice;
 			state = ReceiptState.Calculate;
 		}
 		
-		public Customer getCustomer(){
+		public RyanCustomerRole getCustomer(){
 			return customer;
 		}
 		
-		public Waiter getWaiter(){
+		public RyanWaiterRole getWaiter(){
 			return waiter;
 		}
 		

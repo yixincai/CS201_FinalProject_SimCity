@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WaiterGui implements Gui {
+public class RyanWaiterGui implements Gui {
 
     private RyanWaiterRole agent = null;
     
@@ -30,7 +30,7 @@ public class WaiterGui implements Gui {
     
     public boolean offScreen = false;
 
-    public WaiterGui(RyanWaiterRole agent, RestaurantGui gui, int x, int y) {
+    public RyanWaiterGui(RyanWaiterRole agent, RestaurantGui gui, int x, int y) {
         this.agent = agent;
         this.gui = gui;
         xDestination = x;

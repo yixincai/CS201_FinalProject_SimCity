@@ -26,7 +26,7 @@ public class RyanRestaurantAnimationPanel extends JPanel implements ActionListen
     private int agentWidth = 20;
     private int agentHeight = 20;
 
-    private HostGui gui;
+    private RyanHostGui gui;
     private List<Gui> guis = new ArrayList<Gui>();
 
     public RyanRestaurantAnimationPanel() {
@@ -123,19 +123,19 @@ public class RyanRestaurantAnimationPanel extends JPanel implements ActionListen
         guis.add(gui);
     }
 
-    public void addGui(HostGui gui) {
+    public void addGui(RyanHostGui gui) {
         guis.add(gui);
     }
     
-    public void addGui(WaiterGui gui){
+    public void addGui(RyanWaiterGui gui){
     	guis.add(gui);
     }
     
-    public void addGui(CashierGui gui){
+    public void addGui(RyanCashierGui gui){
     	guis.add(gui);
     }
     
-    public void addGui(CookGui gui){
+    public void addGui(RyanCookGui gui){
     	guis.add(gui);
     }
 }
