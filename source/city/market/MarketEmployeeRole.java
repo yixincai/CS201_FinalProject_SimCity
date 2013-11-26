@@ -36,7 +36,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 	
 	public void cmdFinishAndLeave() {
-		print("person tells employee to finish and leave");
 		role_state = RoleState.WantToLeave;
 		stateChanged();
 	}
@@ -59,8 +58,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			pickUpOrders.remove(0);
 			return true;
 		}
-		print("--------------------------------------------");
-
 		if(deliverOrders.size()!=0){
 			deliverFood(deliverOrders.get(0));
 			deliverOrders.remove(0);
@@ -123,12 +120,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	
 	public void DoGoHome(){
 		gui.GoHome();
-		try{
-			atDestination.acquire();
-		}
-		catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
