@@ -313,8 +313,7 @@ public class PersonAgent extends Agent
 		
 		if(_currentRole.active)
 		{
-			//print("Current Role Active");
-			// Finish role because you have to get to work:
+			// Finish current role because you have to get to work:
 			if(workingToday() && !_sentCmdFinishAndLeave)
 			{
 				if(_occupation != null)
@@ -412,7 +411,10 @@ public class PersonAgent extends Agent
 						Random rand = new Random();
 						if(rand.nextInt(4) == 0)
 						{
-							goToRestaurant();
+							if(goToRestaurant())
+							{
+								return true;
+							}
 						}
 						else
 						{
@@ -425,32 +427,11 @@ public class PersonAgent extends Agent
 							else
 							{
 								buyMealsFromMarket(3); // 3 meals
+								return true;
 							}
 						}
 					}
 				}
-				
-				/*
-				// Decide whether or not to go to the bank
-				for(Role r : _roles)
-				{
-					if(r instanceof BankCustomerRole)
-					{
-						BankCustomerRole bcr = (BankCustomerRole)r;
-						
-						if(true) //if I want to go to the bank
-						{
-							//bcr.cmd....();
-							_nextRole = bcr;
-							_commuterRole.setDestination(bcr.place());
-							_currentRole = _commuterRole;
-							_currentRole.active = true;
-							return true;
-						}
-					}
-				}*/
-				
-				//_nextRole = _HomeRole;
 			}
 		}
 		
@@ -552,11 +533,11 @@ public class PersonAgent extends Agent
 		// if no YixinCustomerRole in _roles, choose a Restaurant from the Directory, and get a new YixinCustomerRole from it
 		for(Role r : _roles)
 		{
-			if(r instanceof YixinCustomerRole)
+			if(r instanceof RestaurantCustomerRole)
 			{
-				YixinCustomerRole ycr = (YixinCustomerRole)r;
-				ycr.cmdGotHungry();
-				setNextRole(ycr);
+				RestaurantCustomerRole restaurantCustomerRole = (RestaurantCustomerRole)r;
+				restaurantCustomerRole.cmdGotHungry();
+				setNextRole(restaurantCustomerRole);
 				return true;
 			}
 		}
