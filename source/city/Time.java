@@ -32,7 +32,7 @@ public class Time {
 	
 	private static double time = 8.0; //0.0;
 	private static double counter = 0.25;
-	private static double timeFactor = 4.0;
+	private static double timeFactor = 4.0; // this is in units of .25-hour-per-second??
 	
 	static Timer timer;
 	
@@ -72,5 +72,10 @@ public class Time {
 	
 	public static double getTime(){
 		return time;
+	}
+	
+	/** returns the number of real-life milliseconds that will cause the passed-in number of hours to pass in the simulation */
+	public static int getRealTime(double hours) {
+		return (int)((12000/timeFactor)*4*hours);
 	}
 }
