@@ -9,105 +9,12 @@ import city.restaurant.tanner.interfaces.TannerRestaurantHost;
 import city.restaurant.tanner.interfaces.TannerRestaurantWaiter;
 import agent.Role;
 
-public class TannerRestaurantRegularWaiterRole extends Role implements TannerRestaurantWaiter
+public class TannerRestaurantRegularWaiterRole extends TannerRestaurantBaseWaiterRole
 {
-	
-//----------------------------------------------Data--------------------------------------------------------------------------------------------------------------
-	
-//-------------------------------------------Constructor----------------------------------------------------------------------------------------------------------
 
-	public TannerRestaurantRegularWaiterRole(PersonAgent person, TannerRestaurant rest, TannerRestaurantCook cook, TannerRestaurantCashier cashier, String name) {
-		super(person);
-		// TODO Auto-generated constructor stub
+	public TannerRestaurantRegularWaiterRole(PersonAgent person, TannerRestaurant rest, String name)
+	{
+		super(person, rest, name);
 	}
 
-//--------------------------------------------Accessors-----------------------------------------------------------------------------------------------------------
-	
-	@Override
-	public Place place() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-//--------------------------------------------Messages-------------------------------------------------------------------------------------------------------------
-	
-	@Override
-	public void msgHereIsANewCustomer(TannerRestaurantCustomer c,
-			int tableNumber, TannerRestaurantHost h, TannerRestaurantCook co) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgImReadyToOrder(TannerRestaurantCustomer c) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgHereIsMyOrder(TannerRestaurantCustomer c, int choice) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgICantAffordAnything(TannerRestaurantCustomer c) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgThatChoiceIsOutOfStock(int choice, int tableNumber) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgHereIsMyReOrder(TannerRestaurantCustomer c, int choice) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgOrderIsReady(int choice, int tableNumber) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgIWouldLikeTheCheck(TannerRestaurantCustomer c, int choice) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgHereIsTheChek(float amount, TannerRestaurantCustomer c) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgGoodBye(TannerRestaurantCustomer c) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-//--------------------------------------------Scheduler------------------------------------------------------------------------------------------------------------
-	
-	@Override
-	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-//--------------------------------------------Actions--------------------------------------------------------------------------------------------------------------
-	
-//--------------------------------------------Commands-------------------------------------------------------------------------------------------------------------
-	
-	@Override
-	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-
-	}
 }

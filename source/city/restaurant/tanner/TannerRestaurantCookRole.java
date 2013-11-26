@@ -9,6 +9,7 @@ import city.market.Item;
 import city.market.Market;
 import city.market.interfaces.MarketCashier;
 import city.restaurant.RestaurantCookRole;
+import city.restaurant.tanner.interfaces.TannerRestaurantCashier;
 import city.restaurant.tanner.interfaces.TannerRestaurantCook;
 import city.restaurant.tanner.interfaces.TannerRestaurantWaiter;
 
@@ -16,6 +17,7 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 {
 
 //--------------------------------------------Data---------------------------------------------------------------------
+	public TannerRestaurantCashier cashier;
 	
 //----------------------------------------Constructors-----------------------------------------------------------------	
 	public TannerRestaurantCookRole(PersonAgent person, TannerRestaurant rest, TannerRestaurantCashierRole cashier) {

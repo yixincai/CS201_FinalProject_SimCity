@@ -16,9 +16,9 @@ public interface TannerRestaurantCustomer
 	
 	public void msgHereIsYourFood(int choice);
 	
-	public void msgHereIsYourCheck(float bill);
+	public void msgHereIsYourCheck(double billAmount);
 	
-	public void msgHereIsYourChange(float changeAmount);
+	public void msgHereIsYourChange(double changeAmount);
 	
 	public void msgYouOweUs(float debt);
 }

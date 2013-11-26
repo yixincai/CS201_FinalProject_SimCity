@@ -10,6 +10,9 @@ import city.PersonAgent;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.tanner.gui.TannerRestaurantAnimationPanel;
+import city.restaurant.yixin.YixinCashierRole;
+import city.restaurant.yixin.YixinCookRole;
+import city.restaurant.yixin.YixinHostRole;
 
 public class TannerRestaurant extends Restaurant
 {
@@ -32,17 +35,16 @@ public class TannerRestaurant extends Restaurant
 		this.animationPanel = (TannerRestaurantAnimationPanel)animationPanel.getBuildingAnimation();
 		host = new TannerRestaurantHostRole(null, this, "Host");
 		cashier = new TannerRestaurantCashierRole(null, this);
-		cook = new TannerRestaurantCookRole(null, this, cashier);
-		
-		
-		
+		cook = new TannerRestaurantCookRole(null, this, cashier);	
 	}
 
-	//For Unit testing
+	//For Unit testing DO NOT DELETE
 	public TannerRestaurant() 
 	{
 		super("Tanner's Restaurant");
-		
+		cashier = new TannerRestaurantCashierRole(null,this);
+		host = new TannerRestaurantHostRole(null,this,"Host");
+		cook = new TannerRestaurantCookRole(null, this, cashier);
 	}
 
 	@Override
@@ -61,6 +63,24 @@ public class TannerRestaurant extends Restaurant
 	public Role generateWaiterRole(PersonAgent person) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void generateCashierGui() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void generateCookGui() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void generateHostGui() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
