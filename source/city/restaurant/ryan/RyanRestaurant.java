@@ -9,31 +9,26 @@ import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
-import city.restaurant.ryan.gui.RyanCashierGui;
-import city.restaurant.ryan.gui.RyanCookGui;
-import city.restaurant.ryan.gui.RyanCustomerGui;
-import city.restaurant.ryan.gui.RyanHostGui;
-import city.restaurant.ryan.gui.RyanRestaurantAnimationPanel;
 import city.restaurant.ryan.gui.*;
-import city.restaurant.yixin.ProducerConsumerMonitor;
+import city.restaurant.ryan.gui.RyanWaiterGui;
 
 public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
-	public ProducerConsumerMonitor revolving_stand = new ProducerConsumerMonitor(); //WHAT IS THIS?
+	public RyanRevolvingStand revolvingStand = new RyanRevolvingStand(); //WHAT IS THIS?
 	//count stands for the number of waiting list
 	int count = -1;
-	int waiter_count = -1;
+	int waiter_count = 0;
 	boolean open;
 	public RyanHostRole host;
 	private int businessAccountNumber = -1;
 	public List<RyanWaiterRole> Waiters = new ArrayList<RyanWaiterRole>();
-	private RyanRestaurantAnimationPanel _animationPanel;
+	private RyanAnimationPanel _animationPanel;
 	
 	// ------------- CONSTRUCTOR & PROPERTIES
 	
 	public RyanRestaurant(String name, gui.WorldViewBuilding worldViewBuilding, gui.BuildingInteriorAnimationPanel animationPanel){
 		super(name, worldViewBuilding);
 
-		this._animationPanel = (RyanRestaurantAnimationPanel)animationPanel.getBuildingAnimation();
+		this._animationPanel = (RyanAnimationPanel)animationPanel.getBuildingAnimation();
 
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
 		cashier = new RyanCashierRole(null,this);
@@ -65,7 +60,7 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		RyanCustomerRole customer = new RyanCustomerRole(person, this, person.getName());
 		RyanCustomerGui RyanCustomerGui = new RyanCustomerGui(customer);
 		customer.setGui(RyanCustomerGui);
-		getAnimationPanel().addGui(RyanCustomerGui);
+		animationPanel().addGui(RyanCustomerGui);
 		return customer;
 	}
 	
@@ -74,13 +69,16 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		int i = (new Random()).nextInt(2);
 		RyanWaiterRole newWaiter;
 		if (i == 0)
-			newWaiter = new RyanWaiterRole(person, this, person.getName());
+			newWaiter = new RyanNormalWaiterRole(person, this, person.getName());
 		else
-			newWaiter = new RyanSharedDataWaiterRole(null, this, "");
+			newWaiter = new RyanSharedDataWaiterRole(person, this, person.getName());
 		newWaiter.setCashier((RyanCashierRole)cashier);
 		newWaiter.setCook((RyanCookRole)cook);
 		newWaiter.setHost(host);
 		waiter_count++;
+		RyanWaiterGui RyanWaiterGui = new RyanWaiterGui(newWaiter, waiter_count);
+		newWaiter.setGui(RyanWaiterGui);
+		animationPanel().addGui(RyanWaiterGui);
 		return newWaiter;
 	}
 
@@ -101,32 +99,29 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		return waiter_count;
 	}
 	
-	public RyanRestaurantAnimationPanel animationPanel() {
+	public RyanAnimationPanel animationPanel() {
 		return this._animationPanel;
 	}
 
 	@Override
 	public void generateCashierGui() {
-		// TODO Auto-generated method stub
 		RyanCashierGui RyanCashierGui = new RyanCashierGui((RyanCashierRole)cashier);
 		((RyanCashierRole)cashier).setGui(RyanCashierGui);
-		getAnimationPanel().addGui(RyanCashierGui);
+		animationPanel().addGui(RyanCashierGui);
 	}
 
 	@Override
 	public void generateCookGui() {
-		// TODO Auto-generated method stub
 		RyanCookGui RyanCookGui = new RyanCookGui((RyanCookRole)cook);
 		((RyanCookRole)cook).setGui(RyanCookGui);
-		getAnimationPanel().addGui(RyanCookGui);
+		animationPanel().addGui(RyanCookGui);
 	}
 
 	@Override
 	public void generateHostGui() {
-		// TODO Auto-generated method stub
 		RyanHostGui hostGui = new RyanHostGui(host);
 		host.setGui(hostGui);
-		getAnimationPanel().addGui(hostGui);	
+		animationPanel().addGui(hostGui);	
 		
 	}
 }

@@ -276,6 +276,9 @@ public class PersonAgent extends Agent
 			case "Omar Customer":
 				_occupation = restaurants.get(1).generateCustomerRole(this);
 				return;
+			case "Ryan Customer":
+				_occupation = restaurants.get(2).generateCustomerRole(this);
+				return;
 			case "Bank Customer":
 				_occupation = banks.get(0).generateCustomerRole(this);
 				((BankCustomerRole)_occupation).cmdRequest("Deposit",100);
@@ -285,6 +288,9 @@ public class PersonAgent extends Agent
 				return;
 			case "Omar Waiter":
 				_occupation = restaurants.get(1).generateWaiterRole(this);
+				return;
+			case "Ryan Waiter":
+				_occupation = restaurants.get(2).generateWaiterRole(this);
 				return;
 			case "None":
 				_occupation = null;

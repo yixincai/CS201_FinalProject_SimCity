@@ -107,15 +107,15 @@ public abstract class RyanWaiterRole extends Role{
 		}
 	}
 	
-	public void msgNoBreak(){
-		wState = waiterState.Working;
-		timer.schedule(new TimerTask() { //Timer here because there has to be a delay between clicking button and not clicking it
-			public void run() {
-				gui.OffBreak();
-			}
-		},
-		300);
-	}
+//	public void msgNoBreak(){
+//		wState = waiterState.Working;
+//		timer.schedule(new TimerTask() { //Timer here because there has to be a delay between clicking button and not clicking it
+//			public void run() {
+//				gui.OffBreak();
+//			}
+//		},
+//		300);
+//	}
 	
 	public void msgJobsDone(){
 		print("Done with jobs. Going on break");
@@ -244,10 +244,10 @@ public abstract class RyanWaiterRole extends Role{
 				AskForBreak();
 				return true;
 			}
-			if(Customers.isEmpty() && wState == waiterState.CanBreak){
-				goOnBreak();
-				return true;
-			}
+//			if(Customers.isEmpty() && wState == waiterState.CanBreak){
+//				goOnBreak();
+//				return true;
+//			}
 		}
 		gui.setPosition(0);
 		return false;
@@ -410,25 +410,25 @@ public abstract class RyanWaiterRole extends Role{
 		host.msgAskForBreak(this);
 	}
 	
-	public void goOnBreak(){
-		Random generator = new Random();
-		wState = waiterState.OnBreak;
-		print("I'm on break");
-		timer.schedule(new TimerTask() {
-			public void run() {
-				OffBreak();
-			}
-		},
-		generator.nextInt(5000)+10000);
-	}
+//	public void goOnBreak(){
+//		Random generator = new Random();
+//		wState = waiterState.OnBreak;
+//		print("I'm on break");
+//		timer.schedule(new TimerTask() {
+//			public void run() {
+//				OffBreak();
+//			}
+//		},
+//		generator.nextInt(5000)+10000);
+//	}
 	
-	public void OffBreak(){
-		print("My break is done");
-		onBreak = false;
-		wState = waiterState.Working;
-		host.msgOffBreak(this);
-		gui.OffBreak();
-	}
+//	public void OffBreak(){
+//		print("My break is done");
+//		onBreak = false;
+//		wState = waiterState.Working;
+//		host.msgOffBreak(this);
+//		gui.OffBreak();
+//	}
 	
 	//additional************************************************************************************************************************************************
 	public MyCustomer doSearch(RyanCustomerRole customer){

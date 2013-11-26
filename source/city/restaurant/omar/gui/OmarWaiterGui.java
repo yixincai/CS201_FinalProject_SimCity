@@ -31,7 +31,7 @@ public class OmarWaiterGui implements Gui {
 	private static int CASHIERX = 0;
 	private static int CASHIERY = 200;
 	
-	private static int REVOLVINGX = 530; // can change if needed
+	private static int REVOLVINGX = 510; // can change if needed
 	private static int REVOLVINGY = 330;
 	
 	private int HOMEX = 0;
@@ -63,14 +63,16 @@ public class OmarWaiterGui implements Gui {
 	    }
 
 	    public void draw(Graphics2D g) {
-	        g.setColor(Color.MAGENTA);
-	        g.fillRect(xPos, yPos, TOFFSET, TOFFSET);
-	        
-	        if(xPos == HOMEX && yPos == HOMEY){
-	        	g.drawString("Home", xPos + 5, yPos - 5);
-	        } else {
-	        	g.drawString(currentStatus, xPos + 5, yPos - 5);
-	        }
+	    	if(agent.active){
+		        g.setColor(Color.MAGENTA);
+		        g.fillRect(xPos, yPos, TOFFSET, TOFFSET);
+		        
+		        if(xPos == HOMEX && yPos == HOMEY){
+		        	g.drawString("Home", xPos + 5, yPos - 5);
+		        } else {
+		        	g.drawString(currentStatus, xPos + 5, yPos - 5);
+		        }
+	    	}
 	    }
 
 	    public boolean isPresent() {

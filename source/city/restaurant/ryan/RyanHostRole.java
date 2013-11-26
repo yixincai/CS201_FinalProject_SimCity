@@ -273,7 +273,7 @@ public class RyanHostRole extends Role {
 			else if(!CheckOnBreak(waiter)){
 				print("No, " + waiter.waiter.getName() + " can't go on break.");
 				waiter.wState = waiterState.working;
-				waiter.waiter.msgNoBreak();
+				//waiter.waiter.msgNoBreak();
 				breakWaiters.remove(waiter);
 			}
 		}

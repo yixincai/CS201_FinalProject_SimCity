@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class RyanRestaurantAnimationPanel extends JPanel implements ActionListener {
+public class RyanAnimationPanel extends JPanel implements ActionListener { //Add revolving stand
 
     private final int WINDOWX = 700;
     private final int WINDOWY = 700;
@@ -29,7 +29,7 @@ public class RyanRestaurantAnimationPanel extends JPanel implements ActionListen
     private RyanHostGui gui;
     private List<Gui> guis = new ArrayList<Gui>();
 
-    public RyanRestaurantAnimationPanel() {
+    public RyanAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         

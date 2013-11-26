@@ -1,6 +1,7 @@
 package city.restaurant.omar;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
@@ -140,8 +141,7 @@ public class OmarCookRole extends RestaurantCookRole {
 					tellCashierToPayMarket(m);
 				}
 			}
-		}
-		
+		}	
 		if(orders.isEmpty() && command == Command.Leave){
 			leaveRestaurant();
 		}
@@ -166,6 +166,16 @@ public class OmarCookRole extends RestaurantCookRole {
 				}
 				return true;
 			}
+			
+			FoodTicket ticket = restaurant.revolving_stand.remove();
+			if (ticket!=null){
+				cookGui.DoGoToRevolvingStand();
+				Order order = new Order(ticket.getW(), ticket.getC().tableNum, this, ticket.getC());
+				orders.add(order);
+				cookOrder(order);
+				return true;
+			}
+			
 			return false;
 		}
 

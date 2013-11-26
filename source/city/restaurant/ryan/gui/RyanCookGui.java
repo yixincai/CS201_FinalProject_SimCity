@@ -9,7 +9,7 @@ import city.restaurant.ryan.RyanCookRole;
 
 public class RyanCookGui implements Gui{
 	private RyanCookRole agent = null;
-	RestaurantGui gui;
+	//RestaurantGui gui;
 	
 	String food;
 	int grillNum;
@@ -29,7 +29,7 @@ public class RyanCookGui implements Gui{
 	Dimension plate = new Dimension(520, 125);
 	Dimension home;
 	
-	enum Command{noCommand, goToFridge, goToGrill, goToGrill1, goToPlating};
+	enum Command{noCommand, goToFridge, goToGrill, goToGrill1, goToPlating, LeaveRestaurant};
 	Command command = Command.noCommand;
 	
 	public RyanCookGui(RyanCookRole agent){
@@ -39,6 +39,11 @@ public class RyanCookGui implements Gui{
 //		xPos = dimension.width;
 //		yDestination = dimension.height;
 //		xDestination = dimension.width;
+		
+		yPos = 0;
+		xPos = 550;
+		yDestination = 130;
+		xDestination = 550;
 		
 		plates.add(new Plate(1, 500, 115));
 		plates.add(new Plate(2, 500, 140));
@@ -107,6 +112,12 @@ public class RyanCookGui implements Gui{
 	public int getyPos(){
 		return yPos;
 	}
+	
+	public void LeaveRestaurant(){
+		xDestination = -40;
+		yDestination = -40;
+		command = Command.LeaveRestaurant;
+	}
 
 	@Override
 	public void updatePosition() {
@@ -163,6 +174,10 @@ public class RyanCookGui implements Gui{
 				grillNum = 0;
 				plateNum = 0;
 				agent.msgFoodPutOnPlate();
+			}
+			if (command==Command.LeaveRestaurant) {
+				agent.active = false;
+				//gui.setCustomerEnabled(agent);
 			}
 			else{
 				command=Command.noCommand;

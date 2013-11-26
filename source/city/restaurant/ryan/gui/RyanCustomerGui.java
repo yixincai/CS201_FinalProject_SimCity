@@ -76,6 +76,7 @@ public class RyanCustomerGui implements Gui{
 				agent.msgAnimationFinishedLeaveRestaurant();
 				System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
+				agent.active = false;
 				//gui.setCustomerEnabled(agent);
 				state = State.nothing;
 			}
@@ -122,7 +123,7 @@ public class RyanCustomerGui implements Gui{
 	}
 	public void setHungry() {
 		isHungry = true;
-		agent.gotHungry();
+		//agent.gotHungry();
 		setPresent(true);
 	}
 	public boolean isHungry() {

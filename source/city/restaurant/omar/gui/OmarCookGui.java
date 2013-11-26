@@ -18,6 +18,9 @@ public class OmarCookGui implements Gui {
 	private static int XGRILL2 = 630;
 	private static int YGRILL2 = 200;
 	
+	private static int REVOLVINGX = 550;
+	private static int REVOLVINGY = 330;
+	
 	private static int GRILLOFFSETY = 20;
 	
 	private OmarCookRole agent = null;
@@ -79,6 +82,13 @@ public class OmarCookGui implements Gui {
 	public void DoGoToFridge(){
 		xDestination = 610;
 		yDestination = 255;
+		
+		flag = true;
+	}
+	
+	public void DoGoToRevolvingStand(){
+		xDestination = REVOLVINGX;
+		yDestination = REVOLVINGY;
 		
 		flag = true;
 	}

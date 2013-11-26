@@ -87,6 +87,12 @@ public class OmarRestaurantAnimationPanel extends JPanel implements ActionListen
         g2.setColor(Color.BLACK);
         g2.drawString("Plating Area", 560, 110);
         
+        //RevolvingStand
+        g2.setColor(Color.ORANGE);
+        g2.fillRect(530, 300, 20, 20);
+        g2.setColor(Color.BLACK);
+        g2.drawString("Revolving Stand", 520, 330);
+        
         //Grills
         g2.setColor(Color.DARK_GRAY);
         g2.fillRect(550, 200, 20, 20);
