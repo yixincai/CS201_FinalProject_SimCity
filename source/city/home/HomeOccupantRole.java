@@ -16,11 +16,11 @@ public abstract class HomeOccupantRole extends Role
 	private enum Command { NONE, WATCH_TV, COOK_AND_EAT_FOOD, GO_TO_BED, WAKE_UP, LEAVE }
 	private Command _command = Command.NONE;
 	
-	private enum Event { NONE, ALARM_CLOCK_RANG, }
+	private enum Event { NONE, ALARM_CLOCK_RANG, GOT_HOME, }
 	private Event _event = Event.NONE;
 	
 	public enum State { AWAY, IDLE, COOKING, SLEEPING, LEAVING }
-	private State _state = State.IDLE; //TODO fully implement these states
+	private State _state = State.AWAY;
 	
 	private int _mealCount = 2; // Starting people out with 2 meals
 
@@ -34,12 +34,17 @@ public abstract class HomeOccupantRole extends Role
 	
 	// --------------------------- CONSTRUCTOR & PROPERTIES --------------------------
 	// ------------- SETUP ------------
-	public HomeOccupantRole(PersonAgent person, Home home) { super(person); setHome(home); }
+	public HomeOccupantRole(PersonAgent person, Home home)
+	{
+		super(person);
+		setHome(home);
+	}
 	public boolean haveHome() { return _home != null; }
 	public State state() { return _state; }
 	public boolean sleeping() { return _state == State.SLEEPING; }
 	public boolean cooking() { return _state == State.COOKING; }
 	public boolean haveFood() { return _mealCount > 0; } //TODO implement _mealCount;
+	public HomeOccupantGui gui() { return _gui; }
 	public Place place()
 	{
 		if(_home != null)
@@ -57,6 +62,11 @@ public abstract class HomeOccupantRole extends Role
 	
 	// --------------------------------- COMMANDS & MESSAGES -----------------------------------
 	// note: commands are only from PersonAgent
+	public void cmdGotHome()
+	{
+		_event = Event.GOT_HOME;
+		stateChanged();
+	}
 	public void cmdWatchTv()
 	{
 		_command = Command.WATCH_TV;
@@ -82,9 +92,9 @@ public abstract class HomeOccupantRole extends Role
 		_reachedDestination.release();
 		// no stateChanged() because this message just releases the semaphore
 	}
-	public void msgWakeUp()
+	public void msgAlarmClockRang() // from the timer that's set in actGoToBed()
 	{
-		_command = Command.WAKE_UP;
+		_event = Event.ALARM_CLOCK_RANG;
 		stateChanged();
 	}
 	
@@ -93,24 +103,53 @@ public abstract class HomeOccupantRole extends Role
 	// ---------------------------------- SCHEDULER ------------------------------------
 	public boolean pickAndExecuteAnAction()
 	{
-		//TODO if cmdGoToBed, set wakeTime to 7
-		if(_state == State.IDLE)
+		if(_state == State.AWAY)
+		{
+			if(_event == Event.GOT_HOME)
+			{
+				actGotHome();
+				return true;
+			}
+		}
+		else if(_state == State.IDLE)
 		{
 			if(_command == Command.COOK_AND_EAT_FOOD)
 			{
 				actStartCooking();
 				return true;
 			}
+			else if(_command == Command.GO_TO_BED)
+			{
+				actGoToBed();
+				return true;
+			}
+			else if(_command == Command.LEAVE)
+			{
+				actLeave();
+				return true;
+			}
+			else if(_command == Command.WATCH_TV)
+			{
+				actWatchTv();
+				return true;
+			}
 		}
 		else if(_state == State.COOKING)
 		{
-			// don't check for commands
+			// note: don't check for commands except possibly LEAVE
+			//TODO finish cooking scenario
 		}
 		else if(_state == State.SLEEPING)
 		{
 			if(_event == Event.ALARM_CLOCK_RANG)
 			{
 				actWakeUp();
+				return true;
+			}
+			else if(_command == Command.LEAVE)
+			{
+				actWakeUp();
+				actLeave();
 				return true;
 			}
 		}
@@ -120,6 +159,13 @@ public abstract class HomeOccupantRole extends Role
 	
 	
 	// ---------------------------------- ACTIONS ------------------------------------
+	private void actGotHome()
+	{
+		// note: the whole getting-home process does not change the command, so you will be able to set a command then get home.
+		print("Just got home.");
+		_state = State.IDLE;
+		_gui.doGotHome();
+	}
 	private void actStartCooking()
 	{
 		print("Starting to cook.");
@@ -127,27 +173,37 @@ public abstract class HomeOccupantRole extends Role
 		
 		_gui.doGoToKitchen();
 		waitForGuiToReachDestination();
+		//_gui.doCookAndEatFood(); //TODO figure out this implementation
+	}
+	private void actWatchTv()
+	{
+		print("Watching TV");
+		_state = State.IDLE;
+		
+		_gui.doWatchTv();
 	}
 	private void actGoToBed()
 	{
 		print("Going to bed.");
 		_state = State.SLEEPING;
 		_gui.doGoToBed();
+		waitForGuiToReachDestination();
+		//TODO set a timer to call msgAlarmClockRang
 	}
 	private void actWakeUp()
 	{
 		print("Waking up.");
 		_state = State.IDLE;
-		_gui.doGoIdle();
+		_gui.doWakeUp();
 	}
 	private void actLeave()
 	{
 		print("Leaving my home");
+		_command = Command.NONE;
+		_event = Event.NONE;
 		_state = State.LEAVING;
 		_gui.doLeaveHome();
-	}
-	private void actFinishedLeaving()
-	{
+		waitForGuiToReachDestination();
 		print("Finished leaving home");
 		_state = State.AWAY;
 		active = false;

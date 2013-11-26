@@ -1,6 +1,7 @@
 package city.home;
 
 import city.PersonAgent;
+import city.Place;
 import agent.Role;
 
 public abstract class HomeBuyingRole extends Role

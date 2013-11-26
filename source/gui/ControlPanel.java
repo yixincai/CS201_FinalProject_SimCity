@@ -9,19 +9,13 @@ package gui;
  */
 
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JTabbedPane;
 
 import city.Directory;
 import city.PersonAgent;
-import city.bank.BankCustomerRole;
-import city.home.House;
-import city.restaurant.yixin.YixinCustomerRole;
-import city.transportation.CommuterRole;
-import city.transportation.gui.CommuterGui;
 
+@SuppressWarnings("serial")
 public class ControlPanel extends JTabbedPane {
 	
 	CreatePersonPanel newPersonPanel;
@@ -49,19 +43,9 @@ public class ControlPanel extends JTabbedPane {
 
 	public void addPerson(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) //TODO finish with new person instantiation stuff
 	{
-		//DEBUG
-			for(House h : Directory.houses()) {
-				System.out.println("Found house with name: " + h.getName());
-			}
 		currentPersonPanel.addPerson(name);
 		PersonAgent newPerson = new PersonAgent(name, money, occupationType, housingType);
 		Directory.addPerson(newPerson);
-		// The old way:
-		// CommuterRole newCommuterRole = new CommuterRole(newPerson, null);
-		// newPerson.setCommuterRole(newCommuterRole);
-		// CommuterGui newCommuterGui = new CommuterGui(newCommuterRole);
-		// newCommuterRole.setGui(newCommuterGui);
-		// mainGui.getWorldView().addGui(newCommuterGui);
 		mainGui.getWorldView().addGui(newPerson.commuterRole().gui());
 		this.setSelectedComponent(currentPersonPanel);
 		newPerson.startThread();

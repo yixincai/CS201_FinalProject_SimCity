@@ -30,12 +30,14 @@ public class Apartment implements Home
 	
 	// --------------------------------- METHODS ---------------------------------------
 	// ---------- FACTORIES & TRYACQUIRES ----------
-	public ApartmentOccupantRole tryAcquireHomeOccupantRole(PersonAgent person)
+	public ApartmentOccupantRole tryGenerateHomeOccupantRole(PersonAgent person)
 	{
 		if(_occupiedSemaphore.tryAcquire())
 		{
 			// possibly add a function to set the occupant of this House
-			return new ApartmentOccupantRole(person, this);
+			ApartmentOccupantRole newRole = new ApartmentOccupantRole(person, this);
+			_apartmentBuilding.animationPanel().addGui(newRole.gui());
+			return newRole;
 		}
 		else return null;
 	}

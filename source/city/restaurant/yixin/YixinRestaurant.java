@@ -62,7 +62,7 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		YixinCustomerRole customer = new YixinCustomerRole(person, this, person.getName(), count);
 		YixinCustomerGui yixinCustomerGui = new YixinCustomerGui(customer,count);
 		customer.setGui(yixinCustomerGui);
-		getAnimationPanel().addGui(yixinCustomerGui);
+		animationPanel().addGui(yixinCustomerGui);
 		return customer;
 	}
 
@@ -81,7 +81,7 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		waiter_count++;
 		YixinWaiterGui yixinWaiterGui = new YixinWaiterGui(newWaiter, waiter_count);
 		newWaiter.setGui(yixinWaiterGui);
-		getAnimationPanel().addGui(yixinWaiterGui);
+		animationPanel().addGui(yixinWaiterGui);
 		return newWaiter;
 	}
 
@@ -102,7 +102,7 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		return waiter_count;
 	}
 	
-	public YixinAnimationPanel getAnimationPanel() {
+	public YixinAnimationPanel animationPanel() {
 		return this._animationPanel;
 	}
 
@@ -110,21 +110,21 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	public void generateCashierGui() {
 		YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)cashier);
 		((YixinCashierRole)cashier).setGui(yixinCashierGui);
-		getAnimationPanel().addGui(yixinCashierGui);
+		animationPanel().addGui(yixinCashierGui);
 	}
 
 	@Override
 	public void generateCookGui() {
 		YixinCookGui yixinCookGui = new YixinCookGui((YixinCookRole)cook);
 		((YixinCookRole)cook).setGui(yixinCookGui);
-		getAnimationPanel().addGui(yixinCookGui);		
+		animationPanel().addGui(yixinCookGui);		
 	}
 
 	@Override
 	public void generateHostGui() {
 		YixinHostGui hostGui = new YixinHostGui(host);
 		host.setGui(hostGui);
-		getAnimationPanel().addGui(hostGui);		
+		animationPanel().addGui(hostGui);		
 	}
 
 }

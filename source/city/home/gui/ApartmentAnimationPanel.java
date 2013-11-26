@@ -76,11 +76,14 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     
     public static final int TVDIM = 10;
 
+    public static final int FRONTDOORX = 0;
+    public static final int FRONTDOORY = 0;
+
     public static final int WINDOWX = 682;
     public static final int WINDOWY = 360;
     
     
-    private List<Gui> guis = new ArrayList<Gui>();
+    private List<Gui> _guis = new ArrayList<Gui>();
     
     public ApartmentAnimationPanel()
     {
@@ -93,7 +96,7 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		
-		  for(Gui gui : guis) {
+		  for(Gui gui : _guis) {
 	            if (gui.isPresent()) {
 	                gui.updatePosition();
 	            }
@@ -138,14 +141,12 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(WALLX3, WALLY3, WALLDIMH, WALLDIMV);
         g2.fillRect(WALLX4, WALLY4, WALLDIMH, WALLDIMV);
 
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.draw(g2);
-            }
+        for(Gui gui : _guis) {
+        	gui.draw(g2);
         }
     }
     
     public void addGui(HomeOccupantGui gui) {
-        guis.add(gui);
+        _guis.add(gui);
     }
 }

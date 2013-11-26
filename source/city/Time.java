@@ -32,7 +32,7 @@ public class Time {
 	
 	private static double time = 8.0; //0.0;
 	private static double counter = 0.25;
-	private static double timeFactor = 16.0;
+	private static double timeFactor = 4.0;
 	
 	static Timer timer;
 	
@@ -54,7 +54,7 @@ public class Time {
 			time = 0;
 			incrementDay();
 		}
-		System.out.printf("Time- %.0f:%.0f", (double)((int)(time)), 60.0*(time - ((int)time)));
+		System.out.printf("Day: " + today() + "; Time- %.0f:%.0f", (double)((int)(time)), 60.0*(time - ((int)time)));
 		if(60.0*(time - ((int)time)) == 0){
 			System.out.print("0");
 		}

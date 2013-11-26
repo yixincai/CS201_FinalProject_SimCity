@@ -20,7 +20,6 @@ public class ApartmentRenterRole extends HomeBuyingRole
 	
 	
 	// -------------------------- CONSTRUCTOR & PROPERTIES ----------------------------
-	public ApartmentRenterRole(PersonAgent person) { super(person); }
 	public ApartmentRenterRole(PersonAgent person, Apartment apartment)
 	{
 		super(person);

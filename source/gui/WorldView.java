@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 @SuppressWarnings("serial")
@@ -104,21 +105,24 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		    g2.fill( b );
 		}
 		
-        for(Gui gui : guis)
-        {
-            if (gui.isPresent())
-            {
-                gui.updatePosition();
-            }
-        }
-        //TODO make guis a synchronized list
-        for(Gui gui : guis)
-        {
-            if (gui.isPresent())
-            {
-                gui.draw(g2);
-            }
-        } 
+		try
+		{
+	        for(Gui gui : guis)
+	        {
+	            if (gui.isPresent())
+	            {
+	                gui.updatePosition();
+	            }
+	        }
+	        //TODO make guis a synchronized list
+	        for(Gui gui : guis)
+	        {
+	            if (gui.isPresent())
+	            {
+	                gui.draw(g2);
+	            }
+	        } 
+		} catch(ConcurrentModificationException e) { } // do nothing, because this function will get called again
         
         for ( int i=0; i<lanes.size(); i++ ) {
 			Lane l = lanes.get(i);

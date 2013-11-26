@@ -102,16 +102,13 @@ public class PersonAgent extends Agent
 		_money = money; 
 		acquireOccupation(occupationType);
 		acquireHome(housingType);
-		setNewCommuterRole();
+		generateAndSetCommuterRole();
+		setNextRole(_homeOccupantRole);
 	}
 	/** Sets _commuterRole to a new CommuterRole */
-	public void setNewCommuterRole()
+	public void generateAndSetCommuterRole()
 	{
 		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
-		_commuterRole.setDestination(_homeOccupantRole.place());
-		
-		_currentRole = _commuterRole;
-		_commuterRole.active = true;
 	}
 	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
 	 * @param homeType Either "house" or "apartment" */
@@ -125,7 +122,7 @@ public class PersonAgent extends Agent
 				List<Apartment> apartments = b.apartments();
 				for(Apartment a : apartments)
 				{
-					HomeOccupantRole newHomeOccupantRole = a.tryAcquireHomeOccupantRole(this);
+					HomeOccupantRole newHomeOccupantRole = a.tryGenerateHomeOccupantRole(this);
 					if(newHomeOccupantRole != null)
 					{
 						_homeOccupantRole = newHomeOccupantRole;
@@ -140,7 +137,7 @@ public class PersonAgent extends Agent
 			List<House> houses = Directory.houses();
 			for(House h : houses)
 			{
-				HomeOccupantRole newHomeOccupantRole = h.tryAcquireHomeOccupantRole(this);
+				HomeOccupantRole newHomeOccupantRole = h.tryGenerateHomeOccupantRole(this);
 				if(newHomeOccupantRole != null)
 				{
 					_homeOccupantRole = newHomeOccupantRole;
@@ -169,6 +166,7 @@ public class PersonAgent extends Agent
 		{
 			// note: if control reaches a break statement, the new occupation will be a waiter.
 			case "Waiter":
+				_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
 				break; // waiter is generated right after this switch statement
 			case "Restaurant Cashier":
 				newOccupation = null;
@@ -216,7 +214,7 @@ public class PersonAgent extends Agent
 						_occupation = newOccupation;
 						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui();
 						((BankTellerRole)_occupation).setGui(bankTellerRoleGui);
-						((Bank)_occupation.place()).getAnimationPanel().addGui(bankTellerRoleGui);
+						((Bank)_occupation.place()).animationPanel().addGui(bankTellerRoleGui);
 						return;
 					}
 				}
@@ -231,7 +229,7 @@ public class PersonAgent extends Agent
 						_occupation = newOccupation;
 						BankHostRoleGui bankHostRoleGui = new BankHostRoleGui();
 						((BankHostRole)_occupation).setGui(bankHostRoleGui);
-						((Bank)_occupation.place()).getAnimationPanel().addGui(bankHostRoleGui);
+						((Bank)_occupation.place()).animationPanel().addGui(bankHostRoleGui);
 						return;
 					}
 				}
@@ -246,7 +244,7 @@ public class PersonAgent extends Agent
 						_occupation = newOccupation;
 						MarketCashierGui marketCashierGui = new MarketCashierGui((MarketCashierRole)_occupation);
 						((MarketCashierRole)_occupation).setGui(marketCashierGui);
-						((Market)_occupation.place()).getAnimationPanel().addGui(marketCashierGui);
+						((Market)_occupation.place()).animationPanel().addGui(marketCashierGui);
 						return;
 					}
 				}
@@ -261,15 +259,19 @@ public class PersonAgent extends Agent
 						_occupation = newOccupation;
 						MarketEmployeeGui marketEmployeeGui = new MarketEmployeeGui((MarketEmployeeRole)_occupation);
 						((MarketEmployeeRole)_occupation).setGui(marketEmployeeGui);
-						((Market)_occupation.place()).getAnimationPanel().addGui(marketEmployeeGui);
+						((Market)_occupation.place()).animationPanel().addGui(marketEmployeeGui);
 						return;
 					}
 				}
 				break;
+			// BEGIN HACKS
+			case "Market Customer":
+				//TODO add restaurant and bank customer stuff etc.
+				break;
 		}
-		// Set the occupation to waiter
-		// note: control reaches here either because the value of occupationType is "Waiter" or because no scarce jobs were found (waiter is an unlimited/non-scarce job)
-		_occupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
+		// note: control reaches here because no jobs were found, or occupationType.equals("none")
+		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateCustomerRole(this);
+		
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------
 	public String getName() { return _name; }
@@ -336,23 +338,27 @@ public class PersonAgent extends Agent
 			}
 			
 			// Call current role's scheduler
-			if(_currentRole.pickAndExecuteAnAction()) { 
-				System.out.println("Current Role Scheduler called");
-				return true; 
+			if(_currentRole.pickAndExecuteAnAction())
+			{ 
+				System.out.println("Current Role Scheduler called an action.");
+				return true;
 			}
 		}
 		else // i.e. _currentRole.active == false
 		{
-			System.out.println("Here");
+			System.out.println("Just finished a role");
 			// note: if we get here, a role just finished leaving.
 			_sentCmdFinishAndLeave = false;
 			
 			if(_currentRole == _commuterRole)
 			{
-				if(timeToBeAtWork()) setNextRole(_occupation); // do we need this?
-				// commuter role must have just reached the destination
+				// commuter role must have just reached the destination; we need to shift the current role from the commuter role to whatever next role is.
 				_currentRole = _nextRole;
 				_currentRole.active = true;
+				if(_currentRole == _homeOccupantRole)
+				{
+					_homeOccupantRole.cmdGotHome();
+				}
 				return true;
 			}
 			else
@@ -449,6 +455,12 @@ public class PersonAgent extends Agent
 	}
 	private void actIWhale()
 	{
+		print("\n");
+		print("\n");
+		print("\n");
+		print("\n");
+		print("\n");
+		print("\n");
 		print("*_____________________________________*");
 	}
 	
@@ -457,13 +469,16 @@ public class PersonAgent extends Agent
 	// ------------------------------------------ UTILITIES -------------------------------------
 	private boolean workingToday()
 	{
+		return true;
+		/*// Commenting this out because we're currently not taking account of weekends
 		return ((_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && !_weekday_notWeekend) ||
 				(!(_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && _weekday_notWeekend);
+				*/
 	}
 	private boolean timeToBeAtWork()
 	{
 		return _state.time() > Directory.openingTime() - .5 && // .5 is half an hour
-				_state.time() < Directory.closingTime();
+				_state.time() < Directory.closingTime() + .5;
 	}
 	private void finishAndLeaveCurrentRole()
 	{
@@ -474,10 +489,8 @@ public class PersonAgent extends Agent
 	}
 	private void setNextRole(Role nextRole)
 	{
-		System.out.println("Role set");
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
-		_commuterRole.cmdGoToDestination(nextRole.place());
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
 		stateChanged();
