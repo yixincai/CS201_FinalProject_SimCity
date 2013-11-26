@@ -58,6 +58,25 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 		return this.restaurant;		
 	}
 	
+	public void setHost(TannerRestaurantHost h)
+	{
+		this.host = h;
+	}
+	
+	public void setCook(TannerRestaurantCook c)
+	{
+		this.cook = c;
+	}
+	
+	public void setCashier(TannerRestaurantCashier c)
+	{
+		this.cashier = c;
+	}
+	
+	public void setGui(TannerRestaurantWaiterRoleGui g)
+	{
+		this.myGUI = g;
+	}
 //------------------------------------------Messages---------------------------------------------------------
 	
 	@Override

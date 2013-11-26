@@ -1,5 +1,8 @@
 package city.restaurant.tanner.interfaces;
 
+import city.restaurant.tanner.TannerRestaurantHostRole;
+import city.restaurant.tanner.gui.TannerRestaurantWaiterRoleGui;
+
 
 public interface TannerRestaurantWaiter 
 {
@@ -22,4 +25,12 @@ public interface TannerRestaurantWaiter
 	public void msgHereIsTheChek(double amount, TannerRestaurantCustomer c);
 	
 	public void msgGoodBye(TannerRestaurantCustomer c);
+
+	public void setHost(TannerRestaurantHost host);
+
+	public void setCook(TannerRestaurantCook cook);
+
+	public void setCashier(TannerRestaurantCashier cashier);
+	
+	public void setGui(TannerRestaurantWaiterRoleGui g);
 }

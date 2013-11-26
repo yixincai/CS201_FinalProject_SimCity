@@ -1,6 +1,7 @@
 package city.restaurant.tanner.interfaces;
 
 import city.market.interfaces.MarketCashier;
+import city.restaurant.tanner.gui.TannerRestaurantCashierRoleGui;
 
 
 public interface TannerRestaurantCashier
@@ -14,4 +15,7 @@ public interface TannerRestaurantCashier
 	public void msgHereIsAMarketBill(double amount, MarketCashier m);
 	
 	public void msgHereIsYourChange(double change, MarketCashier m);
+
+	public void setGui(TannerRestaurantCashierRoleGui tannerCashierGui);
+	
 }

@@ -68,6 +68,11 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 	{
 		return null;
 	}
+	
+	public void setGui(TannerRestaurantCookRoleGui g)
+	{
+		this.myGui = g;
+	}
 
 //------------------------------------------Messages------------------------------------------------------------------
 	
@@ -159,32 +164,7 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 				return true;
 			}
 			
-			if(marketOrders.size() > 0)
-			{
-				synchronized(marketOrders)
-				{
-					for(int i = 0; i < marketOrders.size(); i++)
-					{
-						if(marketOrders.get(i).orderState == OrderState.orderRecieved)
-						{
-							AskForMarketOrderPrice(marketOrders.get(i));
-							return true;
-						}
-					}
-				}
-				
-				synchronized(marketOrders)
-				{
-					for(int i = 0; i < marketOrders.size(); i++)
-					{
-						if(marketOrders.get(i).orderState == OrderState.readyToPay)
-						{
-							PayMarket(marketOrders.get(i));
-							return true;
-						}
-					}
-				}
-			}
+			
 			
 			else if(orders.size() > 0)
 			{

@@ -1,7 +1,10 @@
 package city.restaurant.tanner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import gui.BuildingInteriorAnimationPanel;
 import gui.WorldViewBuilding;
@@ -10,14 +13,33 @@ import city.PersonAgent;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.tanner.gui.TannerRestaurantAnimationPanel;
+import city.restaurant.tanner.gui.TannerRestaurantCashierRoleGui;
+import city.restaurant.tanner.gui.TannerRestaurantCookRoleGui;
+import city.restaurant.tanner.gui.TannerRestaurantCustomerRoleGui;
+import city.restaurant.tanner.gui.TannerRestaurantHostRoleGui;
+import city.restaurant.tanner.gui.TannerRestaurantWaiterRoleGui;
+import city.restaurant.tanner.interfaces.TannerRestaurantCashier;
+import city.restaurant.tanner.interfaces.TannerRestaurantCook;
+import city.restaurant.tanner.interfaces.TannerRestaurantHost;
+import city.restaurant.tanner.interfaces.TannerRestaurantWaiter;
 import city.restaurant.yixin.YixinCashierRole;
 import city.restaurant.yixin.YixinCookRole;
+import city.restaurant.yixin.YixinCustomerRole;
 import city.restaurant.yixin.YixinHostRole;
+import city.restaurant.yixin.YixinNormalWaiterRole;
+import city.restaurant.yixin.YixinSharedDataWaiterRole;
+import city.restaurant.yixin.YixinWaiterRole;
+import city.restaurant.yixin.gui.YixinCashierGui;
+import city.restaurant.yixin.gui.YixinCookGui;
+import city.restaurant.yixin.gui.YixinCustomerGui;
+import city.restaurant.yixin.gui.YixinHostGui;
+import city.restaurant.yixin.gui.YixinWaiterGui;
 
 public class TannerRestaurant extends Restaurant
 {
 	
 //------------------------------------DATA----------------------------------------------------------------
+	public ProducerConsumerMonitor revolvingStand = new ProducerConsumerMonitor();
 	TannerRestaurantHostRole host;
 	TannerRestaurantCashierRole cashier;
 	TannerRestaurantCookRole cook;
@@ -27,15 +49,19 @@ public class TannerRestaurant extends Restaurant
 	public static int numTables = 3;
 	public static int numDishes = 4;
 	TannerRestaurantAnimationPanel animationPanel;
+	int count = -1;
+	int waiter_count = -1;
+	List<TannerRestaurantWaiter> waiters;
 	
 	
 	public TannerRestaurant(String name, WorldViewBuilding worldViewBuilding, BuildingInteriorAnimationPanel animationPanel)
 	{
 		super(name, worldViewBuilding);
 		this.animationPanel = (TannerRestaurantAnimationPanel)animationPanel.getBuildingAnimation();
+		waiters = new ArrayList<TannerRestaurantWaiter>();
 		host = new TannerRestaurantHostRole(null, this, "Host");
 		cashier = new TannerRestaurantCashierRole(null, this);
-		cook = new TannerRestaurantCookRole(null, this, cashier);	
+		cook = new TannerRestaurantCookRole(null, this, cashier, "Money Bags");	
 	}
 
 	//For Unit testing DO NOT DELETE
@@ -44,43 +70,72 @@ public class TannerRestaurant extends Restaurant
 		super("Tanner's Restaurant");
 		cashier = new TannerRestaurantCashierRole(null,this);
 		host = new TannerRestaurantHostRole(null,this,"Host");
-		cook = new TannerRestaurantCookRole(null, this, cashier);
+		cook = new TannerRestaurantCookRole(null, this, cashier, "Money Bags");
 	}
 
 	@Override
-	public Role getHostRole() {
-		// TODO Auto-generated method stub
-		return null;
+	public Role getHostRole() 
+	{
+		return this.host;
 	}
 
 	@Override
-	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
-		// TODO Auto-generated method stub
-		return null;
+	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) 
+	{
+		count++;
+		if (count > 10){
+			count = -1;
+		}
+		TannerRestaurantCustomerRole customer = new TannerRestaurantCustomerRole(person, this, person.getName(), count);
+		TannerRestaurantCustomerRoleGui tannerCustomerGui = new TannerRestaurantCustomerRoleGui(customer);
+		customer.setGui(tannerCustomerGui);
+		this.animationPanel.addGui(tannerCustomerGui);
+		return customer;
 	}
 
 	@Override
-	public Role generateWaiterRole(PersonAgent person) {
-		// TODO Auto-generated method stub
-		return null;
+	public Role generateWaiterRole(PersonAgent person)
+	{
+		int i = (new Random()).nextInt(2);
+		TannerRestaurantWaiter newWaiter;
+		if (i == 0)
+			newWaiter = new TannerRestaurantRegularWaiterRole(person, this, person.getName());
+		else
+			newWaiter = new TannerRestaurantSharedDataWaiterRole(person, this, person.getName());
+		newWaiter.setCashier((TannerRestaurantCashier)cashier);
+		newWaiter.setCook((TannerRestaurantCook)cook);
+		newWaiter.setHost(host);
+		waiters.add(newWaiter);
+		waiter_count++;
+		TannerRestaurantWaiterRoleGui tannerWaiterGui = new TannerRestaurantWaiterRoleGui(newWaiter, waiter_count);
+		newWaiter.setGui(tannerWaiterGui);
+		this.animationPanel.addGui(tannerWaiterGui);
+		host.addWaiter(newWaiter);
+		return (Role) newWaiter;
 	}
 
 	@Override
-	public void generateCashierGui() {
-		// TODO Auto-generated method stub
-		
+	public void generateCashierGui() 
+	{
+		TannerRestaurantCashierRoleGui tannerCashierGui = new TannerRestaurantCashierRoleGui((TannerRestaurantCashier)cashier);
+		((TannerRestaurantCashier)cashier).setGui(tannerCashierGui);
+		this.animationPanel.addGui(tannerCashierGui);		
 	}
 
 	@Override
-	public void generateCookGui() {
-		// TODO Auto-generated method stub
-		
+	public void generateCookGui() 
+	{
+		TannerRestaurantCookRoleGui tannerCookGui = new TannerRestaurantCookRoleGui((TannerRestaurantCook)cook);
+		((TannerRestaurantCook)cook).setGui(tannerCookGui);
+		this.animationPanel.addGui(tannerCookGui);			
 	}
 
 	@Override
-	public void generateHostGui() {
-		// TODO Auto-generated method stub
-		
+	public void generateHostGui()
+	{
+		TannerRestaurantHostRoleGui tannerHostGui = new TannerRestaurantHostRoleGui((TannerRestaurantHost)host);
+		((TannerRestaurantHost)host).setGui(tannerHostGui);
+		this.animationPanel.addGui(tannerHostGui);		
 	}
 
 }

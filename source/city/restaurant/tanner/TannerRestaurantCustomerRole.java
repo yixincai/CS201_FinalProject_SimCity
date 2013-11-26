@@ -45,11 +45,13 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 	State myState;
 	Event myEvent;
 	String name_;
+	int customerNumber;
 	
 //---------------------------------------------Constructor-----------------------------------------------------	
-	public TannerRestaurantCustomerRole(PersonAgent person, TannerRestaurant rest, String name) 
+	public TannerRestaurantCustomerRole(PersonAgent person, TannerRestaurant rest, String name, int count) 
 	{
 		super(person);
+		customerNumber = count;
 		log = new utilities.EventLog();
 		name_ = name;
 		myState = State.none;
@@ -68,6 +70,12 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 	{
 		return this.restaurant;
 	}
+	
+	public void setGui(TannerRestaurantCustomerRoleGui g)
+	{
+		myGui = g;
+	}
+	
 	
 //---------------------------------------------Messages----------------------------------------------------------
 	@Override

@@ -50,6 +50,16 @@ public class TannerRestaurantHostRole extends Role implements TannerRestaurantHo
 		return this.restaurant;
 	}
 	
+	public void addWaiter(TannerRestaurantWaiter w)
+	{
+		myWaiters.add(new MyWaiter(w));
+	}
+	
+	public void setGui(TannerRestaurantHostRoleGui g)
+	{
+		this.myGui = g;
+	}
+	
 	
 //-----------------------------------------Messages-----------------------------------------------------------------------------	
 

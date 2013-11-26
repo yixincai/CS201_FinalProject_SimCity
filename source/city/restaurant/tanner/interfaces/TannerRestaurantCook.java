@@ -3,6 +3,7 @@ package city.restaurant.tanner.interfaces;
 import java.awt.Point;
 
 import city.market.interfaces.MarketCashier;
+import city.restaurant.tanner.gui.TannerRestaurantCookRoleGui;
 
 
 public interface TannerRestaurantCook 
@@ -16,4 +17,7 @@ public interface TannerRestaurantCook
 	public void msgHereIsTheBill(double amount, MarketCashier m);
 
 	public Point getPosition();
+
+	public void setGui(TannerRestaurantCookRoleGui tannerCookGui);
+	
 }
