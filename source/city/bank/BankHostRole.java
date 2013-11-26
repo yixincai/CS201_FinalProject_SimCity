@@ -72,11 +72,11 @@ public class BankHostRole extends Role implements BankHost {
 	
 	private void actLeaveBank(){
 		gui.DoLeaveBank();
-		try{
+		/*try{
 			hostSem.acquire();
 		} catch (Exception e){
 			e.printStackTrace();
-		}
+		} */
 		active = false;
 		stateChanged();
 	}
@@ -99,5 +99,9 @@ public class BankHostRole extends Role implements BankHost {
 	}
 	public void setGui(BankHostRoleGui g) {
 		gui = g;
+	}
+	
+	public void releaseSem(){
+		hostSem.release();
 	}
 }

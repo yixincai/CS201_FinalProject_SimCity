@@ -36,7 +36,7 @@ public class MarketEmployeeGui extends JPanel implements Gui {
         else if (yPos > yDestination)
             yPos--;
         if (yPos == yDestination && xPos == xDestination && command == Command.GoToSeat){
-        	System.out.println("release semaphore");
+        	//System.out.println("release semaphore");
         	command = Command.noCommand;
         	role.msgAnimationFinished();
         }
@@ -50,28 +50,33 @@ public class MarketEmployeeGui extends JPanel implements Gui {
     }
     
 	public void PickUp(String item){
-		System.out.println("Getting things!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		if (item.equals("Meal")){
+			System.out.println("Getting meal");
 			xDestination = 400;
 			yDestination = 50;
 		}
 		else if (item.equals("Car")){
+			System.out.println("Getting car");
 			xDestination = 430;
 			yDestination = 50;
 		}
 		else if (item.equals("Steak")){
+			System.out.println("Getting Steak");
 			xDestination = 460;
 			yDestination = 50;
 		}
 		else if (item.equals("Chicken")){
+			System.out.println("Getting chicken");
 			xDestination = 490;
 			yDestination = 50;
 		}
 		else if (item.equals("Salad")){
+			System.out.println("Getting salad");
 			xDestination = 520;
 			yDestination = 50;
 		}
 		else if (item.equals("Pizza")){
+			System.out.println("Getting pizza");
 			xDestination = 450;
 			yDestination = 50;
 		}
@@ -85,7 +90,7 @@ public class MarketEmployeeGui extends JPanel implements Gui {
 	}
 	
 	public void GoToTruck(){
-		xDestination = 600 - xGap;
+		xDestination = 650 - xGap;
 		command=Command.GoToSeat;
 	}
 	

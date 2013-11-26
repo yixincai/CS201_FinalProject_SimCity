@@ -6,6 +6,7 @@ package gui;
  */
 
 import java.awt.CardLayout;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -137,7 +138,7 @@ public class MainGui extends JFrame
         //Initializing houses
         for(int i = 1; i < 6; i++){
             WorldViewBuilding b4 = _worldView.addBuilding(1, i, 20);
-    		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House", new city.home.gui.HomeAnimationPanel());
+    		BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House", new city.home.gui.HouseAnimationPanel());
     		b4.setBuildingPanel(bp4);
     		House house = new House("House " + i, b4, bp4);
     		Directory.addPlace(house);
@@ -203,7 +204,7 @@ public class MainGui extends JFrame
   	  cPanel.addPerson("Yixin5", 300, "Bank Host", true, "house");
   	  cPanel.addPerson("Yixin6", 300, "Market Cashier", true, "house");
   	  cPanel.addPerson("Yixin7", 300, "Market Employee", true, "house");
-
+  	  cPanel.addPerson("Yixin8", 300, "Waiter", true, "house");
   	  Time.startTimer();
 	}
 	

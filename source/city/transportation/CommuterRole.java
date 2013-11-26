@@ -29,7 +29,7 @@ public class CommuterRole extends Role implements Commuter{
 	CommuterGui _gui;
 	
 	public enum TravelState{choosing, 
-		choseCar, driving, 
+		choseCar, goToCar, atCar, driving, 
 		choseWalking, walking, 
 		choseBus, goingToBusStop, atBusStop, waitingAtBusStop, busIsHere, ridingBus, busIsAtDestination, gettingOffBus,
 			atDestination, done, none};
@@ -105,10 +105,18 @@ public class CommuterRole extends Role implements Commuter{
 	}
 	@Override
 	public void msgGetOffBus(Place busstop){
+		_currentPlace = busstop;
 		_tState = TravelState.busIsAtDestination;
 		_busStop = (BusStopObject)busstop;
 		stateChanged();
 		print("Getting off bus " + _bus.getName());
+	}
+	
+	//Car Messages
+	public void msgAtCar(){
+		_tState = TravelState.atCar;
+		stateChanged();
+		print("At car");
 	}
 	
 	//Msg At Destination from GUI
@@ -162,9 +170,14 @@ public class CommuterRole extends Role implements Commuter{
 		
 		//Driving
 		if(_tState == TravelState.choseCar){
+			actGoToCar();
+			return true;
+		}
+		if(_tState == TravelState.atCar){
 			actDriving();
 			return true;
 		}
+		
 
 		
 		// TODO Auto-generated method stub
@@ -224,7 +237,7 @@ public class CommuterRole extends Role implements Commuter{
 	public void actAtBusStop(){
 		_tState = TravelState.waitingAtBusStop;
 		_busStop = Directory.getNearestBusStopToDestination(_destination);
-		_busStop.addPerson(this);
+		//_busStop.addCommuterRole(this);
 	}
 	public void actGetOnBus(){
 		_tState = TravelState.ridingBus;
@@ -242,9 +255,14 @@ public class CommuterRole extends Role implements Commuter{
 	}
 
 	//Driving
+	public void actGoToCar(){
+		_tState = TravelState.goToCar;
+		_gui.goToCar(_car, _destination);
+	}
+	
 	public void actDriving(){
 		_tState = TravelState.driving;
-		_gui.goToCar(_car, _destination);
+		_car.goToDestination(_destination);
 	}
 	
 	public void actAtDestination(){

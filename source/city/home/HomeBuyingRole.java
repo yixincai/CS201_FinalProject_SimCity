@@ -1,6 +1,7 @@
 package city.home;
 
 import city.PersonAgent;
+import city.Place;
 import agent.Role;
 
 public abstract class HomeBuyingRole extends Role
@@ -11,6 +12,6 @@ public abstract class HomeBuyingRole extends Role
 	
 	
 	// ------------------------ CONSTRUCTOR & PROPERTIES --------------------------
-	public HomeBuyingRole(PersonAgent person) { super(person); }
+	public HomeBuyingRole(PersonAgent person, Place place) { super(person, place); }
 	public void setLandlord(LandlordRole landlord) { _landlord = landlord; }
 }

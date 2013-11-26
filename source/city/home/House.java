@@ -8,13 +8,13 @@ import gui.BuildingInteriorAnimationPanel;
 import gui.WorldViewBuilding;
 import city.PersonAgent;
 import city.Place;
-import city.home.gui.HomeAnimationPanel;
+import city.home.gui.HouseAnimationPanel;
 import city.interfaces.PlaceWithAnimation;
 
 public class House extends Place implements Home, PlaceWithAnimation {
 	
 	// ------------------------------------- DATA -----------------------------------
-	HomeAnimationPanel _animationPanel;
+	HouseAnimationPanel _animationPanel;
 	private Semaphore _occupiedSemaphore = new Semaphore(1, true);
 	
 	
@@ -25,7 +25,7 @@ public class House extends Place implements Home, PlaceWithAnimation {
 	}
 	public House(String name, WorldViewBuilding wvb, BuildingInteriorAnimationPanel bp){
 		super("Home", wvb);
-		_animationPanel = (HomeAnimationPanel)bp.getBuildingAnimation();
+		_animationPanel = (HouseAnimationPanel)bp.getBuildingAnimation();
 	}
 	public Place place() { return this; } // required in Home interface
 	public JPanel getAnimationPanel() { return _animationPanel; }

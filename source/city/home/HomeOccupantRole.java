@@ -1,5 +1,7 @@
 package city.home;
 
+import java.util.concurrent.Semaphore;
+
 import city.PersonAgent;
 import city.Place;
 import city.home.gui.HomeOccupantGui;
@@ -22,9 +24,11 @@ public abstract class HomeOccupantRole extends Role
 	
 	private int _mealCount = 2; // Starting people out with 2 meals
 
-	private Home _home = null;
+	protected Home _home = null;
 	
-	private HomeOccupantGui _gui;
+	protected HomeOccupantGui _gui;
+	
+	private Semaphore _reachedDestination = new Semaphore(0, true);
 	
 	
 	
@@ -68,8 +72,15 @@ public abstract class HomeOccupantRole extends Role
 		_command = Command.GO_TO_BED;
 		stateChanged();
 	}
-	public void cmdFinishAndLeave() {
+	public void cmdFinishAndLeave()
+	{
 		_command = Command.LEAVE;
+		stateChanged();
+	}
+	public void msgReachedDestination() // from HomeOccupantGui
+	{
+		_reachedDestination.release();
+		// no stateChanged() because this message just releases the semaphore
 	}
 	public void msgWakeUp()
 	{
@@ -93,7 +104,7 @@ public abstract class HomeOccupantRole extends Role
 		}
 		else if(_state == State.COOKING)
 		{
-			
+			// don't check for commands
 		}
 		else if(_state == State.SLEEPING)
 		{
@@ -140,5 +151,15 @@ public abstract class HomeOccupantRole extends Role
 		print("Finished leaving home");
 		_state = State.AWAY;
 		active = false;
+	}
+	
+	
+	
+	// ------------------------------------ UTILITIES -----------------------------------
+	private void waitForGuiToReachDestination()
+	{
+		// for DEBUG: print("Waiting for gui to reach destination.");
+		try { _reachedDestination.acquire(); }
+		catch (InterruptedException e) { e.printStackTrace(); }
 	}
 }

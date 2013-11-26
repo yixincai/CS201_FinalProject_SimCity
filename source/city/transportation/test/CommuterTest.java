@@ -47,8 +47,8 @@ public class CommuterTest extends TestCase{
 		WV1 = new WorldViewBuilding(100, 100, 10, 10);
 		market1 = new Market("Market 1", WV1);
 		
-		busStop = new BusStopObject("bus stop", null);
-		busStop1 = new BusStopObject("bus stop 1", null);
+		busStop = new BusStopObject("bus stop", WV);
+		busStop1 = new BusStopObject("bus stop 1", WV1);
 		car = new CarObject();
 	}
 	

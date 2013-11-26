@@ -81,7 +81,7 @@ public class YixinCookGui extends JPanel implements Gui{
 		else if (yPos > yDestination)
 			yPos--;
 		if (yPos == yDestination && xPos == xDestination && command == Command.GoToSeat){
-			System.out.println("release semaphore");
+			//System.out.println("release semaphore");
 			command = Command.noCommand;
 			agent.releaseSemaphore();
 		}

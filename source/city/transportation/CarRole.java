@@ -19,6 +19,10 @@ public class CarRole {
 		commuter = person;
 	}
 	
+	public Place place() {
+		//return _currentPlace; //TODO need to implement _currentPlace (in constructor, data member, etc) 
+	}
+	
 	public void msgGotInCar(PersonAgent person, String destination){
 	    destinations.add(destination);
 	    cState = cState.turnedOn;

@@ -19,7 +19,7 @@ public class YixinWaiterGui extends JPanel implements Gui {
 	private int xPos, yPos = 90;//waiter current position
 	private int xDestination, yDestination = 90;//destination
 	public static int xTable = 200;
-	public static int yTable = 100;
+	public static int yTable = 150;
 	public static int xGap = 30;
 	public static int yGap = 30;
 	int count;

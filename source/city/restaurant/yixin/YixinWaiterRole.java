@@ -5,6 +5,7 @@ import java.util.concurrent.Semaphore;
 
 import agent.Role;
 import city.PersonAgent;
+import city.Place;
 import city.restaurant.yixin.gui.YixinWaiterGui;
 
 public abstract class YixinWaiterRole extends Role {//implements Waiter{
@@ -50,6 +51,10 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 
 	public void setCashier(YixinCashierRole c){
 		this.cashier = c;
+	}
+	
+	public Place place() {
+		return restaurant;
 	}
 
 	public void releaseSemaphore(){

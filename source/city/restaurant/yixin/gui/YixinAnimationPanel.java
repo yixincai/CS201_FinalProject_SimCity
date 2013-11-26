@@ -14,7 +14,7 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     private final int TABLEX1 = 450;
     private final int TABLEX2 = 300;
     private final int TABLEX3 = 150;
-    private final int TABLEY = 100;
+    private final int TABLEY = 150;
     private final int GAPX = 50;
     private final int GAPY = 50;
     private final int ICON_X = 30;
@@ -42,6 +42,12 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     }
 
 	public void actionPerformed(ActionEvent e) {
+		for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+        }
+		
 		repaint();  //Will have paintComponent called
 	}
 	
@@ -71,11 +77,6 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     	g2.fillRect(140, 250, ICON_X, ICON_Y);
     	g2.fillRect(300, 250, ICON_X, ICON_Y);
     	g2.fillRect(430, 250, ICON_X, ICON_Y);
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
