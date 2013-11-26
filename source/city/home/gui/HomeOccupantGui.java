@@ -1,5 +1,6 @@
 package city.home.gui;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import city.home.HomeOccupantRole;
@@ -14,6 +15,13 @@ public abstract class HomeOccupantGui implements Gui {
 	// ---------------------------------- DATA ------------------------------------------
 	protected HomeOccupantRole _role;
 	protected boolean _goingSomewhere = false;
+	protected boolean _isPresent = false;
+	
+	private int _positionX = 0;
+	private int _positionY = 0;
+	
+	private int _destinationX = 0;
+	private int _destinationY = 0;
 	
 	
 	
@@ -27,11 +35,16 @@ public abstract class HomeOccupantGui implements Gui {
 	protected abstract int kitchenY();
 	protected abstract int idleX();
 	protected abstract int idleY();
-	
+	protected abstract int frontDoorX();
+	protected abstract int frontDoorY();
+
 	@Override
 	public boolean isPresent() {
-		// TODO Auto-generated method stub
-		return false;
+		return _isPresent;
+	}
+	
+	public void setPresent(boolean present){
+		this._isPresent = present;
 	}
 	
 	
@@ -39,10 +52,14 @@ public abstract class HomeOccupantGui implements Gui {
 	// ----------------------------------- COMMANDS ------------------------------------------
 	// (from HomeOccupantRole)
 	public void doGoIdle() {
-		//TODO set destination
+		_destinationX = idleX();
+		_destinationY = idleY();
 		_goingSomewhere = false;
 	}
 	public void doGotHome() {
+		_positionX = frontDoorX();
+		_positionY = frontDoorY();
+		setPresent(true);
 		doGoIdle();
 	}
 	public void doGoToKitchen() {
@@ -69,15 +86,26 @@ public abstract class HomeOccupantGui implements Gui {
 	// ------------------------------------ METHODS ----------------------------------------
 	@Override
 	public void updatePosition() {
-		// TODO Auto-generated method stub
-		// TODO if(reached destination && _goingSomewhere) { _role.msgReachedDestination(); } (see restaurant.gui.WaiterGui)
+		// Update position
+		if (_positionX < _destinationX) _positionX++;
+		else if (_positionX > _destinationX) _positionX--;
+
+		if (_positionY < _destinationY) _positionY++;
+		else if (_positionY > _destinationY) _positionY--;
+		
+		// Check if reached destination
+		if(_positionX == _destinationX && _positionY == _destinationY && _goingSomewhere){
+			_goingSomewhere = false;
+			setPresent(false);
+			_role.msgReachedDestination();
+		}
 		// TODO if(reached destination && destination is front door) { setPresent(false); } (also see restaurant.gui.WaiterGui)
 	}
 	@Override
 	public void draw(Graphics2D g) {
-		// TODO Auto-generated method stub
-		
+		if(_isPresent){
+			g.setColor(Color.GREEN);
+			g.fillRect(_positionX, _positionY, 20, 20);
+		}
 	}
-
-
 }

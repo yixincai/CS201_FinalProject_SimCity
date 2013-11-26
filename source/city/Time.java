@@ -32,7 +32,7 @@ public class Time {
 	
 	private static double time = 8.0; //0.0;
 	private static double counter = 0.25;
-	private static double timeFactor = 16.0;
+	private static double timeFactor = 4.0;
 	
 	static Timer timer;
 	

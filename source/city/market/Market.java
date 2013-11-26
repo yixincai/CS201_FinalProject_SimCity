@@ -89,7 +89,7 @@ public class Market extends Place implements PlaceWithAnimation {
 		return this.businessAccountNumber;
 	}
 	
-	public MarketAnimationPanel getAnimationPanel() {
+	public MarketAnimationPanel animationPanel() {
 		return animationPanel;
 	}
 }

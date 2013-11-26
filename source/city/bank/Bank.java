@@ -37,7 +37,7 @@ public class Bank extends Place implements PlaceWithAnimation {
 		tellers.add(teller);
 	}
 
-	public BankAnimationPanel getAnimationPanel() {
+	public BankAnimationPanel animationPanel() {
 		return _animationPanel;
 	}
 

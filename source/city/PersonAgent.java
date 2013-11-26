@@ -214,7 +214,7 @@ public class PersonAgent extends Agent
 						_occupation = newOccupation;
 						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui();
 						((BankTellerRole)_occupation).setGui(bankTellerRoleGui);
-						((Bank)_occupation.place()).getAnimationPanel().addGui(bankTellerRoleGui);
+						((Bank)_occupation.place()).animationPanel().addGui(bankTellerRoleGui);
 						return;
 					}
 				}
@@ -229,7 +229,7 @@ public class PersonAgent extends Agent
 						_occupation = newOccupation;
 						BankHostRoleGui bankHostRoleGui = new BankHostRoleGui();
 						((BankHostRole)_occupation).setGui(bankHostRoleGui);
-						((Bank)_occupation.place()).getAnimationPanel().addGui(bankHostRoleGui);
+						((Bank)_occupation.place()).animationPanel().addGui(bankHostRoleGui);
 						return;
 					}
 				}
@@ -244,7 +244,7 @@ public class PersonAgent extends Agent
 						_occupation = newOccupation;
 						MarketCashierGui marketCashierGui = new MarketCashierGui((MarketCashierRole)_occupation);
 						((MarketCashierRole)_occupation).setGui(marketCashierGui);
-						((Market)_occupation.place()).getAnimationPanel().addGui(marketCashierGui);
+						((Market)_occupation.place()).animationPanel().addGui(marketCashierGui);
 						return;
 					}
 				}
@@ -259,7 +259,7 @@ public class PersonAgent extends Agent
 						_occupation = newOccupation;
 						MarketEmployeeGui marketEmployeeGui = new MarketEmployeeGui((MarketEmployeeRole)_occupation);
 						((MarketEmployeeRole)_occupation).setGui(marketEmployeeGui);
-						((Market)_occupation.place()).getAnimationPanel().addGui(marketEmployeeGui);
+						((Market)_occupation.place()).animationPanel().addGui(marketEmployeeGui);
 						return;
 					}
 				}
@@ -355,6 +355,10 @@ public class PersonAgent extends Agent
 				// commuter role must have just reached the destination; we need to shift the current role from the commuter role to whatever next role is.
 				_currentRole = _nextRole;
 				_currentRole.active = true;
+				if(_currentRole == _homeOccupantRole)
+				{
+					_homeOccupantRole.cmdGotHome();
+				}
 				return true;
 			}
 			else
@@ -474,7 +478,7 @@ public class PersonAgent extends Agent
 	private boolean timeToBeAtWork()
 	{
 		return _state.time() > Directory.openingTime() - .5 && // .5 is half an hour
-				_state.time() < Directory.closingTime();
+				_state.time() < Directory.closingTime() + .5;
 	}
 	private void finishAndLeaveCurrentRole()
 	{

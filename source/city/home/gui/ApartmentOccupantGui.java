@@ -108,4 +108,14 @@ public class ApartmentOccupantGui extends HomeOccupantGui {
 		return 0;
 	}
 
+	@Override
+	protected int frontDoorX() {
+		return ApartmentAnimationPanel.FRONTDOORX;
+	}
+
+	@Override
+	protected int frontDoorY() {
+		return ApartmentAnimationPanel.FRONTDOORY;
+	}
+
 }

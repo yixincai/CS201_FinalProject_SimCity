@@ -43,7 +43,7 @@ public class ApartmentBuilding extends Place implements PlaceWithAnimation {
 		return newList;
 	}
 	public LandlordRole landlord() { return _landlord; }
-	public JPanel getAnimationPanel() { return _animationPanel; }
+	public ApartmentAnimationPanel animationPanel() { return _animationPanel; }
 	public LandlordRole tryAcquireLandlordRole() {
 		if(_landlordSemaphore.tryAcquire()) {
 			return _landlord;

@@ -35,7 +35,9 @@ public class Apartment implements Home
 		if(_occupiedSemaphore.tryAcquire())
 		{
 			// possibly add a function to set the occupant of this House
-			return new ApartmentOccupantRole(person, this);
+			ApartmentOccupantRole newRole = new ApartmentOccupantRole(person, this);
+			_apartmentBuilding.animationPanel().addGui(newRole.gui());
+			return newRole;
 		}
 		else return null;
 	}

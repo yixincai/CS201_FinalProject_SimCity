@@ -95,7 +95,7 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		return waiter_count;
 	}
 	
-	public RyanRestaurantAnimationPanel getAnimationPanel() {
+	public RyanRestaurantAnimationPanel animationPanel() {
 		return this._animationPanel;
 	}
 

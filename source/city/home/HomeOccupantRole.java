@@ -34,12 +34,17 @@ public abstract class HomeOccupantRole extends Role
 	
 	// --------------------------- CONSTRUCTOR & PROPERTIES --------------------------
 	// ------------- SETUP ------------
-	public HomeOccupantRole(PersonAgent person, Home home) { super(person); setHome(home); }
+	public HomeOccupantRole(PersonAgent person, Home home)
+	{
+		super(person);
+		setHome(home);
+	}
 	public boolean haveHome() { return _home != null; }
 	public State state() { return _state; }
 	public boolean sleeping() { return _state == State.SLEEPING; }
 	public boolean cooking() { return _state == State.COOKING; }
 	public boolean haveFood() { return _mealCount > 0; } //TODO implement _mealCount;
+	public HomeOccupantGui gui() { return _gui; }
 	public Place place()
 	{
 		if(_home != null)
