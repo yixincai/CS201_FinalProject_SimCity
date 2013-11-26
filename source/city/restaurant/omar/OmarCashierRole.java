@@ -100,10 +100,6 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		 * Scheduler.  Determine what action is called for, and do it.
 		 */
 		public boolean pickAndExecuteAnAction() {
-			if(!restaurant.open && orders.isEmpty() && myCustomers.isEmpty()){
-				leave();
-				return true;
-			}
 			synchronized(orders){
 				for(Order o: orders){
 					if(o.orderState == MarketOrderState.payBill){
@@ -136,6 +132,11 @@ public class OmarCashierRole extends RestaurantCashierRole {
 					return true;
 				}
 			}
+		}
+		
+		if(!restaurant.open && orders.isEmpty() && myCustomers.isEmpty()){
+			leave();
+			return true;
 		}
 			return false;
 		}
@@ -181,7 +182,6 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		
 		void leave(){
 			active = false;
-			stateChanged();
 		}
 		
 		//Messages
