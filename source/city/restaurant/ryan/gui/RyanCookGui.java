@@ -190,8 +190,10 @@ public class RyanCookGui implements Gui{
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.BLACK);
-        g.fillRect(xPos, yPos, 20, 20);
+		if(agent.active){
+			g.setColor(Color.BLACK);
+	        g.fillRect(xPos, yPos, 20, 20);
+		}
         
         if(hasIngredients){
         	g.setColor(Color.black);
