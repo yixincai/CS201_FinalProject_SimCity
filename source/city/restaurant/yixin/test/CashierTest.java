@@ -6,6 +6,7 @@ import city.Directory;
 import city.PersonAgent;
 import city.bank.Bank;
 import city.bank.BankTellerRole;
+import city.bank.gui.BankAnimationPanel;
 import city.market.*;
 import city.restaurant.Restaurant;
 import city.restaurant.yixin.*;

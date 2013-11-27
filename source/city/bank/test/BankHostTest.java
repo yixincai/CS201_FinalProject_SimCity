@@ -8,6 +8,7 @@ import city.PersonAgent;
 import city.bank.Bank;
 import city.bank.BankCustomerRole;
 import city.bank.BankHostRole;
+import city.bank.gui.BankAnimationPanel;
 import city.bank.interfaces.BankTeller;
 import city.bank.test.mock.MockBankCustomer;
 import city.bank.test.mock.MockBankHost;
