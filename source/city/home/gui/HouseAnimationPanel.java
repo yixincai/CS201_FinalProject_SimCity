@@ -40,7 +40,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	public static final int BEDWALLY2 = 200;
 	
 	public static final int TVX = 400;
-	public static final int TVY = 100;
+	public static final int TVY = 170;
 	public static final int TVDIM = 10;
 
 	public static final int FRONTDOORX = 100;
