@@ -6,6 +6,7 @@ import city.Directory;
 import city.PersonAgent;
 import city.bank.Bank;
 import city.bank.BankTellerRole;
+import city.bank.gui.BankAnimationPanel;
 import city.market.*;
 import city.restaurant.Restaurant;
 import city.restaurant.yixin.*;
@@ -31,8 +32,6 @@ public class CashierTest extends TestCase
 		Restaurant restaurant = new YixinRestaurant();
 		cashier = (YixinCashierRole)restaurant.cashier;
 		market = new Market();
-		TruckAgent t = new TruckAgent(market);
-		market.truck = t;
 		p =new PersonAgent("Dummy");
 		cashier.setPersonAgent(p);
 		price_list = new HashMap<String, Double>();

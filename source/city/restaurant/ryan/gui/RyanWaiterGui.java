@@ -79,8 +79,10 @@ public class RyanWaiterGui implements Gui {
     }
 
     public void draw(Graphics2D g) {
-        g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, 20, 20);
+    	if(agent.active){
+    		g.setColor(Color.MAGENTA);
+    		g.fillRect(xPos, yPos, 20, 20);
+    	}
         
         if(holding == true){
 			g.setColor(Color.black);

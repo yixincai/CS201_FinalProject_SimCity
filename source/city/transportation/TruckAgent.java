@@ -2,23 +2,16 @@ package city.transportation;
 
 import gui.WorldView;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import agent.Agent;
-import city.Place;
-import city.market.Market;
-import city.market.MarketCashierRole;
-import city.restaurant.Restaurant;
-import city.restaurant.RestaurantCookRole;
+import city.market.*;
+import city.restaurant.*;
 import city.restaurant.omar.OmarRestaurant;
-import city.restaurant.yixin.YixinCookRole;
-import city.transportation.gui.BusAgentGui;
-import city.transportation.gui.TruckAgentGui;
+import city.restaurant.yixin.*;
+import city.transportation.gui.*;
 import city.transportation.interfaces.Truck;
-import city.market.Item;
 
 public class TruckAgent extends Agent implements Truck{
 	List<Package> packages = new ArrayList<Package>();
@@ -28,8 +21,8 @@ public class TruckAgent extends Agent implements Truck{
 	TruckAgentGui _gui;
 	Boolean out = false;
 	
-	enum truckState{parkingLot, docking, drivingtoRestaurant, atRestaurant, drivingtoMarket};
-	truckState trState = truckState.parkingLot;
+	public enum truckState{parkingLot, docking, drivingtoRestaurant, atRestaurant, drivingtoMarket};
+	public truckState trState = truckState.parkingLot;
 	
 	enum packageState{atMarket, inTruck, delivering, unloaded, done};
 
@@ -57,6 +50,12 @@ public class TruckAgent extends Agent implements Truck{
 	
 	//Testing
 	public TruckAgent(Market market){
+		_market = market;
+		_gui = new TruckAgentGui(this, _market);
+	}
+	
+	//Dummy constructor for Yixin's Market tests -- DO NOT CHANGE
+	public TruckAgent(Market market, int dummy){
 		_market = market;
 	}
 	
@@ -143,7 +142,10 @@ public class TruckAgent extends Agent implements Truck{
 		_gui.goToDestination(aPackage._restaurant);
 		try {
 			isMoving.acquire();
-			if(aPackage._restaurant instanceof OmarRestaurant) { aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); } //Make sure GUI shows that it's dropped off !important!
+			if(aPackage._restaurant instanceof OmarRestaurant) { 
+				aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); } //Make sure GUI shows that it's dropped off !important!
+			else if (aPackage._restaurant instanceof YixinRestaurant)
+				aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); 
 			print("Delivered to restaurant " + aPackage._restaurant.getName());
 			trState = truckState.atRestaurant;
 			packages.remove(aPackage);
@@ -171,5 +173,9 @@ public class TruckAgent extends Agent implements Truck{
 	
 	public String getName(){
 		return _name;
+	}
+	
+	public int getPackageListSize(){
+		return packages.size();
 	}
 }
