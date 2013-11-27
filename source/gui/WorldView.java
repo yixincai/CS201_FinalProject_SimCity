@@ -32,7 +32,6 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
     private List<Gui> guis = new ArrayList<Gui>();
 	
 	ArrayList<WorldViewBuilding> buildings;
-	ArrayList<Lane> lanes;
 	
 	public WorldView()
 	{
@@ -40,21 +39,6 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		this.setBorder(BorderFactory.createTitledBorder("World View"));
 		 buildings = new ArrayList<WorldViewBuilding>();
 		 
-		lanes = new ArrayList<Lane>();
-		/*Lane l = new Lane(200, 10, 10, 310, 0, 1, false, Color.gray, Color.black );
-		lanes.add( l );
-		l = new Lane(210, 10, 10, 310, 0, 1, false, Color.gray, Color.black );
-		lanes.add( l );
-		
-		l = new Lane(420, 240, 180, 10, 1, 0, true, Color.green, Color.black );
-		lanes.add( l );
-		l = new Lane(420, 250, 180, 10, 1, 0, true, Color.green, Color.black );
-		lanes.add( l );*/
-		
-		/*if ( count % 40 == 0 ) {
-			Lane l = lanes.get(0);
-			l.addVehicle( new Vehicle( 15, 15, 16, 16) );
-		} */
          
          addMouseListener( this );
 
@@ -100,6 +84,20 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setColor( Color.black );
 		
+		g.drawString("Bank", 530, 230);
+		g.drawString("YixinRestaurant", 530, 130);
+		g.drawString("Market", 530, 325);
+		g.drawString("OmarRestaurant", 380, 230);
+		g.drawString("RyanRestaurant", 380, 125);
+		
+		g.drawString("Bus Stop", 60, 40);
+		g.drawString("Bus Stop", 560, 40);
+		g.drawString("Bus Stop", 560, 340);
+		g.drawString("Bus Stop", 60, 340);
+		
+		g.drawString("Houses", 60, 300);
+		g.drawString("Apartments", 100, 60);
+		
 		for ( int i=0; i<buildings.size(); i++ ) {
 			WorldViewBuilding b = buildings.get(i);
 		    g2.fill( b );
@@ -124,10 +122,6 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 	        } 
 		} catch(ConcurrentModificationException e) { } // do nothing, because this function will get called again
         
-        for ( int i=0; i<lanes.size(); i++ ) {
-			Lane l = lanes.get(i);
-			l.draw( g2 );
-		}
 	}
 	
 	public ArrayList<WorldViewBuilding> getBuildings() {

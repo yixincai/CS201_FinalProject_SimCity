@@ -134,6 +134,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		DoGoToCashier();
 		DoLeaveMarket();
 		active = false;
+		cmdBuyFood(3);
 	}
 	
 	public void DoGoToCashier(){
