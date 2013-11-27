@@ -206,24 +206,21 @@ public class MainGui extends JFrame
 		
 		// TODO Here, add scanning the configuration file.
 		
-		//cPanel.addPerson("noJobDude", 300, "None", true, "house");
+//		cPanel.addPerson("noJobDude", 300, "None", true, "house");
 		
-		/*
-		cPanel.addPerson("Omar", 300, "Bank Teller", true, "house");
-		cPanel.addPerson("Omar1", 300, "Bank Host", true, "house");
-		cPanel.addPerson("Omar2", 300, "Bank Customer", true, "house");
-		cPanel.addPerson("Omar3", 300, "Bank Customer", true, "house");
-		cPanel.addPerson("Omar4", 300, "Bank Customer", true, "apartment");
-		cPanel.addPerson("Omar5", 300, "Bank Customer", true, "apartment");
-		cPanel.addPerson("Omar9", 300, "Restaurant Host", true, "apartment");
-		cPanel.addPerson("Omar10", 300, "Restaurant Cashier", true, "apartment");
-		cPanel.addPerson("Omar11", 300, "Cook", true, "apartment");
-		cPanel.addPerson("Omar12", 300, "Omar Waiter", true, "apartment");
-		cPanel.addPerson("Omar13", 300, "Omar Customer", true, "apartment");
-		cPanel.addPerson("Omar14", 300, "Market Customer", true, "apartment");
-		*/
+//		cPanel.addPerson("Omar", 300, "Bank Teller", true, "house");
+//		cPanel.addPerson("Omar1", 300, "Bank Host", true, "house");
+//		cPanel.addPerson("Omar2", 300, "Bank Customer", true, "house");
+//		cPanel.addPerson("Omar3", 300, "Bank Customer", true, "house");
+//		cPanel.addPerson("Omar4", 300, "Bank Customer", true, "apartment");
+//		cPanel.addPerson("Omar5", 300, "Bank Customer", true, "apartment");
+//		cPanel.addPerson("Omar9", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Omar10", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Omar11", 300, "Cook", true, "apartment");
+//		cPanel.addPerson("Omar12", 300, "Omar Waiter", true, "apartment");
+//		cPanel.addPerson("Omar13", 300, "Omar Customer", true, "apartment");
+//		cPanel.addPerson("Omar14", 300, "Market Customer", true, "apartment");
 		
-//		
 //		cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
 //		cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
 //		cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
