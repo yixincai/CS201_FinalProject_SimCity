@@ -105,7 +105,21 @@ public class PersonAgent extends Agent implements Person
 		if(_occupation != null) print("Acquired occupation " + _occupation.toString() + ".");
 		else print("Acquired null occupation.");
 		acquireHome(housingType);
-		_homeOccupantRole.cmdCookAndEatFood();
+		
+		// For testing purposes for V1, choose a random action to do at home.
+		switch((int)(Math.random()*3))
+		{
+		case 0:
+			_homeOccupantRole.cmdWatchTv();
+			break;
+		case 1:
+			_homeOccupantRole.cmdCookAndEatFood();
+			break;
+		case 2:
+			_homeOccupantRole.cmdGoToBed();
+			break;
+		}
+		
 		generateAndSetCommuterRole();
 		setNextRole(_homeOccupantRole);
 	}
@@ -357,6 +371,7 @@ public class PersonAgent extends Agent implements Person
 					}
 				}
 			}
+			/*
 			if(_currentRole == _homeOccupantRole && (_state.time() > 20 || _state.time() < 7))
 			{
 				if(_state.nourishment() == NourishmentState.HUNGRY)
@@ -376,6 +391,7 @@ public class PersonAgent extends Agent implements Person
 					}
 				}
 			}
+			*/
 			
 			// ================================================== Call current role's scheduler =============================================
 			// print("About to call _currentRole (" + _currentRole.toString() + ") scheduler.");
@@ -408,20 +424,6 @@ public class PersonAgent extends Agent implements Person
 				}
 				else if(_occupation == null)
 				{
-					// For testing purposes for V1, choose a random action to do at home.
-					switch((new Random()).nextInt(3))
-					{
-					case 0:
-						_homeOccupantRole.cmdWatchTv();
-						break;
-					case 1:
-						_homeOccupantRole.cmdCookAndEatFood();
-						break;
-					case 2:
-						_homeOccupantRole.cmdGoToBed();
-						break;
-					}
-					_homeOccupantRole.cmdGoToBed();
 					setNextRole(_homeOccupantRole);
 					return true;
 				}
