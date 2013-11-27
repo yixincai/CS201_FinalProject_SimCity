@@ -16,6 +16,7 @@ public class BusAgentGui implements Gui {
 	int _xDestination, _yDestination;
 	
 	BusAgent _bus;
+	private String currentStatus = "Bus";
 	
 	boolean moving;
 	boolean isPresent;
@@ -68,6 +69,16 @@ public class BusAgentGui implements Gui {
 		if(isPresent){
 			g.setColor(Color.GREEN);
 			g.fillRect(_xPos, _yPos, 30, 30);
+			g.setColor(Color.BLUE);
+			if(_xPos == 20){
+				g.drawString(currentStatus, _xPos + 35, _yPos + 20);
+			} else if(_xPos == 620) {
+				g.drawString(currentStatus, _xPos - 25, _yPos + 15);
+			} else if(_yPos == 20){
+				g.drawString(currentStatus, _xPos + 5, _yPos + 40);
+			} else if(_yPos == 320){
+				g.drawString(currentStatus, _xPos + 5, _yPos - 5);
+			}
 		}
 	}
 	
