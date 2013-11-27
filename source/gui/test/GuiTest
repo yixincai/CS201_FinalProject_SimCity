@@ -1,0 +1,104 @@
+This is the GUI Test.  Written by Tanner Zigrang
+
++Preconditions -- What happens when you run the project?
+	-When running the project, a window will pop up divided into three section.
+	-The on the left two thirds of the frame are the animation areas.  The top half of the animation 
+		area is the WorldView.  This is where the user can see all the buildings in the city as well
+		as people moving about and carrying out their daily business.  The bottom half of the
+		animation area is the InteriorBuildingView.  This panel is used to see the actions of 
+		the people inside the currently selected business.
+	-The right third of the frame is reserved for the more informational panels.  This section is
+		tabbed in order to give more freedom for the user to chose what information to look at.
+		There are four tabs here: Currently Person, Current Building, Create New Person, and 
+		Configuration.
+	-The Current Person tab has two sections.  One section takes the upper half of the other takes 
+		the lower half.  The upper half displays information about the currently selected person.
+		The three sections that are displayed are name, money, and current role.  Currently, current
+		role does not display anything as we ran out of time.  The lower half is a JScrollPane containing
+		all the people in the simulation represented as buttons with a name on it.
+	-The Current Building tab is much like the current person panel in that it has sections: the upper
+		half and the lower half.  Again, like the current person tab, the current building tab's upper 
+		half displays the building name and the amount of money it has.  Currently we have money blank.
+		The bottom half has a JScrollPane containing a button with a name on it for each building in
+		the city.
+	-The Create New Person tab is where the use can dynamically add people to the simulation with user
+		specified attributes.  The editable fields in this panel are Name (a text area), Money 
+		(manipulated with a slider), work schedule (a radio button group for weekdays or weekends - this
+		is in for future development of person) and a Occupation (a combo box).  At the bottom there is
+		an Add button which creates the new person.
+	-The Configuration tab is used for running certain scenarios.  At the top of this tab is a combo box
+		with each of the scenario options.  Beneath that is an area where the currently selected configuration
+		is described.  At the bottom is the Start button which runs the chosen configuration.
+		
++Testing the click functionality of buildings in the world view
+	-When the use clicks on a building in the world view (upper half of the left side of the screen),
+		the building interior view (lower half of the left side of the screen) should change to 
+		reflect the interior of the building just selected.  Simultaneously, the control panel (the
+		right side of the screen) should switch from whatever tab the user was already on to the 
+		Current Building tab and display the information of the selected building in top, information
+		area.
+		
++Testing the click functionality of the buttons in the Current Person panel
+	-In the current person panel, there is a JScrollPane filled with buttons for each of the
+		people in the simulation with their names displayed on the button.  First of all, the user
+		should be able to scroll through all the buttons.  When a user clicks one of these buttons,
+		the top half of the Current Person panel should update to display the information for the 
+		person that was just clicked.  
+		
++Testing the click functionality of the buttons in the Current Building panel
+	-In the current building panel. there is a JScrollPane filled with buttons for each of the
+		buildings in the simulation with a unique name to identify the business.  First of all,
+		the user should be able to scroll through all the buttons.  When the user clicks one of these
+		buttons, the top half of the Current Building panel should update to display the information
+		for the building that was just clicked.  Simultaneously, the Building Interior Panel (the
+		bottom half of the left two thirds of the frame) should change to reflect the interior animation 
+		of the building that was just clicked.
+		
++Testing the functionality of the various attributes in the Create New Person panel
+	-The first attribute of the Create New Person panel is the Name field.  In this field the use should
+		be able to click to begin editing and then type characters.
+	-The next attribute is the money slider.  Right beneath the "Name:" label and text field there is
+		another set of labels.  On the left there is "Money:".  On the right there is "$XXXX.XX" where 
+		X represents digits.  There are no leading zeroes.  By default this is set to "$0.00".  Beneath
+		these labels is a slider.  This has tick marks and two labels: "Poor" and "Rich".  These labels
+		are important in the person agent as they help determine actions.  By default, the slider is at
+		0 (the far left).  As the user clicks and drags this slider, the Money label above should update
+		the new value the slider is on.
+	-The third attribute is the Occupation attribute.  This is a ComboBox with nine options.  The nine options
+		are: none, waiter, restaurant cashier, cook, restaurant host, bank teller, bank host, market cashier, and
+		market employee.  By default the combo box is set to none.  The user can click the combo box to
+		bring up a drop down with the other choices.  By clicking an option, the combo box will close and display
+		the newly selected option. 
+	-The fourth attribute is the Work Scheduler field.  This is a radio button with two option: weekdays or
+		weekends.  By default, neither of these are selected.  When you select one, the little circle to 
+		the left of the label will be filled in.  Selecting the other will unselect the other one 
+		(the circle to the left of label will no longer be filled in) and select the new one,
+		thereby filling in the corresponding circle. 
+	-The fifth attribute is the housing attribute.  This, like the Work Schedule attribute above it is a
+		radio button.  The two options are house OR apartment.  By default, the house is selected.  The
+		behavior is identical to the Work Schedule attribute above it. 
+	-The final attribute on the Create Person panel is the Add button at the bottom.  When the user clicks
+		this button, a new person will be created in the city.  Simultaneously, the control panel 
+		(the right third of the frame) will switch to the current person panel.  In the JScrollPane, 
+		the user will be able to find a button with the name of whatever was in the text field of the 
+		New Person panel at the time the Add button was pressed.  If the user clicks this button, the
+		information at the top of the current person panel will show the money to be equal to whatever,
+		the slider was at in the New Person panel when the Add button was clicked. 
+		
++Testing the functionality of the Configuration Tab
+	-At the top of the Configuration tab is a combo box labeled "Configuration:".  The user can click 
+		on this combo box to reveal a drop down box containing the different options available to him/her.
+		Selecting one of these options will close the combo box and display the new selection.  Simultaneously,
+		the large panel beneath it labeled "Description" will be updated to show the text description of 
+		what the chosen configuration will do in the simulation.  By default, the combo box and description
+		are set to Configuration 1.
+	-At the very bottom of the panel is the Start button.  When clicked, this button will run whatever
+		scenario is currently selected in the combo box at the top.
+	
+	
+	
+	
+	
+	
+	
+	
