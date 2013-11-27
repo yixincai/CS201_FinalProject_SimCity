@@ -70,8 +70,8 @@ public class YixinCustomerGui extends JPanel implements Gui{
 	public void draw(Graphics2D g) {
 		if(agent.active){
 			g.setColor(Color.BLUE);
-			g.fillRect(xPos, yPos, GAPX, GAPY);    	
-			//g.drawImage(image, xPos, yPos, GAPX, GAPY, this);
+			//g.fillRect(xPos, yPos, GAPX, GAPY);    	
+			g.drawImage(image, xPos, yPos, GAPX, GAPY, this);
 			if (show_choice)
 				g.drawString(this.choice, xDestination, yDestination + 40);
 		}
