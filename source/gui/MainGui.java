@@ -76,7 +76,7 @@ public class MainGui extends JFrame
 		//Bus Stops
 		WorldViewBuilding b5 = _worldView.addBuilding(0, 0, 30);
 		BusStopObject busStop0 = new BusStopObject("Bus Stop " + 0, b5);
-		Directory.addPlace(busStop0);
+		Directory.addPlace(busStop0);//
 		WorldViewBuilding b6 = _worldView.addBuilding(12, 0, 30);
 		BusStopObject busStop1 = new BusStopObject("Bus Stop " + 1, b6);
 		Directory.addPlace(busStop1);
@@ -207,7 +207,6 @@ public class MainGui extends JFrame
 		// TODO Here, add scanning the configuration file.
 		
 //		cPanel.addPerson("noJobDude", 300, "None", true, "house");
-		
 		/*
 		cPanel.addPerson("Omar", 300, "Bank Teller", true, "house");
 		cPanel.addPerson("Omar1", 300, "Bank Host", true, "house");
@@ -224,19 +223,32 @@ public class MainGui extends JFrame
 		*/
 		
 		//Ryan Restaurant interaction
-		cPanel.addPerson("Ryan", 300, "Restaurant Host", true, "apartment");
-		cPanel.addPerson("Ryan1", 300, "Restaurant Cashier", true, "apartment");
-		cPanel.addPerson("Ryan2", 300, "Cook", true, "apartment");
+//		cPanel.addPerson("Ryan", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan1", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan2", 300, "Cook", true, "apartment");
+//		
+//		cPanel.addPerson("Ryan3", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan4", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan5", 300, "Cook", true, "apartment");
+//		
+//		cPanel.addPerson("Ryan6", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan7", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan8", 300, "Cook", true, "apartment");
+//		cPanel.addPerson("Ryan9", 300, "Ryan Waiter", true, "house");
+//		cPanel.addPerson("Ryan10", 300, "Ryan Customer", true, "apartment");
 		
-		cPanel.addPerson("Ryan3", 300, "Restaurant Host", true, "apartment");
-		cPanel.addPerson("Ryan4", 300, "Restaurant Cashier", true, "apartment");
-		cPanel.addPerson("Ryan5", 300, "Cook", true, "apartment");
-		
-		cPanel.addPerson("Ryan6", 300, "Restaurant Host", true, "apartment");
-		cPanel.addPerson("Ryan7", 300, "Restaurant Cashier", true, "apartment");
-		cPanel.addPerson("Ryan8", 300, "Cook", true, "house");
-		cPanel.addPerson("Ryan9", 300, "Ryan Waiter", true, "house");
-		cPanel.addPerson("Ryan10", 300, "Ryan Customer", true, "house");
+//		cPanel.addPerson("Omar", 300, "Bank Teller", true, "house");
+//		cPanel.addPerson("Omar1", 300, "Bank Host", true, "house");
+//		cPanel.addPerson("Omar2", 300, "Bank Customer", true, "house");
+//		cPanel.addPerson("Omar3", 300, "Bank Customer", true, "house");
+//		cPanel.addPerson("Omar4", 300, "Bank Customer", true, "apartment");
+//		cPanel.addPerson("Omar5", 300, "Bank Customer", true, "apartment");
+//		cPanel.addPerson("Omar9", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Omar10", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Omar11", 300, "Cook", true, "apartment");
+//		cPanel.addPerson("Omar12", 300, "Omar Waiter", true, "apartment");
+//		cPanel.addPerson("Omar13", 300, "Omar Customer", true, "apartment");
+//		cPanel.addPerson("Omar14", 300, "Market Customer", true, "apartment");
 		
 //		cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
 //		cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");

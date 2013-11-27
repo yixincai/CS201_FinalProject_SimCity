@@ -9,6 +9,7 @@ import city.bank.Bank;
 import city.bank.BankCustomerRole;
 import city.bank.BankCustomerRole.Event;
 import city.bank.BankCustomerRole.State;
+import city.bank.gui.BankAnimationPanel;
 import city.bank.gui.BankCustomerRoleGui;
 import city.bank.test.mock.MockBankHost;
 import city.bank.test.mock.MockBankTeller;
