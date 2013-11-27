@@ -33,7 +33,7 @@ public class Market extends Place implements PlaceWithAnimation {
 		super("Market", null);
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
-		truck = new TruckAgent(this);
+		truck = new TruckAgent(this, 0);
 	}
 	//constructor for Ryan unit testing
 	public Market(String name, WorldViewBuilding _worldViewBuilding){

@@ -54,6 +54,11 @@ public class TruckAgent extends Agent implements Truck{
 		_gui = new TruckAgentGui(this, _market);
 	}
 	
+	//Dummy constructor for Yixin's Market tests -- DO NOT CHANGE
+	public TruckAgent(Market market, int dummy){
+		_market = market;
+	}
+	
 	public void setTruckAgentGui(TruckAgentGui gui){
 		_gui = gui;
 	}
