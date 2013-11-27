@@ -14,7 +14,7 @@ import javax.swing.SpringLayout;
 public class ConfigurationPanel extends JPanel implements ActionListener {
 	
 	ControlPanel cPanel;
-	String[] configOptions = {"Configuration 1", "Configuration 2", "Configruation 3", "Configruation 4", "Configuration 5"};
+	String[] configOptions = {"Configuration 1", "Configuration 2", "Configuration 3", "Configuration 4", "Configuration 5"};
 	JLabel configLabel;
 	JComboBox configBox;
 	JButton startButton;
@@ -66,7 +66,9 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 				+ "The cook in the restaurant can order form the new market cashier instead of the old market. </br><br>"
 				+ "The waiter in the restaurant can either be a shared data waiter or a normal waiter. </br><br>The other behaviors are basically the "
 				+ "same as the before in Yixin Restaurant.</br>";
-		config5Description = "WRITE CONFIGURATION 5 DESCRIPTION HERE";
+		config5Description = "<html>Scenario 5: Initialize five people without jobs.  They will start as commuter roles, and then they will acquire a house "
+				+ "or an apartment, going about doing an action.  These actions include cooking, sleeping, and relaxing "
+				+ "(being idle).</html>";
 		descriptionText = new JLabel();
 		descriptionText.setText(config1Description);
 		description.add(descriptionText);
@@ -171,6 +173,12 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("Yixin4", 300, "Yixin Customer", true, "apartment");
 			cPanel.addPerson("Yixin7", 300, "Market Cashier", true, "apartment");
 			cPanel.addPerson("Yixin8", 300, "Market Employee", true, "apartment");
+		} else if (configBox.getSelectedIndex() == 4){
+			cPanel.addPerson("Eric", 300, "None", true, "house");
+			cPanel.addPerson("Omar", 300, "None", true, "house");
+			cPanel.addPerson("Yixin", 300, "None", true, "house");
+			cPanel.addPerson("Ryan", 300, "None", true, "apartment");
+			cPanel.addPerson("Tanner", 300, "None", true, "apartment");
 		}
 	}
 
