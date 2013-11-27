@@ -74,6 +74,7 @@ public abstract class Restaurant extends Place {
 	public Role tryAcquireHost(PersonAgent person) {
 		if(_hostSemaphore.tryAcquire()) {
 			getHostRole().setPersonAgent(person);
+			generateHostGui();
 			return getHostRole();
 		}
 		else return null;
