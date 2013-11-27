@@ -95,6 +95,16 @@ public class MainGui extends JFrame
 		bus.startThread();
 		
 		// Hard-coded instantiation of all the buildings in the city:
+		//Market
+		WorldViewBuilding b3 = _worldView.addBuilding(10, 5, 40);
+		BuildingInteriorAnimationPanel bp3 = new BuildingInteriorAnimationPanel(this, "Market", new city.market.gui.MarketAnimationPanel());
+		b3.setBuildingPanel(bp3);
+		Market market = new Market("Market", b3, bp3, _worldView);
+		Directory.addPlace(market);
+		_buildingCardLayoutPanel.add( bp3, bp3.getName() );
+		cPanel.currentBuildingPanel.addBuilding(market.getName());
+		_buildingInteriorAnimationPanels.add(bp3);
+		
 		// Yixin's Restaurant:
 		WorldViewBuilding b = _worldView.addBuilding(10, 1, 40);
 		BuildingInteriorAnimationPanel bp = new BuildingInteriorAnimationPanel(this, "Yixin's Restaurant", new city.restaurant.yixin.gui.YixinAnimationPanel());
@@ -134,16 +144,6 @@ public class MainGui extends JFrame
 		_buildingCardLayoutPanel.add( bp2, bp2.getName() );
 		cPanel.currentBuildingPanel.addBuilding(bank.getName());
 		_buildingInteriorAnimationPanels.add(bp2);
-		
-		//Market
-		WorldViewBuilding b3 = _worldView.addBuilding(10, 5, 40);
-		BuildingInteriorAnimationPanel bp3 = new BuildingInteriorAnimationPanel(this, "Market", new city.market.gui.MarketAnimationPanel());
-		b3.setBuildingPanel(bp3);
-		Market market = new Market("Market", b3, bp3, _worldView);
-		Directory.addPlace(market);
-		_buildingCardLayoutPanel.add( bp3, bp3.getName() );
-		cPanel.currentBuildingPanel.addBuilding(market.getName());
-		_buildingInteriorAnimationPanels.add(bp3);
 		
 		//Initializing houses
 		for(int i = 1; i < 6; i++){
@@ -231,8 +231,8 @@ public class MainGui extends JFrame
 //		cPanel.addPerson("Yixin4", 300, "Yixin Customer", true, "apartment");
 //		cPanel.addPerson("Yixin5", 300, "Bank Teller", true, "apartment");
 //		cPanel.addPerson("Yixin6", 300, "Bank Host", true, "apartment");
-//		cPanel.addPerson("Yixin7", 300, "Market Cashier", true, "apartment");
-//		cPanel.addPerson("Yixin8", 300, "Market Employee", true, "apartment");
+		cPanel.addPerson("Yixin7", 300, "Market Cashier", true, "apartment");
+		cPanel.addPerson("Yixin8", 300, "Market Employee", true, "apartment");
 		cPanel.addPerson("Yixin9", 300, "Restaurant Host", true, "apartment");
 		cPanel.addPerson("Yixin10", 300, "Restaurant Cashier", true, "apartment");
 		cPanel.addPerson("Yixin11", 300, "Cook", true, "apartment");

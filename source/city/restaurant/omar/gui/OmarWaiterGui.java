@@ -32,7 +32,7 @@ public class OmarWaiterGui implements Gui {
 	private static int CASHIERY = 200;
 	
 	private static int REVOLVINGX = 510; // can change if needed
-	private static int REVOLVINGY = 330;
+	private static int REVOLVINGY = 300;
 	
 	private int HOMEX = 0;
 	private int HOMEY = 0;

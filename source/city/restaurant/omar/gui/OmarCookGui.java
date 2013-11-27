@@ -19,7 +19,7 @@ public class OmarCookGui implements Gui {
 	private static int YGRILL2 = 200;
 	
 	private static int REVOLVINGX = 550;
-	private static int REVOLVINGY = 330;
+	private static int REVOLVINGY = 300;
 	
 	private static int GRILLOFFSETY = 20;
 	

@@ -63,11 +63,6 @@ public class OmarCookRole extends RestaurantCookRole {
 		cookInventory.put("Burger", new Item("Burger", 0));
 		cookInventory.put("Filet Mignon", new Item("Filet Mignon", 0));
 		command = Command.None;
-		
-		List<Market> markets = Directory.markets();
-		for (Market market : markets){
-			this.markets.add(market);
-		}
 	}
 
 	// Messages
@@ -119,7 +114,7 @@ public class OmarCookRole extends RestaurantCookRole {
 		synchronized(markets){
 			for(MyMarket m: markets){
 				if(m.marketState == MarketStatus.gone){
-					markets.remove(m);
+					//markets.remove(m);
 					return true;
 				}
 			}
@@ -127,6 +122,7 @@ public class OmarCookRole extends RestaurantCookRole {
 		synchronized(markets){
 			for(MyMarket m: markets){
 				if(m.marketState == MarketStatus.ordering){
+					System.out.println("HERE");
 					purchaseFoodFromMarket(m);
 					return true;
 				}
@@ -174,6 +170,11 @@ public class OmarCookRole extends RestaurantCookRole {
 		FoodTicket ticket = restaurant.revolving_stand.remove();
 		if (ticket!=null){
 			cookGui.DoGoToRevolvingStand();
+			try {
+				cookSem.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			Order order = new Order(ticket.getW(), ticket.getC().tableNum, this, ticket.getC());
 			orders.add(order);
 			cookOrder(order);
@@ -195,6 +196,7 @@ public class OmarCookRole extends RestaurantCookRole {
 	public void addMarkets(){
 		for(int i = 0; i < Directory.markets().size(); i++){
 			markets.add(new MyMarket(Directory.markets().get(i)));
+				System.out.println("Added Market");
 		}
 	}
 
@@ -231,7 +233,6 @@ public class OmarCookRole extends RestaurantCookRole {
 			markets.get(0).marketState = MarketStatus.ordering; 
 			stateChanged();
 		} else{
-			//cookInventory.get(choice).decrementInventory();
 			cookGui.DoGoToFridge();
 			try {
 				cookSem.acquire();
