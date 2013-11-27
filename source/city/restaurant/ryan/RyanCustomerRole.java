@@ -378,6 +378,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	
 	private void PayCashier(){
 		print("Paying Cashier");
+		cashier = (RyanCashierRole)_restaurant.cashier;
 		money -= payment;
 		cashier.msgHeresMoney(this, payment);
 		payment = 0;

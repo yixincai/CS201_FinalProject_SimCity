@@ -209,15 +209,14 @@ public class RyanCookRole extends RestaurantCookRole{
 				}
 			}
 		}
-		RyanOrder order = _restaurant.revolvingStand.remove();
-		if (order!=null){
-			//DoGoToRevolvingStand(); add animation and gui
-			orders.add(order);
-			CheckInventory(order);
-			return true;
-		}
+//		RyanOrder order = _restaurant.revolvingStand.remove();
+//		if (order!=null){
+//			//DoGoToRevolvingStand(); add animation and gui
+//			orders.add(order);
+//			return true;
+//		}
 		
-		if (checkState == CheckState.notChecked){
+		if(checkState == CheckState.notChecked){
 			timer1.schedule(new TimerTask() {
 				public void run() {
 					print("Notify the cook to check revolving stand");
@@ -225,6 +224,7 @@ public class RyanCookRole extends RestaurantCookRole{
 				}
 			}, 10000);
 			checkState = CheckState.Checked;
+			return true;
 		}
 		
 		if(orderState == OrderState.OrderReceived){

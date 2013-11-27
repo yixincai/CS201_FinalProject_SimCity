@@ -7,7 +7,7 @@ import city.restaurant.ryan.RyanCustomerRole;
 public class RyanCustomerGui implements Gui{
 
 	private RyanCustomerRole agent = null;
-	private boolean isPresent = false;
+	private boolean isPresent = true;
 	private boolean isHungry = false;
 
 	//private HostAgent host;
@@ -30,8 +30,8 @@ public class RyanCustomerGui implements Gui{
 		agent = c;
 		xPos = -40;
 		yPos = -40;
-		xDestination = -40;
-		yDestination = -40;
+		xDestination = 100;
+		yDestination = 100;
 		//maitreD = m;
 	}
 
