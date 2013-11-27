@@ -206,7 +206,7 @@ public class MainGui extends JFrame
 		
 		// TODO Here, add scanning the configuration file.
 		
-		cPanel.addPerson("noJobDude", 300, "None", true, "house");
+//		cPanel.addPerson("noJobDude", 300, "None", true, "house");
 		
 		/*
 		cPanel.addPerson("Omar", 300, "Bank Teller", true, "house");
