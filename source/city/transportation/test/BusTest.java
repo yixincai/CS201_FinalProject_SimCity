@@ -54,7 +54,7 @@ public class BusTest extends TestCase {
 		mockCommuter2 = new MockCommuter("mock commuter2");
 		
 	}
-	public void testZeroBusCommuterScenario(){
+	public void testZeroBusCommuterScenario(){ //Setting it up
 		//Nothing should happen
 		assertEquals("Bus state is not moving", bus.bState, BusState.notmoving);
 		bus.releaseSem();
@@ -62,7 +62,7 @@ public class BusTest extends TestCase {
 		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
 	}
 	
-	public void testOneNormalBusScenario(){
+	public void testOneNormalBusScenario(){//Going to bus stop destinations
 		//Nothing should happen
 		assertEquals("Bus state is not moving", bus.bState, BusState.notmoving);
 		bus.releaseSem();
@@ -95,7 +95,7 @@ public class BusTest extends TestCase {
 		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
 		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
 	}
-	public void testTwoNormalBusScenario(){
+	public void testTwoNormalBusScenario(){ //People getting on board (1 person)
 		assertEquals("Bus state is not moving", bus.bState, BusState.notmoving);
 		bus.releaseSem();
 		
@@ -149,7 +149,7 @@ public class BusTest extends TestCase {
 		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
 		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
 	}
-	public void testThreeNormalBusScenario(){
+	public void testThreeNormalBusScenario(){ //Multiple people boarding
 		assertEquals("Bus state is not moving", bus.bState, BusState.notmoving);
 		bus.releaseSem();
 		
@@ -222,7 +222,7 @@ public class BusTest extends TestCase {
 		assertTrue("Scheduler returns true", bus.pickAndExecuteAnAction());
 		assertEquals("Bus state is not moving", bus.bState, BusState.moving);
 	}
-	public void testFourNormalBusScenario(){
+	public void testFourNormalBusScenario(){//Multiple boarding customers at different stops
 		assertEquals("Bus state is not moving", bus.bState, BusState.notmoving);
 		bus.releaseSem();
 		
@@ -319,7 +319,7 @@ public class BusTest extends TestCase {
 		
 		assertEquals("busstop list should be size 1", busStop1.getList().size(), 0);
 	}
-	public void testFiveNormalBusScenario(){
+	public void testFiveNormalBusScenario(){ //Check if capacity works
 		assertEquals("Bus state is not moving", bus.bState, BusState.notmoving);
 		bus.setCapacity(2);
 		bus.releaseSem();

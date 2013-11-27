@@ -28,8 +28,8 @@ public class TruckAgent extends Agent implements Truck{
 	TruckAgentGui _gui;
 	Boolean out = false;
 	
-	enum truckState{parkingLot, docking, drivingtoRestaurant, atRestaurant, drivingtoMarket};
-	truckState trState = truckState.parkingLot;
+	public enum truckState{parkingLot, docking, drivingtoRestaurant, atRestaurant, drivingtoMarket};
+	public truckState trState = truckState.parkingLot;
 	
 	enum packageState{atMarket, inTruck, delivering, unloaded, done};
 
@@ -58,6 +58,7 @@ public class TruckAgent extends Agent implements Truck{
 	//Testing
 	public TruckAgent(Market market){
 		_market = market;
+		_gui = new TruckAgentGui(this, _market);
 	}
 	
 	public void setTruckAgentGui(TruckAgentGui gui){
@@ -171,5 +172,9 @@ public class TruckAgent extends Agent implements Truck{
 	
 	public String getName(){
 		return _name;
+	}
+	
+	public int getPackageListSize(){
+		return packages.size();
 	}
 }

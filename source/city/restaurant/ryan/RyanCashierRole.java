@@ -43,7 +43,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	
 	public RyanCashierRole(PersonAgent p, RyanRestaurant r){
 		super(p);
-		this.name = name;
+		this.name = "Ryan Restaurant Cashier";
 		menu = new Menu();
 		
 		_restaurant = r;

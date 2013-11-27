@@ -93,4 +93,8 @@ public class Market extends Place implements PlaceWithAnimation {
 	public MarketAnimationPanel animationPanel() {
 		return animationPanel;
 	}
+	
+	public void setTruck(TruckAgent truck){
+		this.truck = truck;
+	}
 }

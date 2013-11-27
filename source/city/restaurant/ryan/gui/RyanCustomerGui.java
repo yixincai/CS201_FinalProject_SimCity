@@ -85,8 +85,10 @@ public class RyanCustomerGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-		g.setColor(Color.GREEN);
-		g.fillRect(xPos, yPos, 20, 20);
+		if(agent.active){
+			g.setColor(Color.GREEN);
+			g.fillRect(xPos, yPos, 20, 20);
+		}
 		
 		if(state == State.choosing){
 			g.setColor(Color.black);
