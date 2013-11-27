@@ -76,7 +76,7 @@ public class MainGui extends JFrame
 		//Bus Stops
 		WorldViewBuilding b5 = _worldView.addBuilding(0, 0, 30);
 		BusStopObject busStop0 = new BusStopObject("Bus Stop " + 0, b5);
-		Directory.addPlace(busStop0);
+		Directory.addPlace(busStop0);//
 		WorldViewBuilding b6 = _worldView.addBuilding(12, 0, 30);
 		BusStopObject busStop1 = new BusStopObject("Bus Stop " + 1, b6);
 		Directory.addPlace(busStop1);
