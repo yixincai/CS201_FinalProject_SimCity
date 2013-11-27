@@ -44,7 +44,9 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		bankCustSem = new Semaphore(0, true);
 		
 		this.gui = new BankCustomerRoleGui(this);
-		bank.animationPanel().addGui(gui);
+		if(bank.animationPanel()!= null){
+			bank.animationPanel().addGui(gui);
+		}
 	}
 	
 	// --------------------- ACCESSORS ---------------

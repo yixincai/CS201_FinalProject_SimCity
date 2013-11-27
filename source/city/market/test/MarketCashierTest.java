@@ -7,6 +7,7 @@ import city.Directory;
 import city.PersonAgent;
 import city.bank.Bank;
 import city.bank.BankTellerRole;
+import city.bank.gui.BankAnimationPanel;
 import city.market.*;
 import city.market.test.mock.*;
 import city.restaurant.Restaurant;
