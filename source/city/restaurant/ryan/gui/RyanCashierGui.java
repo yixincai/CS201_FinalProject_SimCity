@@ -55,7 +55,7 @@ public class RyanCashierGui implements Gui{
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-		if(!agent.active){
+		if(agent.active){
 			g.setColor(Color.BLUE);
 	        g.fillRect(xPos, yPos, 20, 20);
 		}
