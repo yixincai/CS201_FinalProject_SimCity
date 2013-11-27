@@ -13,6 +13,7 @@ import city.market.Market;
 import city.market.MarketCashierRole;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCookRole;
+import city.restaurant.omar.OmarRestaurant;
 import city.restaurant.yixin.YixinCookRole;
 import city.transportation.gui.BusAgentGui;
 import city.transportation.gui.TruckAgentGui;
@@ -142,7 +143,7 @@ public class TruckAgent extends Agent implements Truck{
 		_gui.goToDestination(aPackage._restaurant);
 		try {
 			isMoving.acquire();
-			//aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); //Make sure GUI shows that it's dropped off !important!
+			if(aPackage._restaurant instanceof OmarRestaurant) { aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); } //Make sure GUI shows that it's dropped off !important!
 			print("Delivered to restaurant " + aPackage._restaurant.getName());
 			trState = truckState.atRestaurant;
 			packages.remove(aPackage);

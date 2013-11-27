@@ -50,7 +50,12 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 				+ " one bank host, and one bank teller are put into the world.</br><br>  They will go home and"
 				+ " then head over to the bank and proceed to make deposits (since it's their first time"
 				+ " to the bank, </br><br> naturally they can't withdraw or do any other bank actions.</br></html>";
-		config2Description = "WRITE CONFIGURATION 2 DESCRIPTION HERE";
+		config2Description = "<html><br>Scenario 2: Initialize a restaurant to market interaction.</br><br>Several "
+				+ "people with restaurant and market related roles will be added to the world</br><br>This scenario "
+				+ "particularly involves the Market, Omar's Restaurant, and Yixin's Restaurant.</br><br>People will go home and"
+				+ " then head over to their respective place (market/omarRestaurant/yixinRestaurant).</br><br>"
+				+ "Because of non-normatives integrated in restaurant from our past project, customers may leave</br><br>"
+				+ "when they find out that the restaurant is out of food, but the market interaction will still work</br></html>";
 		config3Description = "WRITE CONFIGURATION 3 DESCRIPTION HERE";
 		config4Description = "WRITE CONFIGURATION 4 DESCRIPTION HERE";
 		config5Description = "WRITE CONFIGURATION 5 DESCRIPTION HERE";
@@ -130,8 +135,19 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("Omar", 300, "Bank Customer", true, "house");
 			cPanel.addPerson("Omar2", 300, "Bank Customer", true, "house");
 			cPanel.addPerson("Omar3", 300, "Bank Customer", true, "apartment");
+		} else if(configBox.getSelectedIndex() == 1){
+			cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
+			cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
+			cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
+			cPanel.addPerson("YixinMarketCashier", 300, "Market Cashier", true, "apartment");
+			cPanel.addPerson("YixinMarketEmployee", 300, "Market Employee", true, "apartment");
+			cPanel.addPerson("YixinRestaurantHost", 300, "Restaurant Host", true, "apartment");
+			cPanel.addPerson("RestaurantCashier", 300, "Restaurant Cashier", true, "apartment");
+			cPanel.addPerson("Cook", 300, "Cook", true, "apartment");
+			cPanel.addPerson("OmarWaiter", 300, "Omar Waiter", true, "apartment");
+			cPanel.addPerson("OmarCustomer", 300, "Omar Customer", true, "apartment");
 		}
-		System.out.println("Config Start Button Pressed.");
+	//	System.out.println("Config Start Button Pressed.");
 	}
 
 }
