@@ -20,7 +20,7 @@ import agent.Agent;
 
 public class RyanCookRole extends RestaurantCookRole{
 	String name;
-	public RyanRestaurant restaurant;
+	public RyanRestaurant _restaurant;
 	List<RyanOrder> orders = new ArrayList<RyanOrder>();
 	List<Food> foods = new ArrayList<Food>();
 
@@ -55,7 +55,7 @@ public class RyanCookRole extends RestaurantCookRole{
 	public RyanCookRole(String name, PersonAgent p, RyanRestaurant r){
 		super(p);
 		this.name = name;
-		restaurant = r;
+		_restaurant = r;
 		
 		cookTimes.put("Steak", 2500);
 		cookTimes.put("Chicken", 1000);
@@ -76,9 +76,10 @@ public class RyanCookRole extends RestaurantCookRole{
 		plates.add(new Plate(3));
 	}
 
-	public RyanCookRole(PersonAgent p, RyanRestaurant ryanRestaurant) {
+	public RyanCookRole(PersonAgent p, RyanRestaurant r) {
 		super(p);
 		this.name = "TestCook";
+		_restaurant = r;
 		
 		cookTimes.put("Steak", 2500);
 		cookTimes.put("Chicken", 1000);
@@ -208,7 +209,7 @@ public class RyanCookRole extends RestaurantCookRole{
 				}
 			}
 		}
-		RyanOrder order = restaurant.revolvingStand.remove();
+		RyanOrder order = _restaurant.revolvingStand.remove();
 		if (order!=null){
 			//DoGoToRevolvingStand(); add animation and gui
 			orders.add(order);
@@ -334,7 +335,7 @@ public class RyanCookRole extends RestaurantCookRole{
 				order.add(new Item(temp.type, (int) (temp.capacity - temp.amount)));
 			}
 		}
-		currentMarket.MarketCashier.msgPlaceOrder(restaurant, order);
+		currentMarket.MarketCashier.msgPlaceOrder(_restaurant, order);
 		orderState =  OrderState.none;
 	}
 	
@@ -443,7 +444,7 @@ public class RyanCookRole extends RestaurantCookRole{
 	@Override
 	public Place place() {
 		// TODO Auto-generated method stub
-		return null;
+		return _restaurant;
 	}
 
 	@Override

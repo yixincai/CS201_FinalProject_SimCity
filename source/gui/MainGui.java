@@ -234,9 +234,9 @@ public class MainGui extends JFrame
 		
 		cPanel.addPerson("Ryan6", 300, "Restaurant Host", true, "apartment");
 		cPanel.addPerson("Ryan7", 300, "Restaurant Cashier", true, "apartment");
-		cPanel.addPerson("Ryan8", 300, "Cook", true, "apartment");
+		cPanel.addPerson("Ryan8", 300, "Cook", true, "house");
 		cPanel.addPerson("Ryan9", 300, "Ryan Waiter", true, "house");
-		cPanel.addPerson("Ryan10", 300, "Ryan Customer", true, "apartment");
+		cPanel.addPerson("Ryan10", 300, "Ryan Customer", true, "house");
 		
 //		cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
 //		cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");

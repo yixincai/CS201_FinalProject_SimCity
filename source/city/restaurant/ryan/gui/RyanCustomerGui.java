@@ -78,6 +78,7 @@ public class RyanCustomerGui implements Gui{
 				isHungry = false;
 				agent.active = false;
 				//gui.setCustomerEnabled(agent);
+				agent.cmdFinishAndLeave();
 				state = State.nothing;
 			}
 			command=Command.noCommand;

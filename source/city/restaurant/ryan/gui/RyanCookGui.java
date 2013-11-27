@@ -44,6 +44,7 @@ public class RyanCookGui implements Gui{
 		xPos = 550;
 		yDestination = 130;
 		xDestination = 550;
+		home = new Dimension(550, 130);
 		
 		plates.add(new Plate(1, 500, 115));
 		plates.add(new Plate(2, 500, 140));

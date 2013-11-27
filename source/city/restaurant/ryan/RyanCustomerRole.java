@@ -44,6 +44,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	// agent correspondents
 	private RyanHostRole host;
 	
+	RyanRestaurant _restaurant;
 	private RyanWaiterRole waiter;
 	private RyanCashierRole cashier;
 
@@ -66,10 +67,12 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	public RyanCustomerRole(PersonAgent p, RyanRestaurant r, String name){
 		super(p);
 		this.name = name;
-		this.cashier = cashier;
+		_restaurant = r;
+		host = r.host;
 		patient = true;
 		bad = false;
 		money = generator.nextInt(20) + 10;
+		cmdGotHungry();
 		
 		if(name.equalsIgnoreCase("poor")){
 			money = 0;
@@ -261,6 +264,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 
 	// Actions
 	private void goToRestaurant() {
+		host = _restaurant.host;
 		print("Going to restaurant");
 		host.msgIWantFood(this);//send our instance, so he can respond to us
 	}
@@ -423,7 +427,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	@Override
 	public Place place() {
 		// TODO Auto-generated method stub
-		return null;
+		return _restaurant;
 	}
 
 	@Override

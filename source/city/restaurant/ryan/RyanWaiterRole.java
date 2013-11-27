@@ -32,6 +32,7 @@ public abstract class RyanWaiterRole extends Role{
 	boolean onBreak = false;
 	Timer timer = new Timer();
 	//Menu wMenu = new Menu();
+	RyanRestaurant _restaurant;
 	Semaphore isMoving = new Semaphore(0, true);
 	
 	enum waiterState{Working, WantBreak, Waiting, CanBreak, OnBreak, BreakDone};
@@ -63,6 +64,7 @@ public abstract class RyanWaiterRole extends Role{
 	public RyanWaiterRole(PersonAgent p, RyanRestaurant restaurant, String name){
 		super(p);
 		waiterName = name;
+		_restaurant = restaurant;
 		wMenu.add(new Menu("Steak", 15.00));
 		wMenu.add(new Menu("Chicken", 10.00));
 		wMenu.add(new Menu("Pizza", 8.00));
@@ -467,7 +469,7 @@ public abstract class RyanWaiterRole extends Role{
 	@Override
 	public Place place() {
 		// TODO Auto-generated method stub
-		return null;
+		return _restaurant;
 	}
 	
 }
