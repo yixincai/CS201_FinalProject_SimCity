@@ -38,6 +38,9 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		inventory.put("Chicken", new Good("Chicken", 7, 1000));		
 		inventory.put("Salad", new Good("Salad", 3, 1000));
 		inventory.put("Pizza", new Good("Pizza", 4, 1000));
+		inventory.put("Hot Dog", new Good("Pizza", 4, 1000)); // for omar's restaurant
+		inventory.put("Burger", new Good("Pizza", 4, 1000));
+		inventory.put("Filet Mignon", new Good("Pizza", 4, 1000));
 		inventory.put("Car", new Good("Car", 200, 100));
 		inventory.put("Meal", new Good("Meal", 5, 1000));
 		moneyInHand = 50;

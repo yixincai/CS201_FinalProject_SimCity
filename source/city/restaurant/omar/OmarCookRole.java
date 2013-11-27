@@ -122,7 +122,6 @@ public class OmarCookRole extends RestaurantCookRole {
 		synchronized(markets){
 			for(MyMarket m: markets){
 				if(m.marketState == MarketStatus.ordering){
-					System.out.println("HERE");
 					purchaseFoodFromMarket(m);
 					return true;
 				}
@@ -202,10 +201,10 @@ public class OmarCookRole extends RestaurantCookRole {
 
 	public void purchaseFoodFromMarket(MyMarket m){
 		List<Item> newOrder = new ArrayList<Item>();
-		newOrder.add(cookInventory.get("Pizza"));
-		newOrder.add(cookInventory.get("Hot Dog"));
-		newOrder.add(cookInventory.get("Burger"));
-		newOrder.add(cookInventory.get("Filet Mignon"));
+		newOrder.add(new Item("Pizza", 5));
+		newOrder.add(new Item("Hot Dog", 5));
+		newOrder.add(new Item("Burger", 5));
+		newOrder.add(new Item("Filet Mignon", 5));
 
 		m.market.MarketCashier.msgPlaceOrder(this.restaurant, newOrder);
 		m.marketState = MarketStatus.waiting;
