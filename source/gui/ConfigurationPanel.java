@@ -56,8 +56,16 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 				+ " then head over to their respective place (market/omarRestaurant/yixinRestaurant).</br><br>"
 				+ "Because of non-normatives integrated in restaurant from our past project, customers may leave</br><br>"
 				+ "when they find out that the restaurant is out of food, but the market interaction will still work</br></html>";
-		config3Description = "WRITE CONFIGURATION 3 DESCRIPTION HERE";
-		config4Description = "WRITE CONFIGURATION 4 DESCRIPTION HERE";
+		config3Description = "<html><br>Scenario 3: Initialize a market with restaurant-market interaction. </br><br>One market "
+				+ "customer goes to market to order 3 meals. </br><br>At the same time, the cook will check his inventory and ask "
+				+ "the market for resupply. </br><br>The market cashier handles both the restaurant order and customer order, and ask "
+				+ "the employee to pick up the intems from inventory. </br><br>The customer order will be handed to customer after they have "
+				+ "paid the cashier. </br><br>Restaurant order will be delivered by the truck and come back.</br>";
+		config4Description = "<html><br>Scenario 4: Initialize the market as well as a restaurant. A customer will go to the restaurant and order food. </br><br>"
+				+ "He may leave because the restuarant does not have any food to provide or he does not have enough money to buy any food. </br><br>"
+				+ "The cook in the restaurant can order form the new market cashier instead of the old market. </br><br>"
+				+ "The waiter in the restaurant can either be a shared data waiter or a normal waiter. </br><br>The other behaviors are basically the "
+				+ "same as the before in Yixin Restaurant.</br>";
 		config5Description = "WRITE CONFIGURATION 5 DESCRIPTION HERE";
 		descriptionText = new JLabel();
 		descriptionText.setText(config1Description);
@@ -147,7 +155,23 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("OmarWaiter", 300, "Omar Waiter", true, "apartment");
 			cPanel.addPerson("OmarCustomer", 300, "Omar Customer", true, "apartment");
 		}
-	//	System.out.println("Config Start Button Pressed.");
+		else if (configBox.getSelectedIndex() == 2){
+			cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
+			cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
+			cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
+			cPanel.addPerson("Yixin Cashier", 300, "Market Cashier", true, "apartment");
+			cPanel.addPerson("Yixin Employee", 300, "Market Employee", true, "apartment");
+			cPanel.addPerson("Yixin Customer", 300, "Market Customer", true, "apartment");
+		}
+		else if (configBox.getSelectedIndex() == 3){
+			cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
+			cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
+			cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
+			cPanel.addPerson("Yixin3", 300, "Waiter", true, "house");
+			cPanel.addPerson("Yixin4", 300, "Yixin Customer", true, "apartment");
+			cPanel.addPerson("Yixin7", 300, "Market Cashier", true, "apartment");
+			cPanel.addPerson("Yixin8", 300, "Market Employee", true, "apartment");
+		}
 	}
 
 }
