@@ -4,6 +4,7 @@ import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
 import city.Place;
+import city.interfaces.Person;
 
 public class Apartment implements Home
 {
@@ -30,7 +31,7 @@ public class Apartment implements Home
 	
 	// --------------------------------- METHODS ---------------------------------------
 	// ---------- FACTORIES & TRYACQUIRES ----------
-	public ApartmentOccupantRole tryGenerateHomeOccupantRole(PersonAgent person)
+	public ApartmentOccupantRole tryGenerateHomeOccupantRole(Person person)
 	{
 		if(_occupiedSemaphore.tryAcquire())
 		{

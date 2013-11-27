@@ -4,6 +4,7 @@ import java.util.*;
 
 // TODO the gui packages are basically only here for the setOccupation() function. We will move the gui instantiation elsewhere, probably to the roles' respective constructors.
 import city.home.*;
+import city.interfaces.Person;
 import city.bank.*;
 import city.bank.gui.*;
 import city.market.*;
@@ -13,7 +14,7 @@ import city.restaurant.yixin.*;
 import city.transportation.CommuterRole;
 import agent.*;
 
-public class PersonAgent extends Agent
+public class PersonAgent extends Agent implements Person
 {
 	// --------------------------------------- DATA -------------------------------------------
 	// Personal data:

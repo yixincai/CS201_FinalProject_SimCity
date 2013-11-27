@@ -8,6 +8,7 @@ import city.PersonAgent;
 import city.Place;
 import city.Time;
 import city.home.gui.HomeOccupantGui;
+import city.interfaces.Person;
 import agent.Role;
 
 public abstract class HomeOccupantRole extends Role
@@ -39,7 +40,7 @@ public abstract class HomeOccupantRole extends Role
 	
 	// --------------------------- CONSTRUCTOR & PROPERTIES --------------------------
 	// ------------- SETUP ------------
-	public HomeOccupantRole(PersonAgent person, Home home)
+	public HomeOccupantRole(Person person, Home home)
 	{
 		super(person);
 		setHome(home);

@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 
 import gui.BuildingInteriorAnimationPanel;
 import gui.WorldViewBuilding;
-import city.PersonAgent;
+import city.interfaces.Person;
 import city.Place;
 import city.home.gui.HouseAnimationPanel;
 import city.home.gui.HouseOccupantGui;
@@ -31,7 +31,7 @@ public class House extends Place implements Home, PlaceWithAnimation {
 	
 	
 	// --------------------------------- METHODS ---------------------------------------
-	public HouseOccupantRole tryGenerateHomeOccupantRole(PersonAgent person)
+	public HouseOccupantRole tryGenerateHomeOccupantRole(Person person)
 	{
 		if(_occupiedSemaphore.tryAcquire())
 		{
