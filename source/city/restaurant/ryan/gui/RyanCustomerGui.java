@@ -30,8 +30,8 @@ public class RyanCustomerGui implements Gui{
 		agent = c;
 		xPos = -40;
 		yPos = -40;
-		xDestination = 100;
-		yDestination = 100;
+		xDestination = -40;
+		yDestination = -40;
 		//maitreD = m;
 	}
 
