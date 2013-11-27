@@ -40,6 +40,7 @@ public class RyanHostRole extends Role {
 	final int startx = 150;
 	final int starty = 150;
 	
+	RyanRestaurant _restaurant;
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
 
@@ -47,7 +48,7 @@ public class RyanHostRole extends Role {
 
 	public RyanHostRole(PersonAgent p, RyanRestaurant r, String name) {
 		super(p);
-		
+		_restaurant = r;
 		this.name = name;
 		
 		// make some tables
@@ -466,7 +467,7 @@ public class RyanHostRole extends Role {
 	@Override
 	public Place place() {
 		// TODO Auto-generated method stub
-		return null;
+		return _restaurant;
 	}
 	@Override
 	public void cmdFinishAndLeave() {

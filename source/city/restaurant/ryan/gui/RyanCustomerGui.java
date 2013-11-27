@@ -7,7 +7,7 @@ import city.restaurant.ryan.RyanCustomerRole;
 public class RyanCustomerGui implements Gui{
 
 	private RyanCustomerRole agent = null;
-	private boolean isPresent = false;
+	private boolean isPresent = true;
 	private boolean isHungry = false;
 
 	//private HostAgent host;
@@ -78,6 +78,7 @@ public class RyanCustomerGui implements Gui{
 				isHungry = false;
 				agent.active = false;
 				//gui.setCustomerEnabled(agent);
+				agent.cmdFinishAndLeave();
 				state = State.nothing;
 			}
 			command=Command.noCommand;

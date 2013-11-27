@@ -333,7 +333,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	@Override
 	public Place place() {
 		// TODO Auto-generated method stub
-		return null;
+		return _restaurant;
 	}
 
 	@Override

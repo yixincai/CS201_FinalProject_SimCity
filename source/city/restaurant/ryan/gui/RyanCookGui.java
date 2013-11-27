@@ -44,6 +44,7 @@ public class RyanCookGui implements Gui{
 		xPos = 550;
 		yDestination = 130;
 		xDestination = 550;
+		home = new Dimension(550, 130);
 		
 		plates.add(new Plate(1, 500, 115));
 		plates.add(new Plate(2, 500, 140));
@@ -86,6 +87,7 @@ public class RyanCookGui implements Gui{
 		yDestination = grill.height;
 		xDestination = grill.width;
 		command = Command.goToGrill;
+		System.out.println("goToGrill");
 	}
 	
 	public void gotoGrill1(){
@@ -134,10 +136,12 @@ public class RyanCookGui implements Gui{
         
 		if (xPos == xDestination && yPos == yDestination) {
 			if (command==Command.goToFridge){
+				System.out.println("atfridge");
 				hasIngredients = true;
 				gotoGrill();
 			}
 			else if(command==Command.goToGrill){
+				System.out.println("atgrill");
 				command=Command.noCommand;
 				hasIngredients = false;
 				for(Grill temp: grills){
@@ -151,6 +155,7 @@ public class RyanCookGui implements Gui{
 				agent.msgFoodPutOnGrill();
 			}
 			else if(command==Command.goToGrill1){
+				System.out.println("atgrill1");
 				for(Grill temp: grills){
 					if(temp.number == grillNum){
 						temp.occupied = false;
@@ -162,6 +167,7 @@ public class RyanCookGui implements Gui{
 				gotoPlate();
 			}
 			else if(command == Command.goToPlating){
+				System.out.println("plating");
 				command=Command.noCommand;
 				hasIngredients = false;
 				for(Plate temp: plates){
@@ -175,7 +181,8 @@ public class RyanCookGui implements Gui{
 				plateNum = 0;
 				agent.msgFoodPutOnPlate();
 			}
-			if (command==Command.LeaveRestaurant) {
+			else if(command==Command.LeaveRestaurant) {
+				System.out.println("leaving");
 				agent.active = false;
 				//gui.setCustomerEnabled(agent);
 			}

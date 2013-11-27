@@ -67,16 +67,16 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     	g.drawString(WA, 30, 10);
 
         //here is the cooking area 
-        /*
-    	g.drawImage(plateimage, 70, 250, ICON_X, ICON_Y, this);
-    	g.drawImage(standimage, 40, 250, ICON_X, ICON_Y, this);
-    	g.drawImage(grillimage, 200, 250, ICON_X, ICON_Y, this);
-    	g.drawImage(fridgeimage, 330, 250, ICON_X, ICON_Y, this);
-    	*/
-    	g2.fillRect(170, 250, ICON_X, ICON_Y);
-    	g2.fillRect(140, 250, ICON_X, ICON_Y);
-    	g2.fillRect(300, 250, ICON_X, ICON_Y);
-    	g2.fillRect(430, 250, ICON_X, ICON_Y);
+        
+    	g.drawImage(plateimage, 170, 250, ICON_X, ICON_Y, this);
+    	g.drawImage(standimage, 140, 250, ICON_X, ICON_Y, this);
+    	g.drawImage(grillimage, 300, 250, ICON_X, ICON_Y, this);
+    	g.drawImage(fridgeimage, 430, 250, ICON_X, ICON_Y, this);
+    	
+//    	g2.fillRect(170, 250, ICON_X, ICON_Y);
+//    	g2.fillRect(140, 250, ICON_X, ICON_Y);
+//    	g2.fillRect(300, 250, ICON_X, ICON_Y);
+//    	g2.fillRect(430, 250, ICON_X, ICON_Y);
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
