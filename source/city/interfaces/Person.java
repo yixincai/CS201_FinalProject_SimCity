@@ -1,7 +1,6 @@
 package city.interfaces;
 
 import city.home.HomeOccupantRole;
-import agent.Role;
 
 public interface Person {
 

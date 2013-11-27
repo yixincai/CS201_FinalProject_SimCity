@@ -17,10 +17,10 @@ public abstract class HomeOccupantRole extends Role
 
 
 
-	private enum Command { NONE, WATCH_TV, COOK_AND_EAT_FOOD, GO_TO_BED, WAKE_UP, LEAVE }
+	public enum Command { NONE, WATCH_TV, COOK_AND_EAT_FOOD, GO_TO_BED, WAKE_UP, LEAVE }
 	private Command _command = Command.NONE; // Maybe change this to a list of Command so we can keep track of multiple sequential commands
 	
-	private enum Event { NONE, ALARM_CLOCK_RANG, GOT_HOME, }
+	public enum Event { NONE, ALARM_CLOCK_RANG, GOT_HOME, }
 	private Event _event = Event.GOT_HOME;
 	
 	public enum State { AWAY, IDLE, COOKING, SLEEPING, LEAVING }
@@ -46,6 +46,8 @@ public abstract class HomeOccupantRole extends Role
 		setHome(home);
 	}
 	public boolean haveHome() { return _home != null; }
+	public Command command() { return _command; }
+	public Event event() { return _event; }
 	public State state() { return _state; }
 	public boolean sleeping() { return _state == State.SLEEPING; }
 	public boolean cooking() { return _state == State.COOKING; }
@@ -170,7 +172,7 @@ public abstract class HomeOccupantRole extends Role
 	{
 		// note: the whole getting-home process does not change the command, so you will be able to set a command then get home.
 		print("Just got home.");
-		// don't change _command
+		// don't change _command (so PersonAgent can set commands before we get home)
 		// Note: _event had the value of GOT_HOME when this method got called; no longer need it to be that
 		_event = Event.NONE;
 		_state = State.IDLE;
@@ -186,6 +188,8 @@ public abstract class HomeOccupantRole extends Role
 		_mealCount--;
 		_gui.doCookAndEatFood(); // calls a bunch of sequential actions for the animation
 		waitForGuiToReachDestination();
+		
+		print("Finished cooking and eating");
 		_person.cmdNoLongerHungry();
 		_state = State.IDLE;
 		_gui.doGoIdle();
@@ -203,7 +207,7 @@ public abstract class HomeOccupantRole extends Role
 	{
 		print("Going to bed.");
 		_command = Command.NONE;
-		// do we need to reset _event?
+		_event = Event.NONE; // this is important just to make sure that the scheduler won't wake up
 		_state = State.SLEEPING;
 		_gui.doGoToBed();
 		waitForGuiToReachDestination();
@@ -232,6 +236,7 @@ public abstract class HomeOccupantRole extends Role
 		_gui.doLeaveHome();
 		waitForGuiToReachDestination();
 		print("Finished leaving home");
+		_event = Event.GOT_HOME; // for next time
 		_state = State.AWAY;
 		active = false;
 	}

@@ -4,17 +4,17 @@ import city.home.HomeOccupantRole;
 import city.interfaces.Person;
 
 public class PersonMock implements Person {
-	boolean stateChangedCalled = false;
+	public boolean stateChangedCalled = false;
+	public boolean cmdNoLongerHungryCalled = false;
 	public void stateChanged() { stateChangedCalled = true; }
 	@Override
-	public Object getName() {
+	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return "PersonMock";
 	}
 	@Override
 	public void cmdNoLongerHungry() {
-		// TODO Auto-generated method stub
-		
+		cmdNoLongerHungryCalled = true;
 	}
 	@Override
 	public HomeOccupantRole homeOccupantRole() {

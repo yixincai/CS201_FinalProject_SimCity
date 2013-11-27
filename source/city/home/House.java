@@ -21,6 +21,7 @@ public class House extends Place implements Home, PlaceWithAnimation {
 	
 	
 	// ------------------------- CONSTRUCTOR & PROPERTIES -----------------------------
+	public House(String name) { super(name, null); }
 	public House(String name, WorldViewBuilding wvb, BuildingInteriorAnimationPanel bp){
 		super(name, wvb);
 		_animationPanel = (HouseAnimationPanel)bp.getBuildingAnimation();

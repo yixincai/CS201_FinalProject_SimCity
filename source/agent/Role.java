@@ -36,6 +36,7 @@ public abstract class Role
 	 */
 	protected void print(String msg, Throwable e)
 	{
+		log.add(msg);
 		StringBuffer sb = new StringBuffer();
 		sb.append(_person.getName());
 		sb.append(": ");

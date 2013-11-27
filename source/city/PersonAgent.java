@@ -406,8 +406,21 @@ public class PersonAgent extends Agent implements Person
 					setNextRole(_occupation);
 					return true;
 				}
-				else if(_occupation == null) //DEBUG
+				else if(_occupation == null)
 				{
+					// For testing purposes for V1, choose a random action to do at home.
+					switch((new Random()).nextInt(3))
+					{
+					case 0:
+						_homeOccupantRole.cmdWatchTv();
+						break;
+					case 1:
+						_homeOccupantRole.cmdCookAndEatFood();
+						break;
+					case 2:
+						_homeOccupantRole.cmdGoToBed();
+						break;
+					}
 					_homeOccupantRole.cmdGoToBed();
 					setNextRole(_homeOccupantRole);
 					return true;
