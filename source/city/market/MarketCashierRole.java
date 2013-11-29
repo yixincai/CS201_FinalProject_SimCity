@@ -234,7 +234,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 	
 	public void DepositMoney(){
-		Directory.banks().get(0).tellers.get(0).msgWiredTransaction(market, market.getAccountNumber(), moneyInHand / 2, "Desposit");
+		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(market, market.getAccountNumber(), moneyInHand / 2, "Desposit");
 		money_state = MoneyState.OrderedFromBank;
 	}
 	

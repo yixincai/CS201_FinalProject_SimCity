@@ -102,8 +102,8 @@ public class CashierTest extends TestCase
 
 		//send first message to cashier
 		cashier.money = 300;//send the message from a waiter
-		Directory.banks().get(0).tellers.get(0).makeDatabase();
-		Directory.banks().get(0).tellers.get(0).setPerson(new PersonAgent("Dummy"));
+		Directory.banks().get(0)._tellers.get(0).makeDatabase();
+		Directory.banks().get(0)._tellers.get(0).setPerson(new PersonAgent("Dummy"));
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 
 		assertFalse("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());

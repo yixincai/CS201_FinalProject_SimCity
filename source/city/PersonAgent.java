@@ -309,6 +309,7 @@ public class PersonAgent extends Agent implements Person
 				return;
 			case "None":
 				_occupation = null;
+				// this causes _occupation to be set to _homeOccupantRole
 				return;
 		}
 		// note: control reaches here because no jobs were found
@@ -324,6 +325,8 @@ public class PersonAgent extends Agent implements Person
 	}
 	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
 	public CommuterRole commuterRole() { return _commuterRole; }
+	
+	
 	
 	// ------------------------------------------------ COMMANDS -----------------------------------------------------------
 	public void cmdChangeMoney(double delta) { _money += delta; }
