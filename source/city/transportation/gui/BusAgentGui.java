@@ -36,8 +36,8 @@ public class BusAgentGui implements Gui {
 	public void goToBusStop(BusStopObject busstop){
 		System.out.println("Going To Bus Stop");
 		_busStop = busstop;
-		_xDestination = busstop.xPosition();
-		_yDestination = busstop.yPosition();
+		_xDestination = busstop.positionX();
+		_yDestination = busstop.positionY();
 		moving = true;
 	}
 	
