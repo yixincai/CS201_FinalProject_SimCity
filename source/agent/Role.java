@@ -2,24 +2,23 @@ package agent;
 
 import utilities.EventLog;
 import utilities.StringUtil;
-import city.PersonAgent;
 import city.Place;
 import city.interfaces.Person;
 
 public abstract class Role
 {
-	// ----------------------------- DATA ------------------------------------
+	// --------------------------------------- DATA ------------------------------------
 	protected Person _person;
 	public boolean active = false;
-	public EventLog log = new EventLog();
+	public EventLog log = new EventLog(); // unit testing
 	
 	// ----------------------------- CONSTRUCTOR & PROPERTIES ------------------------------------
 	public Role(Person person) { _person = person; }
-	public void setPersonAgent(PersonAgent person) { _person = person; }
+	public void setPerson(Person person) { _person = person; }
 	public abstract Place place();
 	public String toString() { return StringUtil.shortName(getClass()); }
 	
-	// ----------------------------- METHODS ------------------------------------
+	// ------------------------------------- METHODS ------------------------------------
 	protected void stateChanged()
 	{
 		if(_person != null) _person.stateChanged(); // this checking for _person != null is necessary in cases like when the cook sends a message to a market whose cashier role isn't yet filled 

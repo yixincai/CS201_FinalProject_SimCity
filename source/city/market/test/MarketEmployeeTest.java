@@ -28,7 +28,7 @@ public class MarketEmployeeTest  extends TestCase {
 		p = new PersonAgent("Mike");
 		market = new Market();
 		employee = market.MarketEmployee;
-		employee.setPersonAgent(p);
+		employee.setPerson(p);
 		customer = new MockMarketCustomer("Dummy");
 		gui = new MarketEmployeeGui(employee);
 		employee.gui = gui;
