@@ -238,23 +238,23 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	//Bank
 	private void PayLoan(){
 		double amount = Math.min(register-150, bankDebt);
-		Directory.banks().get(0).tellers.get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), amount, "Pay Loan");
+		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), amount, "Pay Loan");
 		moneyState = MoneyState.OrderedFromBank;
 	}
 	
 	private void Withdraw(){
 		double amount = Math.min(50-register, bankBalance);
-		Directory.banks().get(0).tellers.get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), amount, "Withdraw");
+		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), amount, "Withdraw");
 		moneyState = MoneyState.OrderedFromBank;		
 	}
 	
 	private void AskForLoan(){
-		Directory.banks().get(0).tellers.get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), 50-register, "Withdraw Loan");
+		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), 50-register, "Withdraw Loan");
 		moneyState = MoneyState.OrderedFromBank;
 	}
 	
 	private void Deposit(){
-		Directory.banks().get(0).tellers.get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), register/2, "Deposit");
+		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), register/2, "Deposit");
 		moneyState = MoneyState.OrderedFromBank;
 	}
 	
