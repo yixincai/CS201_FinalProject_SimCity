@@ -4,7 +4,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
-import city.PersonAgent;
 import city.Place;
 import city.Time;
 import city.home.gui.HomeOccupantGui;

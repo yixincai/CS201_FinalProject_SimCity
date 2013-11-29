@@ -8,19 +8,19 @@ import utilities.LoggedEvent;
  */
 public abstract class Mock
 {
-	private String name;
+	private String _name;
 	public EventLog log = new EventLog();
 
 	public Mock(String name) {
-		this.name = name;
+		this._name = name;
 	}
 
 	public String getName() {
-		return name;
+		return _name;
 	}
 
 	public String toString() {
-		return this.getClass().getName() + ": " + name;
+		return "[" + this.getClass().getName() + "] " + _name;
 	}
     
     /**

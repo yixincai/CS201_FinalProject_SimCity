@@ -33,7 +33,7 @@ public class CashierTest extends TestCase
 		cashier = (YixinCashierRole)restaurant.cashier;
 		market = new Market();
 		p =new PersonAgent("Dummy");
-		cashier.setPersonAgent(p);
+		cashier.setPerson(p);
 		price_list = new HashMap<String, Double>();
 		price_list.put("Steak", 10.0);
 		price_list.put("Chicken", 7.0);
@@ -103,7 +103,7 @@ public class CashierTest extends TestCase
 		//send first message to cashier
 		cashier.money = 300;//send the message from a waiter
 		Directory.banks().get(0).tellers.get(0).makeDatabase();
-		Directory.banks().get(0).tellers.get(0).setPersonAgent(new PersonAgent("Dummy"));
+		Directory.banks().get(0).tellers.get(0).setPerson(new PersonAgent("Dummy"));
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 
 		assertFalse("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());

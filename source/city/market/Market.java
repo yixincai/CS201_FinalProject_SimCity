@@ -45,7 +45,7 @@ public class Market extends Place implements PlaceWithAnimation {
 	
 	public MarketCashierRole tryAcquireCashier(PersonAgent person){
 		if (_cashierSemaphore.tryAcquire()){
-			MarketCashier.setPersonAgent(person);
+			MarketCashier.setPerson(person);
 			return MarketCashier;
 		}
 		return null;
@@ -53,7 +53,7 @@ public class Market extends Place implements PlaceWithAnimation {
 
 	public MarketEmployeeRole tryAcquireEmployee(PersonAgent person){
 		if (_employeeSemaphore.tryAcquire()){
-			MarketEmployee.setPersonAgent(person);
+			MarketEmployee.setPerson(person);
 			return MarketEmployee;
 		}
 		return null;

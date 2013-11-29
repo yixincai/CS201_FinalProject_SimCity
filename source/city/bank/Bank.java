@@ -70,7 +70,7 @@ public class Bank extends Place implements PlaceWithAnimation {
 	
 	public BankTellerRole tryAcquireTeller(PersonAgent person){
 		if (_tellerSemaphore.tryAcquire()){
-			tellers.get(0).setPersonAgent(person);
+			tellers.get(0).setPerson(person);
 			return tellers.get(0);
 		}
 		return null;
@@ -78,7 +78,7 @@ public class Bank extends Place implements PlaceWithAnimation {
 
 	public BankHostRole tryAcquireHost(PersonAgent person){
 		if (_hostSemaphore.tryAcquire()){
-			_bankHostRole.setPersonAgent(person);;
+			_bankHostRole.setPerson(person);;
 			return _bankHostRole;
 		}
 		return null;
