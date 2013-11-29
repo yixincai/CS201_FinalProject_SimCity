@@ -102,7 +102,7 @@ public class MainGui extends JFrame
 		Market market = new Market("Market", b3, bp3, _worldView);
 		Directory.addPlace(market);
 		_buildingCardLayoutPanel.add( bp3, bp3.getName() );
-		cPanel.currentBuildingPanel.addBuilding(market.getName());
+		cPanel.currentBuildingPanel.addBuilding(market.name());
 		_buildingInteriorAnimationPanels.add(bp3);
 		
 		// Yixin's Restaurant:
@@ -112,7 +112,7 @@ public class MainGui extends JFrame
 		YixinRestaurant yr = new YixinRestaurant("Yixin's Restaurant", b, bp);
 		Directory.addPlace(yr);
 		_buildingCardLayoutPanel.add( bp, bp.getName() );
-		cPanel.currentBuildingPanel.addBuilding(yr.getName());
+		cPanel.currentBuildingPanel.addBuilding(yr.name());
 		_buildingInteriorAnimationPanels.add(bp);
 		
 		//Omar's Restaurant
@@ -122,7 +122,7 @@ public class MainGui extends JFrame
 		OmarRestaurant or = new OmarRestaurant("Omar's Restaurant", b9, bp9);
 		Directory.addPlace(or);
 		_buildingCardLayoutPanel.add( bp9, bp9.getName() );
-		cPanel.currentBuildingPanel.addBuilding(or.getName());
+		cPanel.currentBuildingPanel.addBuilding(or.name());
 		_buildingInteriorAnimationPanels.add(bp9);
 		
 		//Ryan Restaurant
@@ -132,7 +132,7 @@ public class MainGui extends JFrame
 		RyanRestaurant rr = new RyanRestaurant("Ryan's Restaurant", bR, bpR);
 		Directory.addPlace(rr);
 		_buildingCardLayoutPanel.add( bpR, bpR.getName() );
-		cPanel.currentBuildingPanel.addBuilding(rr.getName());
+		cPanel.currentBuildingPanel.addBuilding(rr.name());
 		_buildingInteriorAnimationPanels.add(bpR);
 		
 		//Bank
@@ -142,7 +142,7 @@ public class MainGui extends JFrame
 		Bank bank = new Bank("Bank", b2, bp2);
 		Directory.addPlace(bank);
 		_buildingCardLayoutPanel.add( bp2, bp2.getName() );
-		cPanel.currentBuildingPanel.addBuilding(bank.getName());
+		cPanel.currentBuildingPanel.addBuilding(bank.name());
 		_buildingInteriorAnimationPanels.add(bp2);
 		
 		//Initializing houses
@@ -153,7 +153,7 @@ public class MainGui extends JFrame
 			House house = new House("House " + i, b4, bp4);
 			Directory.addPlace(house);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
-			cPanel.currentBuildingPanel.addBuilding(house.getName());
+			cPanel.currentBuildingPanel.addBuilding(house.name());
 			_buildingInteriorAnimationPanels.add(bp4);
 		}
 		
@@ -165,7 +165,7 @@ public class MainGui extends JFrame
 			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
 			Directory.addPlace(apartment);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
-			cPanel.currentBuildingPanel.addBuilding(apartment.getName());
+			cPanel.currentBuildingPanel.addBuilding(apartment.name());
 			_buildingInteriorAnimationPanels.add(bp4);
 		}
 		

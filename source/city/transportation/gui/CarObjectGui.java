@@ -34,8 +34,8 @@ public class CarObjectGui implements Gui {
 	
 	public void goToDestination(Place destination){
 		driving = true;
-		_xDestination = destination.xPosition();
-		_yDestination = destination.yPosition();
+		_xDestination = destination.positionX();
+		_yDestination = destination.positionY();
 	}
 	
 	public void atDestination(){

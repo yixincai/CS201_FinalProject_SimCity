@@ -10,7 +10,6 @@ import city.bank.gui.*;
 import city.market.*;
 import city.market.gui.*;
 import city.restaurant.*;
-import city.restaurant.yixin.*;
 import city.transportation.CommuterRole;
 import agent.*;
 
@@ -489,8 +488,7 @@ public class PersonAgent extends Agent implements Person
 	// (Peanut gallery)
 	private void actTellLongStory()
 	{
-		print("When I was a young programmer, my boss was skeptical of my design.  I proved him wrong. \n"
-				+ "Some of my students placed me in a giant hamster ball and dropped me in the middle of the Pacific Ocean, and I had to find my way back.");
+		print("When I was a young programmer, my boss was skeptical of my design.  I proved him wrong.");
 	}
 	private void actIWhale()
 	{
