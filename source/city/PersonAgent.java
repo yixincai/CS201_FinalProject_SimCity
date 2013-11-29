@@ -74,7 +74,7 @@ public class PersonAgent extends Agent implements Person
 		
 		double time()
 		{
-			return Time.getTime();
+			return Time.currentTime();
 		}
 		
 		Time.Day today()
