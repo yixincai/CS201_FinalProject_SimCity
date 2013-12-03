@@ -105,7 +105,7 @@ public class BusAgent extends Agent implements Bus{
 		}
 		
 		if(bState == BusState.pickingup && getExpectedPeople() == getNumPeople()){
-			System.out.println("Leaving");
+			//System.out.println("Leaving");
 			Leave();
 			return true;
 		}
@@ -129,6 +129,7 @@ public class BusAgent extends Agent implements Bus{
 		System.out.println("Bus: Dropping off from " + currentDestination.name());
 	    bState = BusState.droppingoff;
 	    for(MyCommuter commuter: _passengers){
+	    	System.out.println("The passenger is going to " + commuter.destination.getName());
 	        if(commuter.destination == currentDestination){
 	        	commuter.commuter.msgGetOffBus(currentDestination);
 	            setExpectedPeople(getExpectedPeople() - 1);
