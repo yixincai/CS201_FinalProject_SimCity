@@ -1,6 +1,6 @@
 package city.restaurant.eric.interfaces;
 
-import restaurant.Check;
+import city.restaurant.eric.Check;
 
 public interface Cashier
 {

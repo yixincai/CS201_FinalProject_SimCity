@@ -2,9 +2,9 @@ package city.restaurant.eric;
 
 import java.util.Random;
 
-import restaurant.gui.CustomerGui;
+import city.restaurant.eric.gui.CustomerGui;
 import agent.Agent;
-import restaurant.interfaces.*;
+import city.restaurant.eric.interfaces.*;
 
 public class CustomerAgent extends Agent implements Customer
 {

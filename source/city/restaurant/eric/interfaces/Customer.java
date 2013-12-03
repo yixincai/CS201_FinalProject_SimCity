@@ -1,8 +1,8 @@
 package city.restaurant.eric.interfaces;
 
-import restaurant.Check;
-import restaurant.Menu;
-import restaurant.gui.CustomerGui;
+import city.restaurant.eric.Check;
+import city.restaurant.eric.Menu;
+import city.restaurant.eric.gui.CustomerGui;
 
 public interface Customer
 {

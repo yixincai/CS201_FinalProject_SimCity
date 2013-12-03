@@ -1,13 +1,6 @@
 package city.restaurant.eric.gui;
 
-import restaurant.CustomerAgent;
-//import restaurant.WaiterAgent;
-//import restaurant.CustomerAgent.CustomerEvent;
-
-
-
-
-
+import city.restaurant.eric.CustomerAgent;
 import java.awt.*;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;

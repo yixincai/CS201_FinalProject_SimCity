@@ -1,6 +1,6 @@
 package city.restaurant.eric;
 
-import restaurant.Menu;
+import city.restaurant.eric.Menu;
 
 public class Check
 {
