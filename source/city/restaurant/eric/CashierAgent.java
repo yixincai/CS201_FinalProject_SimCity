@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import agent.Agent;
-import restaurant.interfaces.*;
+import city.restaurant.eric.interfaces.*;
 
 public class CashierAgent extends Agent implements Cashier
 {
