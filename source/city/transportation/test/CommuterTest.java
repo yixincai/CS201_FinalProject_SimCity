@@ -3,11 +3,7 @@ package city.transportation.test;
 import gui.WorldViewBuilding;
 import city.PersonAgent;
 import city.market.Market;
-import city.restaurant.Restaurant;
-import city.restaurant.yixin.YixinRestaurant;
-import city.transportation.BusStopObject;
-import city.transportation.CarObject;
-import city.transportation.CommuterRole;
+import city.transportation.*;
 import city.transportation.CommuterRole.TravelState;
 import city.transportation.gui.CommuterGui;
 import city.transportation.mock.MockBus;
@@ -29,7 +25,6 @@ public class CommuterTest extends TestCase{
 	
 	BusStopObject busStop;
 	BusStopObject busStop1;
-	CarObject car;
 	
 	public void setUp() throws Exception{
 		super.setUp();
