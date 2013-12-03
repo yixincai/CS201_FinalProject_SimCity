@@ -1,9 +1,9 @@
 package city.restaurant.eric.gui;
 
 
-import restaurant.CustomerAgent;
-import restaurant.WaiterAgent;
-import restaurant.interfaces.Customer;
+import city.restaurant.eric.CustomerAgent;
+import city.restaurant.eric.WaiterAgent;
+import city.restaurant.eric.interfaces.Customer;
 
 import java.awt.*;
 import java.util.ArrayList;

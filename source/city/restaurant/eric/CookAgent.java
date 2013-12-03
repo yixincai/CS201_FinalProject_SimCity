@@ -9,7 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import agent.Agent;
-import restaurant.interfaces.*;
+import city.restaurant.eric.interfaces.*;
 
 public class CookAgent extends Agent implements Cook
 {

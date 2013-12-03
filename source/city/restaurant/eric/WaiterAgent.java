@@ -1,8 +1,8 @@
 package city.restaurant.eric;
 
 import agent.Agent;
-import restaurant.interfaces.*;
-import restaurant.gui.WaiterGui;
+import city.restaurant.eric.interfaces.*;
+import city.restaurant.eric.gui.WaiterGui;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;

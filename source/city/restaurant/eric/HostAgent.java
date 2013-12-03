@@ -5,9 +5,9 @@ import java.util.Collections;
 //import java.util.Collection;
 import java.util.List;
 
-import restaurant.gui.AnimationConstants;
+import city.restaurant.eric.gui.AnimationConstants;
 import agent.Agent;
-import restaurant.interfaces.*;
+import city.restaurant.eric.interfaces.*;
 
 public class HostAgent extends Agent implements Host
 {
