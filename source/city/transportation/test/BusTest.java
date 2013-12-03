@@ -2,20 +2,11 @@ package city.transportation.test;
 
 import junit.framework.TestCase;
 import gui.WorldViewBuilding;
-import city.Directory;
-import city.PersonAgent;
-import city.market.Market;
-import city.transportation.BusAgent;
+import city.*;
 import city.transportation.BusAgent.BusState;
-import city.transportation.BusStopObject;
-import city.transportation.CarObject;
-import city.transportation.CommuterRole;
-import city.transportation.CommuterRole.TravelState;
-import city.transportation.gui.BusAgentGui;
-import city.transportation.gui.CommuterGui;
-import city.transportation.interfaces.Commuter;
-import city.transportation.mock.MockBus;
-import city.transportation.mock.MockCommuter;
+import city.transportation.*;
+import city.transportation.gui.*;
+import city.transportation.mock.*;
 
 public class BusTest extends TestCase {
 	
