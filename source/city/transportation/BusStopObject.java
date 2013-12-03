@@ -17,6 +17,7 @@ public class BusStopObject extends Place {
 	}
 	
 	public void addCommuterRole(Commuter person){
+		System.out.println("Added person to waitlist");
 		_waitList.add(person);
 	}
 	
