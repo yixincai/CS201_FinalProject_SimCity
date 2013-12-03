@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 import agent.Role;
+import city.Directory;
 import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.CommuterGui;
@@ -160,7 +161,7 @@ public class CommuterRole extends Role implements Commuter{
 			return true;
 		}
 		
-		/*
+		
 		//Riding Bus
 		if(_tState == TravelState.choseBus){
 			actGoToBusStop();
@@ -182,7 +183,7 @@ public class CommuterRole extends Role implements Commuter{
 			actGetOffBus();
 			return true;
 		}
-		
+		/*
 		//Driving
 		if(_tState == TravelState.choseCar){
 			actGoToCar();
@@ -203,7 +204,7 @@ public class CommuterRole extends Role implements Commuter{
 		print("Choosing mode of transport");
 		
 		_tState = TravelState.choseWalking;
-		
+		_tState = TravelState.choseBus;
 		/*
 		if(_gui.getManhattanDistanceToDestination(_destination) > 300){
 			if(_car != null){
@@ -244,7 +245,7 @@ public class CommuterRole extends Role implements Commuter{
 		active = false;
 	}
 	
-	/*
+	
 	//Bus
 	public void actGoToBusStop(){
 		_tState = TravelState.goingToBusStop;
@@ -252,9 +253,10 @@ public class CommuterRole extends Role implements Commuter{
 		_gui.goToBusStop(_busStop);
 	}
 	public void actAtBusStop(){
+		System.out.println("Here");
 		_tState = TravelState.waitingAtBusStop;
 		_busStop = Directory.getNearestBusStopToDestination(_destination);
-		//_busStop.addCommuterRole(this);
+		_busStop.addCommuterRole(this);
 	}
 	public void actGetOnBus(){
 		_tState = TravelState.ridingBus;
@@ -270,7 +272,7 @@ public class CommuterRole extends Role implements Commuter{
 		_bus = null;
 		actWalking(); //Calls this function here because after you get off of the bus stop you walk to the destination
 	}
-
+/*
 	//Driving
 	public void actGoToCar(){
 		_tState = TravelState.goToCar;
