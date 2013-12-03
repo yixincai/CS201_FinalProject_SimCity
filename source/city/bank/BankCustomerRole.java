@@ -12,36 +12,40 @@ import city.bank.interfaces.BankTeller;
 
 public class BankCustomerRole extends Role implements BankCustomer {
 
-	//Data
-	BankHost bankHost;
-	BankTeller teller;
-	public String request;
-	public double amount;
-	public double accountFunds;
-	public double amountOwed;
-	public int accountNumber;
+	// --------------------------------------- DATA -------------------------------------------
+	BankHost _bankHost;
+	BankTeller _teller;
+	public String _request; //TODO HEY OMAR I recommend you change these fields to be private, even though I see that you only use them for tests; Just make some getters.
+	public double _amount;
+	public double _accountFunds;
+	public double _amountOwed;
+	public int _accountNumber;
 	
-	public State state;
-	public Event event;
-	Semaphore bankCustSem;
-	BankCustomerRoleGui gui;
+	public State _state;
+	public Event _event;
+	Semaphore _bankCustSem; //TODO this name is ambiguous; what is it for?
+	BankCustomerRoleGui gui; //TODO it won't let me add an underscore, but I can't figure out why
 	Bank bank;
 	 
 	public enum State {Robber, DoingNothing, Waiting, AtTeller, GaveRequest, 
 		TransactionComplete, TransactionDenied, LeaveBank };
 	public enum Event {None, CalledToDesk, GivenRequestPermission, WantsAnotherRequest, ApprovedTransaction, DeniedTransaction};
 	
+	
+	
+	// ------------------------------------------- CONSTRUCTORS & PROPERTIES --------------------------------------------
+	
 	public BankCustomerRole(PersonAgent person, Bank bank){
 		super(person);
 		//person.getAccountNumber() = accountNumber;
-		accountNumber = -1;
+		_accountNumber = -1;
 		this.bank = bank;
 		//set values above through personAgent, possible
 		
-		this.bankHost = bank.getHost();
-		state = State.DoingNothing;
-		event = Event.None;
-		bankCustSem = new Semaphore(0, true);
+		this._bankHost = bank.host();
+		_state = State.DoingNothing;
+		_event = Event.None;
+		_bankCustSem = new Semaphore(0, true);
 		
 		this.gui = new BankCustomerRoleGui(this);
 		if(bank.animationPanel()!= null){
@@ -49,13 +53,14 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		}
 	}
 	
-	// --------------------- ACCESSORS ---------------
-	public double accountFunds() { return accountFunds; }
-	public double amountOwed() { return amountOwed; }
+	public double accountFunds() { return _accountFunds; }
+	public double amountOwed() { return _amountOwed; }
+	@Override
+	public Place place() { return bank; }
 	
 	
 	
-	// ------------------------------ COMMANDS ---------------------------------
+	// ---------------------------------------------- COMMANDS ---------------------------------------------------
 	public void cmdRequest(String request, double amount) {
 		switch(request) {
 		case "Withdraw":
@@ -73,49 +78,49 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		}
 	}
 	public void cmdWithdraw(double amount) {
-		request = "Withdraw";
-		this.amount = amount;
+		_request = "Withdraw";
+		this._amount = amount;
 		stateChanged();
 	}
 	public void cmdDeposit(double amount) {
-		request = "Deposit";
-		this.amount = amount;
+		_request = "Deposit";
+		this._amount = amount;
 		stateChanged();
 	}
 	public void cmdWithdrawLoan(double amount) {
-		request = "Withdraw Loan";
-		this.amount = amount;
+		_request = "Withdraw Loan";
+		this._amount = amount;
 		stateChanged();
 	}
 	public void cmdPayLoan(double amount) {
-		request = "Pay Loan";
-		this.amount = amount;
+		_request = "Pay Loan";
+		this._amount = amount;
 		stateChanged();
 	}
 	@Override
 	public void cmdFinishAndLeave() {
-		//do nothing
+		// do nothing
 	}
 	
 	
 	
-	// ----------------------------- MESSAGES ------------------------------------
+	// --------------------------------------------- MESSAGES -----------------------------------------------------
 	public void msgWeAreClosed(){
-		state = State.LeaveBank;
-		event = Event.DeniedTransaction;
+		_state = State.LeaveBank;
+		_event = Event.DeniedTransaction;
 		stateChanged();
 	}
 	
 	public void msgCalledToDesk(BankTeller teller){
-		  event = Event.CalledToDesk;
-		  this.teller = teller;
+		  _event = Event.CalledToDesk;
+		  this._teller = teller;
 		  stateChanged();
 	}
 	public void msgHereIsInfoPickARequest(double funds, double amountOwed, int newAccountNumber){
-		  this.accountNumber = newAccountNumber;
-		  this.accountFunds = funds;
-		  this.amountOwed = amountOwed;
-		  event = Event.GivenRequestPermission;
+		  this._accountNumber = newAccountNumber;
+		  this._accountFunds = funds;
+		  this._amountOwed = amountOwed;
+		  _event = Event.GivenRequestPermission;
 		  stateChanged();
 	}
 	/**
@@ -123,45 +128,48 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	public void msgTransactionComplete(double amountReceived, double funds, double amountOwed){
 			print("Transaction complete!");
-		  event = Event.ApprovedTransaction;
+		  _event = Event.ApprovedTransaction;
 		  _person.cmdChangeMoney(amountReceived);
-		  this.accountFunds = funds;
-		  this.amountOwed = amountOwed;
+		  this._accountFunds = funds;
+		  this._amountOwed = amountOwed;
 		  //or event = WantsAnotherRequest; && state = giveNewRequest; //send another request
 		  stateChanged(); //may give info
 		}
 	public void msgTransactionDenied(){
-		  event = Event.DeniedTransaction;
+		  _event = Event.DeniedTransaction;
 		  //or event = WantsAnotherRequest; && state = giveNewRequest; //send another request
 		  stateChanged();
 	}
 	
+	
+	
+	// ----------------------------------------------- SCHEDULER --------------------------------------------------------
 	public boolean pickAndExecuteAnAction(){
-		if(state == State.LeaveBank && event == Event.DeniedTransaction){
+		if(_state == State.LeaveBank && _event == Event.DeniedTransaction){
 			actLeaveBankWithoutTransaction();
 			return true;
 		}
-		if(state == State.Robber && event == Event.DeniedTransaction){
+		if(_state == State.Robber && _event == Event.DeniedTransaction){
 			actRobBank();
 			return true;
 		} 
-		if(state == State.DoingNothing && event == Event.None){
+		if(_state == State.DoingNothing && _event == Event.None){
 			actGoToLine();
 			return true;
 		}
-		if(state == State.Waiting && event == Event.CalledToDesk){
+		if(_state == State.Waiting && _event == Event.CalledToDesk){
 			actGoToTeller();	
 			return true;
 		}
-		if(state == State.AtTeller && event == Event.GivenRequestPermission){
+		if(_state == State.AtTeller && _event == Event.GivenRequestPermission){
 			actGiveRequest();
 			return true;
 		}
-		if(state == State.AtTeller && event == Event.WantsAnotherRequest){
+		if(_state == State.AtTeller && _event == Event.WantsAnotherRequest){
 			actGiveNewRequest();
 			return true;
 		}
-		if(state == State.GaveRequest && (event == Event.ApprovedTransaction || event == Event.DeniedTransaction)){
+		if(_state == State.GaveRequest && (_event == Event.ApprovedTransaction || _event == Event.DeniedTransaction)){
 			actLeaveBank();
 			return true;
 		}
@@ -173,50 +181,53 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		return false;
 	}
 	
+	
+	
+	// ----------------------------------------------- ACTIONS --------------------------------------------------------
 	private void actGoToLine(){
 		  gui.DoGoToLine();
 		  try {
-				bankCustSem.acquire();
+				_bankCustSem.acquire();
 		  } catch (InterruptedException e) {
 				e.printStackTrace();
 		  }
-		  bankHost.msgWaiting(this);
-		  state = State.Waiting;
+		  _bankHost.msgWaiting(this);
+		  _state = State.Waiting;
 		  // stateChanged();
 	}
 	private void actGoToTeller(){
-		  gui.DoGoToTeller(this.teller.getTellerNum());
+		  gui.DoGoToTeller(this._teller.getTellerNum());
 		  try {
-				bankCustSem.acquire();
+				_bankCustSem.acquire();
 		  } catch (InterruptedException e) {
 				e.printStackTrace();
 		  }
-		  teller.msgIAmHere(this);
-		  state = State.AtTeller;
+		  _teller.msgIAmHere(this);
+		  _state = State.AtTeller;
 		 // stateChanged();
 	}
 	private void actGiveRequest(){
-		teller.msgHereIsMyRequest(this, request, accountNumber);
-		state = State.GaveRequest;
+		_teller.msgHereIsMyRequest(this, _request, _accountNumber);
+		_state = State.GaveRequest;
 		// stateChanged();
 	}
 	private void actGiveNewRequest(){
 		//may trigger robbery
 		//pick new request using logic tied to accountFunds and amountOwed
 		  //teller.msgHereIsMyRequest(String newRequest, int accountNumber);
-		  state = State.GaveRequest;
+		  _state = State.GaveRequest;
 		//  stateChanged();
 	}
 	private void actLeaveBank(){
-		  bankHost.msgLeavingBank(teller);
-		  teller.msgLeavingBank(this);
+		  _bankHost.msgLeavingBank(_teller);
+		  _teller.msgLeavingBank(this);
 		  gui.DoLeaveBank();
 		  try {
-			  bankCustSem.acquire();
+			  _bankCustSem.acquire();
 		  } catch (Exception e){
 			  e.printStackTrace();
 		  }
-		  state = State.DoingNothing;
+		  _state = State.DoingNothing;
 		  active = false;
 		  //send message to person agent to set role inactive, DO NOT SET EVENT TO NONE, THIS WILL RESTART PROCESS
 		//  stateChanged();
@@ -224,28 +235,27 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private void actLeaveBankWithoutTransaction(){
 		gui.DoLeaveBank();
 		try {
-			 bankCustSem.acquire();
+			 _bankCustSem.acquire();
 	    } catch (Exception e){
 			e.printStackTrace();
 		}
-		state = State.DoingNothing;
+		_state = State.DoingNothing;
 		active = false;
 		//stateChanged();
 	}
 	private void actRobBank(){
 		gui.DoRobBank();
 		//teller.msgGiveMeAllYourMoney();
-		state = State.Robber;
+		_state = State.Robber;
 		 // stateChanged();
 	}
 	
+	
+	
+	// -------------------------------------------- UTILITIES -----------------------------------------------
+	
 	public void releaseSemaphore(){
-		bankCustSem.release();
+		_bankCustSem.release();
 		//stateChanged();
-	}
-
-	@Override
-	public Place place() {
-		return bank;
 	}
 }

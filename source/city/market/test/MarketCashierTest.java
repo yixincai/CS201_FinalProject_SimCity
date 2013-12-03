@@ -25,14 +25,14 @@ public class MarketCashierTest  extends TestCase {
 		super.setUp();
 		p = new PersonAgent("Mike");
 		market = new Market();
-		market.MarketEmployee.setPersonAgent(p);
+		market.MarketEmployee.setPerson(p);
 		cashier = market.MarketCashier;
-		cashier.setPersonAgent(p);
+		cashier.setPerson(p);
 		customer = new MockMarketCustomer("Customer1");
 		Bank b = new Bank();
 		Directory.addPlace(b);
-		Directory.banks().get(0).tellers.get(0).makeDatabase();
-		Directory.banks().get(0).tellers.get(0).setPersonAgent(new PersonAgent("Dummy"));
+		Directory.banks().get(0)._tellers.get(0).makeDatabase();
+		Directory.banks().get(0)._tellers.get(0).setPerson(new PersonAgent("Dummy"));
 	}
 	
 	public void testOneNormalCustomerWithoutBankScenario(){
@@ -145,7 +145,7 @@ public class MarketCashierTest  extends TestCase {
 		//send first message to cashier
 		Restaurant r = new YixinRestaurant();
 		PersonAgent p1 = new PersonAgent("Dummy");
-		r.cashier.setPersonAgent(p1);
+		r.cashier.setPerson(p1);
 		List<Item> order = new ArrayList<Item>();
 		order.add(new Item("Steak", 1));
 		order.add(new Item("Chicken", 1));

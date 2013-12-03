@@ -79,7 +79,7 @@ public class CommuterRole extends Role implements Commuter{
 	//----------------------------------------------Command---------------------------------------------
 	public void cmdGoToDestination(Place destination){ //Command to go to destination
 		if(destination != null) {
-			print("Will go to " + destination.getName() + " at (" + destination.xPosition() + "," + destination.yPosition() + ").");
+			print("Will go to " + destination.name() + " at (" + destination.positionX() + "," + destination.positionY() + ").");
 		}
 		else {
 			print("Will go to null destination.");
@@ -105,7 +105,7 @@ public class CommuterRole extends Role implements Commuter{
 		_tState = TravelState.atBusStop;
 		_currentPlace = busstop;
 		stateChanged();
-		print("Going to bus stop " + busstop.getName());
+		print("Going to bus stop " + busstop.name());
 	}
 	public void msgGetOnBus(double fare, Bus bus){
 		_tState = TravelState.busIsHere;

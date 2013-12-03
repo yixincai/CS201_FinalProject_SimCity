@@ -165,7 +165,7 @@ public class Directory {
 		{
 			if(p instanceof BusStopObject)
 			{
-				Distance2 = Math.abs(xStart - p.xPosition()) + Math.abs(yStart - p.yPosition());	
+				Distance2 = Math.abs(xStart - p.positionX()) + Math.abs(yStart - p.positionY());	
 				if(Distance1 < 0){
 					Distance1 = Distance2;
 					temp = (BusStopObject)p;
@@ -189,7 +189,7 @@ public class Directory {
 		{
 			if(p instanceof BusStopObject)
 			{
-				Distance2 = Math.abs(destination.xPosition() - p.xPosition()) + Math.abs(destination.yPosition() - p.yPosition());	
+				Distance2 = Math.abs(destination.positionX() - p.positionX()) + Math.abs(destination.positionY() - p.positionY());	
 				if(Distance1 < 0){
 					Distance1 = Distance2;
 					temp = (BusStopObject)p;

@@ -135,7 +135,7 @@ public class CommuterGui implements Gui {
 	/** This function returns the x value of the place; it can receive a value of null */
 	private int placeX(Place place) {
 		if(place != null) {
-			return place.xPosition();
+			return place.positionX();
 		}
 		else {
 			return NULL_POSITION_X;
@@ -144,7 +144,7 @@ public class CommuterGui implements Gui {
 	/** This function returns the y value of the place; it can receive a value of null */
 	private int placeY(Place place) {
 		if(place != null) {
-			return place.yPosition();
+			return place.positionY();
 		}
 		else {
 			return NULL_POSITION_Y;

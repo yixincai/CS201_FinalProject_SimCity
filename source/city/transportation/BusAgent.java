@@ -1,6 +1,5 @@
 package city.transportation;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.concurrent.Semaphore;
 
 import agent.Agent;
 import city.Directory;
-import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.BusAgentGui;
 import city.transportation.interfaces.Bus;
@@ -132,7 +130,7 @@ public class BusAgent extends Agent implements Bus{
 	}
 
 	public void DropOff(){
-		System.out.println("Bus: Dropping off from " + currentDestination.getName() + " " + _passengers.size());
+		System.out.println("Bus: Dropping off from " + currentDestination.name() + " " + _passengers.size());
 	    bState = BusState.droppingoff;
 	    for(int i = 0; i < _passengers.size() ; i++){
 	    	//System.out.println("The passenger is going to " + commuter.destination.getName());
@@ -148,7 +146,7 @@ public class BusAgent extends Agent implements Bus{
 	}
 
 	public void PickUp(){
-		System.out.println("Bus: Picking up from " + currentDestination.getName());
+		System.out.println("Bus: Picking up from " + currentDestination.name());
 		currentBusStopList = currentDestination.getList();
 		bState = BusState.pickingup;
     	for(Commuter comm: currentBusStopList){
