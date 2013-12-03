@@ -97,7 +97,6 @@ public class CommuterRole extends Role implements Commuter{
 		// no stateChanged() because this message is to release the semaphore
 	}
 
-
 	//Bus Transportation messages
 	public void msgAtBusStop(BusStopObject busstop){ //GUI message
 		_tState = TravelState.atBusStop;
@@ -137,17 +136,8 @@ public class CommuterRole extends Role implements Commuter{
 		stateChanged();
 	}
 
-
-
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
-		/*
-	//At Destination
-	if(_tState == TravelState.atDestination){
-		actAtDestination();
-		return true;
-	}
-		 */
 		try{
 			//Choosing
 			if(_tState == TravelState.choosing){
@@ -184,17 +174,6 @@ public class CommuterRole extends Role implements Commuter{
 				actGetOffBus();
 				return true;
 			}
-			/*
-	//Driving
-	if(_tState == TravelState.choseCar){
-		actGoToCar();
-		return true;
-	}
-	if(_tState == TravelState.atCar){
-		actDriving();
-		return true;
-	}
-			 */
 		}
 		catch (ConcurrentModificationException e){
 
@@ -296,11 +275,7 @@ public class CommuterRole extends Role implements Commuter{
 		else{
 			pTransport = PrefTransport.none;
 		}
-
-
 	}
-
-
 
 // ------------------------------------------ UTILITIES -----------------------------------
 	private void waitForGuiToReachDestination() {
@@ -311,5 +286,4 @@ public class CommuterRole extends Role implements Commuter{
 			e.printStackTrace();
 		}
 	}
-
 }
