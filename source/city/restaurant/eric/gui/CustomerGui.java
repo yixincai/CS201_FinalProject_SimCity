@@ -24,7 +24,7 @@ public class CustomerGui implements Gui
 
 	// Correspondence:
 	private CustomerAgent _agent;
-	RestaurantGui _restaurantGui;
+	// RestaurantGui _restaurantGui; //TODO implement a system to correctly replace this
 	
 	// Status data:
 	private boolean isPresent = false;
@@ -43,10 +43,10 @@ public class CustomerGui implements Gui
 	Timer _timer = new Timer();
 
     // -------------------------------- CONSTRUCTOR -----------------------------
-	public CustomerGui(CustomerAgent agent, RestaurantGui gui)
+	public CustomerGui(CustomerAgent agent) // , RestaurantGui gui)
 	{
 		_agent = agent;
-		_restaurantGui = gui; // this is for re-enabling the hunger checkbox
+		// _restaurantGui = gui; // this is for re-enabling the hunger checkbox
 		
 		WAITING_LOCATION = new RestDim(AnimationConstants.NEXT_CUSTOMER_X, AnimationConstants.NEXT_CUSTOMER_Y);
 		AnimationConstants.updateNextCustomer();
@@ -56,7 +56,7 @@ public class CustomerGui implements Gui
 	}
 	
 	// ------------------------------------ PROPERTIES/MESSAGES ---------------------------------
-    public void setRestGui(RestaurantGui rg) { _restaurantGui = rg; }
+    // public void setRestGui(RestaurantGui rg) { _restaurantGui = rg; }
     public boolean atDestination() { return _position.equals(_destination); }
 	public void tableIsHere(int x, int y) // from WaiterGui (hack)
 	{
@@ -198,7 +198,7 @@ public class CustomerGui implements Gui
 			{
 				_agent.msgFinishedLeavingRestaurant();
 				_isHungry = false;
-				_restaurantGui.setHungerCBEnabled(_agent);
+				// _restaurantGui.setHungerCBEnabled(_agent);
 			}
 			_command = Commands.NONE;
 		}

@@ -1,7 +1,6 @@
 package city.restaurant.eric.gui;
 
 
-import city.restaurant.eric.CustomerAgent;
 import city.restaurant.eric.WaiterAgent;
 import city.restaurant.eric.interfaces.Customer;
 
@@ -29,7 +28,7 @@ public class WaiterGui implements Gui
 	
 	// Correspondence:
     private WaiterAgent _agent = null;
-    private RestaurantGui _restaurantGui;
+    // private RestaurantGui _restaurantGui; //TODO implement a system to appropriately replace this
     
     // -------------------------------- CONSTRUCTOR -----------------------------
     public WaiterGui(WaiterAgent agent)
@@ -53,7 +52,7 @@ public class WaiterGui implements Gui
     }
     
     // --------------------------------- PROPERTIES & MESSAGES ----------------------------------------
-    public void setRestGui(RestaurantGui rg) { _restaurantGui = rg; }
+    // public void setRestGui(RestaurantGui rg) { _restaurantGui = rg; }
     public WaiterAgent agent() { return _agent; }
     public int getXPosition() { return _position.x; }
     public int getYPosition() { return _position.y; }
@@ -153,19 +152,19 @@ public class WaiterGui implements Gui
     
     public void doNoBreak()
     {
-    	_restaurantGui.notGoingOnBreak(this);
+    	// _restaurantGui.notGoingOnBreak(this);
     	// don't need to go idle--continue with regular work.
     }
     
     public void doGoOnBreak()
     {
-    	_restaurantGui.goingOnBreak(this);
+    	// _restaurantGui.goingOnBreak(this);
     	doGoIdle(); // might change to going to other coordinates
     }
     
     public void doBackToWork()
     {
-    	_restaurantGui.goingBackToWork(this);
+    	// _restaurantGui.goingBackToWork(this);
     	doGoIdle();
     }
     
