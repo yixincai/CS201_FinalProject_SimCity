@@ -508,11 +508,11 @@ public class PersonAgent extends Agent implements Person
 	// ------------------------------------------ UTILITIES -------------------------------------
 	private boolean workingToday()
 	{
-		return true;
-		/*// Commenting this out because we're currently not taking account of weekends
+		//return true;
+		// Commenting this out because we're currently not taking account of weekends
 		return ((_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && !_weekday_notWeekend) ||
 				(!(_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && _weekday_notWeekend);
-				*/
+				
 	}
 	private boolean timeToBeAtWork()
 	{
