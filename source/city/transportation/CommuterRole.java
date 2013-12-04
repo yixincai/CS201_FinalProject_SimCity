@@ -25,12 +25,10 @@ public class CommuterRole extends Role implements Commuter{
 	BusStopObject _busStop;
 	//	Semaphore commuterSem = new Semaphore(0, true);
 
-
-	public CarObject _car = null;
-
 	public Bus _bus;
 	public double _fare;
 	CommuterGui _gui;
+	public boolean hasCar = false;
 
 	public enum TravelState{choosing, 
 		choseCar, goToCar, atCar, driving, 
@@ -58,18 +56,18 @@ public class CommuterRole extends Role implements Commuter{
 		_person = person;
 		_currentPlace = initialPlace;
 		_destination = null;
-		_car = null;
 		_gui = new CommuterGui(this, initialPlace);
 	}
 
 	public CommuterGui gui() { return _gui; }
 	public void setGui(CommuterGui gui) { _gui = gui; }
 
-	public void setCar(CarObject car){_car = car;}
-
 	public Place destination() { return _destination; }
 	public void setDestination(Place place) { cmdGoToDestination(place); }
 
+	public void setCar(boolean car) { hasCar = car; }
+	public boolean hasCar(){ return hasCar; }
+	
 	public Place place() { return currentPlace(); } // could replace this to return a home-like location that the CommuterRole defaults back to when PersonAgent sets its _nextRole to its _commuterRole.  This would of course require more changes to work correctly.
 	public Place currentPlace() { return _currentPlace; }
 	public void setCurrentPlace(Place place) { _currentPlace = place; }
@@ -99,7 +97,6 @@ public class CommuterRole extends Role implements Commuter{
 		// no stateChanged() because this message is to release the semaphore
 	}
 
-
 	//Bus Transportation messages
 	public void msgAtBusStop(BusStopObject busstop){ //GUI message
 		_tState = TravelState.atBusStop;
@@ -112,7 +109,7 @@ public class CommuterRole extends Role implements Commuter{
 		_bus = bus;
 		_fare = fare;
 		stateChanged();
-		print("Getting on bus " + bus.getName());
+		print("Getting on bus " + bus.name());
 	}
 
 	@Override
@@ -121,7 +118,7 @@ public class CommuterRole extends Role implements Commuter{
 		_tState = TravelState.busIsAtDestination;
 		_busStop = (BusStopObject)busstop;
 		stateChanged();
-		print("Getting off bus " + _bus.getName());
+		print("Getting off bus " + _bus.name());
 	}
 
 	//Car Messages
@@ -139,17 +136,8 @@ public class CommuterRole extends Role implements Commuter{
 		stateChanged();
 	}
 
-
-
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction() {
-		/*
-	//At Destination
-	if(_tState == TravelState.atDestination){
-		actAtDestination();
-		return true;
-	}
-		 */
 		try{
 			//Choosing
 			if(_tState == TravelState.choosing){
@@ -163,6 +151,11 @@ public class CommuterRole extends Role implements Commuter{
 				return true;
 			}
 
+			//Driving Car
+			if(_tState == TravelState.choseCar){
+				actDriving();
+				return true;
+			}
 
 			//Riding Bus
 			if(_tState == TravelState.choseBus){
@@ -181,17 +174,6 @@ public class CommuterRole extends Role implements Commuter{
 				actGetOffBus();
 				return true;
 			}
-			/*
-	//Driving
-	if(_tState == TravelState.choseCar){
-		actGoToCar();
-		return true;
-	}
-	if(_tState == TravelState.atCar){
-		actDriving();
-		return true;
-	}
-			 */
 		}
 		catch (ConcurrentModificationException e){
 
@@ -206,6 +188,7 @@ public class CommuterRole extends Role implements Commuter{
 
 		_tState = TravelState.choseWalking;
 		_tState = TravelState.choseBus;
+		_tState = TravelState.choseCar;
 		/*
 	if(_gui.getManhattanDistanceToDestination(_destination) > 300){
 		if(_car != null){
@@ -270,23 +253,13 @@ public class CommuterRole extends Role implements Commuter{
 		_bus = null;
 		actWalking(); //Calls this function here because after you get off of the bus stop you walk to the destination
 	}
-	/*
-//Driving
-public void actGoToCar(){
-	_tState = TravelState.goToCar;
-	_gui.goToCar(_car, _destination);
-}
-
-public void actDriving(){
-	_tState = TravelState.driving;
-	_car.goToDestination(_destination);
-}
-
-public void actAtDestination(){
-	_tState = TravelState.done;
-	active = false;
-}
-	 */
+	
+	public void actDriving(){
+		_gui.driveToLocation(_destination);
+		waitForGuiToReachDestination();
+		_tState = TravelState.done;
+		active = false;
+	}
 
 	//----------------------------------------------Hacks----------------------------------------
 	public void setPreferredTransportation(int choice){
@@ -302,11 +275,7 @@ public void actAtDestination(){
 		else{
 			pTransport = PrefTransport.none;
 		}
-
-
 	}
-
-
 
 // ------------------------------------------ UTILITIES -----------------------------------
 	private void waitForGuiToReachDestination() {
@@ -317,5 +286,4 @@ public void actAtDestination(){
 			e.printStackTrace();
 		}
 	}
-
 }

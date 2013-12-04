@@ -182,7 +182,7 @@ public class BusAgent extends Agent implements Bus{
 		}
 	}
 	
-	public String getName(){
+	public String name(){
 		return _name;
 	}
 
