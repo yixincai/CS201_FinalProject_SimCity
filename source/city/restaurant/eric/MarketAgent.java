@@ -12,6 +12,8 @@ import java.util.TimerTask;
 import agent.Agent;
 import city.restaurant.eric.interfaces.*;
 
+//TODO THIS CLASS IS ONLY HERE FOR REFERENCE; REFACTOR CODE TO USE THE CITY MARKET
+
 public class MarketAgent extends Agent implements Market
 {
 	// ----------------------------------------- DATA ----------------------------------------------
