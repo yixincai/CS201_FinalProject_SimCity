@@ -67,13 +67,15 @@ public class CommuterGui implements Gui {
 		_yDestination = placeY(destination);
 	}
 	
-	/*
+	
 	//Bus gui
 	public void goToBusStop(BusStopObject busstop){
 		_goingSomewhere = true;
+		_xDestination = busstop.xPosition();
+		_yDestination = busstop.yPosition();
 		setPresent(true);
 	}
-	
+/*	
 	//Car gui
 	public void goToCar(CarObject car, Place destination){
 		_goingSomewhere = true;
@@ -87,7 +89,7 @@ public class CommuterGui implements Gui {
 		_commuter.msgAtCar();
 	}
 	
-	
+*/	
 	public void getOnBus(){
 		setPresent(false);
 	}
@@ -97,7 +99,7 @@ public class CommuterGui implements Gui {
 		_yPos = busstop.yPosition();
 		setPresent(true);
 	}
-	*/
+	
 	
 	
 	
