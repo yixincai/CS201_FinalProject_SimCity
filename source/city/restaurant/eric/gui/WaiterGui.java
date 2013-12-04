@@ -1,7 +1,7 @@
 package city.restaurant.eric.gui;
 
 
-import city.restaurant.eric.WaiterAgent;
+import city.restaurant.eric.EricWaiterRole;
 import city.restaurant.eric.interfaces.Customer;
 
 import java.awt.*;
@@ -27,11 +27,11 @@ public class WaiterGui implements Gui
 	private String _carrying = null;
 	
 	// Correspondence:
-    private WaiterAgent _agent = null;
+    private EricWaiterRole _agent = null;
     // private RestaurantGui _restaurantGui; //TODO implement a system to appropriately replace this
     
     // -------------------------------- CONSTRUCTOR -----------------------------
-    public WaiterGui(WaiterAgent agent)
+    public WaiterGui(EricWaiterRole agent)
     {
         _agent = agent;
         
@@ -53,7 +53,7 @@ public class WaiterGui implements Gui
     
     // --------------------------------- PROPERTIES & MESSAGES ----------------------------------------
     // public void setRestGui(RestaurantGui rg) { _restaurantGui = rg; }
-    public WaiterAgent agent() { return _agent; }
+    public EricWaiterRole agent() { return _agent; }
     public int getXPosition() { return _position.x; }
     public int getYPosition() { return _position.y; }
     public boolean isPresent() { return true; }

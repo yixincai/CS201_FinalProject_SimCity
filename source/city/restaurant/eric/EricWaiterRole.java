@@ -1,13 +1,17 @@
 package city.restaurant.eric;
 
-import agent.Agent;
+import agent.Role;
+import city.Place;
+import city.interfaces.Person;
 import city.restaurant.eric.interfaces.*;
 import city.restaurant.eric.gui.WaiterGui;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
-public class WaiterAgent extends Agent implements Waiter
+public class EricWaiterRole extends Role implements Waiter
 {
 	// ---------------------------------- DATA --------------------------------
 	
@@ -21,9 +25,10 @@ public class WaiterAgent extends Agent implements Waiter
 	private Host _host = null;
 	private Cook _cook;
 	private Cashier _cashier;
+	private EricRestaurant _restaurant;
 	
 	// Semaphores:
-	private Semaphore _reachedDestination = new Semaphore(1, true);
+	private Semaphore _reachedDestination = new Semaphore(1, true); //TODO why is this initialized with a 1? Shouldn't it be a 0?
 	private Semaphore _customerOrdered = new Semaphore(0, true);
 	
 	// Agent data:
@@ -48,15 +53,14 @@ public class WaiterAgent extends Agent implements Waiter
 	private enum OrderState { TAKEN, GONE, COOKING, READY, AT_TABLE }
 	// note: instead of a list of orders, we just iterate through the list of customers.
 	
-	// Constructor:
-	public WaiterAgent(String name)
+	// ---------------------------------------- CONSTRUCTOR & PROPERTIES --------------------------------------
+	public EricWaiterRole(Person person, String name, EricRestaurant restaurant)
 	{
-		super();
+		super(person);
 		
-		this._name = name;
+		_name = name;
+		_restaurant = restaurant;
 	}
-	
-	// ---------------------------------------- PROPERTIES --------------------------------------
 	public String getName() { return _name; }
 	//public List getWaitingCustomers() { return waitingCustomers; }
 	//public Collection getTables() { return tables; }
@@ -74,17 +78,22 @@ public class WaiterAgent extends Agent implements Waiter
 	public WaiterGui gui() { return _gui; }
 	public boolean wantsBreak() { return _breakState == BreakState.WANT_A_BREAK || _breakState == BreakState.TOLD_HOST_WANT_A_BREAK || _breakState == BreakState.HOST_SAID_GO_ON_BREAK; }
 	public boolean onBreak() { return _breakState == BreakState.ON_BREAK; }
+	public Place place() { return _restaurant; }
 	
 	
 	
-	// ---------------------------------- MESSAGES -------------------------------------------
-	// note: messages are in chronological order
+	// ---------------------------------- COMMANDS & MESSAGES -------------------------------------------
 
-	// This function is called multiple times, thus it's not in chronological order
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+	}
+
+	// This function is called multiple times, thus it's at the top
 	public void msgReachedDestination() //from WaiterGui
 	{
 		_reachedDestination.release();
-		stateChanged();
+		// stateChanged(); // not necessary because this is just to release the semaphore.
 	}
 	
 	public void msgSeatCustomer(Customer ca, int tableNumber) // from Host
@@ -231,7 +240,7 @@ public class WaiterAgent extends Agent implements Waiter
 	
 	// ---------------------------------- SCHEDULER -------------------------------
 	
-	protected boolean pickAndExecuteAnAction()
+	public boolean pickAndExecuteAnAction()
 	{
 		try
 		{
@@ -311,7 +320,7 @@ public class WaiterAgent extends Agent implements Waiter
 			}
 			return false;
 		}
-		catch(ConcurrentModificationException e)
+		catch(ConcurrentModificationException e) //TODO change to synchronized lists, those are better.
 		{ return true; }
 		// note: return true because if the ConcurrentModificationException results from an action modifying a list,
 		// stateChanged won't have been called and therefore the scheduler won't re-run.
