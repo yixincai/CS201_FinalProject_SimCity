@@ -84,11 +84,15 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setColor( Color.black );
 		
-		g.drawString("Bank", 530, 230);
+		g.drawString("Bank 1", 530, 230);
+		g.drawString("Bank 2", 330, 325);
 		g.drawString("YixinRestaurant", 530, 130);
-		g.drawString("Market", 530, 325);
+		g.drawString("Market 1", 530, 325);
+		g.drawString("Market 2", 430, 325);
 		g.drawString("OmarRestaurant", 380, 230);
 		g.drawString("RyanRestaurant", 380, 125);
+		g.drawString("EricRestaurant", 280, 125);
+		g.drawString("TannerRestaurant", 280, 230);
 		
 		g.drawString("Bus Stop", 60, 40);
 		g.drawString("Bus Stop", 560, 40);
