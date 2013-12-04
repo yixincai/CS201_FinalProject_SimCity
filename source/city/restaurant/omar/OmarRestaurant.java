@@ -56,7 +56,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
-		OmarCustomerRole customer = new OmarCustomerRole(person, this, person.getName());
+		OmarCustomerRole customer = new OmarCustomerRole(person, this, person.name());
 		OmarCustomerGui customerGui = new OmarCustomerGui(customer, _animationPanel);
 		customer.setGui(customerGui);
 		animationPanel().addGui(customerGui);

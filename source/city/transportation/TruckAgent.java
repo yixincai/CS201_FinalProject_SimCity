@@ -171,7 +171,7 @@ public class TruckAgent extends Agent implements Truck{
 	    
 	}
 	
-	public String getName(){
+	public String name(){
 		return _name;
 	}
 	

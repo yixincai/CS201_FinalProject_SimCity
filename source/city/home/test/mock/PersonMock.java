@@ -8,7 +8,7 @@ public class PersonMock implements Person {
 	public boolean cmdNoLongerHungryCalled = false;
 	public void stateChanged() { stateChangedCalled = true; }
 	@Override
-	public String getName() {
+	public String name() {
 		// TODO Auto-generated method stub
 		return "PersonMock";
 	}
