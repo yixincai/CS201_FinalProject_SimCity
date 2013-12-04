@@ -6,30 +6,20 @@ package gui;
  */
 
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.util.*;
+import javax.swing.*;
 
 import city.Directory;
 import city.Time;
 import city.bank.Bank;
-import city.home.Apartment;
-import city.home.ApartmentBuilding;
-import city.home.House;
+import city.home.*;
 import city.market.Market;
 import city.restaurant.omar.OmarRestaurant;
 import city.restaurant.ryan.RyanRestaurant;
 import city.restaurant.yixin.YixinRestaurant;
-import city.transportation.BusAgent;
-import city.transportation.BusStopObject;
+import city.transportation.*;
 import city.transportation.gui.BusAgentGui;
 
 public class MainGui extends JFrame 
