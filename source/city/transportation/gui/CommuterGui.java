@@ -5,9 +5,7 @@ import java.awt.Graphics2D;
 
 import gui.Gui;
 import city.Place;
-import city.transportation.BusStopObject;
-import city.transportation.CarObject;
-import city.transportation.CommuterRole;
+import city.transportation.*;
 
 public class CommuterGui implements Gui {
 
@@ -17,7 +15,8 @@ public class CommuterGui implements Gui {
 	int _xPos, _yPos;
 	Place _destination;
 	int _xDestination, _yDestination;
-	boolean _goingSomewhere = false;
+	enum Command { none, walk, car}
+	Command _transportationMethod = Command.none;
 	boolean isPresent = true;
 	
 	CommuterRole _commuter;
@@ -60,19 +59,25 @@ public class CommuterGui implements Gui {
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
 		setPresent(true);
-		_goingSomewhere = true;
-		System.out.println("destination X: " + placeX(destination));
-		System.out.println("destination Y: " + placeY(destination));
+		_transportationMethod = Command.walk;
 		_xDestination = placeX(destination);
 		_yDestination = placeY(destination);
 	}
 	
+	public void driveToLocation(Place destination){
+		// set current x & y to _commuter.currrentPlace()
+		// set visible to true
+		setPresent(true);
+		_transportationMethod = Command.car;
+		_xDestination = placeX(destination);
+		_yDestination = placeY(destination);
+	}
 	
 	//Bus gui
 	public void goToBusStop(BusStopObject busstop){
-		_goingSomewhere = true;
-		_xDestination = busstop.xPosition();
-		_yDestination = busstop.yPosition();
+		_transportationMethod = Command.walk;
+		_xDestination = busstop.positionX();
+		_yDestination = busstop.positionY();
 		setPresent(true);
 	}
 /*	
@@ -95,13 +100,10 @@ public class CommuterGui implements Gui {
 	}
 	
 	public void getOffBus(BusStopObject busstop){
-		_xPos = busstop.xPosition();
-		_yPos = busstop.yPosition();
+		_xPos = busstop.positionX();
+		_yPos = busstop.positionY();
 		setPresent(true);
 	}
-	
-	
-	
 	
 	//------------------------------------------Animation---------------------------------------
 	@Override
@@ -116,8 +118,21 @@ public class CommuterGui implements Gui {
 		else if (_yPos > _yDestination)
 			_yPos--;
 		
-		if(_xPos == _xDestination && _yPos == _yDestination && _goingSomewhere){
-			_goingSomewhere = false;
+		if (_transportationMethod == Command.car){
+			if (_xPos < _xDestination)
+				_xPos++;
+			else if (_xPos > _xDestination)
+				_xPos--;
+
+			if (_yPos < _yDestination)
+				_yPos++;
+			else if (_yPos > _yDestination)
+				_yPos--;
+		}
+		
+		if(_xPos == _xDestination && _yPos == _yDestination &&
+				(_transportationMethod == Command.car || _transportationMethod == Command.walk)){
+			_transportationMethod = Command.none;
 			setPresent(false);
 			_commuter.msgReachedDestination();
 		}
@@ -126,7 +141,10 @@ public class CommuterGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		if(isPresent){
-			g.setColor(Color.GREEN);
+			if(_transportationMethod == Command.car)
+				g.setColor(Color.RED);
+			else
+				g.setColor(Color.GREEN);
 			g.fillRect(_xPos, _yPos, 5, 5);
 		}
 	}
