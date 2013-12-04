@@ -109,7 +109,7 @@ public class CommuterRole extends Role implements Commuter{
 		_bus = bus;
 		_fare = fare;
 		stateChanged();
-		print("Getting on bus " + bus.getName());
+		print("Getting on bus " + bus.name());
 	}
 	
 	@Override
@@ -118,7 +118,7 @@ public class CommuterRole extends Role implements Commuter{
 		_tState = TravelState.busIsAtDestination;
 		_busStop = (BusStopObject)busstop;
 		stateChanged();
-		print("Getting off bus " + _bus.getName());
+		print("Getting off bus " + _bus.name());
 	}
 	
 	//Car Messages

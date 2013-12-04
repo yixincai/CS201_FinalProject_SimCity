@@ -317,7 +317,7 @@ public class PersonAgent extends Agent implements Person
 		_occupation = newOccupation;
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------
-	public String getName() { return _name; }
+	public String name() { return _name; }
 	public double money() { return _money; }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
 	public void setWorkDays(boolean weekday_notWeekend) {

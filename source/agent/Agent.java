@@ -58,7 +58,7 @@ public abstract class Agent
     /**
      * Return agent name for console messages.  Default is to return java instance name.
      */
-    public String getName()
+    public String name()
     {
         return StringUtil.shortName(this);
     }
@@ -89,7 +89,7 @@ public abstract class Agent
     protected void print(String msg, Throwable e)
     {
         StringBuffer sb = new StringBuffer();
-        sb.append(getName());
+        sb.append(name());
         sb.append(": ");
         sb.append(msg);
         sb.append("\n");
@@ -104,7 +104,7 @@ public abstract class Agent
     {
         if (_agentThread == null)
         {
-            _agentThread = new AgentThread(getName());
+            _agentThread = new AgentThread(name());
             _agentThread.start(); // causes the run method to execute in the AgentThread below
         }
         else

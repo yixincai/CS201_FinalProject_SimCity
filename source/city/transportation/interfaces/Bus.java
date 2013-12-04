@@ -14,5 +14,5 @@ public interface Bus {
 	
 	public abstract void setFare(int fare);
 	
-	public abstract String getName();
+	public abstract String name();
 }

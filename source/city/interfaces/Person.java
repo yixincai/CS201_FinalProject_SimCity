@@ -4,7 +4,7 @@ import city.home.HomeOccupantRole;
 
 public interface Person {
 
-	Object getName();
+	String name();
 
 	void stateChanged();
 
