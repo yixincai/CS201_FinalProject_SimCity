@@ -7,7 +7,7 @@ import java.util.List;
 import agent.Agent;
 import city.restaurant.eric.interfaces.*;
 
-public class CashierAgent extends Agent implements Cashier
+public class EricCashierRole extends Agent implements Cashier
 {
 	// ----------------------------------------- DATA ----------------------------------------------
 	
@@ -42,7 +42,7 @@ public class CashierAgent extends Agent implements Cashier
 	private List<MarketBill> _marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 	
 	// ------------------------------------------ CONSTRUCTOR ----------------------------------------------
-	public CashierAgent(String name)
+	public EricCashierRole(String name)
 	{
 		_name = name;
 	}

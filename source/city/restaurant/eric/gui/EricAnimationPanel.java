@@ -8,7 +8,8 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class AnimationPanel extends JPanel implements ActionListener
+@SuppressWarnings("serial")
+public class EricAnimationPanel extends JPanel implements ActionListener
 {
 
     private int _windowWidth;
@@ -24,22 +25,22 @@ public class AnimationPanel extends JPanel implements ActionListener
     
     private class TableDim { public int posx, posy, width, height; public TableDim(int x, int y, int w, int h) { posx=x; posy=y; width=w; height=h;} }
 
-    public AnimationPanel(int width, int height)
+    public EricAnimationPanel(int width, int height)
     {
     	_windowWidth = width;
     	_windowHeight = height;
     	
     	// Hard-coded 3 tables.
-    	tableDims.add(new TableDim(AnimationConstants.TABLE0_POSX, AnimationConstants.TABLE0_POSY, AnimationConstants.TABLE_WIDTH, AnimationConstants.TABLE_HEIGHT));
-    	tableDims.add(new TableDim(AnimationConstants.TABLE1_POSX, AnimationConstants.TABLE1_POSY, AnimationConstants.TABLE_WIDTH, AnimationConstants.TABLE_HEIGHT));
-    	tableDims.add(new TableDim(AnimationConstants.TABLE2_POSX, AnimationConstants.TABLE2_POSY, AnimationConstants.TABLE_WIDTH, AnimationConstants.TABLE_HEIGHT));
+    	tableDims.add(new TableDim(EricAnimationConstants.TABLE0_POSX, EricAnimationConstants.TABLE0_POSY, EricAnimationConstants.TABLE_WIDTH, EricAnimationConstants.TABLE_HEIGHT));
+    	tableDims.add(new TableDim(EricAnimationConstants.TABLE1_POSX, EricAnimationConstants.TABLE1_POSY, EricAnimationConstants.TABLE_WIDTH, EricAnimationConstants.TABLE_HEIGHT));
+    	tableDims.add(new TableDim(EricAnimationConstants.TABLE2_POSX, EricAnimationConstants.TABLE2_POSY, EricAnimationConstants.TABLE_WIDTH, EricAnimationConstants.TABLE_HEIGHT));
     	
     	setSize(_windowWidth, _windowHeight);
         setVisible(true);
         
         bufferSize = this.getSize();
  
-    	Timer timer = new Timer(AnimationConstants.TIMER_PERIOD, this );
+    	Timer timer = new Timer(EricAnimationConstants.TIMER_PERIOD, this );
     	timer.start();
     }
 
@@ -82,12 +83,12 @@ public class AnimationPanel extends JPanel implements ActionListener
         }
     }
 
-    public void addGui(CustomerGui gui)
+    public void addGui(EricCustomerGui gui)
     {
         guis.add(gui);
     }
 
-    public void addGui(WaiterGui gui)
+    public void addGui(EricWaiterGui gui)
     {
         guis.add(gui);
     }
