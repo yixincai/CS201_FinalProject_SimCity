@@ -2,11 +2,11 @@ package city.restaurant.eric;
 
 import java.util.Random;
 
-import city.restaurant.eric.gui.CustomerGui;
+import city.restaurant.eric.gui.EricCustomerGui;
 import agent.Agent;
 import city.restaurant.eric.interfaces.*;
 
-public class CustomerAgent extends Agent implements Customer
+public class EricCustomerRole extends Agent implements Customer
 {
 	// ------------------------------------- DATA ------------------------------------------
 	
@@ -19,7 +19,7 @@ public class CustomerAgent extends Agent implements Customer
 	private Check _check;
 	
 	// Correspondence:
-	private CustomerGui _gui;
+	private EricCustomerGui _gui;
 	private Host _host; // as of v2, this is only used to tell the host I'm Hungry
 	private Waiter _waiter;
 	private Cashier _cashier;
@@ -38,7 +38,7 @@ public class CustomerAgent extends Agent implements Customer
 	 *
 	 * @param name name of the customer
 	 */
-	public CustomerAgent(String name)
+	public EricCustomerRole(String name)
 	{
 		_name = name;
 		
@@ -74,8 +74,8 @@ public class CustomerAgent extends Agent implements Customer
 		this._hungerLevel = hungerLevel;
 	}
 	public String toString() { return "customer " + getName(); }
-	public void setGui(CustomerGui g) { _gui = g; }
-	public CustomerGui gui() { return _gui; }
+	public void setGui(EricCustomerGui g) { _gui = g; }
+	public EricCustomerGui gui() { return _gui; }
 	public void setHost(Host host) { _host = host; }
 	//public String getCustomerName() { return _name; }
 	

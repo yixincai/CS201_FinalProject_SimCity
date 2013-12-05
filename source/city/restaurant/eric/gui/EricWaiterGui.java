@@ -7,7 +7,7 @@ import city.restaurant.eric.interfaces.Customer;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class WaiterGui implements Gui
+public class EricWaiterGui implements Gui
 {
 	// ---------------------------------- DATA ----------------------------------
 
@@ -31,21 +31,21 @@ public class WaiterGui implements Gui
     // private RestaurantGui _restaurantGui; //TODO implement a system to appropriately replace this
     
     // -------------------------------- CONSTRUCTOR -----------------------------
-    public WaiterGui(EricWaiterRole agent)
+    public EricWaiterGui(EricWaiterRole agent)
     {
         _agent = agent;
         
         // Initialize values:
         // Unchanged:
-        TABLES.add(new RestDim(AnimationConstants.TABLE0_POSX + AnimationConstants.PERSON_WIDTH, AnimationConstants.TABLE0_POSY - AnimationConstants.PERSON_HEIGHT));
-        TABLES.add(new RestDim(AnimationConstants.TABLE1_POSX + AnimationConstants.PERSON_WIDTH, AnimationConstants.TABLE1_POSY - AnimationConstants.PERSON_HEIGHT));
-        TABLES.add(new RestDim(AnimationConstants.TABLE2_POSX + AnimationConstants.PERSON_WIDTH, AnimationConstants.TABLE2_POSY - AnimationConstants.PERSON_HEIGHT));
-        FRONT_DESK = new RestDim(AnimationConstants.FRONTDESK_X + AnimationConstants.PERSON_WIDTH, AnimationConstants.FRONTDESK_Y - AnimationConstants.PERSON_HEIGHT);
-        OUTSIDE = new RestDim(AnimationConstants.OUTSIDE_X, AnimationConstants.OUTSIDE_Y);
-        IDLE_LOCATION = new RestDim(AnimationConstants.NEXT_WAITER_X, AnimationConstants.NEXT_WAITER_Y);
-        AnimationConstants.updateNextWaiter();
-        COOK = new RestDim(AnimationConstants.COOK_POSX + AnimationConstants.PERSON_WIDTH, AnimationConstants.COOK_POSY - AnimationConstants.PERSON_HEIGHT);
-        CASHIER = new RestDim(AnimationConstants.CASHIER_POSX, AnimationConstants.CASHIER_POSY - AnimationConstants.PERSON_HEIGHT);
+        TABLES.add(new RestDim(EricAnimationConstants.TABLE0_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE0_POSY - EricAnimationConstants.PERSON_HEIGHT));
+        TABLES.add(new RestDim(EricAnimationConstants.TABLE1_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE1_POSY - EricAnimationConstants.PERSON_HEIGHT));
+        TABLES.add(new RestDim(EricAnimationConstants.TABLE2_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE2_POSY - EricAnimationConstants.PERSON_HEIGHT));
+        FRONT_DESK = new RestDim(EricAnimationConstants.FRONTDESK_X + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.FRONTDESK_Y - EricAnimationConstants.PERSON_HEIGHT);
+        OUTSIDE = new RestDim(EricAnimationConstants.OUTSIDE_X, EricAnimationConstants.OUTSIDE_Y);
+        IDLE_LOCATION = new RestDim(EricAnimationConstants.NEXT_WAITER_X, EricAnimationConstants.NEXT_WAITER_Y);
+        EricAnimationConstants.updateNextWaiter();
+        COOK = new RestDim(EricAnimationConstants.COOK_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.COOK_POSY - EricAnimationConstants.PERSON_HEIGHT);
+        CASHIER = new RestDim(EricAnimationConstants.CASHIER_POSX, EricAnimationConstants.CASHIER_POSY - EricAnimationConstants.PERSON_HEIGHT);
         // Variable:
         _position = new RestDim(OUTSIDE);
         _destination = new RestDim(IDLE_LOCATION);
@@ -86,8 +86,8 @@ public class WaiterGui implements Gui
     	
     	// Hack (sorta) to pass the coordinates of the table to the CustomerGui (there might be a better way to do this)
     	customer.gui().tableIsHere(
-    			TABLES.get(tableNumber).x - AnimationConstants.PERSON_WIDTH ,
-    			TABLES.get(tableNumber).y + AnimationConstants.PERSON_HEIGHT
+    			TABLES.get(tableNumber).x - EricAnimationConstants.PERSON_WIDTH ,
+    			TABLES.get(tableNumber).y + EricAnimationConstants.PERSON_HEIGHT
     			);
     }
     
@@ -140,7 +140,7 @@ public class WaiterGui implements Gui
     	// Hack (sorta) to pass the coordinates of the table to the CustomerGui (there might be a better way to do this)
     	customer.gui().cashierIsHere(
     			CASHIER.x ,
-    			CASHIER.y + AnimationConstants.PERSON_HEIGHT
+    			CASHIER.y + EricAnimationConstants.PERSON_HEIGHT
     			);
     }
     
@@ -192,15 +192,15 @@ public class WaiterGui implements Gui
     public void draw(Graphics2D g)
     {
         g.setColor(Color.MAGENTA);
-        g.fillRect(_position.x, _position.y, AnimationConstants.PERSON_WIDTH, AnimationConstants.PERSON_HEIGHT);
+        g.fillRect(_position.x, _position.y, EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.PERSON_HEIGHT);
         
         if(_carrying != null)
         {
-        	g.setFont(AnimationConstants.FOOD_FONT);
+        	g.setFont(EricAnimationConstants.FOOD_FONT);
         	g.setColor(Color.BLACK);
         	g.drawString(_carrying,
-        			_position.x + AnimationConstants.PERSON_WIDTH,
-        			_position.y + AnimationConstants.PERSON_HEIGHT
+        			_position.x + EricAnimationConstants.PERSON_WIDTH,
+        			_position.y + EricAnimationConstants.PERSON_HEIGHT
         			);
         }
     }

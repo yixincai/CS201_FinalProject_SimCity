@@ -4,7 +4,7 @@ import agent.Role;
 import city.Place;
 import city.interfaces.Person;
 import city.restaurant.eric.interfaces.*;
-import city.restaurant.eric.gui.WaiterGui;
+import city.restaurant.eric.gui.EricWaiterGui;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -21,7 +21,7 @@ public class EricWaiterRole extends Role implements Waiter
 	private BreakState _breakState = BreakState.WORKING;
 	
 	// Correspondence:
-	public WaiterGui _gui = null;
+	public EricWaiterGui _gui = null;
 	private Host _host = null;
 	private Cook _cook;
 	private Cashier _cashier;
@@ -74,8 +74,8 @@ public class EricWaiterRole extends Role implements Waiter
 	}
 	public void setCook(Cook cook) { _cook = cook; }
 	public void setCashier(Cashier cashier) { _cashier = cashier; }
-	public void setGui(WaiterGui gui) { _gui = gui; }
-	public WaiterGui gui() { return _gui; }
+	public void setGui(EricWaiterGui gui) { _gui = gui; }
+	public EricWaiterGui gui() { return _gui; }
 	public boolean wantsBreak() { return _breakState == BreakState.WANT_A_BREAK || _breakState == BreakState.TOLD_HOST_WANT_A_BREAK || _breakState == BreakState.HOST_SAID_GO_ON_BREAK; }
 	public boolean onBreak() { return _breakState == BreakState.ON_BREAK; }
 	public Place place() { return _restaurant; }

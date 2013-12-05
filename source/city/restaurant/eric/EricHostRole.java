@@ -5,11 +5,11 @@ import java.util.Collections;
 //import java.util.Collection;
 import java.util.List;
 
-import city.restaurant.eric.gui.AnimationConstants;
+import city.restaurant.eric.gui.EricAnimationConstants;
 import agent.Agent;
 import city.restaurant.eric.interfaces.*;
 
-public class HostAgent extends Agent implements Host
+public class EricHostRole extends Agent implements Host
 {
 	// -------------------------------- DATA ---------------------------------------
 	
@@ -67,12 +67,12 @@ public class HostAgent extends Agent implements Host
 	
 	// -------------------------------------- CONSTRUCTOR ------------------------------------
 	
-	public HostAgent(String name)
+	public EricHostRole(String name)
 	{
 		_name = name;
 		
 		// Initialize the hard-coded number of tables
-		for(int i = 0; i < AnimationConstants.NUMBER_OF_TABLES; i++)
+		for(int i = 0; i < EricAnimationConstants.NUMBER_OF_TABLES; i++)
 		{
 			_tables.add(new Table(i));
 		}

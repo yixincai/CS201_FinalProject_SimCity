@@ -1,6 +1,6 @@
 package city.restaurant.eric.gui;
 
-import city.restaurant.eric.CustomerAgent;
+import city.restaurant.eric.EricCustomerRole;
 import java.awt.*;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -9,13 +9,13 @@ import java.util.concurrent.Semaphore;
 import java.util.Timer;
 //import java.util.TimerTask; // not needed
 
-public class CustomerGui implements Gui
+public class EricCustomerGui implements Gui
 {
 	// ---------------------------------- DATA ----------------------------------
 	
 	// RestDims used for positions:
-	private final RestDim FRONT_DESK = new RestDim(AnimationConstants.FRONTDESK_X, AnimationConstants.FRONTDESK_Y);
-	private final RestDim OUTSIDE = new RestDim(AnimationConstants.OUTSIDE_X, AnimationConstants.OUTSIDE_Y);
+	private final RestDim FRONT_DESK = new RestDim(EricAnimationConstants.FRONTDESK_X, EricAnimationConstants.FRONTDESK_Y);
+	private final RestDim OUTSIDE = new RestDim(EricAnimationConstants.OUTSIDE_X, EricAnimationConstants.OUTSIDE_Y);
 	private RestDim WAITING_LOCATION;
 	private RestDim _table = null;
 	private RestDim _cashier = null;
@@ -23,7 +23,7 @@ public class CustomerGui implements Gui
 	private RestDim _destination;
 
 	// Correspondence:
-	private CustomerAgent _agent;
+	private EricCustomerRole _agent;
 	// RestaurantGui _restaurantGui; //TODO implement a system to correctly replace this
 	
 	// Status data:
@@ -43,13 +43,13 @@ public class CustomerGui implements Gui
 	Timer _timer = new Timer();
 
     // -------------------------------- CONSTRUCTOR -----------------------------
-	public CustomerGui(CustomerAgent agent) // , RestaurantGui gui)
+	public EricCustomerGui(EricCustomerRole agent) // , RestaurantGui gui)
 	{
 		_agent = agent;
 		// _restaurantGui = gui; // this is for re-enabling the hunger checkbox
 		
-		WAITING_LOCATION = new RestDim(AnimationConstants.NEXT_CUSTOMER_X, AnimationConstants.NEXT_CUSTOMER_Y);
-		AnimationConstants.updateNextCustomer();
+		WAITING_LOCATION = new RestDim(EricAnimationConstants.NEXT_CUSTOMER_X, EricAnimationConstants.NEXT_CUSTOMER_Y);
+		EricAnimationConstants.updateNextCustomer();
 		
 		_position = new RestDim(OUTSIDE);
 		_destination = new RestDim(FRONT_DESK);
@@ -207,15 +207,15 @@ public class CustomerGui implements Gui
 	public void draw(Graphics2D g)
 	{
 		g.setColor(Color.GREEN);
-		g.fillRect(_position.x, _position.y, AnimationConstants.PERSON_WIDTH, AnimationConstants.PERSON_HEIGHT);
+		g.fillRect(_position.x, _position.y, EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.PERSON_HEIGHT);
         
         if(_food != null)
         {
-        	g.setFont(AnimationConstants.FOOD_FONT);
+        	g.setFont(EricAnimationConstants.FOOD_FONT);
         	g.setColor(Color.BLACK);
         	g.drawString(_food,
-        			_position.x + AnimationConstants.PERSON_WIDTH,
-        			_position.y + AnimationConstants.PERSON_HEIGHT
+        			_position.x + EricAnimationConstants.PERSON_WIDTH,
+        			_position.y + EricAnimationConstants.PERSON_HEIGHT
         			);
         }
 	}

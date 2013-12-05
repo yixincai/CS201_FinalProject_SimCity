@@ -11,7 +11,7 @@ import java.util.TimerTask;
 import agent.Agent;
 import city.restaurant.eric.interfaces.*;
 
-public class CookAgent extends Agent implements Cook
+public class EricCookRole extends Agent implements Cook
 {
 	// --------------------------------------- DATA ------------------------------------------------
 	
@@ -74,7 +74,7 @@ public class CookAgent extends Agent implements Cook
 	private boolean _awaitingMarketResponse = false; // indicates whether an order to a market is pending the market's response (to say what's coming and what's not coming in the order)
 	
 	// ------------------------------------------ CONSTRUCTOR ----------------------------------------
-	public CookAgent(String name)
+	public EricCookRole(String name)
 	{
 		_name = name;
 		
