@@ -47,10 +47,15 @@ public abstract class Restaurant extends Place {
 	}
 	
 	// ------------------------------------ FACTORIES & ROLE ACQUIRES ---------------------------------------------
-	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // Make a new CustomerRole, which is initialized with a pointer to the HostRole.
+	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // make a new CustomerRole, which is initialized with a pointer to the HostRole and other appropriate initializations such as gui.
 	public abstract Role generateWaiterRole(PersonAgent person);
+	
+	// These are a little different from regular factories because they don't return a value; they are more like utilities which are called by the role acquire methods.
+	/** Generate an appropriate CashierGui and set the Cashier's gui to it. */
 	public abstract void generateCashierGui();
+	/** Generate an appropriate CookGui and set the Cook's gui to it. */
 	public abstract void generateCookGui();
+	/** Generate an appropriate HostGui and set the Host's gui to it. */
 	public abstract void generateHostGui();
 	
 	public RestaurantCookRole tryAcquireCook(PersonAgent person) {
