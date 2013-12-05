@@ -96,10 +96,11 @@ public class PersonAgent extends Agent implements Person
 	 * @param occupationType I.e. Restaurant Cashier or Restaurant Host or Bank Teller etc.
 	 * @param housingType House or Apartment
 	 */
-	public PersonAgent(String name, double money, String occupationType, String housingType) 
+	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) 
 	{
 		_name = name; 
-		_money = money; 
+		_money = money;
+		setWorkDays(weekday_notWeekend);
 		acquireOccupation(occupationType);
 		if(_occupation != null) print("Acquired occupation " + _occupation.toString() + ".");
 		else print("Acquired null occupation.");
