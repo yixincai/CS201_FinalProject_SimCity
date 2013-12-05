@@ -2,7 +2,7 @@ package city.restaurant.eric.gui;
 
 import java.awt.Font;
 
-public class AnimationConstants
+public class EricAnimationConstants
 {
 	// This class is HACKS! so that we can change the constants in one place
     

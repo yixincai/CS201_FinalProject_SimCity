@@ -12,9 +12,8 @@ import java.util.TimerTask;
 import agent.Agent;
 import city.restaurant.eric.interfaces.*;
 
-//TODO THIS CLASS IS ONLY HERE FOR REFERENCE; REFACTOR CODE TO USE THE CITY MARKET
-
-public class MarketAgent extends Agent implements Market
+//TODO THIS CLASS IS ONLY HERE NOW FOR REFERENCE; REFACTOR CODE TO USE THE CITY MARKET
+public class OLD_MarketAgent extends Agent implements Market
 {
 	// ----------------------------------------- DATA ----------------------------------------------
 	
@@ -49,7 +48,7 @@ public class MarketAgent extends Agent implements Market
 	/**
 	 * @param whichMarket hack for choosing which of the 3 hard-coded markets to choose from (can be 0, 1, or 2)
 	 */
-	public MarketAgent(String name, int whichMarket)
+	public OLD_MarketAgent(String name, int whichMarket)
 	{
 		_name = name;
 		
