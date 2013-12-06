@@ -7,10 +7,10 @@ import city.restaurant.eric.gui.EricCustomerGui;
 public interface Customer
 {
 	// Properties
-	public String getName();
+	public String name();
 	public EricCustomerGui gui();
 	// Messages
-	public void msgGotHungry(); // from CustomerGui
+	public void cmdGotHungry(); // from CustomerGui
 	public void msgRestaurantIsFull(); // from Host
 	public void msgGoToCashierAndPayDebt(Cashier cashier); // from Host
 	public void msgWeWontServeYou(); // from Host

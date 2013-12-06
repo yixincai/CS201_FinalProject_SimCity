@@ -106,7 +106,7 @@ public class EricHostRole extends Agent implements Host
 	 */
 	public void msgIWantFood(Customer sender)
 	{
-		print("Customer " + sender.getName() + " wants food");
+		print("Customer " + sender.name() + " wants food");
 		
 		// Check if sender has already paid debt
 		for(MyCustomer c : _customers)
@@ -137,21 +137,21 @@ public class EricHostRole extends Agent implements Host
 			{
 				if(owedAmount > 0 && c.state == CustomerState.CONFIRMING_DEBT)
 				{
-					print(c.agent.getName() + " owes $" + owedAmount);
+					print(c.agent.name() + " owes $" + owedAmount);
 					c.state = CustomerState.HAS_DEBT;
 					stateChanged();
 					return;
 				}
 				else if(owedAmount > 0 && c.state == CustomerState.CONFIRMING_DEBT_AGAIN)
 				{
-					print(c.agent.getName() + " still owes $" + owedAmount + "; we will refuse service");
+					print(c.agent.name() + " still owes $" + owedAmount + "; we will refuse service");
 					c.state = CustomerState.SEND_AWAY;
 					stateChanged();
 					return;
 				}
 				else
 				{
-					print(c.agent.getName() + " doesn't owe anything.");
+					print(c.agent.name() + " doesn't owe anything.");
 					c.state = CustomerState.ARRIVED;
 					stateChanged();
 					return;
@@ -166,7 +166,7 @@ public class EricHostRole extends Agent implements Host
 		{
 			if(c.agent == sender)
 			{
-				print(c.agent.getName() + " is leaving.");
+				print(c.agent.name() + " is leaving.");
 				_customers.remove(c);
 				stateChanged();
 				return;
@@ -326,7 +326,7 @@ public class EricHostRole extends Agent implements Host
 	
 	private void actCheckDebt(MyCustomer c)
 	{
-		print("Checking if " + c.agent.getName() + " has debt");
+		print("Checking if " + c.agent.name() + " has debt");
 		_cashier.msgDoesCustomerOwe(c.agent);
 		if(c.state == CustomerState.CONFIRM_DEBT)
 		{
@@ -340,14 +340,14 @@ public class EricHostRole extends Agent implements Host
 	
 	private void actSendCustomerToPayDebt(MyCustomer c)
 	{
-		print("Sending " + c.agent.getName() + " to cashier to pay.");
+		print("Sending " + c.agent.name() + " to cashier to pay.");
 		c.agent.msgGoToCashierAndPayDebt(_cashier);
 		c.state = CustomerState.PAYING_DEBT;
 	}
 	
 	private void actSendCustomerAway(MyCustomer c)
 	{
-		print("Sending customer " + c.agent.getName() + " away.");
+		print("Sending customer " + c.agent.name() + " away.");
 		c.agent.msgWeWontServeYou();
 		_customers.remove(c);
 	}
@@ -360,7 +360,7 @@ public class EricHostRole extends Agent implements Host
 	
 	private void actAssignCustomer(MyCustomer c, Table t)
 	{
-		print("Will seat customer " + c.agent.getName());
+		print("Will seat customer " + c.agent.name());
 		
 		t.occupant = c;
 		c.state = CustomerState.EATING;
@@ -379,7 +379,7 @@ public class EricHostRole extends Agent implements Host
 			}
 		}
 		
-		print("Assigning customer " + c.agent.getName() + " to waiter " + leastBusyWaiter.agent.getName());
+		print("Assigning customer " + c.agent.name() + " to waiter " + leastBusyWaiter.agent.getName());
 
 		leastBusyWaiter.numberOfCustomers++;
 		c.agent.msgComeToFrontDesk();
