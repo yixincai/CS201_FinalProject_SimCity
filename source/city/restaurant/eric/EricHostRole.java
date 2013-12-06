@@ -9,7 +9,7 @@ import city.restaurant.eric.gui.EricAnimationConstants;
 import agent.Agent;
 import city.restaurant.eric.interfaces.*;
 
-public class EricHostRole extends Agent implements Host
+public class EricHostRole extends Agent implements EricHost
 {
 	// -------------------------------- DATA ---------------------------------------
 	
@@ -17,13 +17,13 @@ public class EricHostRole extends Agent implements Host
 	private String _name;
 	
 	// Correspondence:
-	private Cashier _cashier;
+	private EricCashier _cashier;
 	
 	// Agent data:
 	// Customer:
 	private class MyCustomer
 	{
-		public Customer agent;
+		public EricCustomer agent;
 		public CustomerState state;
 	}
 	private enum CustomerState
@@ -47,7 +47,7 @@ public class EricHostRole extends Agent implements Host
 	// Waiter:
 	private class MyWaiter
 	{
-		public Waiter agent;
+		public EricWaiter agent;
 		public WaiterState state;
 		public int numberOfCustomers = 0;
 	}
@@ -61,7 +61,7 @@ public class EricHostRole extends Agent implements Host
 	public String getMaitreDName() { return _name; } // Uh, okay
 	public String getName() { return _name; }
 	public String toString() { return "host " + getName(); }
-	public void setCashier(Cashier cashier) { _cashier = cashier; }
+	public void setCashier(EricCashier cashier) { _cashier = cashier; }
 	//public List getWaitingCustomers() { return waitingCustomers; }
 	//public Collection getTables() { return tables; }
 	
@@ -86,7 +86,7 @@ public class EricHostRole extends Agent implements Host
 	 * Register new waiter agents.
 	 * @param sender The sender of this message
 	 */
-	public void msgImOnDuty(Waiter sender)
+	public void msgImOnDuty(EricWaiter sender)
 	{
 		MyWaiter w = new MyWaiter();
 		
@@ -104,7 +104,7 @@ public class EricHostRole extends Agent implements Host
 	 * Register new customers that come into the restaurant.
 	 * @param sender The sender of this message
 	 */
-	public void msgIWantFood(Customer sender)
+	public void msgIWantFood(EricCustomer sender)
 	{
 		print("Customer " + sender.name() + " wants food");
 		
@@ -129,7 +129,7 @@ public class EricHostRole extends Agent implements Host
 		stateChanged();
 	}
 	
-	public void msgCustomerOwes(Customer customer, double owedAmount) // from Cashier
+	public void msgCustomerOwes(EricCustomer customer, double owedAmount) // from Cashier
 	{
 		for(MyCustomer c : _customers)
 		{
@@ -160,7 +160,7 @@ public class EricHostRole extends Agent implements Host
 		}
 	}
 
-	public void msgLeaving(Customer sender)
+	public void msgLeaving(EricCustomer sender)
 	{
 		for(MyCustomer c : _customers)
 		{
@@ -174,7 +174,7 @@ public class EricHostRole extends Agent implements Host
 		}
 	}
 	
-	public void msgTableFree(Waiter sender, int tableNumber) // from waiter
+	public void msgTableFree(EricWaiter sender, int tableNumber) // from waiter
 	{
 		for(MyWaiter w : _waiters)
 		{
@@ -198,7 +198,7 @@ public class EricHostRole extends Agent implements Host
 		stateChanged();
 	}
 
-	public void msgIWantABreak(Waiter sender)
+	public void msgIWantABreak(EricWaiter sender)
 	{
 		for(MyWaiter w : _waiters)
 		{
@@ -212,7 +212,7 @@ public class EricHostRole extends Agent implements Host
 		}
 	}
 	
-	public void msgGoingBackToWork(Waiter sender)
+	public void msgGoingBackToWork(EricWaiter sender)
 	{
 		for(MyWaiter w : _waiters)
 		{

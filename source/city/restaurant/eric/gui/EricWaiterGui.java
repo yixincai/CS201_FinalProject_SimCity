@@ -2,7 +2,7 @@ package city.restaurant.eric.gui;
 
 
 import city.restaurant.eric.EricWaiterRole;
-import city.restaurant.eric.interfaces.Customer;
+import city.restaurant.eric.interfaces.EricCustomer;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class EricWaiterGui implements Gui
     	_destination.set(IDLE_LOCATION);
     }
     
-    public void doBringCustomerToTable(Customer customer, int tableNumber)
+    public void doBringCustomerToTable(EricCustomer customer, int tableNumber)
     {
     	doGoToTable(tableNumber);
     	
@@ -133,7 +133,7 @@ public class EricWaiterGui implements Gui
     	_goingSomewhere = true;
     }
     
-    public void doBringCheckToCustomer(Customer customer, int tableNumber)
+    public void doBringCheckToCustomer(EricCustomer customer, int tableNumber)
     {
     	doGoToTable(tableNumber);
     	
