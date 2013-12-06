@@ -36,7 +36,7 @@ public class CommuterGui implements Gui {
 		_yPos = placeY(initialPlace); */
 		_commuter = commuter;
 		_aStarTraversal = aStarTraversal;
-		currentPosition = new Position(placeX(initialPlace), placeY(initialPlace));
+		currentPosition = convertPixelToGridSpace(placeX(initialPlace), placeY(initialPlace));
 	}
 	
 	public double getManhattanDistanceToDestination(Place destination){
@@ -69,7 +69,7 @@ public class CommuterGui implements Gui {
 		// set visible to true
 		setPresent(true);
 		_transportationMethod = Command.walk;
-		Position destinationP = new Position(placeX(destination), placeY(destination));
+		Position destinationP = convertPixelToGridSpace(placeX(destination), placeY(destination) - 10); // offset by 10
 		guiMoveFromCurrentPositionTo(destinationP);
 	}
 	
@@ -78,14 +78,14 @@ public class CommuterGui implements Gui {
 		// set visible to true
 		setPresent(true);
 		_transportationMethod = Command.car;
-		Position destinationP = new Position(placeX(destination), placeY(destination));
+		Position destinationP = convertPixelToGridSpace(placeX(destination), placeY(destination) - 10);
 		guiMoveFromCurrentPositionTo(destinationP);
 	}
 	
 	//Bus gui
 	public void goToBusStop(BusStopObject busstop){
 		_transportationMethod = Command.walk;
-		Position destinationP = new Position(busstop.positionX(), busstop.positionY());
+		Position destinationP = convertPixelToGridSpace(busstop.positionX(), busstop.positionY() - 10);
 		guiMoveFromCurrentPositionTo(destinationP);
 		setPresent(true);
 	}
@@ -200,7 +200,7 @@ public class CommuterGui implements Gui {
 
             //Try and get lock for the next step.
             int attempts    = 1;
-            gotPermit       = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(_aStarTraversal.getGrid());
+            gotPermit       = convertPixelToGridSpace(tmpPath.getX(), tmpPath.getY()).moveInto(_aStarTraversal.getGrid());
 
             //Did not get lock. Lets make n attempts.
             while (!gotPermit && attempts < 3) {
@@ -210,7 +210,7 @@ public class CommuterGui implements Gui {
                 try { Thread.sleep(1000); }
                 catch (Exception e){}
 
-                gotPermit   = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(_aStarTraversal.getGrid());
+                gotPermit   = convertPixelToGridSpace(tmpPath.getX(), tmpPath.getY()).moveInto(_aStarTraversal.getGrid());
                 attempts ++;
             }
 
@@ -222,7 +222,7 @@ public class CommuterGui implements Gui {
 
             //Got the required lock. Lets move.
             currentPosition.release(_aStarTraversal.getGrid());
-            currentPosition = new Position(tmpPath.getX(), tmpPath.getY ());
+            currentPosition = convertPixelToGridSpace(tmpPath.getX(), tmpPath.getY ());
           //  move(currentPosition.getX(), currentPosition.getY());
         }
         /*
@@ -260,4 +260,8 @@ public class CommuterGui implements Gui {
         }
         */
     }
+	
+	Position convertPixelToGridSpace(int x, int y){
+		return new Position(x/11, y/12);
+	}
 }
