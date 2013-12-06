@@ -1,5 +1,7 @@
 package city;
 
+import gui.astar.AStarTraversal;
+
 import java.util.*;
 
 // TODO the gui packages are basically only here for the setOccupation() function. We will move the gui instantiation elsewhere, probably to the roles' respective constructors.
@@ -96,7 +98,7 @@ public class PersonAgent extends Agent implements Person
 	 * @param occupationType I.e. Restaurant Cashier or Restaurant Host or Bank Teller etc.
 	 * @param housingType House or Apartment
 	 */
-	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) 
+	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType, AStarTraversal aStarTraversal) 
 	{
 		_name = name; 
 		_money = money;
@@ -120,13 +122,13 @@ public class PersonAgent extends Agent implements Person
 			break;
 		}
 		
-		generateAndSetCommuterRole();
+		generateAndSetCommuterRole(aStarTraversal);
 		setNextRole(_homeOccupantRole);
 	}
 	/** Sets _commuterRole to a new CommuterRole */
-	public void generateAndSetCommuterRole()
+	public void generateAndSetCommuterRole(AStarTraversal aStarTraversal)
 	{
-		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
+		_commuterRole = new CommuterRole(this, null, aStarTraversal); // may replace null with _homeOccupantRole.place() to set the person's starting position
 	}
 	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
 	 * @param homeType Either "house" or "apartment" */
