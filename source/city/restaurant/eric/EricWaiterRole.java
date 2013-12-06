@@ -15,10 +15,13 @@ public class EricWaiterRole extends Role implements EricWaiter
 {
 	// ---------------------------------- DATA --------------------------------
 	
-	// Personal data:
-	private String _name;
-	private enum BreakState { WORKING, WANT_A_BREAK, TOLD_HOST_WANT_A_BREAK, HOST_SAID_NO_BREAK, HOST_SAID_GO_ON_BREAK, ON_BREAK, RETURNING_FROM_BREAK }
-	private BreakState _breakState = BreakState.WORKING;
+	// State data:
+	//TODO Will add WorkingState in when dealing with job switching.  This interaction will be very similar to the waiter going on break scenario.
+	//private enum WorkingState { AWAY, WORKING, WANT_TO_LEAVE, TOLD_HOST_WANT_TO_LEAVE, HOST_SAID_CANT_LEAVE }
+	//private WorkingState _workingState = WorkingState.AWAY;
+	// BreakState is only relevant if _workingState == WorkingState.WORKING.
+	private enum BreakState { NOT_ON_BREAK, WANT_A_BREAK, TOLD_HOST_WANT_A_BREAK, HOST_SAID_NO_BREAK, HOST_SAID_GO_ON_BREAK, ON_BREAK, RETURNING_FROM_BREAK }
+	private BreakState _breakState = BreakState.NOT_ON_BREAK;
 	
 	// Correspondence:
 	public EricWaiterGui _gui = null;
@@ -53,15 +56,16 @@ public class EricWaiterRole extends Role implements EricWaiter
 	private enum OrderState { TAKEN, GONE, COOKING, READY, AT_TABLE }
 	// note: instead of a list of orders, we just iterate through the list of customers.
 	
+	
+	
 	// ---------------------------------------- CONSTRUCTOR & PROPERTIES --------------------------------------
-	public EricWaiterRole(Person person, String name, EricRestaurant restaurant)
+	public EricWaiterRole(Person person, EricRestaurant restaurant)
 	{
 		super(person);
 		
-		_name = name;
 		_restaurant = restaurant;
 	}
-	public String getName() { return _name; }
+	public String getName() { return _person.name(); }
 	//public List getWaitingCustomers() { return waitingCustomers; }
 	//public Collection getTables() { return tables; }
 	public void setHost(EricHost host)
@@ -208,7 +212,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 	// Going on break stuff:
 	public void msgWantABreak() // from RestaurantGui/RestaurantPanel
 	{
-		if(_breakState == BreakState.WORKING)
+		if(_breakState == BreakState.NOT_ON_BREAK)
 		{
 			_breakState = BreakState.WANT_A_BREAK;
 			print("I want a break!");
@@ -467,7 +471,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 	private void actNoBreak()
 	{
 		print("Not going on break.");
-		_breakState = BreakState.WORKING;
+		_breakState = BreakState.NOT_ON_BREAK;
 		_gui.doNoBreak();
 	}
 	
@@ -483,7 +487,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 		print("Going back to work.");
 		_gui.doBackToWork();
 		_host.msgGoingBackToWork(this);
-		_breakState = BreakState.WORKING;
+		_breakState = BreakState.NOT_ON_BREAK;
 	}
 	
 	
