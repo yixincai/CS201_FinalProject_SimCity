@@ -7,7 +7,7 @@ import java.util.List;
 import agent.Agent;
 import city.restaurant.eric.interfaces.*;
 
-public class EricCashierRole extends Agent implements Cashier
+public class EricCashierRole extends Agent implements EricCashier
 {
 	// ----------------------------------------- DATA ----------------------------------------------
 	
@@ -15,7 +15,7 @@ public class EricCashierRole extends Agent implements Cashier
 	private String _name;
 	
 	// Correspondence:
-	private Host _host;
+	private EricHost _host;
 	
 	// Agent data:
 	private double _money = 140;
@@ -24,8 +24,8 @@ public class EricCashierRole extends Agent implements Cashier
 	{
 		public Check check;
 		public BillState state;
-		public Waiter waiter = null;
-		public Customer customer = null;
+		public EricWaiter waiter = null;
+		public EricCustomer customer = null;
 		public double paidAmount = 0; // the amount paid, which needs to be processed.
 		public double owedAmount = 0;
 		public String toString() { return "owedAmount: " + this.owedAmount + "; paidAmount: " + this.paidAmount + "; waiter: " + this.waiter.getName() + "; state: " + this.state + "; customer: " + this.customer.name() + "."; }
@@ -37,7 +37,7 @@ public class EricCashierRole extends Agent implements Cashier
 	public class MarketBill
 	{
 		public double amountOwed;
-		public Market market;
+		public OLD_EricMarket market;
 	}
 	private List<MarketBill> _marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 	
@@ -50,7 +50,7 @@ public class EricCashierRole extends Agent implements Cashier
 	// ----------------------------------------- PROPERTIES ----------------------------------------------
 	public String getName() { return _name; }
 	public String toString() { return "cashier " + getName(); }
-	public void setHost(Host host) { _host = host; }
+	public void setHost(EricHost host) { _host = host; }
 	
 	// ------------------------------------------- TEST PROPERTIES ------------------------------------------------
 	public List<Bill> bills() { return _bills; }
@@ -62,7 +62,7 @@ public class EricCashierRole extends Agent implements Cashier
 	
 	// ----------------------------------------- MESSAGES ----------------------------------------------
 	
-	public void msgGiveMeCheck(Waiter sender, String choice, int table)
+	public void msgGiveMeCheck(EricWaiter sender, String choice, int table)
 	{
 		Bill b = new Bill();
 		b.check = new Check(choice, table);
@@ -75,7 +75,7 @@ public class EricCashierRole extends Agent implements Cashier
 		stateChanged();
 	}
 	
-	public void msgHereIsMoney(Customer sender, double money, Check c)
+	public void msgHereIsMoney(EricCustomer sender, double money, Check c)
 	{
 		for(Bill b : _bills)
 		{
@@ -91,7 +91,7 @@ public class EricCashierRole extends Agent implements Cashier
 		}
 	}
 	
-	public void msgDoesCustomerOwe(Customer customer) // from Host
+	public void msgDoesCustomerOwe(EricCustomer customer) // from Host
 	{
 		for(Bill b : _bills)
 		{
@@ -112,7 +112,7 @@ public class EricCashierRole extends Agent implements Cashier
 		stateChanged();
 	}
 	
-	public void msgHereIsOwedMoney(Customer sender, double money)
+	public void msgHereIsOwedMoney(EricCustomer sender, double money)
 	{
 		for(Bill b : _bills)
 		{
@@ -127,7 +127,7 @@ public class EricCashierRole extends Agent implements Cashier
 		}
 	}
 	
-	public void msgYouOwe(Market sender, double amount)
+	public void msgYouOwe(OLD_EricMarket sender, double amount)
 	{
 		MarketBill b = new MarketBill();
 		b.amountOwed = amount;

@@ -8,7 +8,7 @@ import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.eric.gui.EricCustomerGui;
 import city.restaurant.eric.interfaces.*;
 
-public class EricCustomerRole extends RestaurantCustomerRole implements Customer
+public class EricCustomerRole extends RestaurantCustomerRole implements EricCustomer
 {
 	// ------------------------------------- DATA ------------------------------------------
 	
@@ -21,17 +21,39 @@ public class EricCustomerRole extends RestaurantCustomerRole implements Customer
 	
 	// Correspondence:
 	private EricCustomerGui _gui;
-	private Host _host; // as of v2, this is only used to tell the host I'm Hungry
-	private Waiter _waiter;
-	private Cashier _cashier;
+	private EricHost _host; // as of v2, this is only used to tell the host I'm Hungry
+	private EricWaiter _waiter;
+	private EricCashier _cashier;
 	private EricRestaurant _restaurant;
 	
 	// Agent data:
 	// State:
-	public enum CustomerState { IDLE, WAITING_TO_BE_SEATED, GOING_TO_CASHIER_TO_PAY_DEBT, WAITING_FOR_CHANGE_DEBT, GOING_TO_FRONT_DESK, AT_FRONT_DESK, GOING_TO_TABLE, SEATED, READY_TO_ORDER, WAITING_FOR_FOOD, EATING, WAITING_FOR_CHECK, GOING_TO_CASHIER, WAITING_FOR_CHANGE, WALKING_OUT }
+	public enum CustomerState
+	{
+		IDLE, //TODO change naming so IDLE is something like JUST_ARRIVED
+		WAITING_TO_BE_SEATED,
+		GOING_TO_CASHIER_TO_PAY_DEBT, WAITING_FOR_CHANGE_DEBT,
+		GOING_TO_FRONT_DESK, AT_FRONT_DESK,
+		GOING_TO_TABLE, SEATED, READY_TO_ORDER,
+		WAITING_FOR_FOOD,
+		EATING,
+		WAITING_FOR_CHECK, GOING_TO_CASHIER, WAITING_FOR_CHANGE,
+		WALKING_OUT
+	}
 	private CustomerState _state = CustomerState.IDLE; //The start state
 	// Event:
-	public enum CustomerEvent { NONE, GOT_HUNGRY, TOLD_RESTAURANT_IS_FULL, TOLD_TO_PAY_DEBT, TOLD_TO_LEAVE, TOLD_TO_GO_TO_FRONT_DESK, TOLD_TO_FOLLOW_WAITER, GOT_TO_TABLE, OUT_OF_CHOICE, WAITER_ASKED_FOR_ORDER, GOT_FOOD, FINISHED_EATING, GOT_CHECK, GOT_TO_CASHIER, RECEIVED_CHANGE, DONE_LEAVING }
+	public enum CustomerEvent
+	{
+		NONE,
+		GOT_HUNGRY,
+		TOLD_RESTAURANT_IS_FULL, TOLD_TO_PAY_DEBT, TOLD_TO_LEAVE,
+		TOLD_TO_GO_TO_FRONT_DESK,
+		TOLD_TO_FOLLOW_WAITER, GOT_TO_TABLE,
+		WAITER_ASKED_FOR_ORDER, OUT_OF_CHOICE,
+		GOT_FOOD, FINISHED_EATING,
+		GOT_CHECK, GOT_TO_CASHIER, RECEIVED_CHANGE,
+		DONE_LEAVING
+	}
 	private CustomerEvent _event = CustomerEvent.NONE;
 	
 	// ---------------------------------------- CONSTRUCTOR --------------------------------
@@ -76,7 +98,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements Customer
 	public void setHungerLevel(int hungerLevel) { _hungerLevel = hungerLevel; }
 	public void setGui(EricCustomerGui gui) { _gui = gui; }
 	public EricCustomerGui gui() { return _gui; }
-	public void setHost(Host host) { _host = host; }
+	public void setHost(EricHost host) { _host = host; }
 	public String hacks() { return _hacks; }
 	public void setHacks(String hacks) { _hacks = hacks; }
 	
@@ -106,7 +128,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements Customer
 		stateChanged();
 	}
 	
-	public void msgGoToCashierAndPayDebt(Cashier cashier) // from Host
+	public void msgGoToCashierAndPayDebt(EricCashier cashier) // from Host
 	{
 		_cashier = cashier;
 		_event = CustomerEvent.TOLD_TO_PAY_DEBT;
@@ -131,7 +153,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements Customer
 		stateChanged();
 	}
 	
-	public void msgFollowMeToTable(Waiter sender, Menu menu) // from Waiter
+	public void msgFollowMeToTable(EricWaiter sender, Menu menu) // from Waiter
 	{
 		_waiter = sender; // since this is the first time we get correspondence from Waiter
 		_menu = menu;
@@ -182,7 +204,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements Customer
 		stateChanged();
 	}
 	
-	public void msgHeresYourCheck(Check check, Cashier cashier)
+	public void msgHeresYourCheck(Check check, EricCashier cashier)
 	{
 		print("Got check.");
 		_check = check;
@@ -225,7 +247,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements Customer
 			return true;
 		}
 		if (_state == CustomerState.WAITING_TO_BE_SEATED && _event == CustomerEvent.TOLD_RESTAURANT_IS_FULL ) {
-			actDecideToLeaveOrNot();
+			actRestaurantFullDecideToLeaveOrNot();
 			return true;
 		}
 		if (_state == CustomerState.WAITING_TO_BE_SEATED && _event == CustomerEvent.TOLD_TO_PAY_DEBT) {
@@ -306,7 +328,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements Customer
 		_event = CustomerEvent.NONE;
 	}
 	
-	private void actDecideToLeaveOrNot()
+	private void actRestaurantFullDecideToLeaveOrNot()
 	{
 		Random rand = new Random();
 		if(rand.nextInt(2) == 0)
