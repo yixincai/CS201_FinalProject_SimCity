@@ -2,8 +2,12 @@ package city.transportation.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.List;
 
 import gui.Gui;
+import gui.astar.AStarNode;
+import gui.astar.AStarTraversal;
+import gui.astar.Position;
 import city.Place;
 import city.transportation.*;
 
@@ -12,7 +16,7 @@ public class CommuterGui implements Gui {
 	private static final int NULL_POSITION_X = 300;
 	private static final int NULL_POSITION_Y = 300;
 	
-	int _xPos, _yPos;
+//	int _xPos, _yPos;
 	Place _destination;
 	int _xDestination, _yDestination;
 	enum Command { none, walk, car}
@@ -20,19 +24,24 @@ public class CommuterGui implements Gui {
 	boolean isPresent = true;
 	
 	CommuterRole _commuter;
+	AStarTraversal _aStarTraversal;
+	
+	Position currentPosition;
 	
 	//----------------------------------Constructor & Setters & Getters----------------------------------
-	public CommuterGui(CommuterRole commuter, Place initialPlace) {
+	public CommuterGui(CommuterRole commuter, Place initialPlace, AStarTraversal aStarTraversal) {
 		System.out.println("Created CommuterGui");
 		// Note: placeX and placeY can safely receive values of null
-		_xPos = placeX(initialPlace);
-		_yPos = placeY(initialPlace);
+	/*	_xPos = placeX(initialPlace);
+		_yPos = placeY(initialPlace); */
 		_commuter = commuter;
+		_aStarTraversal = aStarTraversal;
+		currentPosition = new Position(placeX(initialPlace), placeY(initialPlace));
 	}
 	
 	public double getManhattanDistanceToDestination(Place destination){
-		double x = Math.abs(placeX(destination) - _xPos);
-		double y = Math.abs(placeY(destination) - _yPos);
+		double x = Math.abs(placeX(destination) - currentPosition.getX());
+		double y = Math.abs(placeY(destination) - currentPosition.getY());
 		
 		return x+y;
 	}
@@ -47,11 +56,11 @@ public class CommuterGui implements Gui {
 	}
 	
 	public int getX(){
-		return _xPos;
+		return currentPosition.getX();
 	}
 	
 	public int getY(){
-		return _yPos;
+		return currentPosition.getY();
 	}
 	
 	//Walking gui-------------------------------------------------------------------------------------------
@@ -60,8 +69,8 @@ public class CommuterGui implements Gui {
 		// set visible to true
 		setPresent(true);
 		_transportationMethod = Command.walk;
-		_xDestination = placeX(destination);
-		_yDestination = placeY(destination);
+		Position destinationP = new Position(placeX(destination), placeY(destination));
+		guiMoveFromCurrentPositionTo(destinationP);
 	}
 	
 	public void driveToLocation(Place destination){
@@ -69,15 +78,15 @@ public class CommuterGui implements Gui {
 		// set visible to true
 		setPresent(true);
 		_transportationMethod = Command.car;
-		_xDestination = placeX(destination);
-		_yDestination = placeY(destination);
+		Position destinationP = new Position(placeX(destination), placeY(destination));
+		guiMoveFromCurrentPositionTo(destinationP);
 	}
 	
 	//Bus gui
 	public void goToBusStop(BusStopObject busstop){
 		_transportationMethod = Command.walk;
-		_xDestination = busstop.xPosition();
-		_yDestination = busstop.yPosition();
+		Position destinationP = new Position(busstop.positionX(), busstop.positionY());
+		guiMoveFromCurrentPositionTo(destinationP);
 		setPresent(true);
 	}
 /*	
@@ -100,25 +109,27 @@ public class CommuterGui implements Gui {
 	}
 	
 	public void getOffBus(BusStopObject busstop){
-		_xPos = busstop.xPosition();
-		_yPos = busstop.yPosition();
+	/*	currentPosition = busstop.positionX(); // setx
+		currentPosition = busstop.positionY(); // sety */
 		setPresent(true);
 	}
 	
 	//------------------------------------------Animation---------------------------------------
 	@Override
 	public void updatePosition() {
-		if (_xPos < _xDestination)
-			_xPos++;
-		else if (_xPos > _xDestination)
+		/*if (currentPosition.getX() < _xDestination)
+			xPos++;
+		else if (currentPosition.getX() > _xDestination)
 			_xPos--;
 
-		if (_yPos < _yDestination)
+		if (currentPosition.getY() < _yDestination)
 			_yPos++;
-		else if (_yPos > _yDestination)
-			_yPos--;
+		else if (currentPosition.getY() > _yDestination)
+			_yPos--; */
 		
-		if (_transportationMethod == Command.car){
+		
+		
+	/*	if (_transportationMethod == Command.car){
 			if (_xPos < _xDestination)
 				_xPos++;
 			else if (_xPos > _xDestination)
@@ -128,9 +139,9 @@ public class CommuterGui implements Gui {
 				_yPos++;
 			else if (_yPos > _yDestination)
 				_yPos--;
-		}
+		} */
 		
-		if(_xPos == _xDestination && _yPos == _yDestination &&
+		if(currentPosition.getX() == _xDestination &&  currentPosition.getY() == _yDestination &&
 				(_transportationMethod == Command.car || _transportationMethod == Command.walk)){
 			_transportationMethod = Command.none;
 			setPresent(false);
@@ -145,7 +156,7 @@ public class CommuterGui implements Gui {
 				g.setColor(Color.RED);
 			else
 				g.setColor(Color.GREEN);
-			g.fillRect(_xPos, _yPos, 5, 5);
+			g.fillRect(currentPosition.getX(), currentPosition.getY(), 5, 5);
 		}
 	}
 	
@@ -168,4 +179,85 @@ public class CommuterGui implements Gui {
 			return NULL_POSITION_Y;
 		}
 	}
+	
+/*	void move(int destx, int desty){
+		_xDestination = destx;
+		_yDestination = desty;
+	} */
+	
+	void guiMoveFromCurrentPositionTo(Position to){
+        AStarNode aStarNode = (AStarNode)_aStarTraversal.generalSearch(currentPosition, to);
+        List<Position> path = aStarNode.getPath();
+        Boolean firstStep   = true;
+        Boolean gotPermit   = true;
+
+        for (Position tmpPath: path) {
+            //The first node in the path is the current node. So skip it.
+            if (firstStep) {
+                firstStep   = false;
+                continue;
+            }
+
+            //Try and get lock for the next step.
+            int attempts    = 1;
+            gotPermit       = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(_aStarTraversal.getGrid());
+
+            //Did not get lock. Lets make n attempts.
+            while (!gotPermit && attempts < 3) {
+                //System.out.println("[Gaut] " + guiWaiter.getName() + " got NO permit for " + tmpPath.toString() + " on attempt " + attempts);
+
+                //Wait for 1sec and try again to get lock.
+                try { Thread.sleep(1000); }
+                catch (Exception e){}
+
+                gotPermit   = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(_aStarTraversal.getGrid());
+                attempts ++;
+            }
+
+            //Did not get lock after trying n attempts. So recalculating path.            
+            if (!gotPermit) {
+                guiMoveFromCurrentPositionTo(to);
+                break;
+            }
+
+            //Got the required lock. Lets move.
+            currentPosition.release(_aStarTraversal.getGrid());
+            currentPosition = new Position(tmpPath.getX(), tmpPath.getY ());
+          //  move(currentPosition.getX(), currentPosition.getY());
+        }
+        /*
+        boolean pathTaken = false;
+        while (!pathTaken) {
+            pathTaken = true;
+            //print("A* search from " + currentPosition + "to "+to);
+            AStarNode a = (AStarNode)aStar.generalSearch(currentPosition,to);
+            if (a == null) {//generally won't happen. A* will run out of space first.
+                System.out.println("no path found. What should we do?");
+                break; //dw for now
+            }
+            //dw coming. Get the table position for table 4 from the gui
+            //now we have a path. We should try to move there
+            List<Position> ps = a.getPath();
+            Do("Moving to position " + to + " via " + ps);
+            for (int i=1; i<ps.size();i++){//i=0 is where we are
+                //we will try to move to each position from where we are.
+                //this should work unless someone has moved into our way
+                //during our calculation. This could easily happen. If it
+                //does we need to recompute another A* on the fly.
+                Position next = ps.get(i);
+                if (next.moveInto(aStar.getGrid())){
+                    //tell the layout gui
+                    guiWaiter.move(next.getX(),next.getY());
+                    currentPosition.release(aStar.getGrid());
+                    currentPosition = next;
+                }
+                else {
+                    System.out.println("going to break out path-moving");
+                    pathTaken = false;
+                    break;
+                }
+            }
+        }
+        */
+    }
 }
