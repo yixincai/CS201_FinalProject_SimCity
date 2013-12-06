@@ -11,7 +11,7 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-public class EricWaiterRole extends Role implements Waiter
+public class EricWaiterRole extends Role implements EricWaiter
 {
 	// ---------------------------------- DATA --------------------------------
 	
@@ -22,9 +22,9 @@ public class EricWaiterRole extends Role implements Waiter
 	
 	// Correspondence:
 	public EricWaiterGui _gui = null;
-	private Host _host = null;
-	private Cook _cook;
-	private Cashier _cashier;
+	private EricHost _host = null;
+	private EricCook _cook;
+	private EricCashier _cashier;
 	private EricRestaurant _restaurant;
 	
 	// Semaphores:
@@ -35,7 +35,7 @@ public class EricWaiterRole extends Role implements Waiter
 	// Customer:
 	private class MyCustomer
 	{
-		public Customer agent;
+		public EricCustomer agent;
 		public int tableNumber = -1;
 		public Order order = null;
 		public CustomerState state;
@@ -64,7 +64,7 @@ public class EricWaiterRole extends Role implements Waiter
 	public String getName() { return _name; }
 	//public List getWaitingCustomers() { return waitingCustomers; }
 	//public Collection getTables() { return tables; }
-	public void setHost(Host host)
+	public void setHost(EricHost host)
 	{
 		if(_host == null)
 		{
@@ -72,8 +72,8 @@ public class EricWaiterRole extends Role implements Waiter
 			_host.msgImOnDuty(this);
 		}
 	}
-	public void setCook(Cook cook) { _cook = cook; }
-	public void setCashier(Cashier cashier) { _cashier = cashier; }
+	public void setCook(EricCook cook) { _cook = cook; }
+	public void setCashier(EricCashier cashier) { _cashier = cashier; }
 	public void setGui(EricWaiterGui gui) { _gui = gui; }
 	public EricWaiterGui gui() { return _gui; }
 	public boolean wantsBreak() { return _breakState == BreakState.WANT_A_BREAK || _breakState == BreakState.TOLD_HOST_WANT_A_BREAK || _breakState == BreakState.HOST_SAID_GO_ON_BREAK; }
@@ -96,7 +96,7 @@ public class EricWaiterRole extends Role implements Waiter
 		// stateChanged(); // not necessary because this is just to release the semaphore.
 	}
 	
-	public void msgSeatCustomer(Customer ca, int tableNumber) // from Host
+	public void msgSeatCustomer(EricCustomer ca, int tableNumber) // from Host
 	{
 		print(_host.getName() + " told me to seat " + ca.name());
 		MyCustomer c = new MyCustomer();
@@ -108,7 +108,7 @@ public class EricWaiterRole extends Role implements Waiter
 		stateChanged();
 	}
 	
-	public void msgReadyToOrder(Customer sender)
+	public void msgReadyToOrder(EricCustomer sender)
 	{
 		for(MyCustomer c : customers)
 		{
@@ -120,7 +120,7 @@ public class EricWaiterRole extends Role implements Waiter
 		}
 	}
 	
-	public void msgHeresMyChoice(Customer sender, String choice)
+	public void msgHeresMyChoice(EricCustomer sender, String choice)
 	{
 		print(sender.name() + " chooses " + choice);
 		for(MyCustomer c : customers)
@@ -168,7 +168,7 @@ public class EricWaiterRole extends Role implements Waiter
 		}
 	}
 
-	public void msgGiveMeCheck(Customer sender) // from Customer
+	public void msgGiveMeCheck(EricCustomer sender) // from Customer
 	{
 		for (MyCustomer c : customers)
 		{
@@ -193,7 +193,7 @@ public class EricWaiterRole extends Role implements Waiter
 		}
 	}
 	
-	public void msgLeaving(Customer sender) // from Customer
+	public void msgLeaving(EricCustomer sender) // from Customer
 	{
 		for (MyCustomer c : customers)
 		{

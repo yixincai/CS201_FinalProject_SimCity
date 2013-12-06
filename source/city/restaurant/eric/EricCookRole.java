@@ -11,7 +11,7 @@ import java.util.TimerTask;
 import agent.Agent;
 import city.restaurant.eric.interfaces.*;
 
-public class EricCookRole extends Agent implements Cook
+public class EricCookRole extends Agent implements EricCook
 {
 	// --------------------------------------- DATA ------------------------------------------------
 	
@@ -20,12 +20,12 @@ public class EricCookRole extends Agent implements Cook
 	
 	// Correspondence:
 	// use Order.waiter for waiter correspondence.
-	private Cashier _cashier;
+	private EricCashier _cashier;
 	
 	// Agent data:
 	private class Order
 	{
-		public Waiter waiter;
+		public EricWaiter waiter;
 		public Food food;
 		public int table;
 		public OrderState state;
@@ -66,8 +66,8 @@ public class EricCookRole extends Agent implements Cook
 	
 	private class MyMarket
 	{
-		Market agent;
-		public MyMarket(Market m) { agent = m; }
+		OLD_EricMarket agent;
+		public MyMarket(OLD_EricMarket m) { agent = m; }
 	}
 	private List<MyMarket> _markets = Collections.synchronizedList(new ArrayList<MyMarket>());
 	private int _lastMarketUsed = -1; // starts at -1 so that when we increment it before first using, it will be zero
@@ -88,14 +88,14 @@ public class EricCookRole extends Agent implements Cook
 	// ----------------------------------------- PROPERTIES ------------------------------------------------
 	public String getName() { return _name; }
 	public String toString() { return "cook " + getName(); }
-	public void addMarket(Market m) { _markets.add(new MyMarket(m)); }
-	public void setCashier(Cashier c) { _cashier = c; }
+	public void addMarket(OLD_EricMarket m) { _markets.add(new MyMarket(m)); }
+	public void setCashier(EricCashier c) { _cashier = c; }
 	
 	
 	
 	// ------------------------------------------- MESSAGES ----------------------------------------------
 	
-	public void msgHereIsOrder(Waiter sender, String choice, int table)
+	public void msgHereIsOrder(EricWaiter sender, String choice, int table)
 	{
 		Order o = new Order();
 		o.waiter = sender;
@@ -118,7 +118,7 @@ public class EricCookRole extends Agent implements Cook
 		stateChanged();
 	}
 	
-	public void msgOrderComing(Market sender, Map<String,Integer> foodsComing) // from Market
+	public void msgOrderComing(OLD_EricMarket sender, Map<String,Integer> foodsComing) // from Market
 	{
 		// Set mySender to the correct MyMarket
 		//MyMarket mySender = null;
@@ -141,7 +141,7 @@ public class EricCookRole extends Agent implements Cook
 	/**
 	 * @param foods Map of food names to the number of each food.
 	 */
-	public void msgDelivery(Market sender, Map<String,Integer> foods) // from Market
+	public void msgDelivery(OLD_EricMarket sender, Map<String,Integer> foods) // from Market
 	{
 		print("Received a delivery from " + sender.getName());
 		for(Food f : _foods)

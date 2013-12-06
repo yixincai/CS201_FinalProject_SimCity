@@ -13,7 +13,7 @@ import agent.Agent;
 import city.restaurant.eric.interfaces.*;
 
 //TODO THIS CLASS IS ONLY HERE NOW FOR REFERENCE; REFACTOR CODE TO USE THE CITY MARKET
-public class OLD_MarketAgent extends Agent implements Market
+public class OLD_EricMarketAgent extends Agent implements OLD_EricMarket
 {
 	// ----------------------------------------- DATA ----------------------------------------------
 	
@@ -23,8 +23,8 @@ public class OLD_MarketAgent extends Agent implements Market
 	// Agent data:
 	private class Order
 	{
-		public Cook cook;
-		public Cashier cashier;
+		public EricCook cook;
+		public EricCashier cashier;
 		public Map<String,Integer> foods = new HashMap<String,Integer>();
 		public OrderState state;
 		public double owedAmount = 0;
@@ -48,7 +48,7 @@ public class OLD_MarketAgent extends Agent implements Market
 	/**
 	 * @param whichMarket hack for choosing which of the 3 hard-coded markets to choose from (can be 0, 1, or 2)
 	 */
-	public OLD_MarketAgent(String name, int whichMarket)
+	public OLD_EricMarketAgent(String name, int whichMarket)
 	{
 		_name = name;
 		
@@ -89,7 +89,7 @@ public class OLD_MarketAgent extends Agent implements Market
 	
 	// ----------------------------------------- MESSAGES ----------------------------------------------
 	
-	public void msgPlaceOrder(Cook sender, Map<String,Integer> foods, Cashier cashier)
+	public void msgPlaceOrder(EricCook sender, Map<String,Integer> foods, EricCashier cashier)
 	{
 		print("Order placed by " + sender.getName() + ":");
 		
@@ -114,7 +114,7 @@ public class OLD_MarketAgent extends Agent implements Market
 		stateChanged();
 	}
 	
-	public void msgPayment(Cashier sender, double amount)
+	public void msgPayment(EricCashier sender, double amount)
 	{
 		Order current = null;
 		for(Order o : _orders)
