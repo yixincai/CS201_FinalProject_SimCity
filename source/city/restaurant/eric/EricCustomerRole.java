@@ -2,27 +2,29 @@ package city.restaurant.eric;
 
 import java.util.Random;
 
+import city.Place;
+import city.interfaces.Person;
+import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.eric.gui.EricCustomerGui;
-import agent.Agent;
 import city.restaurant.eric.interfaces.*;
 
-public class EricCustomerRole extends Agent implements Customer
+public class EricCustomerRole extends RestaurantCustomerRole implements Customer
 {
 	// ------------------------------------- DATA ------------------------------------------
 	
 	// Personal data:
-	private String _name;
-	private double _money;
 	private int _hungerLevel = 0; // determines length of meal (in seconds)
 	private Menu _menu;
 	private String _choice;
 	private Check _check;
+	private String _hacks;
 	
 	// Correspondence:
 	private EricCustomerGui _gui;
 	private Host _host; // as of v2, this is only used to tell the host I'm Hungry
 	private Waiter _waiter;
 	private Cashier _cashier;
+	private EricRestaurant _restaurant;
 	
 	// Agent data:
 	// State:
@@ -38,52 +40,59 @@ public class EricCustomerRole extends Agent implements Customer
 	 *
 	 * @param name name of the customer
 	 */
-	public EricCustomerRole(String name)
+	public EricCustomerRole(Person person, EricRestaurant restaurant, String hacks)
 	{
-		_name = name;
-		
-		_money = 20.00;
-		if(name.contains("Money"))
+		super(person);
+		_restaurant = restaurant;
+		_hacks = hacks;
+		if(_hacks.contains("Money"))
 		{
-			if(name.contains("Money12"))
+			double initMoney = _person.money();
+			if(_hacks.contains("Money12"))
 			{
-				_money = 12.00;
+				initMoney = 12.00;
 			}
-			else if(name.contains("Money10"))
+			else if(_hacks.contains("Money10"))
 			{
-				_money = 10.00;
+				initMoney = 10.00;
 			}
-			else if(name.contains("Money5"))
+			else if(_hacks.contains("Money5"))
 			{
-				_money = 5.00;
+				initMoney = 5.00;
 			}
-			else if(name.contains("Money0"))
+			else if(_hacks.contains("Money0"))
 			{
-				_money = 0.00;
+				initMoney = 0.00;
 			}
-			print("HACKER [money = " + _money + "]");
+			_person.cmdChangeMoney(-_person.money() + initMoney);
+			print("HACKER [money = " + _person.money() + "]");
 		}
 	}
 
 	// ---------------------------------------- PROPERTIES ----------------------------------------
 
-	public String getName() { return _name; }
+	public String name() { return _person.name(); }
 	public int getHungerLevel() { return _hungerLevel; }
-	public void setHungerLevel(int hungerLevel)
-	{
-		this._hungerLevel = hungerLevel;
-	}
-	public String toString() { return "customer " + getName(); }
-	public void setGui(EricCustomerGui g) { _gui = g; }
+	public void setHungerLevel(int hungerLevel) { _hungerLevel = hungerLevel; }
+	public void setGui(EricCustomerGui gui) { _gui = gui; }
 	public EricCustomerGui gui() { return _gui; }
 	public void setHost(Host host) { _host = host; }
-	//public String getCustomerName() { return _name; }
+	public String hacks() { return _hacks; }
+	public void setHacks(String hacks) { _hacks = hacks; }
+	
+	@Override
+	public Place place() { return _restaurant; }
 	
 	
 	
 	// ------------------------------------- MESSAGES ------------------------------------
 
-	public void msgGotHungry() // from CustomerGui
+	@Override
+	public void cmdFinishAndLeave() {
+		// do nothing (the customer will eventually finish eating)
+	}
+
+	public void cmdGotHungry() // from CustomerGui
 	{
 		print("I'm hungry");
 		_hungerLevel = 10;
@@ -191,8 +200,8 @@ public class EricCustomerRole extends Agent implements Customer
 	
 	public void msgHereIsChange(double change)
 	{
-		_money += change;
-		print("Received change. I now have $" + _money);
+		_person.cmdChangeMoney(change);
+		print("Received change. I now have $" + _person.money());
 		_event = CustomerEvent.RECEIVED_CHANGE;
 		stateChanged();
 	}
@@ -207,7 +216,7 @@ public class EricCustomerRole extends Agent implements Customer
 	
 	// ------------------------------------------- SCHEDULER -------------------------------------
 	
-	protected boolean pickAndExecuteAnAction()
+	public boolean pickAndExecuteAnAction()
 	{
 		// note: CustomerAgent is a finite state machine
 
@@ -327,8 +336,8 @@ public class EricCustomerRole extends Agent implements Customer
 	private void actPayDebt()
 	{
 		print("Paying debt");
-		_cashier.msgHereIsOwedMoney(this, _money);
-		_money = 0;
+		_cashier.msgHereIsOwedMoney(this, _person.money());
+		_person.cmdChangeMoney(-_person.money());
 		_state = CustomerState.WAITING_FOR_CHANGE_DEBT;
 		_event = CustomerEvent.NONE;
 	}
@@ -382,7 +391,7 @@ public class EricCustomerRole extends Agent implements Customer
 				int choiceNum = rand.nextInt(_menu.entrees().size());
 
 				// Check if I have enough money
-				if(_menu.entrees().get(choiceNum).price() <= _money)
+				if(_menu.entrees().get(choiceNum).price() <= _person.money())
 				{
 					// If I can afford it, set my choice to this first randomly chosen item and break out of the choosing loop
 					choice = _menu.entrees().get(choiceNum).choice();
@@ -392,7 +401,7 @@ public class EricCustomerRole extends Agent implements Customer
 				{
 					// Set whether or not this customer will be a flake and choose the choice that he can't afford
 					boolean flake = rand.nextInt(4) == 0;
-					if(_name.contains("Flake"))
+					if(_hacks.contains("Flake"))
 					{
 						print("HACKER [Flake]");
 						flake = true;
@@ -417,7 +426,7 @@ public class EricCustomerRole extends Agent implements Customer
 		// Check if there's a hack in the customer's name and override the randomly chosen choice (only chooses a choice that's available i.e. on the menu)
 		for(Menu.Item i : _menu.entrees())
 		{
-			if(_name.contains(i.choice()))
+			if(_hacks.contains(i.choice()))
 			{
 				print("HACKER [" + i.choice() + "]");
 				choice = i.choice();
@@ -485,8 +494,8 @@ public class EricCustomerRole extends Agent implements Customer
 	private void actPay()
 	{
 		print("Paying.");
-		_cashier.msgHereIsMoney(this, _money, _check); // awkwardly giving cashier whole wallet
-		_money = 0;
+		_cashier.msgHereIsMoney(this, _person.money(), _check); // awkwardly giving cashier whole wallet
+		_person.cmdChangeMoney(-_person.money());
 		_state = CustomerState.WAITING_FOR_CHANGE;
 		_event = CustomerEvent.NONE;
 	}
@@ -505,16 +514,6 @@ public class EricCustomerRole extends Agent implements Customer
 		print("Left restaurant.");
 		_state = CustomerState.IDLE;
 		_event = CustomerEvent.NONE;
-		
-		// Check for hack to not reset money
-		if(!_name.contains("NoResetMoney"))
-		{
-			_money = 20.00;
-		}
-		else
-		{
-			print("HACKER [not resetting money. _money = " + _money + "]");
-		}
 	}
 }
 

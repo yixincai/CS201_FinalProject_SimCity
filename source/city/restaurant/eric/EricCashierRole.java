@@ -28,7 +28,7 @@ public class EricCashierRole extends Agent implements Cashier
 		public Customer customer = null;
 		public double paidAmount = 0; // the amount paid, which needs to be processed.
 		public double owedAmount = 0;
-		public String toString() { return "owedAmount: " + this.owedAmount + "; paidAmount: " + this.paidAmount + "; waiter: " + this.waiter.getName() + "; state: " + this.state + "; customer: " + this.customer.getName() + "."; }
+		public String toString() { return "owedAmount: " + this.owedAmount + "; paidAmount: " + this.paidAmount + "; waiter: " + this.waiter.getName() + "; state: " + this.state + "; customer: " + this.customer.name() + "."; }
 	}
 	// Public for TEST:
 	public enum BillState { REQUESTED, WAITING_FOR_PAYMENT, PAID_NEEDS_CHANGE, OWED, NOTIFY_HOST_OWED, PAY_DEBT_NEEDS_CHANGE }
@@ -81,7 +81,7 @@ public class EricCashierRole extends Agent implements Cashier
 		{
 			if(b.check == c) // may want to change this to .equals(c) later, if passing copies around rather than references.
 			{
-				print("Received $" + money + " from " + sender.getName());
+				print("Received $" + money + " from " + sender.name());
 				b.customer = sender;
 				b.paidAmount = money;
 				b.state = BillState.PAID_NEEDS_CHANGE;
@@ -118,7 +118,7 @@ public class EricCashierRole extends Agent implements Cashier
 		{
 			if(b.customer == sender)
 			{
-				print("Received " + money + " from " + sender.getName());
+				print("Received " + money + " from " + sender.name());
 				b.paidAmount = money;
 				b.state = BillState.PAY_DEBT_NEEDS_CHANGE;
 				stateChanged();
@@ -209,12 +209,12 @@ public class EricCashierRole extends Agent implements Cashier
 		_money += b.paidAmount - change;
 		b.paidAmount = 0;
 		
-		print("Giving $" + change + " in change to customer " + b.customer.getName());
+		print("Giving $" + change + " in change to customer " + b.customer.name());
 		b.customer.msgHereIsChange(change);
 		
 		if(b.owedAmount > 0)
 		{
-			print(b.customer.getName() + " still owes " + b.owedAmount);
+			print(b.customer.name() + " still owes " + b.owedAmount);
 			b.state = BillState.OWED;
 			b.waiter = null; // because the customer is leaving and will no longer be assigned to a waiter
 			b.check = null; // because the customer is leaving and all we care about now is his debt
@@ -231,12 +231,12 @@ public class EricCashierRole extends Agent implements Cashier
 		
 		if(b.owedAmount == 0)
 		{
-			print("Notifying " + _host.getName() + " that " + b.customer.getName() + " does not owe anything.");
+			print("Notifying " + _host.getName() + " that " + b.customer.name() + " does not owe anything.");
 			_bills.remove(b);
 		}
 		else
 		{
-			print("Notifying " + _host.getName() + " that " + b.customer.getName() + " owes $" + b.owedAmount);
+			print("Notifying " + _host.getName() + " that " + b.customer.name() + " owes $" + b.owedAmount);
 			b.state = BillState.OWED;
 		}
 		_host.msgCustomerOwes(b.customer, b.owedAmount);
@@ -253,7 +253,7 @@ public class EricCashierRole extends Agent implements Cashier
 		_money += b.paidAmount - change;
 		b.paidAmount = 0;
 		
-		print("Giving $" + change + " in change to customer " + b.customer.getName());
+		print("Giving $" + change + " in change to customer " + b.customer.name());
 		b.customer.msgHereIsChange(change);
 		
 		if(b.owedAmount > 0)

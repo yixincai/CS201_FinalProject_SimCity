@@ -98,7 +98,7 @@ public class EricWaiterRole extends Role implements Waiter
 	
 	public void msgSeatCustomer(Customer ca, int tableNumber) // from Host
 	{
-		print(_host.getName() + " told me to seat " + ca.getName());
+		print(_host.getName() + " told me to seat " + ca.name());
 		MyCustomer c = new MyCustomer();
 		c.agent = ca;
 		c.tableNumber = tableNumber;
@@ -122,7 +122,7 @@ public class EricWaiterRole extends Role implements Waiter
 	
 	public void msgHeresMyChoice(Customer sender, String choice)
 	{
-		print(sender.getName() + " chooses " + choice);
+		print(sender.name() + " chooses " + choice);
 		for(MyCustomer c : customers)
 		{
 			if(c.agent == sender)
@@ -145,7 +145,7 @@ public class EricWaiterRole extends Role implements Waiter
 			{
 				if(c.order.choice.equals(choice))
 				{
-					print(_cook.getName() + " says that we're out of " + c.agent.getName() + "'s order of " + c.order.choice);
+					print(_cook.getName() + " says that we're out of " + c.agent.name() + "'s order of " + c.order.choice);
 					c.order.state = OrderState.GONE;
 					stateChanged();
 				}
@@ -334,7 +334,7 @@ public class EricWaiterRole extends Role implements Waiter
 		_gui.doGoToFrontDesk();
 		waitForGuiToReachDestination();
 		
-		print("Seating Customer " + customer.agent.getName() + " at Table " + customer.tableNumber);
+		print("Seating Customer " + customer.agent.name() + " at Table " + customer.tableNumber);
 		
 		// This order is important; i.e. setting customer.state to CHOOSING_ORDER first (fixes a concurrency clobbering error that arises from getting msgReadyToOrder from CustomerAgent before this line executes)
 		customer.state = CustomerState.CHOOSING_ORDER;
@@ -348,7 +348,7 @@ public class EricWaiterRole extends Role implements Waiter
 	
 	private void actTakeOrder(MyCustomer c)
 	{
-		print("Going to table " + c.tableNumber + " to take order from " + c.agent.getName());
+		print("Going to table " + c.tableNumber + " to take order from " + c.agent.name());
 		
 		_gui.doGoToTable(c.tableNumber);
 		waitForGuiToReachDestination();
@@ -365,7 +365,7 @@ public class EricWaiterRole extends Role implements Waiter
 
 	private void actGiveOrderToCook(MyCustomer c)
 	{
-		print("Going to cook to give Customer " + c.agent.getName() + "'s order");
+		print("Going to cook to give Customer " + c.agent.name() + "'s order");
 		_gui.doTakeOrderToCook(c.order.choice);
 		waitForGuiToReachDestination();
 		
@@ -379,7 +379,7 @@ public class EricWaiterRole extends Role implements Waiter
 	
 	private void actTellCustomerOutOfChoice(MyCustomer c)
 	{
-		print("Going to tell Customer " + c.agent.getName() + " that we're out of his/her order of " + c.order.choice);
+		print("Going to tell Customer " + c.agent.name() + " that we're out of his/her order of " + c.order.choice);
 		
 		_gui.doGoToTable(c.tableNumber);
 		waitForGuiToReachDestination();
@@ -394,15 +394,15 @@ public class EricWaiterRole extends Role implements Waiter
 
 	private void actBringFoodToCustomer(MyCustomer c)
 	{
-		print("Going to cook to pick up " + c.agent.getName() + "'s order of " + c.order.choice);
+		print("Going to cook to pick up " + c.agent.name() + "'s order of " + c.order.choice);
 		_gui.doGoToCook();
 		waitForGuiToReachDestination();
 		
-		print("Delivering " + c.agent.getName() + "'s order of " + c.order.choice);
+		print("Delivering " + c.agent.name() + "'s order of " + c.order.choice);
 		
 		_gui.doDeliverFood(c.tableNumber, c.order.choice);
 		waitForGuiToReachDestination();
-		print("Giving " + c.order.choice + " to " + c.agent.getName());
+		print("Giving " + c.order.choice + " to " + c.agent.name());
 		
 		c.agent.msgHeresYourFood(c.order.choice);
 		c.order.state = OrderState.AT_TABLE;
@@ -413,7 +413,7 @@ public class EricWaiterRole extends Role implements Waiter
 	
 	private void actGetCheckForCustomer(MyCustomer c)
 	{
-		print("Going to get check for Customer " + c.agent.getName());
+		print("Going to get check for Customer " + c.agent.name());
 		_gui.doGoToCashier();
 		waitForGuiToReachDestination();
 		
@@ -427,12 +427,12 @@ public class EricWaiterRole extends Role implements Waiter
 
 	private void actBringCheckToCustomer(MyCustomer c)
 	{
-		print("Going to bring check to Customer " + c.agent.getName());
+		print("Going to bring check to Customer " + c.agent.name());
 		
 		_gui.doBringCheckToCustomer(c.agent, c.tableNumber);
 		waitForGuiToReachDestination();
 
-		print("Giving check to Customer " + c.agent.getName());
+		print("Giving check to Customer " + c.agent.name());
 		
 		c.agent.msgHeresYourCheck(c.check, _cashier);
 		

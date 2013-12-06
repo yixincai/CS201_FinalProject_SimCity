@@ -71,7 +71,7 @@ public class EricCustomerGui implements Gui
 	public void setHungry()
 	{
 		_isHungry = true;
-		_agent.msgGotHungry();
+		_agent.cmdGotHungry();
 		setPresent(true);
 	}
 	public void setPresent(boolean p) { isPresent = p; }
