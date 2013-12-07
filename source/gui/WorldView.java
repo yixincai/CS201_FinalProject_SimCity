@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 
 import javax.swing.*;
 
+import city.Directory;
 import city.Time;
 import city.transportation.gui.BusAgentGui;
 import city.transportation.gui.CommuterGui;
@@ -105,6 +106,11 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		for ( int i=0; i<buildings.size(); i++ ) {
 			WorldViewBuilding b = buildings.get(i);
 		    g2.fill( b );
+		}
+		
+		for ( int i=0; i<Directory.lanes().size(); i++ ) {
+			Lane l = Directory.lanes().get(i);
+			l.draw( g2 );
 		}
 		
 		try
