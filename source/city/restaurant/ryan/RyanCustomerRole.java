@@ -378,7 +378,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	
 	private void PayCashier(){
 		print("Paying Cashier");
-		cashier = (RyanCashierRole)_restaurant.cashier;
+		cashier = (RyanCashierRole)_restaurant.getCashier();
 		money -= payment;
 		cashier.msgHeresMoney(this, payment);
 		payment = 0;
@@ -411,10 +411,6 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 		this.hungerLevel = hungerLevel;
 		//could be a state change. Maybe you don't
 		//need to eat until hunger lever is > 5?
-	}
-
-	public String toString() {
-		return "customer " + getName();
 	}
 
 	public void setGui(RyanCustomerGui g) {
