@@ -14,7 +14,7 @@ import javax.swing.SpringLayout;
 public class ConfigurationPanel extends JPanel implements ActionListener {
 	
 	ControlPanel cPanel;
-	String[] configOptions = {"Configuration 1", "Configuration 2", "Configuration 3", "Configuration 4", "Configuration 5"};
+	String[] configOptions = {"Robber", "Configuration 2", "Configuration 3", "Configuration 4", "Configuration 5", "Scenario A"};
 	JLabel configLabel;
 	JComboBox configBox;
 	JButton startButton;
@@ -164,8 +164,7 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("Yixin Cashier", 300, "Market Cashier", true, "apartment");
 			cPanel.addPerson("Yixin Employee", 300, "Market Employee", true, "apartment");
 			cPanel.addPerson("Yixin Customer", 300, "Market Customer", true, "apartment");
-		}
-		else if (configBox.getSelectedIndex() == 3){
+		} else if (configBox.getSelectedIndex() == 3){
 			cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
 			cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
 			cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
@@ -179,6 +178,21 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("Yixin", 300, "None", true, "house");
 			cPanel.addPerson("Ryan", 300, "None", true, "apartment");
 			cPanel.addPerson("Tanner", 300, "None", true, "apartment");
+		} else if(configBox.getSelectedIndex() == 5){
+			cPanel.addPerson("Teller", 300, "Bank Teller", true, "house");
+			cPanel.addPerson("Host", 300, "Bank Host", true, "house");
+			
+			cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
+			cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
+			cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
+			cPanel.addPerson("YixinMarketCashier", 300, "Market Cashier", true, "apartment");
+			cPanel.addPerson("YixinMarketEmployee", 300, "Market Employee", true, "apartment");
+			cPanel.addPerson("YixinRestaurantHost", 300, "Restaurant Host", true, "apartment");
+			cPanel.addPerson("RestaurantCashier", 300, "Restaurant Cashier", true, "apartment");
+			cPanel.addPerson("Cook", 300, "Cook", true, "apartment");
+			cPanel.addPerson("OmarWaiter", 300, "Omar Waiter", true, "apartment");
+			
+			cPanel.addPerson("Eric", 300, "None", true, "house");
 		}
 	}
 
