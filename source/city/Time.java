@@ -93,8 +93,8 @@ public class Time {
 
 		String timePrint = String.format("Day: " + today() + "; Time- %.0f:%.0f", (double)((int)(_currentTime)), 60.0*(_currentTime - ((int)_currentTime)));
 		if(60.0*(_currentTime - ((int)_currentTime)) == 0){
-			timePrint+="0\n";
+			timePrint+="0";
 		}
-		AlertLog.getInstance().logInfo(AlertTag.TIME, "Timer", timePrint);
+		AlertLog.getInstance().logInfo(AlertTag.TIME, "Time in SimCity", timePrint);
 	}
 }
