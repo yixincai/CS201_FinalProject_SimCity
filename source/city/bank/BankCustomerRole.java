@@ -1,5 +1,8 @@
 package city.bank;
 
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
+
 import java.util.concurrent.Semaphore;
 
 import agent.Role;
@@ -264,9 +267,17 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		for(int i = 0; i < Directory.banks().size(); i++){
 			if(this.bank == Directory.banks().get(i)){
 				_teller = Directory.banks().get(i)._tellers.get(0);
+				AlertLog.getInstance().logMessage(AlertTag.BANK, "Robber", "ROBBING THE BANK");
 				_teller.msgRobbery(_amount, this);
 				_state = State.Robber;
 			}
+		}
+		
+		gui.DoRun();
+		try {
+			 _bankCustSem.acquire();
+	    } catch (Exception e){
+			e.printStackTrace();
 		}
 	}
 	

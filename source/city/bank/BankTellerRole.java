@@ -1,5 +1,8 @@
 package city.bank;
 
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -39,6 +42,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	 
 	public BankTellerRole(PersonAgent person, Bank bank, int tellerNum){
 		super(person);
+		this.name = "Teller";
 		this.bank = bank;
 		command = Command.None;
 		this.myBusinessCustomers = new ArrayList<MyBusinessCustomer>();
@@ -122,6 +126,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	
 	public void msgRobbery(double _amount, BankCustomerRole robber) {
+		AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, this.name, "Being Robbed");
 		robbery = true;
 		robbers.add(robber);
 		database.bankFunds-=_amount;
@@ -178,8 +183,11 @@ public class BankTellerRole extends Role implements BankTeller {
 	
 	//Actions
 	private void actCallSecurity(){
+		//AlertLog.getInstance().logDebug(AlertTag.BANK, this.name, " " + robbers.size());
 		bank.getGuardDog().sicEm(robbers);
+		AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, this.name, "Sic' Em, Boy!");
 		robbery = false;
+		robbers.removeAll(robbers);
 	}
 	private void actAskForARequest(MyCustomer m){
 		int newAccntNum = m.accountNumber;
