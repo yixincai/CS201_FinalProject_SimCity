@@ -180,14 +180,14 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(bank.name());
 		_buildingInteriorAnimationPanels.add(bp2);
 		
-		WorldViewBuilding bankBuilding2 = _worldView.addBuilding(44, 19, 40);
-		BuildingInteriorAnimationPanel bankBuildingPanel2 = new BuildingInteriorAnimationPanel(this, "Bank 2", new city.bank.gui.BankAnimationPanel());
-		bankBuilding2.setBuildingPanel(bankBuildingPanel2);
-		Bank bank2 = new Bank("Bank 2", bankBuilding2, bankBuildingPanel2);
-		Directory.addPlace(bank2);
-		_buildingCardLayoutPanel.add( bankBuildingPanel2, bankBuildingPanel2.getName() );
-		cPanel.currentBuildingPanel.addBuilding(bank2.name());
-		_buildingInteriorAnimationPanels.add(bankBuildingPanel2);
+//		WorldViewBuilding bankBuilding2 = _worldView.addBuilding(44, 19, 40);
+//		BuildingInteriorAnimationPanel bankBuildingPanel2 = new BuildingInteriorAnimationPanel(this, "Bank 2", new city.bank.gui.BankAnimationPanel());
+//		bankBuilding2.setBuildingPanel(bankBuildingPanel2);
+//		Bank bank2 = new Bank("Bank 2", bankBuilding2, bankBuildingPanel2);
+//		Directory.addPlace(bank2);
+//		_buildingCardLayoutPanel.add( bankBuildingPanel2, bankBuildingPanel2.getName() );
+//		cPanel.currentBuildingPanel.addBuilding(bank2.name());
+//		_buildingInteriorAnimationPanels.add(bankBuildingPanel2);
 		
 		//Initializing houses
 		for(int i = 1; i < 3; i++){

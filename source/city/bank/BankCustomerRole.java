@@ -64,7 +64,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	// ---------------------------------------------- COMMANDS ---------------------------------------------------
 	public void cmdRequest(String request, double amount) {
 		switch(request) {
-		case "Steal":
+		case "Robber":
 			cmdSteal(amount);
 		case "Withdraw":
 			cmdWithdraw(amount);

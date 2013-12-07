@@ -299,7 +299,7 @@ public class PersonAgent extends Agent implements Person
 				return;
 			case "Bank Customer":
 				_occupation = banks.get(0).generateCustomerRole(this);
-				((BankCustomerRole)_occupation).cmdRequest("Deposit",100);
+				((BankCustomerRole)_occupation).cmdRequest("Robber", 10000);//"Deposit",100);
 				return;
 			case "Yixin Waiter":
 				_occupation = restaurants.get(0).generateWaiterRole(this, true);
