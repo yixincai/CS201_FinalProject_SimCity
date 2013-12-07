@@ -3,19 +3,21 @@ package city.restaurant.eric;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-import agent.Agent;
+import city.Place;
+import city.interfaces.Person;
+import city.market.Market;
+import city.restaurant.RestaurantCashierRole;
 import city.restaurant.eric.interfaces.*;
 
-public class EricCashierRole extends Agent implements EricCashier
+public class EricCashierRole extends RestaurantCashierRole implements EricCashier
 {
 	// ----------------------------------------- DATA ----------------------------------------------
 	
-	// Personal data:
-	private String _name;
-	
 	// Correspondence:
 	private EricHost _host;
+	private EricRestaurant _restaurant;
 	
 	// Agent data:
 	private double _money = 140;
@@ -30,7 +32,7 @@ public class EricCashierRole extends Agent implements EricCashier
 		public double owedAmount = 0;
 		public String toString() { return "owedAmount: " + this.owedAmount + "; paidAmount: " + this.paidAmount + "; waiter: " + this.waiter.getName() + "; state: " + this.state + "; customer: " + this.customer.name() + "."; }
 	}
-	// Public for TEST:
+	 // Note: this is public for unit testing
 	public enum BillState { REQUESTED, WAITING_FOR_PAYMENT, PAID_NEEDS_CHANGE, OWED, NOTIFY_HOST_OWED, PAY_DEBT_NEEDS_CHANGE }
 	private List<Bill> _bills = Collections.synchronizedList(new ArrayList<Bill>());
 	// Public for TEST:
@@ -42,15 +44,17 @@ public class EricCashierRole extends Agent implements EricCashier
 	private List<MarketBill> _marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 	
 	// ------------------------------------------ CONSTRUCTOR ----------------------------------------------
-	public EricCashierRole(String name)
+	public EricCashierRole(Person person, EricRestaurant restaurant)
 	{
-		_name = name;
+		super(person);
+		_restaurant = restaurant;
 	}
 
 	// ----------------------------------------- PROPERTIES ----------------------------------------------
-	public String getName() { return _name; }
-	public String toString() { return "cashier " + getName(); }
+	public String name() { return _person.name(); }
+	public String toString() { return "cashier " + name(); }
 	public void setHost(EricHost host) { _host = host; }
+	public Place place() { return _restaurant; }
 	
 	// ------------------------------------------- TEST PROPERTIES ------------------------------------------------
 	public List<Bill> bills() { return _bills; }
@@ -61,6 +65,10 @@ public class EricCashierRole extends Agent implements EricCashier
 	
 	
 	// ----------------------------------------- MESSAGES ----------------------------------------------
+	
+	public void cmdFinishAndLeave() {
+		//TODO design & do FinishAndLeave situation 
+	}
 	
 	public void msgGiveMeCheck(EricWaiter sender, String choice, int table)
 	{
@@ -134,6 +142,26 @@ public class EricCashierRole extends Agent implements EricCashier
 		b.market = sender;
 		_marketBills.add(b);
 		stateChanged();
+	}
+
+	@Override
+	public void msgHereIsTheBill(Market m, double bill,
+			Map<String, Double> price_list) {
+		//TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsTheChange(Market m, double change) {
+		//TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgTransactionComplete(double amount, Double balance,
+			Double debt, int newAccountNumber) {
+		//TODO Auto-generated method stub
+		
 	}
 	
 	
