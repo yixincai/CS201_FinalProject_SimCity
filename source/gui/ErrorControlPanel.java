@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+
 class ErrorControlPanel extends JPanel {
     TracePanel tp;        //Hack so I can easily call showAlertsWithLevel for this demo.
     
@@ -20,6 +21,9 @@ class ErrorControlPanel extends JPanel {
     JButton enableBankCustTagButton;                //You could (and probably should) substitute a JToggleButton to replace both
     JButton disableBankCustTagButton;                //of these, but I split it into enable and disable for clarity in the demo.
     
+    private final int WIDTH = 1024/3;
+	private final int HEIGHT = 720;
+	
     public ErrorControlPanel(final TracePanel tracePanel) {
             this.tp = tracePanel;
             enableMessagesButton = new JButton("Show Level: MESSAGE");
@@ -93,6 +97,6 @@ class ErrorControlPanel extends JPanel {
             this.add(disableErrorButton);
             this.add(enableBankCustTagButton);
             this.add(disableBankCustTagButton);
-            this.setMinimumSize(new Dimension(50, 600)); //CHANGE DIMENSIONS
+            this.setMinimumSize(new Dimension(WIDTH, HEIGHT)); //dimensions should be fine
     }
 }
