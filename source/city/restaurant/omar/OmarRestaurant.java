@@ -30,25 +30,25 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		this._animationPanel = (OmarRestaurantAnimationPanel)animationPanel.getBuildingAnimation();
 
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
-		cashier = new OmarCashierRole(null,this);
+		_cashier = new OmarCashierRole(null,this);
 		host = new OmarHostRole(null,this,"Host");
 		_animationPanel.setHost(host);
 		tables = host.getTableList();
-		cook = new OmarCookRole(null,null, this);
-		((OmarCookRole)cook).cashier = (OmarCashierRole)cashier;
+		_cook = new OmarCookRole(null,null, this);
+		((OmarCookRole)_cook).cashier = (OmarCashierRole)_cashier;
 	}
 
 	// Default constructor for unit testing
 	public OmarRestaurant(){
 		super("Omar's Restaurant");    
-		cashier = new OmarCashierRole(null,this);
+		_cashier = new OmarCashierRole(null,this);
 		host = new OmarHostRole(null,this,"Host");
-		cook = new OmarCookRole(null,null, this);
-		((OmarCookRole)cook).cashier = (OmarCashierRole)cashier;
+		_cook = new OmarCookRole(null,null, this);
+		((OmarCookRole)_cook).cashier = (OmarCashierRole)_cashier;
 	}
 
 	public boolean isOpen(){
-		if (cashier.active && host.active && cook.active && Waiters.size()!=0)
+		if (_cashier.active && host.active && _cook.active && Waiters.size()!=0)
 			return true;
 		else
 			return false;
@@ -68,10 +68,10 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		int i = (new Random()).nextInt(2);
 		OmarWaiterRole newWaiter;
 		if (i == 0)
-			newWaiter = new OmarWaiterRole(person, this,(OmarCookRole)cook, host, null);
+			newWaiter = new OmarWaiterRole(person, this,(OmarCookRole)_cook, host, null);
 		else
-			newWaiter = new OmarSharedDataWaiterRole(person, this, (OmarCookRole)cook, host, null);
-		newWaiter.setCashier((OmarCashierRole)cashier);
+			newWaiter = new OmarSharedDataWaiterRole(person, this, (OmarCookRole)_cook, host, null);
+		newWaiter.setCashier((OmarCashierRole)_cashier);
 		OmarWaiterGui waiterGui = new OmarWaiterGui(newWaiter, _animationPanel);
 		newWaiter.setGui(waiterGui);
 		waiterGui.setHomePosition(Waiters.size() * 50, 70);
@@ -105,8 +105,8 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 
 	@Override
 	public void generateCookGui() {
-		OmarCookGui cashierGui = new OmarCookGui((OmarCookRole)cook);
-		((OmarCookRole)cook).setGui(cashierGui);
+		OmarCookGui cashierGui = new OmarCookGui((OmarCookRole)_cook);
+		((OmarCookRole)_cook).setGui(cashierGui);
 		animationPanel().addGui(cashierGui);
 	}
 

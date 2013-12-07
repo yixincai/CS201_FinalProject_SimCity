@@ -29,24 +29,24 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		this._animationPanel = (YixinAnimationPanel)animationPanel.getBuildingAnimation();
 
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
-		cashier = new YixinCashierRole(null,this);
+		_cashier = new YixinCashierRole(null,this);
 		host = new YixinHostRole(null,this,"Host");
-		cook = new YixinCookRole(null,this);
-		((YixinCookRole)cook).cashier = (YixinCashierRole)cashier;
+		_cook = new YixinCookRole(null,this);
+		((YixinCookRole)_cook).cashier = (YixinCashierRole)_cashier;
 	}
 
 	//default constructor for unit testing DO NOT DELETE
 	public YixinRestaurant(){
 		super("Yixin's Restaurant");    
-		cashier = new YixinCashierRole(null,this);
+		_cashier = new YixinCashierRole(null,this);
 		host = new YixinHostRole(null,this,"Host");
-		cook = new YixinCookRole(null,this);
-		((YixinCookRole)cook).cashier = (YixinCashierRole)cashier;
-		((YixinCashierRole)cashier).cook = (YixinCookRole)cook;
+		_cook = new YixinCookRole(null,this);
+		((YixinCookRole)_cook).cashier = (YixinCashierRole)_cashier;
+		((YixinCashierRole)_cashier).cook = (YixinCookRole)_cook;
 	}
 
 	public boolean isOpen(){
-		if (cashier.active && host.active && cook.active && Waiters.size()!=0)
+		if (_cashier.active && host.active && _cook.active && Waiters.size()!=0)
 			return true;
 		else
 			return false;
@@ -54,7 +54,6 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
-		//TODO make a new customer that is initialized with a PersonAgent of person
 		count++;
 		if (count > 10){
 			count = -1;
@@ -74,8 +73,8 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 			newWaiter = new YixinNormalWaiterRole(person, this, person.name());
 		else
 			newWaiter = new YixinSharedDataWaiterRole(person, this, person.name());
-		newWaiter.setCashier((YixinCashierRole)cashier);
-		newWaiter.setCook((YixinCookRole)cook);
+		newWaiter.setCashier((YixinCashierRole)_cashier);
+		newWaiter.setCook((YixinCookRole)_cook);
 		newWaiter.setHost(host);
 		Waiters.add(newWaiter);
 		waiter_count++;
@@ -109,15 +108,15 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 
 	@Override
 	public void generateCashierGui() {
-		YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)cashier);
-		((YixinCashierRole)cashier).setGui(yixinCashierGui);
+		YixinCashierGui yixinCashierGui = new YixinCashierGui((YixinCashierRole)_cashier);
+		((YixinCashierRole)_cashier).setGui(yixinCashierGui);
 		animationPanel().addGui(yixinCashierGui);
 	}
 
 	@Override
 	public void generateCookGui() {
-		YixinCookGui yixinCookGui = new YixinCookGui((YixinCookRole)cook);
-		((YixinCookRole)cook).setGui(yixinCookGui);
+		YixinCookGui yixinCookGui = new YixinCookGui((YixinCookRole)_cook);
+		((YixinCookRole)_cook).setGui(yixinCookGui);
 		animationPanel().addGui(yixinCookGui);		
 	}
 

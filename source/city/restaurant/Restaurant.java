@@ -8,9 +8,6 @@ import city.PersonAgent;
 import city.Place;
 
 public abstract class Restaurant extends Place {
-	
-	// ------------------------------------ TYPE ------------------------------------------
-	
 
 	public Restaurant(String name) {
 		super(name, null);
@@ -29,8 +26,8 @@ public abstract class Restaurant extends Place {
 	public Upscaleness upscaleness() { return _upscaleness; }
 	
 	// Correspondence for Markets:
-	protected RestaurantCashierRole cashier;
-	protected RestaurantCookRole cook;
+	protected RestaurantCashierRole _cashier;
+	protected RestaurantCookRole _cook;
 	
 	// Semaphores for the host, cashier, and cook
 	private Semaphore _hostSemaphore = new Semaphore(1, true);
@@ -39,8 +36,8 @@ public abstract class Restaurant extends Place {
 	
 	// --------------------------------- PROPERTIES -----------------------------
 	public abstract Role getHost();
-	public RestaurantCashierRole getCashier(){ return cashier; }
-	public RestaurantCookRole getCook() { return cook; }
+	public RestaurantCashierRole getCashier(){ return _cashier; }
+	public RestaurantCookRole getCook() { return _cook; }
 	
 	// ------------------------------------ FACTORIES & ROLE ACQUIRES ---------------------------------------------
 	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // make a new CustomerRole, which is initialized with a pointer to the HostRole and other appropriate initializations such as gui.
@@ -56,18 +53,18 @@ public abstract class Restaurant extends Place {
 	
 	public RestaurantCookRole tryAcquireCook(PersonAgent person) {
 		if(_cookSemaphore.tryAcquire()) {
-			cook.setPerson(person);
+			_cook.setPerson(person);
 			generateCookGui();
-			return cook;
+			return _cook;
 		}
 		else return null;
 	}
 	
 	public RestaurantCashierRole tryAcquireCashier(PersonAgent person) {
 		if(_cashierSemaphore.tryAcquire()) {
-			cashier.setPerson(person);
+			_cashier.setPerson(person);
 			generateCashierGui();
-			return cashier;
+			return _cashier;
 		}
 		else return null;
 	}
