@@ -59,7 +59,7 @@ public class CommuterRole extends Role implements Commuter{
 		_person = person;
 		_currentPlace = initialPlace;
 		_destination = null;
-		_gui = new CommuterGui(this, initialPlace, aStarTraversal);
+		_gui = new CommuterGui(this, initialPlace);
 		_aStarTraversal = aStarTraversal;
 	}
 
