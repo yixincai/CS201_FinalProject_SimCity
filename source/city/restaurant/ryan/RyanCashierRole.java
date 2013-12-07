@@ -47,7 +47,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 		menu = new Menu();
 		
 		_restaurant = r;
-		register = 130.0;
+		register = 500.0;
 		bankBalance = 0;
 		bankDebt = 0;
 	}
@@ -166,7 +166,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 					PayLoan();
 					return true;
 				}
-				else if (register > 200){
+				else if (register > 400){
 					Deposit();
 					return true;
 				}
@@ -254,6 +254,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	}
 	
 	private void Deposit(){
+		print("Deposited " + register/2 + " to the bank");
 		Directory.banks().get(0).tellers.get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), register/2, "Deposit");
 		moneyState = MoneyState.OrderedFromBank;
 	}

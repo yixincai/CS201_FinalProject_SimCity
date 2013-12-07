@@ -84,6 +84,9 @@ public class RyanAnimationPanel extends JPanel implements ActionListener { //Add
         g2.setColor(Color.CYAN); //fridge
         g2.fillRect(fridge.width, fridge.height, 20, 75);
         
+        g2.setColor(Color.RED); //Revolving Stand
+        g2.fillRect(500, 50, 20, 20);
+        
         for(Dimension temp: kitchen){
         	g2.setColor(Color.RED);
             g2.fillRect(temp.width, temp.height, 20, 80);
@@ -97,7 +100,7 @@ public class RyanAnimationPanel extends JPanel implements ActionListener { //Add
         g2.setColor(Color.black);
         g2.drawString("Fridge", 620, 80);
         g2.drawString("Grill", 620, 215);
-        g2.drawString("Plating", 490, 75);
+        g2.drawString("Plating", 490, 180);
         
         //Here is the table
         for(Dimension temp: tables){

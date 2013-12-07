@@ -24,6 +24,7 @@ public class RyanWaiterGui implements Gui {
     
     Dimension CashierPosition = new Dimension(200, 65);
     Dimension ChefPosition = new Dimension(475, 115);
+    Dimension RevolvingStandPosition = new Dimension(475, 50);
     Dimension HomePosition;
     
     public boolean offScreen = false;
@@ -69,6 +70,11 @@ public class RyanWaiterGui implements Gui {
         if(xPos == xDestination && yPos == yDestination
         		& (xDestination == CashierPosition.width) & (yDestination == CashierPosition.height)){
         	agent.msgAtCashier();
+        }
+        
+        if(xPos == xDestination && yPos == yDestination
+        		& (xDestination == RevolvingStandPosition.width) & (yDestination == RevolvingStandPosition.height)){
+        	agent.msgAtChef();
         }
         
         if(xPos == -20 && yPos== -20){
@@ -124,6 +130,11 @@ public class RyanWaiterGui implements Gui {
     public void DoGoToChef(){
     	xDestination = ChefPosition.width;
     	yDestination = ChefPosition.height;
+    }
+    
+    public void DoGoToRevolvingStand(){
+    	xDestination = RevolvingStandPosition.width;
+    	yDestination = RevolvingStandPosition.height;
     }
     
     public void DoGoToCashier(){

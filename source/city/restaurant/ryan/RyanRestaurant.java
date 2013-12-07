@@ -66,8 +66,7 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 	
 	@Override
 	public Role generateWaiterRole(PersonAgent person) {
-		//int i = (new Random()).nextInt(2);
-		int i = 0;
+		int i = (new Random()).nextInt(2);
 		
 		RyanWaiterRole newWaiter;
 		if (i == 0)

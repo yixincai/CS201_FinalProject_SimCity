@@ -26,10 +26,11 @@ public class RyanCookGui implements Gui{
 	
 	Dimension fridge = new Dimension(580, 80);
 	Dimension grill = new Dimension(580, 180);
+	Dimension revolvingStand = new Dimension(520, 50);
 	Dimension plate = new Dimension(520, 125);
 	Dimension home;
 	
-	enum Command{noCommand, goToFridge, goToGrill, goToGrill1, goToPlating, LeaveRestaurant};
+	enum Command{noCommand, goToStand, goToFridge, goToGrill, goToGrill1, goToPlating, LeaveRestaurant};
 	Command command = Command.noCommand;
 	
 	public RyanCookGui(RyanCookRole agent){
@@ -77,6 +78,13 @@ public class RyanCookGui implements Gui{
 		}
 	}
 	
+
+	public void goToRevolvingStand() {
+		yDestination = revolvingStand.height;
+		xDestination = revolvingStand.width;
+		command = Command.goToStand;
+	}
+	
 	public void gotoFridge(){
 		yDestination = fridge.height;
 		xDestination = fridge.width;
@@ -94,6 +102,7 @@ public class RyanCookGui implements Gui{
 		yDestination = grill.height;
 		xDestination = grill.width;
 		command = Command.goToGrill1;
+		System.out.println("goToGrill");
 	}
 	
 	public void gotoPlate(){
@@ -139,6 +148,10 @@ public class RyanCookGui implements Gui{
 				System.out.println("atfridge");
 				hasIngredients = true;
 				gotoGrill();
+			}
+			else if (command==Command.goToStand){
+				System.out.println("atstand");
+				agent.msgAtStand();
 			}
 			else if(command==Command.goToGrill){
 				System.out.println("atgrill");
