@@ -22,6 +22,7 @@ public class CommuterGui implements Gui {
 	int _currentBlockX = 0, _currentBlockY = 0;//TODO set the block positions used by cars
 	int _destinationBlockX, _destinationBlockY; 
 	List<Integer> route = new ArrayList<Integer>();
+	List<Integer> intersections = new ArrayList<Integer>();
 	Place _destination;
 	int _xDestination, _yDestination;
 	enum Command { none, walk, car}
@@ -112,13 +113,18 @@ public class CommuterGui implements Gui {
 //			}
 //		}
 		
-		//route.add(0);
-		//route.add(1);
-		//route.add(2);
+		route.add(0);
+		intersections.add(1);
+		route.add(1);
+		intersections.add(2);
+		route.add(2);
+		intersections.add(3);
 		route.add(3);
 		for (int i=0; i< route.size();i++){
 			Lane lane = Directory.lanes().get(route.get(i));
-			for (int j=0; j< lane.permits.size();j++){
+			if (i!=0)
+				Directory.intersections().get(i-1).release();
+			for (int j=0; j< lane.permits.size();j++){//TODO change size to the ending position and starting position
 				while(!lane.permits.get(j).tryAcquire());
 				if (lane.isHorizontal){
 					if (lane.xVelocity>0){
@@ -131,13 +137,44 @@ public class CommuterGui implements Gui {
 					}
 				}
 				else {
-					_yDestination = lane.yOrigin + 10 * lane.yVelocity * j;
-					_xDestination = lane.xOrigin;
+					if (lane.yVelocity>0){
+						_yDestination = lane.yOrigin + 10 * lane.yVelocity * j;
+						_xDestination = lane.xOrigin;
+					}
+					else{
+						_yDestination = lane.yOrigin + 10 * lane.permits.size() + 10 * lane.yVelocity * (j+1);
+						_xDestination = lane.xOrigin;
+					}
 				}
 				_transportationMethod = Command.car;
 				waitForLaneToFinish();
 				if (j!=0)
 					lane.permits.get(j-1).release();
+			}
+			
+			if (i<route.size() - 1){
+				Lane next_lane = Directory.lanes().get(route.get(i+1));
+				while(!Directory.intersections().get(i).tryAcquire());
+				if (next_lane.isHorizontal){
+					if (next_lane.xVelocity>0){
+						_xDestination = next_lane.xOrigin - 10;
+					}
+					else {
+						_xDestination = next_lane.xOrigin + 10 * lane.permits.size();
+					}
+				}
+				else {
+					if (lane.yVelocity>0){
+						_yDestination = lane.yOrigin - 10;
+					}
+					else{
+						_yDestination = lane.yOrigin + 10 * lane.permits.size();
+					}
+				}
+				_transportationMethod = Command.car;
+				waitForLaneToFinish();
+			//TODO do it after getting permit from intersection
+				lane.permits.get(lane.permits.size()-1).release();
 			}
 			lane.permits.get(lane.permits.size()-1).release();
 		}
@@ -218,7 +255,7 @@ public class CommuterGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		if(isPresent){
-			if(_transportationMethod == Command.car)
+			if(_commuter.hasCar())
 				g.setColor(Color.RED);
 			else
 				g.setColor(Color.GREEN);
