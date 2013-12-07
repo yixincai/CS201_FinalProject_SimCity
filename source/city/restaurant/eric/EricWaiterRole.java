@@ -102,7 +102,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 	
 	public void msgSeatCustomer(EricCustomer ca, int tableNumber) // from Host
 	{
-		print(_host.getName() + " told me to seat " + ca.name());
+		print(_host.name() + " told me to seat " + ca.name());
 		MyCustomer c = new MyCustomer();
 		c.agent = ca;
 		c.tableNumber = tableNumber;
@@ -456,7 +456,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 		
 		_gui.doGoIdle();
 		
-		print("Notifying " + _host.getName() + " that table number " + c.tableNumber + " is now free.");
+		print("Notifying " + _host.name() + " that table number " + c.tableNumber + " is now free.");
 		_host.msgTableFree(this, c.tableNumber);
 		customers.remove(c);
 	}
