@@ -126,6 +126,7 @@ public class CommuterGui implements Gui {
 				Directory.intersections().get(i-1).release();
 			for (int j=0; j< lane.permits.size();j++){//TODO change size to the ending position and starting position
 				while(!lane.permits.get(j).tryAcquire());
+				//TODO change waiting to timer based
 				if (lane.isHorizontal){
 					if (lane.xVelocity>0){
 						_xDestination = lane.xOrigin + 10 * lane.xVelocity * j;
@@ -173,7 +174,7 @@ public class CommuterGui implements Gui {
 				}
 				_transportationMethod = Command.car;
 				waitForLaneToFinish();
-			//TODO do it after getting permit from intersection
+			//TODO to get rid of deadlock acquire both intersection and the first spot in next lane
 				lane.permits.get(lane.permits.size()-1).release();
 			}
 			lane.permits.get(lane.permits.size()-1).release();
