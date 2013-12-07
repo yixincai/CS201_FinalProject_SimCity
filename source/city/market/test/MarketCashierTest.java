@@ -145,7 +145,7 @@ public class MarketCashierTest  extends TestCase {
 		//send first message to cashier
 		Restaurant r = new YixinRestaurant();
 		PersonAgent p1 = new PersonAgent("Dummy");
-		r.cashier.setPerson(p1);
+		r.getCashier().setPerson(p1);
 		List<Item> order = new ArrayList<Item>();
 		order.add(new Item("Steak", 1));
 		order.add(new Item("Chicken", 1));

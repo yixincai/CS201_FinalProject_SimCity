@@ -143,9 +143,9 @@ public class TruckAgent extends Agent implements Truck{
 		try {
 			isMoving.acquire();
 			if(aPackage._restaurant instanceof OmarRestaurant) { 
-				aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); } //Make sure GUI shows that it's dropped off !important!
+				aPackage._restaurant.getCook().msgOrderFulfillment(_market, aPackage._items); } //Make sure GUI shows that it's dropped off !important!
 			else if (aPackage._restaurant instanceof YixinRestaurant)
-				aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); 
+				aPackage._restaurant.getCook().msgOrderFulfillment(_market, aPackage._items); 
 			print("Delivered to restaurant " + aPackage._restaurant.name());
 			trState = truckState.atRestaurant;
 			packages.remove(aPackage);
