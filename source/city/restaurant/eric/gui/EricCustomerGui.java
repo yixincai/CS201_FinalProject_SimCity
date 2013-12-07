@@ -1,6 +1,8 @@
 package city.restaurant.eric.gui;
 
 import city.restaurant.eric.EricCustomerRole;
+import gui.Gui;
+
 import java.awt.*;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;

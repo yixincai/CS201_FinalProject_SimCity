@@ -3,6 +3,7 @@ package city.restaurant.eric.gui;
 
 import city.restaurant.eric.EricWaiterRole;
 import city.restaurant.eric.interfaces.EricCustomer;
+import gui.Gui;
 
 import java.awt.*;
 import java.util.ArrayList;

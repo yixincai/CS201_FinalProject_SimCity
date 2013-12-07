@@ -1,5 +1,7 @@
 package city.restaurant.eric.gui;
 
+import gui.Gui;
+
 import javax.swing.*;
 
 import java.awt.*;
