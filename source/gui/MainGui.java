@@ -59,8 +59,8 @@ public class MainGui extends JFrame
 		_worldView = new WorldView();
 		
 		//Control Panel
-		cPanel = new ControlPanel(this);
 		tPanel = new TracePanel();
+		cPanel = new ControlPanel(this);
 		    
 		//The code below will add an area for the two gui areas to go. BuildingView + WorldView
 		JPanel animationArea = new JPanel();

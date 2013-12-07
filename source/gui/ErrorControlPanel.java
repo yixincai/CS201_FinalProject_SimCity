@@ -24,15 +24,33 @@ class ErrorControlPanel extends JPanel {
     private final int WIDTH = 1024/3;
 	private final int HEIGHT = 720;
 	
+	private final Dimension buttonDimension = new Dimension(340, 30);
+	
     public ErrorControlPanel(final TracePanel tracePanel) {
             this.tp = tracePanel;
             enableMessagesButton = new JButton("Show Level: MESSAGE");
-            disableMessagesButton = new JButton("Hide Level: MESSAGE");
-            enableErrorButton = new JButton("Show Level: ERROR");
-            disableErrorButton = new JButton("Hide Level: ERROR");
-            enableBankCustTagButton = new JButton("Show Tag: BANK_CUSTOMER");
-            disableBankCustTagButton = new JButton("Hide Tag: BANK_CUSTOMER");
+            enableMessagesButton.setMinimumSize(buttonDimension);
+            enableMessagesButton.setMaximumSize(buttonDimension);
             
+            disableMessagesButton = new JButton("Hide Level: MESSAGE");
+            disableMessagesButton.setMinimumSize(buttonDimension);
+            disableMessagesButton.setMaximumSize(buttonDimension);
+            
+            enableErrorButton = new JButton("Show Level: ERROR");
+            enableErrorButton.setMinimumSize(buttonDimension);
+            enableErrorButton.setMaximumSize(buttonDimension);
+            
+            disableErrorButton = new JButton("Hide Level: ERROR");
+            disableErrorButton.setMinimumSize(buttonDimension);
+            disableErrorButton.setMaximumSize(buttonDimension);
+            
+            enableBankCustTagButton = new JButton("Show Tag: BANK_CUSTOMER");
+            enableBankCustTagButton.setMinimumSize(buttonDimension);
+            enableBankCustTagButton.setMaximumSize(buttonDimension);
+            
+            disableBankCustTagButton = new JButton("Hide Tag: BANK_CUSTOMER");
+            disableBankCustTagButton.setMinimumSize(buttonDimension);
+            disableBankCustTagButton.setMaximumSize(buttonDimension);
             
             enableMessagesButton.addActionListener(new ActionListener() {
                     @Override
