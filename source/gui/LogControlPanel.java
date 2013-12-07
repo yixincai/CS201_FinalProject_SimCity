@@ -18,6 +18,8 @@ class LogControlPanel extends JPanel {
     JButton enableErrorButton;  
     JButton enableInfoButton;
     JButton enableTimeButton;
+    
+    JButton enableBusButton;
     JButton enableBankCustTagButton;
     
     private final int WIDTH = 1024/3;
@@ -43,6 +45,10 @@ class LogControlPanel extends JPanel {
             enableErrorButton = new JButton("Hide Level: ERROR");
             enableErrorButton.setMinimumSize(buttonDimension);
             enableErrorButton.setMaximumSize(buttonDimension);
+            
+            enableBusButton = new JButton("Hide Tag: BUS");
+            enableBusButton.setMinimumSize(buttonDimension);
+            enableBusButton.setMaximumSize(buttonDimension);
             
             enableBankCustTagButton = new JButton("Hide Tag: BANK");
             enableBankCustTagButton.setMinimumSize(buttonDimension);
@@ -96,6 +102,18 @@ class LogControlPanel extends JPanel {
 	            		}
                     }
             });
+            enableBusButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                		if(enableBusButton.getText().equalsIgnoreCase("Hide Tag: BUS")){
+                			tracePanel.hideAlertsWithTag(AlertTag.BUS);
+                			enableBusButton.setText("Show Tag: BUS");
+                		} else {
+                			tracePanel.showAlertsWithTag(AlertTag.BUS);
+                			enableBusButton.setText("Hide Tag: BUS");
+                		}
+                }
+            });
             enableBankCustTagButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -113,6 +131,7 @@ class LogControlPanel extends JPanel {
             this.add(enableMessagesButton);
             this.add(enableInfoButton);
             this.add(enableErrorButton);
+            this.add(enableBusButton);
             this.add(enableBankCustTagButton);
             this.setMinimumSize(new Dimension(WIDTH, HEIGHT)); //dimensions should be fine
     }
