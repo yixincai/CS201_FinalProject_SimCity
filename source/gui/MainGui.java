@@ -5,6 +5,8 @@ package gui;
  * @author Tanner Zigrang
  */
 
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
 import gui.trace.TracePanel;
 
 import java.awt.CardLayout;
@@ -35,6 +37,7 @@ public class MainGui extends JFrame
 	BuildingCardLayoutPanel _buildingCardLayoutPanel;
 	ControlPanel cPanel;
 	TracePanel tPanel;
+	String name = "Main Gui";
 	
 	List<BuildingInteriorAnimationPanel> _buildingInteriorAnimationPanels = new ArrayList<BuildingInteriorAnimationPanel>();
 	
@@ -74,15 +77,19 @@ public class MainGui extends JFrame
 		WorldViewBuilding b5 = _worldView.addBuilding(0, 0, 20);
 		BusStopObject busStop0 = new BusStopObject("Bus Stop " + 0, b5);
 		Directory.addPlace(busStop0);//
+		AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, this.name, "Bus Stop 0 successfully added");
 		WorldViewBuilding b6 = _worldView.addBuilding(58, 0, 20);
 		BusStopObject busStop1 = new BusStopObject("Bus Stop " + 1, b6);
 		Directory.addPlace(busStop1);
+		AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, this.name, "Bus Stop 1 successfully added");
 		WorldViewBuilding b7 = _worldView.addBuilding(58, 28, 20);
 		BusStopObject busStop2 = new BusStopObject("Bus Stop " + 2, b7);
 		Directory.addPlace(busStop2);
+		AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, this.name, "Bus Stop 2 successfully added");
 		WorldViewBuilding b8 = _worldView.addBuilding(0, 28, 20);
 		BusStopObject busStop3 = new BusStopObject("Bus Stop " + 3, b8);
 		Directory.addPlace(busStop3);
+		AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, this.name, "Bus Stop 3 successfully added");
 		
 		BusAgent bus = new BusAgent("Bus");
 		BusAgentGui busGui = new BusAgentGui(bus, null);
@@ -90,6 +97,7 @@ public class MainGui extends JFrame
 		busGui.setPresent(true);
 		_worldView.addGui(busGui);
 		bus.startThread();
+		AlertLog.getInstance().logMessage(AlertTag.GENERAL_CITY, this.name, "Bus Added");
 		
 		// Hard-coded instantiation of all the buildings in the city:
 		//Market

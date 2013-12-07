@@ -3,23 +3,17 @@ package gui.trace;
 public enum AlertLevel {
         
         /** 
-         * Error is meant to be used if you want to alert someone
-         * about something they might be doing wrong. Of course,
-         * limiting its use is a good idea. Errors are printed
-         * in red.
+         * Errors are printed in red.
          */
         ERROR,
         
         /** 
-         * Warnings are similar to errors in that you want to
-         * alert someone else, but it isn't quite as important
-         * as an error. Warnings are printed normally.
+    	 *	Warnings are printed normally.
          */
         WARNING,
         
         /**
-         * Info is just excessive information someone might
-         * want to know some day. It is generally off by default.
+      	 *	It is generally off by default.
          */
         INFO,
 

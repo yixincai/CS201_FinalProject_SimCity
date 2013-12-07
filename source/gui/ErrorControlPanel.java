@@ -44,13 +44,13 @@ class ErrorControlPanel extends JPanel {
             disableErrorButton.setMinimumSize(buttonDimension);
             disableErrorButton.setMaximumSize(buttonDimension);
             
-            enableBankCustTagButton = new JButton("Show Tag: BANK_CUSTOMER");
+            enableBankCustTagButton = new JButton("Show Tag: BANK");
             enableBankCustTagButton.setMinimumSize(buttonDimension);
             enableBankCustTagButton.setMaximumSize(buttonDimension);
             
-            disableBankCustTagButton = new JButton("Hide Tag: BANK_CUSTOMER");
+            disableBankCustTagButton = new JButton("Hide Tag: BANK");
             disableBankCustTagButton.setMinimumSize(buttonDimension);
-            disableBankCustTagButton.setMaximumSize(buttonDimension);
+            disableBankCustTagButton.setMaximumSize(buttonDimension); 
             
             enableMessagesButton.addActionListener(new ActionListener() {
                     @Override
