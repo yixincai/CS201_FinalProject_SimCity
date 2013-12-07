@@ -48,21 +48,26 @@ public class GuardDogGui implements Gui {
 			else if (yPos > yDestination)
 				yPos--;
 			
-			if (xPos < xDestination)
-				xPos++;
-			else if (xPos > xDestination)
-				xPos--;
-
-			if (yPos < yDestination)
-				yPos++;
-			else if (yPos > yDestination)
-				yPos--;
+			if(attacking){
+				if (xPos < xDestination)
+					xPos++;
+				else if (xPos > xDestination)
+					xPos--;
+	
+				if (yPos < yDestination)
+					yPos++;
+				else if (yPos > yDestination)
+					yPos--;
+			}
 
 			if (xPos == xDestination && yPos == yDestination && !flag) {
 					AlertLog.getInstance().logDebug(AlertTag.BANK, "Guard Dog", "Target Neutralized");
 					hit.dead();
 					agent.releaseSem();
 					flag = true;
+					attacking = false;
+					xDestination = RESTX;
+					yDestination = RESTY;
 			}
 	}
 	
