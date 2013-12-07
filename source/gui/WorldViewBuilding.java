@@ -15,7 +15,7 @@ public class WorldViewBuilding extends Rectangle2D.Double {
 	}
 
 	public WorldViewBuilding( int x, int y, int dim) {
-		super( x*50 + 20, y*50 + 20, dim, dim );
+		super( x*10 + 41, y*10 + 30, dim, dim );
 	}
 
 	public void displayBuilding() {
