@@ -14,8 +14,7 @@ import java.util.*;
 class ErrorControlPanel extends JPanel {
     TracePanel tp;        //Hack so I can easily call showAlertsWithLevel for this demo.
     
-    JButton enableMessagesButton;                //You could (and probably should) substitute a JToggleButton to replace both
-    JButton disableMessagesButton;                //of these, but I split it into enable and disable for clarity in the demo.
+    JButton enableMessagesButton;
     JButton enableErrorButton;                
     JButton disableErrorButton;                
     JButton enableBankCustTagButton;                //You could (and probably should) substitute a JToggleButton to replace both
@@ -28,15 +27,11 @@ class ErrorControlPanel extends JPanel {
 	
     public ErrorControlPanel(final TracePanel tracePanel) {
             this.tp = tracePanel;
-            enableMessagesButton = new JButton("Show Level: MESSAGE");
+            enableMessagesButton = new JButton("Hide Level: MESSAGE");
             enableMessagesButton.setMinimumSize(buttonDimension);
             enableMessagesButton.setMaximumSize(buttonDimension);
             
-            disableMessagesButton = new JButton("Hide Level: MESSAGE");
-            disableMessagesButton.setMinimumSize(buttonDimension);
-            disableMessagesButton.setMaximumSize(buttonDimension);
-            
-            enableErrorButton = new JButton("Show Level: ERROR");
+            enableErrorButton = new JButton("Hide Level: ERROR");
             enableErrorButton.setMinimumSize(buttonDimension);
             enableErrorButton.setMaximumSize(buttonDimension);
             
@@ -44,7 +39,7 @@ class ErrorControlPanel extends JPanel {
             disableErrorButton.setMinimumSize(buttonDimension);
             disableErrorButton.setMaximumSize(buttonDimension);
             
-            enableBankCustTagButton = new JButton("Show Tag: BANK");
+            enableBankCustTagButton = new JButton("Hide Tag: BANK");
             enableBankCustTagButton.setMinimumSize(buttonDimension);
             enableBankCustTagButton.setMaximumSize(buttonDimension);
             
@@ -55,19 +50,13 @@ class ErrorControlPanel extends JPanel {
             enableMessagesButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                            //============================ TUTORIAL ==========================================
-                            //This is how you make messages with a certain Level (normal MESSAGE here) show up in the trace panel.
-                            tracePanel.showAlertsWithLevel(AlertLevel.MESSAGE);
-                            //================================================================================
-                    }
-            });
-            disableMessagesButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                            //============================ TUTORIAL ==========================================
-                            //This is how you make messages with a certain Level not show up in the trace panel.
-                            tracePanel.hideAlertsWithLevel(AlertLevel.MESSAGE);
-                            //================================================================================
+                    		if(enableMessagesButton.getText().equalsIgnoreCase("Hide Level: Message")){
+                    			tracePanel.hideAlertsWithLevel(AlertLevel.MESSAGE);
+                    			enableMessagesButton.setText("Show Level: Message");
+                    		} else {
+                    			tracePanel.showAlertsWithLevel(AlertLevel.MESSAGE);
+                    			enableMessagesButton.setText("Hide Level: Message");
+                    		}
                     }
             });
             enableErrorButton.addActionListener(new ActionListener() {
@@ -110,7 +99,6 @@ class ErrorControlPanel extends JPanel {
             });
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             this.add(enableMessagesButton);
-            this.add(disableMessagesButton);
             this.add(enableErrorButton);
             this.add(disableErrorButton);
             this.add(enableBankCustTagButton);
