@@ -67,10 +67,9 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	}
 
 	@Override
-	public Role generateWaiterRole(PersonAgent person) {
-		int i = (new Random()).nextInt(2);
+	public Role generateWaiterRole(PersonAgent person, boolean isSharedDataWaiter) {
 		YixinWaiterRole newWaiter;
-		if (i == 0)
+		if (!isSharedDataWaiter)
 			newWaiter = new YixinNormalWaiterRole(person, this, person.name());
 		else
 			newWaiter = new YixinSharedDataWaiterRole(person, this, person.name());

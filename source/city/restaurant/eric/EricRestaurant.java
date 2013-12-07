@@ -25,7 +25,7 @@ public class EricRestaurant extends Restaurant {
 	}
 
 	@Override
-	public Role generateWaiterRole(PersonAgent person) {
+	public Role generateWaiterRole(PersonAgent person, boolean isSharedDataWaiter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
