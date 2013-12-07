@@ -1,6 +1,8 @@
 package city.bank.gui;
 
 import gui.Gui;
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -57,6 +59,7 @@ public class GuardDogGui implements Gui {
 				yPos--;
 
 			if (xPos == xDestination && yPos == yDestination && !flag) {
+					AlertLog.getInstance().logDebug(AlertTag.BANK, "Guard Dog", "Target Neutralized");
 					hit.dead();
 					agent.releaseSem();
 					flag = true;
@@ -68,6 +71,7 @@ public class GuardDogGui implements Gui {
 		xDestination = hit.getGui().getX();
 		yDestination = hit.getGui().getY();
 		attacking = true;
+		flag = false;
 	}
 
 	@Override

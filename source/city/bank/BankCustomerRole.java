@@ -274,11 +274,12 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		}
 		
 		gui.DoRun();
-		try {
+		/*try {
 			 _bankCustSem.acquire();
 	    } catch (Exception e){
 			e.printStackTrace();
-		}
+		} */
+		_state = State.Dead;
 	}
 	
 	
