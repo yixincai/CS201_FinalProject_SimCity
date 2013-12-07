@@ -1,5 +1,8 @@
 package city;
 
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -87,10 +90,11 @@ public class Time {
 			_currentTime = 0;
 			incrementDay();
 		}
-		System.out.printf("Day: " + today() + "; Time- %.0f:%.0f", (double)((int)(_currentTime)), 60.0*(_currentTime - ((int)_currentTime)));
+
+		String timePrint = String.format("Day: " + today() + "; Time- %.0f:%.0f", (double)((int)(_currentTime)), 60.0*(_currentTime - ((int)_currentTime)));
 		if(60.0*(_currentTime - ((int)_currentTime)) == 0){
-			System.out.print("0");
+			timePrint+="0\n";
 		}
-		System.out.println();
+		AlertLog.getInstance().logInfo(AlertTag.TIME, "Timer", timePrint);
 	}
 }

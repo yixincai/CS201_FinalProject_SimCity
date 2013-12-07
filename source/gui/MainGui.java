@@ -89,7 +89,7 @@ public class MainGui extends JFrame
 		WorldViewBuilding b8 = _worldView.addBuilding(0, 28, 20);
 		BusStopObject busStop3 = new BusStopObject("Bus Stop " + 3, b8);
 		Directory.addPlace(busStop3);
-		AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, this.name, "Bus Stop 3 successfully added");
+		AlertLog.getInstance().logMessage(AlertTag.GENERAL_CITY, this.name, "Bus Stop 3 successfully added");
 		
 		BusAgent bus = new BusAgent("Bus");
 		BusAgentGui busGui = new BusAgentGui(bus, null);

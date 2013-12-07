@@ -13,6 +13,7 @@ package gui.trace;
  *
  */
 public enum AlertTag {
+		TIME,
         PERSON,
         BANK_TELLER,
         BANK_CUSTOMER,
