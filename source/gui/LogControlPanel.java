@@ -46,7 +46,8 @@ class LogControlPanel extends JPanel {
             enableErrorButton.setMinimumSize(buttonDimension);
             enableErrorButton.setMaximumSize(buttonDimension);
             
-            enableBusButton = new JButton("Hide Tag: BUS");
+            tracePanel.hideAlertsWithTag(AlertTag.BUS);
+            enableBusButton = new JButton("Show Tag: BUS");
             enableBusButton.setMinimumSize(buttonDimension);
             enableBusButton.setMaximumSize(buttonDimension);
             
