@@ -21,7 +21,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 	
 	// Agent data:
 	private double _money = 140;
-	// Public for TEST:
+	// Note: public for TEST
 	public class Bill
 	{
 		public Check check;
@@ -32,10 +32,10 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 		public double owedAmount = 0;
 		public String toString() { return "owedAmount: " + this.owedAmount + "; paidAmount: " + this.paidAmount + "; waiter: " + this.waiter.name() + "; state: " + this.state + "; customer: " + this.customer.name() + "."; }
 	}
-	 // Note: this is public for unit testing
+	// Note: public for TEST
 	public enum BillState { REQUESTED, WAITING_FOR_PAYMENT, PAID_NEEDS_CHANGE, OWED, NOTIFY_HOST_OWED, PAY_DEBT_NEEDS_CHANGE }
 	private List<Bill> _bills = Collections.synchronizedList(new ArrayList<Bill>());
-	// Public for TEST:
+	// Note: public for TEST
 	public class MarketBill
 	{
 		public double amountOwed;
@@ -166,7 +166,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 	
 	
 	// ----------------------------------------- SCHEDULER ----------------------------------------------
-	// Note: this function is public in order to TEST
+	// Note: public for TEST
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		synchronized(_bills) {
