@@ -40,6 +40,8 @@ import javax.swing.text.StyledDocument;
 public class TracePanel extends JScrollPane implements AlertListener {
 
         private static final long serialVersionUID = 5643932617391465416L;
+        private static final int LOGPANELX = 682;
+        private static final int LOGPANELY = 100;
         private JTextPane traceTextPane;
 
         private List<Alert> newAlerts = Collections.synchronizedList(new ArrayList<Alert>());
@@ -55,7 +57,7 @@ public class TracePanel extends JScrollPane implements AlertListener {
         public TracePanel() {
                 super();
                 this.setBorder(new BevelBorder(EtchedBorder.LOWERED));
-                this.size = new Dimension(500, 100);
+                this.size = new Dimension(LOGPANELX, LOGPANELY);
                 traceTextPane = new JTextPane();
                 traceTextPane.setEditable(false);
                 traceTextPane.setPreferredSize(size);
