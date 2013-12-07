@@ -474,7 +474,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	
 	private void actGiveOrder()
 	{
-		print("Giving order of " + _choice + " to " + _waiter.getName());
+		print("Giving order of " + _choice + " to " + _waiter.name());
 		_gui.doOrderFood(_choice);
 		_waiter.msgHeresMyChoice(this, _choice);
 		_state = CustomerState.WAITING_FOR_FOOD;
