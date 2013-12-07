@@ -8,19 +8,21 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import agent.Agent;
+import city.Place;
+import city.interfaces.Person;
+import city.market.Item;
+import city.market.Market;
+import city.restaurant.RestaurantCookRole;
 import city.restaurant.eric.interfaces.*;
 
-public class EricCookRole extends Agent implements EricCook
+public class EricCookRole extends RestaurantCookRole implements EricCook
 {
 	// --------------------------------------- DATA ------------------------------------------------
-	
-	// Personal data:
-	private String _name;
 	
 	// Correspondence:
 	// use Order.waiter for waiter correspondence.
 	private EricCashier _cashier;
+	private EricRestaurant _restaurant;
 	
 	// Agent data:
 	private class Order
@@ -73,10 +75,13 @@ public class EricCookRole extends Agent implements EricCook
 	private int _lastMarketUsed = -1; // starts at -1 so that when we increment it before first using, it will be zero
 	private boolean _awaitingMarketResponse = false; // indicates whether an order to a market is pending the market's response (to say what's coming and what's not coming in the order)
 	
-	// ------------------------------------------ CONSTRUCTOR ----------------------------------------
-	public EricCookRole(String name)
+	
+	
+	// ------------------------------------------ CONSTRUCTOR & PROPERTIES ----------------------------------------
+	public EricCookRole(Person person, EricRestaurant restaurant)
 	{
-		_name = name;
+		super(person);
+		_restaurant = restaurant;
 		
 		//         new Food(name, cookingTime, stockLevel, inventory, lowLevel)
 		_foods.add(new Food("Steak",   15,     8,          1,         5       ));
@@ -84,12 +89,10 @@ public class EricCookRole extends Agent implements EricCook
 		_foods.add(new Food("Salad",    2,     8,          2,         6       ));
 		_foods.add(new Food("Pizza",   15,     8,          5,         6       ));
 	}
-	
-	// ----------------------------------------- PROPERTIES ------------------------------------------------
-	public String getName() { return _name; }
-	public String toString() { return "cook " + getName(); }
+	public String name() { return _person.name(); }
 	public void addMarket(OLD_EricMarket m) { _markets.add(new MyMarket(m)); }
 	public void setCashier(EricCashier c) { _cashier = c; }
+	public Place place() { return _restaurant; }
 	
 	
 	
@@ -155,11 +158,19 @@ public class EricCookRole extends Agent implements EricCook
 		stateChanged();
 	}
 	
+	@Override
+	public void msgOrderFulfillment(Market m, List<Item> order) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public void cmdFinishAndLeave() {
+		// TODO Auto-generated method stub
+	}
+	
 	
 	
 	// ----------------------------------------- SCHEDULER -------------------------------------------------
-	@Override
-	protected boolean pickAndExecuteAnAction()
+	public boolean pickAndExecuteAnAction()
 	{
 		synchronized(_orders) {
 			for(Order o : _orders) {
@@ -205,7 +216,7 @@ public class EricCookRole extends Agent implements EricCook
 		{
 			o.food.inventory--;
 			
-			print("Order for " + o.waiter.getName() + " is cooking.");
+			print("Order for " + o.waiter.name() + " is cooking.");
 			
 			cookingTimer.schedule(
 					new TimerTask() {
@@ -220,7 +231,7 @@ public class EricCookRole extends Agent implements EricCook
 	
 	void actGiveToWaiter(Order o)
 	{
-		print("Order for " + o.waiter.getName() + " is ready.");
+		print("Order for " + o.waiter.name() + " is ready.");
 		
 		o.waiter.msgOrderReady(o.food.name, o.table);
 		_orders.remove(o);

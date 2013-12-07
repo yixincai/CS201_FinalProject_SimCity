@@ -93,7 +93,7 @@ public class EricHostRole extends Agent implements EricHost
 		w.agent = sender;
 		w.state = WaiterState.WORKING;
 		
-		print(sender.getName() + " on duty.");
+		print(sender.name() + " on duty.");
 
 		_waiters.add(w);
 		
@@ -180,7 +180,7 @@ public class EricHostRole extends Agent implements EricHost
 		{
 			if(w.agent == sender)
 			{
-				print("Waiter " + w.agent.getName() + " finished a customer");
+				print("Waiter " + w.agent.name() + " finished a customer");
 				w.numberOfCustomers--;
 				break;
 			}
@@ -204,7 +204,7 @@ public class EricHostRole extends Agent implements EricHost
 		{
 			if(w.agent == sender)
 			{
-				print(w.agent.getName() + " wants a break.");
+				print(w.agent.name() + " wants a break.");
 				_waitersThatWantABreak.add(w);
 				stateChanged();
 				return;
@@ -218,7 +218,7 @@ public class EricHostRole extends Agent implements EricHost
 		{
 			if(w.agent == sender)
 			{
-				print(w.agent.getName() + " is coming back from a break.");
+				print(w.agent.name() + " is coming back from a break.");
 				w.state = WaiterState.WORKING;
 				stateChanged();
 				return;
@@ -379,7 +379,7 @@ public class EricHostRole extends Agent implements EricHost
 			}
 		}
 		
-		print("Assigning customer " + c.agent.name() + " to waiter " + leastBusyWaiter.agent.getName());
+		print("Assigning customer " + c.agent.name() + " to waiter " + leastBusyWaiter.agent.name());
 
 		leastBusyWaiter.numberOfCustomers++;
 		c.agent.msgComeToFrontDesk();
@@ -388,14 +388,14 @@ public class EricHostRole extends Agent implements EricHost
 	
 	private void actNoBreak(MyWaiter w)
 	{
-		print("Denying a break for " + w.agent.getName());
+		print("Denying a break for " + w.agent.name());
 		_waitersThatWantABreak.remove(w);
 		w.agent.msgNoBreak();
 	}
 	
 	private void actGiveBreak(MyWaiter w)
 	{
-		print("Giving " + w.agent.getName() + " a break");
+		print("Giving " + w.agent.name() + " a break");
 		w.state = WaiterState.ON_BREAK;
 		_waitersThatWantABreak.remove(w);
 		w.agent.msgFinishCustomersGoOnBreak();

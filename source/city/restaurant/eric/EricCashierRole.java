@@ -30,7 +30,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 		public EricCustomer customer = null;
 		public double paidAmount = 0; // the amount paid, which needs to be processed.
 		public double owedAmount = 0;
-		public String toString() { return "owedAmount: " + this.owedAmount + "; paidAmount: " + this.paidAmount + "; waiter: " + this.waiter.getName() + "; state: " + this.state + "; customer: " + this.customer.name() + "."; }
+		public String toString() { return "owedAmount: " + this.owedAmount + "; paidAmount: " + this.paidAmount + "; waiter: " + this.waiter.name() + "; state: " + this.state + "; customer: " + this.customer.name() + "."; }
 	}
 	 // Note: this is public for unit testing
 	public enum BillState { REQUESTED, WAITING_FOR_PAYMENT, PAID_NEEDS_CHANGE, OWED, NOTIFY_HOST_OWED, PAY_DEBT_NEEDS_CHANGE }
@@ -52,7 +52,6 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 
 	// ----------------------------------------- PROPERTIES ----------------------------------------------
 	public String name() { return _person.name(); }
-	public String toString() { return "cashier " + name(); }
 	public void setHost(EricHost host) { _host = host; }
 	public Place place() { return _restaurant; }
 	
@@ -221,7 +220,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 	{
 		logThis("actGiveWaiterCheck");
 		
-		print("Giving check to " + b.waiter.getName());
+		print("Giving check to " + b.waiter.name());
 		b.state = BillState.WAITING_FOR_PAYMENT;
 		b.waiter.msgHereIsCheck(b.check);
 	}
