@@ -6,6 +6,7 @@ package gui;
  */
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.*;
@@ -212,7 +213,7 @@ public class MainGui extends JFrame
 		}
 		
 		for(int i = 3; i < 6; i++){
-			WorldViewBuilding b4 = _worldView.addBuilding(10, 15 + 2*i, 20);
+			WorldViewBuilding b4 = _worldView.addBuilding(10, 13 + 2*i, 20);
 			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + i, new city.home.gui.ApartmentAnimationPanel());
 			b4.setBuildingPanel(bp4);
 			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
@@ -235,7 +236,7 @@ public class MainGui extends JFrame
 		}
 		
 		for(int i = 3; i < 6; i++){
-		    WorldViewBuilding b4 = _worldView.addBuilding(12, 15 + 2*i, 20);
+		    WorldViewBuilding b4 = _worldView.addBuilding(12, 13 + 2*i, 20);
 			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House " + (i + 5), new city.home.gui.HouseAnimationPanel());
 			b4.setBuildingPanel(bp4);
 			House house = new House("House " + i + 5, b4, bp4);
@@ -247,7 +248,7 @@ public class MainGui extends JFrame
 		
 		//Initializing more apartments
 		for(int i = 1; i < 3; i++){
-			WorldViewBuilding b4 = _worldView.addBuilding(12, 3 + 2*i, 20);
+			WorldViewBuilding b4 = _worldView.addBuilding(14, 3 + 2*i, 20);
 			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + (i + 5), new city.home.gui.ApartmentAnimationPanel());
 			b4.setBuildingPanel(bp4);
 			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
@@ -258,7 +259,7 @@ public class MainGui extends JFrame
 		}
 		
 		for(int i = 3; i < 6; i++){
-			WorldViewBuilding b4 = _worldView.addBuilding(12, 15 + 2*i, 20);
+			WorldViewBuilding b4 = _worldView.addBuilding(14, 13 + 2*i, 20);
 			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + (i + 5), new city.home.gui.ApartmentAnimationPanel());
 			b4.setBuildingPanel(bp4);
 			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
@@ -268,6 +269,19 @@ public class MainGui extends JFrame
 			_buildingInteriorAnimationPanels.add(bp4);
 		}
 		
+		
+		Lane l1 = new Lane( 8*10+41, 15*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
+		Directory.addLanes(l1);
+		Lane l2 = new Lane( 24*10+41, 15*10+30, 120, 10, 1, 0, true, Color.green, Color.black );
+		Directory.addLanes(l2);
+		Lane l3 = new Lane( 44*10+41, 15*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
+		Directory.addLanes(l3);
+		Lane l6 = new Lane( 44*10+41, 12*10+30, 80, 10, -1, 0, true, Color.yellow, Color.black );
+		Directory.addLanes(l6);
+		Lane l5 = new Lane( 24*10+41, 12*10+30, 120, 10, -1, 0, true, Color.yellow, Color.black );
+		Directory.addLanes(l5);
+		Lane l4 = new Lane( 8*10+41, 12*10+30, 80, 10, -1, 0, true, Color.yellow, Color.black );
+		Directory.addLanes(l4);
 		/*
 		//Create the BuildingPanel for each Building object
 		ArrayList<WorldViewBuilding> worldViewBuildings = _worldView.getBuildings();
@@ -294,31 +308,31 @@ public class MainGui extends JFrame
 			}
 		}
 		*/
-		int xdim = 60;
-	    int ydim = 30;
-	    grid = new Semaphore[xdim][ydim];
-	    for (int i=0; i<xdim; i++)
-	    	for (int j=0; j<ydim; j++)
-	    		grid[i][j] = new Semaphore(1,true);
-	    //set access to all buildings to false
-	    for (int i=8; i<16; i++)
-	    	for (int j=5; j<9; j++)
-	    		grid[i][j].tryAcquire();
-	    for (int i=8; i<16; i++)
-	    	for (int j=19; j<25; j++)
-	    		grid[i][j].tryAcquire();
-	    for (int i=24; i<36; i++)
-	    	for (int j=5; j<9; j++)
-	    		grid[i][j].tryAcquire();
-	    for (int i=24; i<36; i++)
-	    	for (int j=19; j<25; j++)
-	    		grid[i][j].tryAcquire();
-	    for (int i=44; i<52; i++)
-	    	for (int j=5; j<9; j++)
-	    		grid[i][j].tryAcquire();
-	    for (int i=44; i<52; i++)
-	    	for (int j=19; j<25; j++)
-	    		grid[i][j].tryAcquire();
+//		int xdim = 60;
+//	    int ydim = 30;
+//	    grid = new Semaphore[xdim][ydim];
+//	    for (int i=0; i<xdim; i++)
+//	    	for (int j=0; j<ydim; j++)
+//	    		grid[i][j] = new Semaphore(1,true);
+//	    //set access to all buildings to false
+//	    for (int i=8; i<16; i++)
+//	    	for (int j=5; j<9; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=8; i<16; i++)
+//	    	for (int j=19; j<25; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=24; i<36; i++)
+//	    	for (int j=5; j<9; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=24; i<36; i++)
+//	    	for (int j=19; j<25; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=44; i<52; i++)
+//	    	for (int j=5; j<9; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=44; i<52; i++)
+//	    	for (int j=19; j<25; j++)
+//	    		grid[i][j].tryAcquire();
 		//The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
 		
 		this.add(cPanel, Component.RIGHT_ALIGNMENT);
