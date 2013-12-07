@@ -24,6 +24,8 @@ public class BankTellerRole extends Role implements BankTeller {
 	boolean occupied;
 	String name;
 	private int tellerNum;
+	private boolean robbery = false;
+	public List<BankCustomerRole> robbers = new ArrayList<BankCustomerRole>();
 	public static AccountDatabase database = new AccountDatabase();
 	
 	enum Command{None, Leave};
@@ -48,6 +50,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	
 	public static class AccountDatabase{
+		  int bankFunds = 1000000;
 	      public Hashtable<Integer, Double> funds;
 	      public Hashtable<Integer, Double> amountOwed;
 	      
@@ -118,6 +121,13 @@ public class BankTellerRole extends Role implements BankTeller {
 		  }
 	}
 	
+	public void msgRobbery(double _amount, BankCustomerRole robber) {
+		robbery = true;
+		robbers.add(robber);
+		database.bankFunds-=_amount;
+		stateChanged();
+	}
+	
 	//FOR CASHIERS OF RESTAURANTS AND CASHIERS OF MARKETS
 	public void msgWiredTransaction(Place place, int accountNumber, double amount, String request){
 		int newAccntNum;
@@ -140,6 +150,9 @@ public class BankTellerRole extends Role implements BankTeller {
 	
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
+		if(robbery){
+			actCallSecurity();
+		}
 		for(MyBusinessCustomer mb: myBusinessCustomers){
 			actProcessWireRequest(mb);
 			return true;
@@ -164,6 +177,10 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	
 	//Actions
+	private void actCallSecurity(){
+		bank.getGuardDog().sicEm(robbers);
+		robbery = false;
+	}
 	private void actAskForARequest(MyCustomer m){
 		int newAccntNum = m.accountNumber;
 		if(m.accountNumber == -1){  //means it doesn't exist yet

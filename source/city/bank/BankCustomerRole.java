@@ -3,6 +3,7 @@ package city.bank;
 import java.util.concurrent.Semaphore;
 
 import agent.Role;
+import city.Directory;
 import city.PersonAgent;
 import city.Place;
 import city.bank.gui.BankCustomerRoleGui;
@@ -24,10 +25,10 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public State _state;
 	public Event _event;
 	Semaphore _bankCustSem; //TODO this name is ambiguous; what is it for?
-	BankCustomerRoleGui gui; //TODO it won't let me add an underscore, but I can't figure out why
+	public BankCustomerRoleGui gui; //TODO it won't let me add an underscore, but I can't figure out why
 	Bank bank;
 	 
-	public enum State {Robber, DoingNothing, Waiting, AtTeller, GaveRequest, 
+	public enum State {Dead, Robber, DoingNothing, Waiting, AtTeller, GaveRequest, 
 		TransactionComplete, TransactionDenied, LeaveBank };
 	public enum Event {None, CalledToDesk, GivenRequestPermission, WantsAnotherRequest, ApprovedTransaction, DeniedTransaction};
 	
@@ -63,6 +64,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	// ---------------------------------------------- COMMANDS ---------------------------------------------------
 	public void cmdRequest(String request, double amount) {
 		switch(request) {
+		case "Steal":
+			cmdSteal(amount);
 		case "Withdraw":
 			cmdWithdraw(amount);
 			return;
@@ -76,6 +79,13 @@ public class BankCustomerRole extends Role implements BankCustomer {
 			cmdPayLoan(amount);
 			return;
 		}
+	}
+	public void cmdSteal(double amount) {
+		_request = "Steal";
+		this._amount = amount;
+		_event = Event.DeniedTransaction;
+		_state = State.Robber;
+		stateChanged();
 	}
 	public void cmdWithdraw(double amount) {
 		_request = "Withdraw";
@@ -245,17 +255,34 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 	private void actRobBank(){
 		gui.DoRobBank();
-		//teller.msgGiveMeAllYourMoney();
-		_state = State.Robber;
-		 // stateChanged();
+		try {
+			 _bankCustSem.acquire();
+	    } catch (Exception e){
+			e.printStackTrace();
+		}
+		//_person.cmdChangeMoney(_amount);
+		for(int i = 0; i < Directory.banks().size(); i++){
+			if(this.bank == Directory.banks().get(i)){
+				_teller = Directory.banks().get(i)._tellers.get(0);
+				_teller.msgRobbery(_amount, this);
+				_state = State.Robber;
+			}
+		}
 	}
 	
 	
 	
 	// -------------------------------------------- UTILITIES -----------------------------------------------
-	
+	public void dead(){
+		gui.dead();
+		_state = State.Dead;
+	}
 	public void releaseSemaphore(){
 		_bankCustSem.release();
 		//stateChanged();
+	}
+	
+	public BankCustomerRoleGui getGui(){
+		return gui;
 	}
 }

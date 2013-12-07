@@ -22,6 +22,11 @@ public class BankCustomerRoleGui implements Gui {
 	private int exitX = 321;
 	private int exitY = 380;
 	
+	private int robberX = 0;
+	private int robberY = 0;
+	
+	Color myColor = Color.green;
+	
 	public BankCustomerRoleGui(BankCustomerRole c){
 		agent = c;
 		xPos = -40;
@@ -43,15 +48,19 @@ public class BankCustomerRoleGui implements Gui {
 				yPos--;
 
 			if (xPos == xDestination && yPos == yDestination && !flag) {
+				if(xPos == tellerX + 5 && yDestination == tellerY - 5){
+					DoRun();
+				} else{
 					agent.releaseSemaphore();
 					flag = true;
+				}
 			}
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
 		if(isPresent()){
-			g.setColor(Color.green);
+			g.setColor(myColor);
 			g.fillRect(xPos, yPos, 20, 20);
 		}
 	}
@@ -63,6 +72,13 @@ public class BankCustomerRoleGui implements Gui {
 		}
 		
 		return false;
+	}
+	
+	public void dead(){
+		myColor = Color.red;
+		xDestination = xPos;
+		yDestination = yPos;
+		flag = true;
 	}
 
 	public void DoGoToLine() {
@@ -85,8 +101,24 @@ public class BankCustomerRoleGui implements Gui {
 	}
 
 	public void DoRobBank() {
-		// TODO Auto-generated method stub
-		//DONT DO TANNER, but please set up the animation panel to look nice.  Desk on the right as i showed
+		myColor = Color.orange;
+		xDestination = tellerX + 5;
+		yDestination = tellerY - 5;
+		flag = false;
+	}
+	
+	public void DoRun() {
+		xDestination = robberX;
+		yDestination = robberY;
+		flag = false;
+	}
+	
+	public int getX(){
+		return xPos;
+	}
+	
+	public int getY(){
+		return yPos;
 	}
 
 }
