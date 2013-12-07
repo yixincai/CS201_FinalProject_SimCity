@@ -4,16 +4,17 @@ import utilities.EventLog;
 import utilities.StringUtil;
 import city.PersonAgent;
 import city.Place;
+import city.interfaces.Person;
 
 public abstract class Role
 {
 	// ----------------------------- DATA ------------------------------------
-	protected PersonAgent _person;
+	protected Person _person;
 	public boolean active = false;
 	public EventLog log = new EventLog();
 	
 	// ----------------------------- CONSTRUCTOR & PROPERTIES ------------------------------------
-	public Role(PersonAgent person) { _person = person; }
+	public Role(Person person) { _person = person; }
 	public void setPersonAgent(PersonAgent person) { _person = person; }
 	public abstract Place place();
 	public String toString() { return StringUtil.shortName(getClass()); }
@@ -35,6 +36,7 @@ public abstract class Role
 	 */
 	protected void print(String msg, Throwable e)
 	{
+		log.add(msg);
 		StringBuffer sb = new StringBuffer();
 		sb.append(_person.getName());
 		sb.append(": ");

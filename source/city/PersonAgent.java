@@ -4,6 +4,7 @@ import java.util.*;
 
 // TODO the gui packages are basically only here for the setOccupation() function. We will move the gui instantiation elsewhere, probably to the roles' respective constructors.
 import city.home.*;
+import city.interfaces.Person;
 import city.bank.*;
 import city.bank.gui.*;
 import city.market.*;
@@ -13,7 +14,7 @@ import city.restaurant.yixin.*;
 import city.transportation.CommuterRole;
 import agent.*;
 
-public class PersonAgent extends Agent
+public class PersonAgent extends Agent implements Person
 {
 	// --------------------------------------- DATA -------------------------------------------
 	// Personal data:
@@ -104,7 +105,21 @@ public class PersonAgent extends Agent
 		if(_occupation != null) print("Acquired occupation " + _occupation.toString() + ".");
 		else print("Acquired null occupation.");
 		acquireHome(housingType);
-		_homeOccupantRole.cmdCookAndEatFood();
+		
+		// For testing purposes for V1, choose a random action to do at home.
+		switch((int)(Math.random()*3))
+		{
+		case 0:
+			_homeOccupantRole.cmdWatchTv();
+			break;
+		case 1:
+			_homeOccupantRole.cmdCookAndEatFood();
+			break;
+		case 2:
+			_homeOccupantRole.cmdGoToBed();
+			break;
+		}
+		
 		generateAndSetCommuterRole();
 		setNextRole(_homeOccupantRole);
 	}
@@ -356,6 +371,7 @@ public class PersonAgent extends Agent
 					}
 				}
 			}
+			/*
 			if(_currentRole == _homeOccupantRole && (_state.time() > 20 || _state.time() < 7))
 			{
 				if(_state.nourishment() == NourishmentState.HUNGRY)
@@ -375,6 +391,7 @@ public class PersonAgent extends Agent
 					}
 				}
 			}
+			*/
 			
 			// ================================================== Call current role's scheduler =============================================
 			// print("About to call _currentRole (" + _currentRole.toString() + ") scheduler.");
@@ -405,9 +422,8 @@ public class PersonAgent extends Agent
 					setNextRole(_occupation);
 					return true;
 				}
-				else if(_occupation == null) //DEBUG
+				else if(_occupation == null)
 				{
-					_homeOccupantRole.cmdGoToBed();
 					setNextRole(_homeOccupantRole);
 					return true;
 				}

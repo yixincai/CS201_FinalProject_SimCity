@@ -1,9 +1,9 @@
 package city.home;
 
-import city.PersonAgent;
+import city.interfaces.Person;
 import city.Place;
 
 public interface Home {
 	public Place place();
-	public HomeOccupantRole tryGenerateHomeOccupantRole(PersonAgent person);
+	public HomeOccupantRole tryGenerateHomeOccupantRole(Person person);
 }

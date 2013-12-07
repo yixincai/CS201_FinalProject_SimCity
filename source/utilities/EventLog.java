@@ -26,6 +26,13 @@ public class EventLog {
 	public void add(LoggedEvent e) {
 		events.add(e);
 	}
+	
+	/**
+	 * Add a new event, given a string
+	 */
+	public void add(String msg) {
+		events.add(new LoggedEvent(msg));
+	}
 
 	/**
 	 * Clear the event log
