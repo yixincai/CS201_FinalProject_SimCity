@@ -35,7 +35,7 @@ public class ControlPanel extends JTabbedPane {
 		currentPersonPanel = new CurrentPersonPanel(this);
 		currentBuildingPanel = new CurrentBuildingPanel(this);
 		configPanel = new ConfigurationPanel(this);
-		errorControlPanel = new ErrorControlPanel(mainGui.tracePanel); // NEED TO ADD TO MAINGUI
+		errorControlPanel = new ErrorControlPanel(mainGui.tPanel);
 		this.addTab("Current Person", null, currentPersonPanel, "Info about the currently selected person.");
 		this.addTab("Current Building", null, currentBuildingPanel, "Info about the currently selected building.");
 		this.addTab("New Person", null, newPersonPanel, "Create a new citizen of SimCity201.");
