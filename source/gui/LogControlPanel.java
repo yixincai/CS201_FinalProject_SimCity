@@ -15,7 +15,8 @@ class LogControlPanel extends JPanel {
     TracePanel tp;        //Hack so I can easily call showAlertsWithLevel for this demo.
     
     JButton enableMessagesButton;
-    JButton enableErrorButton;   
+    JButton enableErrorButton;  
+    JButton enableInfoButton;
     JButton enableTimeButton;
     JButton enableBankCustTagButton;
     
@@ -34,6 +35,10 @@ class LogControlPanel extends JPanel {
             enableMessagesButton = new JButton("Hide Level: MESSAGE");
             enableMessagesButton.setMinimumSize(buttonDimension);
             enableMessagesButton.setMaximumSize(buttonDimension);
+            
+            enableInfoButton = new JButton("Hide Level: INFO");
+            enableInfoButton.setMinimumSize(buttonDimension);
+            enableInfoButton.setMaximumSize(buttonDimension);
             
             enableErrorButton = new JButton("Hide Level: ERROR");
             enableErrorButton.setMinimumSize(buttonDimension);
@@ -67,6 +72,18 @@ class LogControlPanel extends JPanel {
                     		}
                     }
             });
+            enableInfoButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                		if(enableInfoButton.getText().equalsIgnoreCase("Hide Level: INFO")){
+                			tracePanel.hideAlertsWithLevel(AlertLevel.INFO);
+                			enableInfoButton.setText("Show Level: INFO");
+                		} else {
+                			tracePanel.showAlertsWithLevel(AlertLevel.INFO);
+                			enableInfoButton.setText("Hide Level: INFO");
+                		}
+                }
+            });
             enableErrorButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -94,6 +111,7 @@ class LogControlPanel extends JPanel {
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             this.add(enableTimeButton);
             this.add(enableMessagesButton);
+            this.add(enableInfoButton);
             this.add(enableErrorButton);
             this.add(enableBankCustTagButton);
             this.setMinimumSize(new Dimension(WIDTH, HEIGHT)); //dimensions should be fine
