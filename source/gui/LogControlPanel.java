@@ -14,6 +14,9 @@ import java.util.*;
 class LogControlPanel extends JPanel {
     TracePanel tp;        //Hack so I can easily call showAlertsWithLevel for this demo.
     
+   /* JButton enableAllLevelsButton;
+    JButton enableAllTagsButton; */
+    
     JButton enableMessagesButton;
     JButton enableErrorButton;  
     JButton enableInfoButton;
@@ -29,6 +32,14 @@ class LogControlPanel extends JPanel {
 	
     public LogControlPanel(final TracePanel tracePanel) {
             this.tp = tracePanel;
+            
+/*            enableAllLevelsButton = new JButton("Show All Levels");
+            enableAllLevelsButton.setMinimumSize(buttonDimension);
+            enableAllLevelsButton.setMaximumSize(buttonDimension);
+            
+            enableAllTagsButton = new JButton("Show All Tags");
+            enableAllTagsButton.setMinimumSize(buttonDimension);
+            enableAllTagsButton.setMaximumSize(buttonDimension); */
             
             enableTimeButton = new JButton("Hide Tag: TIME");
             enableTimeButton.setMinimumSize(buttonDimension);
@@ -55,6 +66,18 @@ class LogControlPanel extends JPanel {
             enableBankCustTagButton.setMinimumSize(buttonDimension);
             enableBankCustTagButton.setMaximumSize(buttonDimension);
             
+          /*  enableAllLevelsButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+            			tracePanel.showAlertsForAllLevels();
+                }
+            });
+            enableAllTagsButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+            			tracePanel.showAlertsForAllTags();
+                }
+            }); */
             enableTimeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
