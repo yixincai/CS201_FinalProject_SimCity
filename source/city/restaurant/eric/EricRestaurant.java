@@ -13,7 +13,7 @@ public class EricRestaurant extends Restaurant {
 	}
 
 	@Override
-	public Role getHostRole() {
+	public Role getHost() {
 		// TODO Auto-generated method stub
 		return null;
 	}

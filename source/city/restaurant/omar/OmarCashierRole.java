@@ -221,9 +221,6 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		}
 		
 		//utilities
-		public String toString(){
-			return name;
-		}
 
 		public void msgHereIsTheBill(Market m, double bill,
 				Map<String, Double> price_list) {
