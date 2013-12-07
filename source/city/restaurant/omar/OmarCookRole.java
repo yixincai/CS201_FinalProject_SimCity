@@ -260,7 +260,7 @@ public class OmarCookRole extends RestaurantCookRole {
 			e.printStackTrace();
 		}
 		cookGui.DoMoveFoodToPlatingArea();
-		System.out.println(this.name + ": Told Waiter " + o.getWaiter().toString()+ " that " + 
+		System.out.println(this.name + ": Told Waiter " + o.getWaiter().getName()+ " that " + 
 				o.toString() + " is ready");
 		o.status = OrderStatus.pickup;
 		o.getWaiter().msgOrderIsReady(o.getTableNumber());
@@ -276,9 +276,6 @@ public class OmarCookRole extends RestaurantCookRole {
 	}
 
 	//utilities
-	public String toString(){
-		return name;
-	}
 
 	public void setGui(OmarCookGui g){
 		this.cookGui = g;
@@ -291,7 +288,7 @@ public class OmarCookRole extends RestaurantCookRole {
 	@Override	//INTEGRATED
 	public void msgOrderFulfillment(Market market, List<Item> order) {
 		synchronized(markets){
-			print(market.toString() + " is giving me food");
+			print(market.name() + " is giving me food");
 			for(MyMarket m:markets) {
 				if(m.market == market){
 					m.currentOrder = order;

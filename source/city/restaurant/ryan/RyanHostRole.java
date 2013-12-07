@@ -254,9 +254,9 @@ public class RyanHostRole extends Role {
 
 	// The animation DoXYZ() routines
 	private void DoSeatCustomer(RyanCustomerRole customer, Table table) {
-		//Notice how we print "customer" directly. It's toString method will do it.
+		//TODO get rid of this function? since seating customers is done by the waiter.
 		//Same with "table"
-		print("Seating " + customer + " at " + table);
+		print("Seating customer " + customer.getName() + " at " + table); //TODO note: I (Eric) changed this print statement a little in order to work with the new Role.toString() system. (delete this comment when you read)
 		hostGui.DoBringToTable(customer, table.x, table.y); 
 
 	}

@@ -272,7 +272,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	
 	private void notifyWaiter(){
 		customerGui.setCurrentStatus("Ready");
-		System.out.println(this.name + ": Chose Food.  Called waiter " + waiter.toString() + " over.");
+		System.out.println(this.name + ": Chose Food.  Called waiter " + waiter.getName() + " over.");
 		waiter.msgReadyToOrder(this);
 	}
 	
@@ -310,7 +310,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	}
 
 	private void doneEating() {
-		System.out.println(this.toString() + " done eating.");
+		print("Done eating.");
 		event = AgentEvent.DoneEating;
 		stateChanged();
 	}
@@ -377,10 +377,6 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 
 	public void setHungerLevel(int hungerLevel) {
 		this.hungerLevel = hungerLevel;
-	}
-
-	public String toString() {
-		return "customer " + getName();
 	}
 
 	public void setGui(OmarCustomerGui g) {

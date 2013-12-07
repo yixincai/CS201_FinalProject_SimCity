@@ -104,8 +104,8 @@ public class PersonAgent extends Agent implements Person
 		_money = money;
 		setWorkDays(weekday_notWeekend);
 		acquireOccupation(occupationType);
-		if(_occupation != null) print("Acquired occupation " + _occupation.toString() + ".");
-		else print("Acquired null occupation.");
+		if(_occupation != null) { print("Acquired occupation " + _occupation.typeToString() + "."); }
+		else { print("Acquired null occupation."); }
 		acquireHome(housingType);
 		
 		// For testing purposes for V1, choose a random action to do at home.

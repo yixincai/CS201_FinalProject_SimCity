@@ -428,10 +428,6 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 		//need to eat until hunger lever is > 5?
 	}
 
-	public String toString() {
-		return "customer " + getName();
-	}
-
 	public void setGui(YixinCustomerGui g) {
 		customerGui = g;
 	}

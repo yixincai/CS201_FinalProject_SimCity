@@ -3,14 +3,14 @@ package city.restaurant;
 import java.util.Map;
 
 import city.PersonAgent;
+import city.interfaces.Person;
 import city.market.Market;
 import agent.Role;
 
 public abstract class RestaurantCashierRole extends Role{
 
-	public RestaurantCashierRole(PersonAgent person) {
+	public RestaurantCashierRole(Person person) {
 		super(person);
-		// TODO Auto-generated constructor stub
 	}
 	public abstract void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list);
 

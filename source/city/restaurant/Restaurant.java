@@ -6,9 +6,6 @@ import gui.WorldViewBuilding;
 import agent.Role;
 import city.PersonAgent;
 import city.Place;
-import city.restaurant.yixin.YixinCashierRole;
-import city.restaurant.yixin.YixinRestaurant;
-import city.restaurant.yixin.gui.YixinCashierGui;
 
 public abstract class Restaurant extends Place {
 	
@@ -32,8 +29,8 @@ public abstract class Restaurant extends Place {
 	public Upscaleness upscaleness() { return _upscaleness; }
 	
 	// Correspondence for Markets:
-	public RestaurantCashierRole cashier;
-	public RestaurantCookRole cook;
+	protected RestaurantCashierRole cashier;
+	protected RestaurantCookRole cook;
 	
 	// Semaphores for the host, cashier, and cook
 	private Semaphore _hostSemaphore = new Semaphore(1, true);
@@ -41,16 +38,20 @@ public abstract class Restaurant extends Place {
 	private Semaphore _cashierSemaphore = new Semaphore(1, true);
 	
 	// --------------------------------- PROPERTIES -----------------------------
-	public abstract Role getHostRole();
-	public RestaurantCashierRole getCashier(){
-		return cashier;
-	}
+	public abstract Role getHost();
+	public RestaurantCashierRole getCashier(){ return cashier; }
+	public RestaurantCookRole getCook() { return cook; }
 	
 	// ------------------------------------ FACTORIES & ROLE ACQUIRES ---------------------------------------------
-	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // Make a new CustomerRole, which is initialized with a pointer to the HostRole.
+	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // make a new CustomerRole, which is initialized with a pointer to the HostRole and other appropriate initializations such as gui.
 	public abstract Role generateWaiterRole(PersonAgent person);
+	
+	// These are a little different from regular factories because they don't return a value; they are more like utilities which are called by the role acquire methods.
+	/** Generate an appropriate CashierGui and set the Cashier's gui to it. */
 	public abstract void generateCashierGui();
+	/** Generate an appropriate CookGui and set the Cook's gui to it. */
 	public abstract void generateCookGui();
+	/** Generate an appropriate HostGui and set the Host's gui to it. */
 	public abstract void generateHostGui();
 	
 	public RestaurantCookRole tryAcquireCook(PersonAgent person) {
@@ -73,9 +74,9 @@ public abstract class Restaurant extends Place {
 	
 	public Role tryAcquireHost(PersonAgent person) {
 		if(_hostSemaphore.tryAcquire()) {
-			getHostRole().setPerson(person);
+			getHost().setPerson(person);
 			generateHostGui();
-			return getHostRole();
+			return getHost();
 		}
 		else return null;
 	}

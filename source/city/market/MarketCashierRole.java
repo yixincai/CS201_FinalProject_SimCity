@@ -223,13 +223,13 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			price_list.put(item.name, inventory.get(item.name).price);
 		}
 		market.MarketEmployee.msgPickOrder(customer);
-		customer.r.cashier.msgHereIsTheBill(market, customer.bill, price_list);
+		customer.r.getCashier().msgHereIsTheBill(market, customer.bill, price_list);
 		customer.state = RestaurantOrder.State.none;
 	}
 	
 	public void makeChange(RestaurantOrder customer){
 		moneyInHand += customer.bill;
-		customer.r.cashier.msgHereIsTheChange(market, customer.payment - customer.bill);
+		customer.r.getCashier().msgHereIsTheChange(market, customer.payment - customer.bill);
 		customer.state = RestaurantOrder.State.none;
 	}
 	

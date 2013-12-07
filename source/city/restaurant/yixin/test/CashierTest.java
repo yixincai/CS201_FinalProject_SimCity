@@ -30,7 +30,7 @@ public class CashierTest extends TestCase
 	public void setUp() throws Exception{
 		super.setUp();
 		Restaurant restaurant = new YixinRestaurant();
-		cashier = (YixinCashierRole)restaurant.cashier;
+		cashier = (YixinCashierRole)restaurant.getCashier();
 		market = new Market();
 		p =new PersonAgent("Dummy");
 		cashier.setPerson(p);

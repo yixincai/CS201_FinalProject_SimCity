@@ -1,0 +1,64 @@
+package city.restaurant.eric.gui;
+
+import java.awt.Font;
+
+public class EricAnimationConstants
+{
+	// This class is HACKS! so that we can change the constants in one place
+    
+    // Constants for animation objects' size
+    public static final int TABLE_WIDTH = 50;
+    public static final int TABLE_HEIGHT = 50;
+    public static final int PERSON_WIDTH = 20;
+    public static final int PERSON_HEIGHT = 20;
+	
+    // Constants for table positions
+	public static final int NUMBER_OF_TABLES = 3;
+    public static final int TABLE0_POSX = 180;
+    public static final int TABLE0_POSY = 20;
+    public static final int TABLE1_POSX = 180;
+    public static final int TABLE1_POSY = 110;
+    public static final int TABLE2_POSX = 180;
+    public static final int TABLE2_POSY = 200;
+    
+    // Constant for outside position
+    public static final int OUTSIDE_X = -20;
+    public static final int OUTSIDE_Y = -20;
+    
+    // Constant for front desk position
+    public static final int FRONTDESK_X = 50;
+    public static final int FRONTDESK_Y = 10;
+    
+    // Non-constant for waiters' idle position
+    public static int NEXT_WAITER_X = 10;
+    public static int NEXT_WAITER_Y = 40;
+    public static void updateNextWaiter()
+    {
+    	// NEXT_WAITER_X unchanged
+    	NEXT_WAITER_Y += PERSON_HEIGHT + 5;
+    }
+    
+    // Non-constant for customers' waiting position
+    public static int NEXT_CUSTOMER_X = 10 + PERSON_WIDTH + 5;
+    public static int NEXT_CUSTOMER_Y = 40;
+    public static void updateNextCustomer()
+    {
+    	// NEXT_CUSTOMER_X unchanged
+    	NEXT_CUSTOMER_Y += PERSON_HEIGHT + 5;
+    }
+    
+    // Constant for cook position
+    public static final int COOK_POSX = 100;
+    public static final int COOK_POSY = 300;
+    
+    // Constant for cashier position
+    public static final int CASHIER_POSX = 70;
+    public static final int CASHIER_POSY = 200;
+    
+    // Constants for timers
+    public static final int TIMER_PERIOD = 8; // in ms
+    
+    // Font constant
+    public static final String FONT = "Consolas";
+    public static final Font FOOD_FONT = new Font(FONT, Font.BOLD, 16);
+}

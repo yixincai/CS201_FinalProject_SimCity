@@ -4,14 +4,15 @@ import city.home.HomeOccupantRole;
 
 public interface Person {
 
-	String name();
+	public String name();
 
-	void stateChanged();
+	public void cmdNoLongerHungry();
 
-	void cmdNoLongerHungry();
+	public HomeOccupantRole homeOccupantRole();
 
-	HomeOccupantRole homeOccupantRole();
+	public double money();
+	public void cmdChangeMoney(double amountChanged);
 
-	void cmdChangeMoney(double amountReceived);
+	public void stateChanged();
 	
 }
