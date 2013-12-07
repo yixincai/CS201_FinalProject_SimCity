@@ -13,12 +13,19 @@ package gui.trace;
  *
  */
 public enum AlertTag {
-		TIME,
+		TIME,				//General
         PERSON,
+        
+        BANK,				//Internal Places
+        MARKET,
+        OMAR_RESTAURANT,
+        YIXIN_RESTAURANT,
+        
+        BUS,				//Worldview
+        BUS_STOP,
+        
         BANK_TELLER,
         BANK_CUSTOMER,
-        BUS_STOP,
-        RESTAURANT,                //For the demo code where you make a new restaurant
-        BANK,                        //For the demo code where you make a new bank
+        
         GENERAL_CITY
 }
