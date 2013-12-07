@@ -3,7 +3,7 @@ package city.restaurant.eric.interfaces;
 public interface EricHost
 {
 	// Properties
-	public String getName();
+	public String name();
 	// Messages
 	public void msgImOnDuty(EricWaiter sender);
 	public void msgIWantFood(EricCustomer sender);

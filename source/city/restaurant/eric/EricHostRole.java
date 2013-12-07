@@ -5,19 +5,19 @@ import java.util.Collections;
 //import java.util.Collection;
 import java.util.List;
 
+import city.Place;
+import city.interfaces.Person;
 import city.restaurant.eric.gui.EricAnimationConstants;
-import agent.Agent;
+import agent.Role;
 import city.restaurant.eric.interfaces.*;
 
-public class EricHostRole extends Agent implements EricHost
+public class EricHostRole extends Role implements EricHost
 {
 	// -------------------------------- DATA ---------------------------------------
 	
-	// Personal data:
-	private String _name;
-	
 	// Correspondence:
 	private EricCashier _cashier;
+	private EricRestaurant _restaurant;
 	
 	// Agent data:
 	// Customer:
@@ -57,19 +57,12 @@ public class EricHostRole extends Agent implements EricHost
 	List<MyWaiter> _waitersThatWantABreak = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	
 	
-	// ---------------------------------------- PROPERTIES --------------------------------------
-	public String getMaitreDName() { return _name; } // Uh, okay
-	public String getName() { return _name; }
-	public String toString() { return "host " + getName(); }
-	public void setCashier(EricCashier cashier) { _cashier = cashier; }
-	//public List getWaitingCustomers() { return waitingCustomers; }
-	//public Collection getTables() { return tables; }
 	
-	// -------------------------------------- CONSTRUCTOR ------------------------------------
-	
-	public EricHostRole(String name)
+	// ---------------------------------------- CONSTRUCTOR & PROPERTIES --------------------------------------
+	public EricHostRole(Person person, EricRestaurant restaurant)
 	{
-		_name = name;
+		super(person);
+		_restaurant = restaurant;
 		
 		// Initialize the hard-coded number of tables
 		for(int i = 0; i < EricAnimationConstants.NUMBER_OF_TABLES; i++)
@@ -77,10 +70,17 @@ public class EricHostRole extends Agent implements EricHost
 			_tables.add(new Table(i));
 		}
 	}
+	public String name() { return _person.name(); }
+	public void setCashier(EricCashier cashier) { _cashier = cashier; }
+	public Place place() { return _restaurant; }
 	
 	
 	
 	// ---------------------------------------- MESSAGES ---------------------------------------------
+	
+	public void cmdFinishAndLeave() {
+		//TODO finish customers and close the restaurant
+	}
 	
 	/**
 	 * Register new waiter agents.
@@ -231,7 +231,7 @@ public class EricHostRole extends Agent implements EricHost
 	// ----------------------------------------- SCHEDULER -------------------------------------------
 	
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		synchronized(_customers)
 		{
 			for(MyCustomer c : _customers) {
