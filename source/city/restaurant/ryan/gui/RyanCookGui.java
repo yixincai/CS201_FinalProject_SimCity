@@ -3,11 +3,15 @@ package city.restaurant.ryan.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import city.restaurant.ryan.RyanCookRole;
 
-public class RyanCookGui implements Gui{
+public class RyanCookGui extends JPanel implements Gui{
 	private RyanCookRole agent = null;
 	//RestaurantGui gui;
 	
@@ -32,6 +36,11 @@ public class RyanCookGui implements Gui{
 	
 	enum Command{noCommand, goToStand, goToFridge, goToGrill, goToGrill1, goToPlating, LeaveRestaurant};
 	Command command = Command.noCommand;
+	
+	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Chef.png"));
+    Image normal = a.getImage();
+    int xGap = 18;
+    int yGap = 32;
 	
 	public RyanCookGui(RyanCookRole agent){
 		this.agent = agent;
@@ -211,8 +220,7 @@ public class RyanCookGui implements Gui{
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
 		if(agent.active){
-			g.setColor(Color.BLACK);
-	        g.fillRect(xPos, yPos, 20, 20);
+			g.drawImage(normal, xPos, yPos, xGap, yGap, this);
 		}
         
         if(hasIngredients){
@@ -223,7 +231,7 @@ public class RyanCookGui implements Gui{
         for(Grill temp: grills){
         	if(temp.occupied == true){
         		g.setColor(Color.black);
-    			g.drawString((temp.choice), temp.x, (temp.y-5));
+    			g.drawString((temp.choice), (temp.x+2), (temp.y-7));
         	}
         }
         

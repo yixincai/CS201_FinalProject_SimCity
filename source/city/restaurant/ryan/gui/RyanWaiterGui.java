@@ -4,9 +4,13 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
+import city.restaurant.ryan.RyanSharedDataWaiterRole;
 import city.restaurant.ryan.RyanWaiterRole;
 
-public class RyanWaiterGui implements Gui {
+public class RyanWaiterGui extends JPanel implements Gui {
 
     private RyanWaiterRole agent = null;
     
@@ -27,13 +31,26 @@ public class RyanWaiterGui implements Gui {
     Dimension RevolvingStandPosition = new Dimension(475, 50);
     Dimension HomePosition;
     
+    ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/NormalWaiter.png"));
+    Image normal = a.getImage();
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/restaurant/SharedDataWaiter.png"));
+    Image shared = b.getImage();
+    int xGap, yGap;
+    
     public boolean offScreen = false;
 
     public RyanWaiterGui(RyanWaiterRole agent, int count) {
+    	xGap = 17;
+    	yGap = 27;
         this.agent = agent;
         xDestination = 10;
         yDestination = 80 + 25*count;
         HomePosition = new Dimension(xDestination,yDestination);
+        if(agent instanceof RyanSharedDataWaiterRole){
+        	ImageIcon i = new ImageIcon(this.getClass().getResource("/image/restaurant/SharedDataWaiter.png"));
+        	Image _image = i.getImage();
+        }
+        
     }
     
     public void updatePosition() {
@@ -86,8 +103,12 @@ public class RyanWaiterGui implements Gui {
 
     public void draw(Graphics2D g) {
     	if(agent.active){
-    		g.setColor(Color.MAGENTA);
-    		g.fillRect(xPos, yPos, 20, 20);
+    		if(agent instanceof RyanSharedDataWaiterRole){
+    			g.drawImage(shared, xPos, yPos, xGap, yGap, this);
+    		}
+    		else{
+    			g.drawImage(normal, xPos, yPos, xGap, yGap, this);
+    		}
     	}
         
         if(holding == true){
