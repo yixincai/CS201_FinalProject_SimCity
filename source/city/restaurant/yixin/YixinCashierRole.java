@@ -122,7 +122,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			}
 			for (MarketBill bill : marketBills)
 				if (bill.state == MarketBill.BillState.changeReceived){
-					((YixinCookRole)restaurant.cook).msgOrderFinished();
+					((YixinCookRole)restaurant.getCook()).msgOrderFinished();
 					marketBills.remove(bill);
 					return true;
 				}
