@@ -78,7 +78,7 @@ public class TannerRestaurant extends Restaurant
 	}
 
 	@Override
-	public Role getHostRole() 
+	public Role getHost() 
 	{
 		return this.host;
 	}

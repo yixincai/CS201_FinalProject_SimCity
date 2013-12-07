@@ -6,9 +6,6 @@ import gui.WorldViewBuilding;
 import agent.Role;
 import city.PersonAgent;
 import city.Place;
-import city.restaurant.yixin.YixinCashierRole;
-import city.restaurant.yixin.YixinRestaurant;
-import city.restaurant.yixin.gui.YixinCashierGui;
 
 public abstract class Restaurant extends Place {
 	
@@ -32,8 +29,8 @@ public abstract class Restaurant extends Place {
 	public Upscaleness upscaleness() { return _upscaleness; }
 	
 	// Correspondence for Markets:
-	public RestaurantCashierRole cashier;
-	public RestaurantCookRole cook;
+	protected RestaurantCashierRole cashier;
+	protected RestaurantCookRole cook;
 	
 	// Semaphores for the host, cashier, and cook
 	private Semaphore _hostSemaphore = new Semaphore(1, true);
@@ -41,10 +38,9 @@ public abstract class Restaurant extends Place {
 	private Semaphore _cashierSemaphore = new Semaphore(1, true);
 	
 	// --------------------------------- PROPERTIES -----------------------------
-	public abstract Role getHostRole();
-	public RestaurantCashierRole getCashier(){
-		return cashier;
-	}
+	public abstract Role getHost();
+	public RestaurantCashierRole getCashier(){ return cashier; }
+	public RestaurantCookRole getCook() { return cook; }
 	
 	// ------------------------------------ FACTORIES & ROLE ACQUIRES ---------------------------------------------
 	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // make a new CustomerRole, which is initialized with a pointer to the HostRole and other appropriate initializations such as gui.
@@ -78,9 +74,9 @@ public abstract class Restaurant extends Place {
 	
 	public Role tryAcquireHost(PersonAgent person) {
 		if(_hostSemaphore.tryAcquire()) {
-			getHostRole().setPerson(person);
+			getHost().setPerson(person);
 			generateHostGui();
-			return getHostRole();
+			return getHost();
 		}
 		else return null;
 	}

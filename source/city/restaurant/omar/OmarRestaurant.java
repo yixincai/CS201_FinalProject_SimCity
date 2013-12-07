@@ -38,7 +38,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		((OmarCookRole)cook).cashier = (OmarCashierRole)cashier;
 	}
 
-	//default constructor for unit testing DO NOT DELETE
+	// Default constructor for unit testing
 	public OmarRestaurant(){
 		super("Omar's Restaurant");    
 		cashier = new OmarCashierRole(null,this);
@@ -90,7 +90,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	}
 
 	@Override
-	public Role getHostRole() {
+	public Role getHost() {
 		return host;
 	}
 	

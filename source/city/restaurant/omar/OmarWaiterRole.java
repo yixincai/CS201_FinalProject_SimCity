@@ -393,9 +393,6 @@ public class OmarWaiterRole extends Role {
 	public int getNumCustomers(){
 		return myCustomers.size();
 	}
-	public String toString(){
-		return name;
-	}
 	
 	public void setGui(OmarWaiterGui g) {
 		waiterGui = g;

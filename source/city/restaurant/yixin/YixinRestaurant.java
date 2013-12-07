@@ -95,7 +95,7 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	}
 
 	@Override
-	public Role getHostRole() {
+	public Role getHost() {
 		return host;
 	}
 

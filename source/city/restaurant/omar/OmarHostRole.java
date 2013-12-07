@@ -60,7 +60,7 @@ public class OmarHostRole extends Role {
 	
 	public void msgLeavingWaitList(OmarCustomerRole cust) {
 		waitingCustomers.remove(cust);
-		System.out.println("Customer " + cust.toString() + " left from waiting too long");
+		System.out.println("Customer " + cust.getName() + " left from waiting too long");
 		stateChanged();
 	}
 
@@ -123,11 +123,8 @@ public class OmarHostRole extends Role {
 
 	//utilities
 	private void DoCallWaiter(OmarWaiterRole w){
-		System.out.println("Called waiter" + w.toString());
-	}
-	
-	public String toString(){
-		return name;
+		//TODO remove this method??
+		System.out.println("Called waiter" + w.getName());
 	}
 	
 	public ArrayList<Table> getTableList(){
