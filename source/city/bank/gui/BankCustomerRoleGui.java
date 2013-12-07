@@ -48,12 +48,8 @@ public class BankCustomerRoleGui implements Gui {
 				yPos--;
 
 			if (xPos == xDestination && yPos == yDestination && !flag) {
-				if(xPos == tellerX + 5 && yDestination == tellerY - 5){
-					DoRun();
-				} else{
 					agent.releaseSemaphore();
 					flag = true;
-				}
 			}
 	}
 

@@ -36,6 +36,7 @@ public class Bank extends Place implements PlaceWithAnimation {
 		tellers_for_host.add(bankTellerRole);
 		_bankHostRole = new BankHostRole(null,this, tellers_for_host);
 		guardDog = new GuardDog(this);
+		guardDog.startThread();
 	}
 		
 	public Bank() {

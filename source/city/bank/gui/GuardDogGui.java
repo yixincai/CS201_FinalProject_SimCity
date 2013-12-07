@@ -72,10 +72,8 @@ public class GuardDogGui implements Gui {
 
 	@Override
 	public void draw(Graphics2D g) {
-		if(isPresent()){
 			g.setColor(myColor);
 			g.fillRect(xPos, yPos, 10, 10);
-		}
 	}
 
 	@Override
