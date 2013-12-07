@@ -30,7 +30,7 @@ public class CommuterRole extends Role implements Commuter{
 	public Bus _bus;
 	public double _fare;
 	CommuterGui _gui;
-	public boolean hasCar = false;
+	public boolean hasCar = true;
 
 	public enum TravelState{choosing, 
 		choseCar, goToCar, atCar, driving, 
@@ -260,7 +260,7 @@ public class CommuterRole extends Role implements Commuter{
 	
 	public void actDriving(){
 		_gui.driveToLocation(_destination);
-		waitForGuiToReachDestination();
+		//waitForGuiToReachDestination();
 		_tState = TravelState.done;
 		active = false;
 	}
