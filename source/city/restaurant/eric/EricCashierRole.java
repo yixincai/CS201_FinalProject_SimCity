@@ -258,12 +258,12 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 		
 		if(b.owedAmount == 0)
 		{
-			print("Notifying " + _host.getName() + " that " + b.customer.name() + " does not owe anything.");
+			print("Notifying " + _host.name() + " that " + b.customer.name() + " does not owe anything.");
 			_bills.remove(b);
 		}
 		else
 		{
-			print("Notifying " + _host.getName() + " that " + b.customer.name() + " owes $" + b.owedAmount);
+			print("Notifying " + _host.name() + " that " + b.customer.name() + " owes $" + b.owedAmount);
 			b.state = BillState.OWED;
 		}
 		_host.msgCustomerOwes(b.customer, b.owedAmount);
