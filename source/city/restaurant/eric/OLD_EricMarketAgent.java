@@ -91,7 +91,7 @@ public class OLD_EricMarketAgent extends Agent implements OLD_EricMarket
 	
 	public void msgPlaceOrder(EricCook sender, Map<String,Integer> foods, EricCashier cashier)
 	{
-		print("Order placed by " + sender.getName() + ":");
+		print("Order placed by " + sender.name() + ":");
 		
 		Order o = new Order();
 		// Copy the foods over so data isn't shared
@@ -109,7 +109,7 @@ public class OLD_EricMarketAgent extends Agent implements OLD_EricMarket
 	
 	private void msgOrderDone(Order o) // from timer, so it's not in the Market interface.
 	{
-		print("Order for " + o.cook.getName() + " is ready.");
+		print("Order for " + o.cook.name() + " is ready.");
 		o.state = OrderState.READY_TO_DELIVER;
 		stateChanged();
 	}
@@ -169,7 +169,7 @@ public class OLD_EricMarketAgent extends Agent implements OLD_EricMarket
 	
 	private void actProcessOrder(final Order o)
 	{
-		print("Processing order from " + o.cook.getName() + ".");
+		print("Processing order from " + o.cook.name() + ".");
 		
 		// Fill up foodsComing
 		Map<String,Integer> foodsComing = new HashMap<String,Integer>();
@@ -206,7 +206,7 @@ public class OLD_EricMarketAgent extends Agent implements OLD_EricMarket
 	
 	private void actDeliverOrder(Order o)
 	{
-		print("Delivering order to " + o.cook.getName() + ".");
+		print("Delivering order to " + o.cook.name() + ".");
 		// note: We don't need to copy because this MarketAgent's reference to o.foods will die on _orders.remove(o)
 		o.cook.msgDelivery(this, o.foods);
 		

@@ -65,7 +65,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 		
 		_restaurant = restaurant;
 	}
-	public String getName() { return _person.name(); }
+	public String name() { return _person.name(); }
 	//public List getWaitingCustomers() { return waitingCustomers; }
 	//public Collection getTables() { return tables; }
 	public void setHost(EricHost host)
@@ -73,7 +73,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 		if(_host == null)
 		{
 			_host = host;
-			_host.msgImOnDuty(this);
+			_host.msgImOnDuty(this); //TODO should this be a thing?
 		}
 	}
 	public void setCook(EricCook cook) { _cook = cook; }
@@ -149,7 +149,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 			{
 				if(c.order.choice.equals(choice))
 				{
-					print(_cook.getName() + " says that we're out of " + c.agent.name() + "'s order of " + c.order.choice);
+					print(_cook.name() + " says that we're out of " + c.agent.name() + "'s order of " + c.order.choice);
 					c.order.state = OrderState.GONE;
 					stateChanged();
 				}

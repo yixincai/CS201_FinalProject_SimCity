@@ -5,7 +5,7 @@ import city.restaurant.eric.Check;
 public interface EricWaiter
 {
 	// Properties
-	public String getName();
+	public String name();
 	
 	// Messages
 	public void msgReachedDestination(); //from WaiterGui
