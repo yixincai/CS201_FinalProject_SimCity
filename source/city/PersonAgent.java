@@ -186,7 +186,7 @@ public class PersonAgent extends Agent implements Person
 		{
 			// note: if control reaches a break statement, the new occupation will be a waiter.
 			case "Waiter":
-				_occupation = restaurants.get(0).generateWaiterRole(this);
+				_occupation = restaurants.get(0).generateWaiterRole(this,false);
 				return; // waiter is generated right after this switch statement
 			case "Restaurant Cashier":
 				newOccupation = null;
@@ -302,13 +302,13 @@ public class PersonAgent extends Agent implements Person
 				((BankCustomerRole)_occupation).cmdRequest("Deposit",100);
 				return;
 			case "Yixin Waiter":
-				_occupation = restaurants.get(0).generateWaiterRole(this);
+				_occupation = restaurants.get(0).generateWaiterRole(this, true);
 				return;
 			case "Omar Waiter":
-				_occupation = restaurants.get(1).generateWaiterRole(this);
+				_occupation = restaurants.get(1).generateWaiterRole(this, true);
 				return;
 			case "Ryan Waiter":
-				_occupation = restaurants.get(2).generateWaiterRole(this);
+				_occupation = restaurants.get(2).generateWaiterRole(this, false);
 				return;
 			case "None":
 				_occupation = null;
@@ -316,7 +316,7 @@ public class PersonAgent extends Agent implements Person
 				return;
 		}
 		// note: control reaches here because no jobs were found
-		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
+		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this, false);
 		_occupation = newOccupation;
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------

@@ -64,10 +64,9 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	}
 
 	@Override
-	public Role generateWaiterRole(PersonAgent person) {
-		int i = (new Random()).nextInt(2);
+	public Role generateWaiterRole(PersonAgent person, boolean shared) {
 		OmarWaiterRole newWaiter;
-		if (i == 0)
+		if (!shared)
 			newWaiter = new OmarWaiterRole(person, this,(OmarCookRole)cook, host, null);
 		else
 			newWaiter = new OmarSharedDataWaiterRole(person, this, (OmarCookRole)cook, host, null);
