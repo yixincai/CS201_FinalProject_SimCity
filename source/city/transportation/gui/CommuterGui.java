@@ -3,20 +3,26 @@ package city.transportation.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
+import java.awt.Point;
+import java.util.*;
 
 import gui.Gui;
 import gui.astar.AStarNode;
 import gui.astar.AStarTraversal;
 import gui.astar.Position;
 import city.Place;
-import city.transportation.*;
+import city.transportation.CommuterRole;
+import city.transportation.BusStopObject;
 
 public class CommuterGui implements Gui {
 
 	private static final int NULL_POSITION_X = 300;
 	private static final int NULL_POSITION_Y = 300;
 	
-//	int _xPos, _yPos;
+	int _xPos, _yPos;
+	int _currentBlockX, _currentBlockY;//TODO set the block positions used by cars
+	int _destinationBlockX, _destinationBlockY; 
+	List<Point> route = new ArrayList<Point>();
 	Place _destination;
 	int _xDestination, _yDestination;
 	enum Command { none, walk, car}
@@ -76,10 +82,33 @@ public class CommuterGui implements Gui {
 	public void driveToLocation(Place destination){
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
+		route.clear();
 		setPresent(true);
 		_transportationMethod = Command.car;
-		Position destinationP = convertPixelToGridSpace(placeX(destination), placeY(destination) - 10);
-		guiMoveFromCurrentPositionTo(destinationP);
+		_xDestination = placeX(destination);
+		_yDestination = placeY(destination);
+		_destinationBlockX = getBlockX(_xDestination);
+		_destinationBlockY = getBlockY(_yDestination);
+		while (_currentBlockX != _destinationBlockX){
+			if (_destinationBlockX > _currentBlockX){
+				route.add(new Point(_currentBlockX, _currentBlockY));
+				_currentBlockX++;
+			}
+			else {
+				route.add(new Point(_currentBlockX, _currentBlockY));
+				_currentBlockX--;
+			}
+		}
+		while (_currentBlockY != _destinationBlockY){
+			if (_destinationBlockY > _currentBlockY){
+				route.add(new Point(_currentBlockX, _currentBlockY));
+				_currentBlockY++;
+			}
+			else {
+				route.add(new Point(_currentBlockX, _currentBlockY));
+				_currentBlockY--;
+			}
+		}
 	}
 	
 	//Bus gui
@@ -263,5 +292,22 @@ public class CommuterGui implements Gui {
 	
 	Position convertPixelToGridSpace(int x, int y){
 		return new Position(x/11, y/12);
+	}
+	private int getBlockX(int xPos){
+		if (xPos >= 41 + 8 * 10 && xPos < 41 + 16 * 10)
+			return 0;
+		if (xPos >= 41 + 24 * 10 && xPos < 41 + 36 * 10)
+			return 1;
+		if (xPos >= 41 + 44 * 10 && xPos < 41 + 52 * 10)
+			return 2;
+		return -1;
+	}
+	
+	private int getBlockY(int yPos){
+		if (yPos >= 30 + 5 * 10 && yPos < 41 + 9 * 10)
+			return 0;
+		if (yPos >= 41 + 19 * 10 && yPos < 41 + 25 * 10)
+			return 1;
+		return -1;
 	}
 }
