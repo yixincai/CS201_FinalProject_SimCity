@@ -129,12 +129,12 @@ public class OLD_EricMarketAgent extends Agent implements OLD_EricMarket
 		// This is placed outside the above for-loop in order to avoid ConcurrentModificationExceptions.
 		if(current.owedAmount < .01)
 		{
-			print("Received payment of $" + amount + " from " + sender.getName() + ". Order paid in full.");
+			print("Received payment of $" + amount + " from " + sender.name() + ". Order paid in full.");
 			_orders.remove(current);
 		}
 		else
 		{
-			print("Received payment of $" + amount + " from " + sender.getName() + ". Still owes " + current.owedAmount + ".");
+			print("Received payment of $" + amount + " from " + sender.name() + ". Still owes " + current.owedAmount + ".");
 		}
 		stateChanged();
 	}
@@ -218,7 +218,7 @@ public class OLD_EricMarketAgent extends Agent implements OLD_EricMarket
 		
 		o.state = OrderState.OWED_MONEY;
 		
-		print(o.cashier.getName() + " owes " + o.owedAmount + ".");
+		print(o.cashier.name() + " owes " + o.owedAmount + ".");
 		o.cashier.msgYouOwe(this, o.owedAmount);
 	}
 }

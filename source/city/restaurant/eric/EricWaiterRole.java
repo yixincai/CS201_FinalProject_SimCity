@@ -421,7 +421,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 		_gui.doGoToCashier();
 		waitForGuiToReachDestination();
 		
-		print("Requesting check from " + _cashier.getName());
+		print("Requesting check from " + _cashier.name());
 		_cashier.msgGiveMeCheck(this, c.order.choice, c.tableNumber);
 		
 		c.state = CustomerState.WAITING_FOR_CASHIER_TO_GIVE_ME_CHECK;
