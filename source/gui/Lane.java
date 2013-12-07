@@ -3,23 +3,27 @@ package gui;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
+import java.util.concurrent.Semaphore;
+
+import city.transportation.gui.CommuterGui;
 
 
 public class Lane {
 	Rectangle2D.Double rectangle;
 	ArrayList<Line2D.Double> sides;
-	int xVelocity;
-	int yVelocity;
-	boolean redLight;
-	int xOrigin;
-	int yOrigin;
+	public int xVelocity;
+	public int yVelocity;
+	boolean redLight = false;
+	public int xOrigin;
+	public int yOrigin;
 	int width;
 	int height;
-	boolean isHorizontal;
+	public boolean isHorizontal;
 	boolean startAtOrigin;
 	Color laneColor;
 	Color sideColor;
-	ArrayList<Vehicle> vehicles;
+	ArrayList<CommuterGui> vehicles;
+	public ArrayList<Semaphore> permits;
 	
 	public Lane(int xo, int yo, int w, int h, int xv, int yv, boolean ish, Color lc, Color sc ) {
 		redLight = false;
@@ -46,21 +50,30 @@ public class Lane {
 			sides.add( new Line2D.Double( xOrigin+width, yOrigin, xOrigin+width, yOrigin+height ) );
 		}
 		
-		vehicles = new ArrayList<Vehicle>();
+		permits = new ArrayList<Semaphore>();
+		if (isHorizontal)
+			for (int i=0;i<w/10;i++){
+				permits.add(new Semaphore(1,true));
+			}
+		else
+			for (int i=0;i<h/10;i++){
+				permits.add(new Semaphore(1,true));
+			}
+		vehicles = new ArrayList<CommuterGui>();
 	}
 	
-	public void addVehicle( Vehicle v ) {
+	public synchronized void addVehicle( CommuterGui v ) {
 		//We need to set the proper origin for this new vehicle, given the lane starting geometry constraints
 		//The +2 is due to my lanes being 20 pixels "wide" and vehicles being 16 pixels "wide". 
 		if ( xVelocity > 0 ) {
-			v.setRect( xOrigin, yOrigin+2, v.getWidth(), v.getHeight() ); 
+			v.setXY(xOrigin, yOrigin); 
 		} else if ( yVelocity > 0 ) {
-			v.setRect( xOrigin+2, yOrigin, v.getWidth(), v.getHeight() ); 
+			v.setXY( xOrigin, yOrigin ); 
 		} else {
 			if ( isHorizontal ) {
-				v.setRect( xOrigin + width - v.getWidth(), yOrigin + 2, v.getWidth(), v.getHeight() );
+				v.setXY( xOrigin + width - 10, yOrigin );
 			} else {
-				v.setRect( xOrigin + 2, yOrigin + height - v.getHeight(), v.getWidth(), v.getHeight() ) ;
+				v.setXY( xOrigin, yOrigin + height - 10 ) ;
 			}
 		}
 		
@@ -70,17 +83,16 @@ public class Lane {
 	public void draw( Graphics2D g2 ) {
 		g2.setColor( laneColor );
 		g2.fill( rectangle );
-		
 		for ( int i=0; i<sides.size(); i++ ) {
 			g2.setColor( sideColor );
 			g2.draw( sides.get(i) );
 		}
 		
 		for ( int i=vehicles.size()-1; i >= 0; i-- ) {
-			Vehicle v = vehicles.get(i);
-			if ( !redLight ) {
+			CommuterGui v = vehicles.get(i);
+			//if ( !redLight ) {
 				v.move( xVelocity, yVelocity );
-			}
+			//}
 			
 			double x = v.getX();
 			double y = v.getY();
@@ -88,28 +100,32 @@ public class Lane {
 			//Remove the vehicle from the list if it is at the end of the lane
 			if ( isHorizontal ) {
 				//End of lane is xOrigin + width - vehicle width
-				double endOfLane = xOrigin + width - v.getWidth();
+				double endOfLane = xOrigin + width - 10;
 				if ( xVelocity > 0 && x >= endOfLane ) {
+					vehicles.get(i).releaseSemaphore();
 					vehicles.remove(i);					
 				} else if ( x <= xOrigin ) {
+					vehicles.get(i).releaseSemaphore();
 					vehicles.remove(i);
 				}
 			} else {
 				//End of lane is xOrigin + height - vehicle height
-				double endOfLane = yOrigin + height - v.getHeight();
+				double endOfLane = yOrigin + height - 10;
 				if ( yVelocity > 0 && y >= endOfLane ) {
+					vehicles.get(i).releaseSemaphore();
 					vehicles.remove(i);					
 				} else if ( y <= yOrigin ) {
+					vehicles.get(i).releaseSemaphore();
 					vehicles.remove(i);
 				}
 			}
 		}
 		
-		for ( int i=0; i<vehicles.size(); i++ ) {
-			Vehicle v = vehicles.get(i);
-			g2.setColor( v.getColor() );
-			g2.fill( v );
-		}
+//		for ( int i=0; i<vehicles.size(); i++ ) {
+//			CommuterGui v = vehicles.get(i);
+//			g2.setColor( Color.red );
+//			g2.fill( v );
+//		}
 	}
 	
 	public void redLight() {

@@ -260,7 +260,7 @@ public class CommuterRole extends Role implements Commuter{
 	
 	public void actDriving(){
 		_gui.driveToLocation(_destination);
-		waitForGuiToReachDestination();
+		//waitForGuiToReachDestination();
 		_tState = TravelState.done;
 		active = false;
 	}
