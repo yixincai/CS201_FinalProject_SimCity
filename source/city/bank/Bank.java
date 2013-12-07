@@ -22,7 +22,7 @@ public class Bank extends Place implements PlaceWithAnimation {
 	private BankHostRole _bankHostRole;
 	private Semaphore _tellerSemaphore = new Semaphore(1, true);
 	private Semaphore _hostSemaphore = new Semaphore(1, true);
-	
+	private GuardDog guardDog;
 	
 
 	// ------------------------------------------- CONSTRUCTORS & PROPERTIES --------------------------------------------
@@ -35,6 +35,7 @@ public class Bank extends Place implements PlaceWithAnimation {
 		_tellers.add(bankTellerRole);
 		tellers_for_host.add(bankTellerRole);
 		_bankHostRole = new BankHostRole(null,this, tellers_for_host);
+		guardDog = new GuardDog(this);
 	}
 		
 	public Bank() {
@@ -92,5 +93,9 @@ public class Bank extends Place implements PlaceWithAnimation {
 	
 	public BankCustomerRole generateCustomerRole(PersonAgent person){
 		return new BankCustomerRole(person, this);
+	}
+	
+	public GuardDog getGuardDog(){
+		return guardDog;
 	}
 }
