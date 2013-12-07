@@ -294,6 +294,11 @@ public class MainGui extends JFrame
 		Directory.addLanes(l5);
 		Lane l4 = new Lane( 8*10+41, 12*10+30, 80, 10, -1, 0, true, Color.yellow, Color.black );
 		Directory.addLanes(l4);
+		//intersections
+		Directory.intersections().add(new Semaphore(1,true));
+		Directory.intersections().add(new Semaphore(1,true));
+		Directory.intersections().add(new Semaphore(1,true));
+		Directory.intersections().add(new Semaphore(1,true));
 		/*
 		//Create the BuildingPanel for each Building object
 		ArrayList<WorldViewBuilding> worldViewBuildings = _worldView.getBuildings();
