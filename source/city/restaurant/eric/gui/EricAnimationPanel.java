@@ -17,15 +17,15 @@ public class EricAnimationPanel extends JPanel implements ActionListener
     private int _windowWidth;
     private int _windowHeight;
 
-    // Don't really know what these are for
-    private Image bufferImage;
-    private Dimension bufferSize;
-
     private List<Gui> guis = new ArrayList<Gui>();
     
     private List<TableDim> tableDims = new ArrayList<TableDim>();
     
-    private class TableDim { public int posx, posy, width, height; public TableDim(int x, int y, int w, int h) { posx=x; posy=y; width=w; height=h;} }
+    private class TableDim
+    {
+    	public int posx, posy, width, height;
+    	public TableDim(int x, int y, int w, int h) { posx=x; posy=y; width=w; height=h;}
+    }
 
     public EricAnimationPanel(int width, int height)
     {
@@ -39,8 +39,6 @@ public class EricAnimationPanel extends JPanel implements ActionListener
     	
     	setSize(_windowWidth, _windowHeight);
         setVisible(true);
-        
-        bufferSize = this.getSize();
  
     	Timer timer = new Timer(EricAnimationConstants.TIMER_PERIOD, this );
     	timer.start();

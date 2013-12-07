@@ -56,7 +56,7 @@ public class EricAnimationConstants
     public static final int CASHIER_POSY = 200;
     
     // Constants for timers
-    public static final int TIMER_PERIOD = 8; // in ms
+    public static final int TIMER_PERIOD = 5; // in ms
     
     // Font constant
     public static final String FONT = "Consolas";
