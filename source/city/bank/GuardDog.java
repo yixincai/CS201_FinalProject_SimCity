@@ -17,9 +17,9 @@ public class GuardDog extends Agent {
 
 	public GuardDog(Bank bank) {
 		this.bank = bank;
-		bank.animationPanel().addGui(gui);
 		command = Command.None;
 		this.gui = new GuardDogGui(this);
+		bank.animationPanel().addGui(gui);
 	}
 
 	//Data
