@@ -5,6 +5,8 @@ package gui;
  * @author Tanner Zigrang
  */
 
+import gui.trace.TracePanel;
+
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -27,11 +29,12 @@ import city.transportation.gui.BusAgentGui;
 public class MainGui extends JFrame 
 {
 	private static int FRAMEX = 1024;
-	private static int FRAMEY = 720;
+	private static int FRAMEY = 820;
 	Semaphore[][] grid;
 	
 	BuildingCardLayoutPanel _buildingCardLayoutPanel;
 	ControlPanel cPanel;
+	TracePanel tPanel;
 	
 	List<BuildingInteriorAnimationPanel> _buildingInteriorAnimationPanels = new ArrayList<BuildingInteriorAnimationPanel>();
 	
@@ -57,6 +60,7 @@ public class MainGui extends JFrame
 		
 		//Control Panel
 		cPanel = new ControlPanel(this);
+		tPanel = new TracePanel();
 		    
 		//The code below will add an area for the two gui areas to go. BuildingView + WorldView
 		JPanel animationArea = new JPanel();
@@ -322,6 +326,7 @@ public class MainGui extends JFrame
 		//The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
 		
 		this.add(cPanel, Component.RIGHT_ALIGNMENT);
+		this.add(tPanel, Component.RIGHT_ALIGNMENT);
 		this.pack();		
 		this.setVisible(true);
 		

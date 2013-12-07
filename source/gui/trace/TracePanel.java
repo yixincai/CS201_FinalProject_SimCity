@@ -40,7 +40,7 @@ import javax.swing.text.StyledDocument;
 public class TracePanel extends JScrollPane implements AlertListener {
 
         private static final long serialVersionUID = 5643932617391465416L;
-        private static final int LOGPANELX = 682;
+        private static final int LOGPANELX = 300;
         private static final int LOGPANELY = 100;
         private JTextPane traceTextPane;
 
