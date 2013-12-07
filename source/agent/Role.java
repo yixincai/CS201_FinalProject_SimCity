@@ -48,4 +48,8 @@ public abstract class Role
 	{
 		print(msg, null);
 	}
+	protected void logThis(String msg)
+	{
+		log.add(msg);
+	}
 }

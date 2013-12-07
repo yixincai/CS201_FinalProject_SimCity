@@ -5,7 +5,7 @@ import city.restaurant.eric.Check;
 public interface EricCashier
 {
 	// Properties
-	public String getName();
+	public String name();
 	// Messages
 	public void msgGiveMeCheck(EricWaiter sender, String choice, int table);
 	public void msgHereIsMoney(EricCustomer sender, double money, Check c);
