@@ -118,6 +118,7 @@ public class CommuterGui implements Gui {
 		_destinationBlockX = getBlockX(placeX(destination));
 		_destinationBlockY = getBlockY(placeY(destination));
 		if (_destinationBlockX == _currentBlockX && _destinationBlockY == _currentBlockY){
+			setPresent(false);
 			return;
 		}
 		route.add(_currentBlockX + 3 * _currentBlockY);
