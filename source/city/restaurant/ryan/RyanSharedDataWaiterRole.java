@@ -19,7 +19,7 @@ public class RyanSharedDataWaiterRole extends RyanWaiterRole {
 			isMoving.acquire();
 			wPlace = waiterPlace.inRestaurant;
 			customer.state = customerState.WaitingForFood;
-			print("Putting on Revolving that Customer " + customer.customer.getName() + " wants " + customer.choice);
+			print(AlertTag.RYAN_RESTAURANT, "Putting on Revolving that Customer " + customer.customer.getName() + " wants " + customer.choice);
 			_restaurant.revolvingStand.insert(new RyanOrder(this, (RyanCustomerRole) customer.customer, customer.choice));
 		}catch(InterruptedException a){
     		

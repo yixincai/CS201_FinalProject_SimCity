@@ -1,6 +1,7 @@
 package city.transportation;
 
 import gui.astar.AStarTraversal;
+import gui.trace.AlertTag;
 
 import java.util.ConcurrentModificationException;
 import java.util.Random;
@@ -51,16 +52,14 @@ public class CommuterRole extends Role implements Commuter{
 	CarState _cState = CarState.noCar; 
 
 	private Semaphore _reachedDestination = new Semaphore(0, true);
-	AStarTraversal _aStarTraversal;
 
 	//----------------------------------------------CONSTRUCTOR & PROPERTIES----------------------------------------
-	public CommuterRole(PersonAgent person, Place initialPlace, AStarTraversal aStarTraversal){
+	public CommuterRole(PersonAgent person, Place initialPlace){
 		super(person);
 		_person = person;
 		_currentPlace = initialPlace;
 		_destination = null;
 		_gui = new CommuterGui(this, initialPlace);
-		_aStarTraversal = aStarTraversal;
 	}
 
 	public CommuterGui gui() { return _gui; }
@@ -81,10 +80,10 @@ public class CommuterRole extends Role implements Commuter{
 	//----------------------------------------------Command---------------------------------------------
 	public void cmdGoToDestination(Place destination){ //Command to go to destination
 		if(destination != null) {
-			print("Will go to " + destination.name() + " at (" + destination.positionX() + "," + destination.positionY() + ").");
+			print(AlertTag.WORLDVIEW,"Will go to " + destination.name() + " at (" + destination.positionX() + "," + destination.positionY() + ").");
 		}
 		else {
-			print("Will go to null destination.");
+			print(AlertTag.WORLDVIEW,"Will go to null destination.");
 		}
 		_tState = TravelState.choosing;
 		_destination = destination;
@@ -106,14 +105,14 @@ public class CommuterRole extends Role implements Commuter{
 		_tState = TravelState.atBusStop;
 		_currentPlace = busstop;
 		stateChanged();
-		print("Going to bus stop " + busstop.name());
+		print(AlertTag.WORLDVIEW, "Going to bus stop " + busstop.name());
 	}
 	public void msgGetOnBus(double fare, Bus bus){
 		_tState = TravelState.busIsHere;
 		_bus = bus;
 		_fare = fare;
 		stateChanged();
-		print("Getting on bus " + bus.name());
+		print(AlertTag.WORLDVIEW,"Getting on bus " + bus.name());
 	}
 
 	@Override
@@ -122,14 +121,14 @@ public class CommuterRole extends Role implements Commuter{
 		_tState = TravelState.busIsAtDestination;
 		_busStop = (BusStopObject)busstop;
 		stateChanged();
-		print("Getting off bus " + _bus.name());
+		print(AlertTag.WORLDVIEW,"Getting off bus " + _bus.name());
 	}
 
 	//Car Messages
 	public void msgAtCar(){
 		_tState = TravelState.atCar;
 		stateChanged();
-		print("At car");
+		print(AlertTag.WORLDVIEW,"At car");
 	}
 
 	//Msg At Destination from GUI
@@ -188,7 +187,7 @@ public class CommuterRole extends Role implements Commuter{
 	//----------------------------------------------Actions----------------------------------------
 	//Choosing
 	public void actChooseTransportation(){
-		print("Choosing mode of transport");
+		print(AlertTag.WORLDVIEW,"Choosing mode of transport");
 
 		_tState = TravelState.choseWalking;
 		//_tState = TravelState.choseBus;

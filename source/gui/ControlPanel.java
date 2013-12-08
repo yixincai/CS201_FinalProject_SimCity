@@ -53,7 +53,7 @@ public class ControlPanel extends JTabbedPane {
 	{
 		currentPersonPanel.addPerson(name);
 		AStarTraversal aStarTraversal = new AStarTraversal(mainGui.grid);
-		PersonAgent newPerson = new PersonAgent(name, money, occupationType, weekday_notWeekend, housingType, aStarTraversal);
+		PersonAgent newPerson = new PersonAgent(name, money, occupationType, weekday_notWeekend, housingType);
 		Directory.addPerson(newPerson);
 		mainGui.getWorldView().addGui(newPerson.commuterRole().gui());
 		this.setSelectedComponent(currentPersonPanel);

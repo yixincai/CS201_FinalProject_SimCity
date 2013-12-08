@@ -1,5 +1,7 @@
 package city.restaurant.yixin;
 
+import gui.trace.AlertTag;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -60,7 +62,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	}
 
 	public void msgHereIsTheOrder(YixinWaiterRole w, String choice, int table) {
-		print("Order received");
+		print(AlertTag.YIXIN_RESTAURANT,"Order received");
 		orders.add(new Order(w,choice,table,Order.OrderState.NotCooked));
 		stateChanged();
 	}
@@ -75,7 +77,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	}
 
 	public void msgOrderFulfillment(Market m, List<Item> orderFulfillment){
-		print("Market response received");
+		print(AlertTag.YIXIN_RESTAURANT,"Market response received");
 		state = CookState.OrderReceived;
 		current_market = m;
 		invoice = orderFulfillment;
@@ -150,7 +152,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 		if (check_state == CheckState.notChecked){
 			timer2.schedule(new TimerTask() {
 				public void run() {
-					print("Notify the cook to check revolving stand");
+					print(AlertTag.YIXIN_RESTAURANT,"Notify the cook to check revolving stand");
 					notifyCook();
 				}
 			}, 10000);
@@ -175,7 +177,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	}
 	
 	private void askForSupply(Market market){
-		print("Buy food from market.");
+		print(AlertTag.YIXIN_RESTAURANT,"Buy food from market.");
 		List<Item> order = new ArrayList<Item>();
 		if (inventory.get("Steak").amount <= inventory.get("Steak").threshold)
 			order.add(new Item("Steak", inventory.get("Steak").capacity - inventory.get("Steak").amount));
@@ -194,7 +196,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 			lowInFood = true;
 		}		
 		if (f.amount == 0){
-			print(f.choice + " is running out");
+			print(AlertTag.YIXIN_RESTAURANT,f.choice + " is running out");
 			order.w.msgFoodRunsOut(order.choice, order.tableNumber);
 			orders.remove(order);
 			return;
@@ -207,7 +209,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 		DoCookFood(order.choice);
 		timer.schedule(new TimerTask() {
 			public void run() {
-				print("Cooking " + order.choice + " with time of " + time);
+				print(AlertTag.YIXIN_RESTAURANT,"Cooking " + order.choice + " with time of " + time);
 				msgDone(order);
 				cookGui.DoFinishFood();
 			}
@@ -215,14 +217,14 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	}
 
 	private void returnOrder(Order order) {
-		print("The order is ready");
+		print(AlertTag.YIXIN_RESTAURANT,"The order is ready");
 		DoGoToPlate();
 		order.w.msgOrderIsReady(order.choice, order.tableNumber);
 		orders.remove(order);
 	}
 
 	private void giveInvoice(){
-		print("Giving invoice to cashier");
+		print(AlertTag.YIXIN_RESTAURANT,"Giving invoice to cashier");
 		cashier.msgHereIsTheInvoice(current_market, invoice);
 	}
 
@@ -232,7 +234,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 
 	// The animation DoXYZ() routines
 	private void DoGoToCookingPlace() {
-		print("Go Cooking.");
+		print(AlertTag.YIXIN_RESTAURANT,"Go Cooking.");
 		cookGui.DoGoCookFood();
 		try{
 			atTable.acquire();
@@ -242,12 +244,12 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	}
 
 	private void DoCookFood(String choice){
-		print("Cooking " + choice);
+		print(AlertTag.YIXIN_RESTAURANT,"Cooking " + choice);
 		cookGui.DoCookFood(choice);
 	}
 
 	private void DoGoToFridge() {
-		print("Going to fridge");
+		print(AlertTag.YIXIN_RESTAURANT,"Going to fridge");
 		cookGui.DoGoToFridge();
 		try{
 			atTable.acquire();
@@ -257,7 +259,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	}
 
 	private void DoGoToPlate() {
-		print("Going to plating area");
+		print(AlertTag.YIXIN_RESTAURANT,"Going to plating area");
 		cookGui.DoPutPlate();
 		try{
 			atTable.acquire();
@@ -267,7 +269,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 	}
 
 	private void DoGoToRevolvingStand() {
-		print("Going to revolving stand");
+		print(AlertTag.YIXIN_RESTAURANT,"Going to revolving stand");
 		cookGui.DoGoToRevolvingStand();
 		try{
 			atTable.acquire();
