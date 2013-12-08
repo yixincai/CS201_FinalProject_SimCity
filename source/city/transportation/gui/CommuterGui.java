@@ -2,18 +2,13 @@ package city.transportation.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.List;
-import java.awt.Point;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import gui.Gui;
+import gui.*;
 import gui.astar.*;
-import gui.Lane;
-import city.Directory;
-import city.Place;
-import city.transportation.CommuterRole;
-import city.transportation.BusStopObject;
+import city.*;
+import city.transportation.*;
 
 public class CommuterGui implements Gui {
 
@@ -312,6 +307,15 @@ public class CommuterGui implements Gui {
 		_currentBlockY = _destinationBlockY;	
 	}
 
+	/*	
+	//Car gui
+	public void goToCar(){
+	}
+
+	public void getOffCar(){
+	}
+	 */	
+	
 	public void driveToLocation(Place destination){
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
@@ -550,33 +554,16 @@ public class CommuterGui implements Gui {
 
 	//Bus gui
 	public void goToBusStop(BusStopObject busstop){
-		//_transportationMethod = Command.walk;
-		Position destinationP = convertPixelToGridSpace(busstop.positionX(), busstop.positionY() - 10);
-		guiMoveFromCurrentPositionTo(destinationP);
-		setPresent(true);
-	}
-	/*	
-	//Car gui
-	public void goToCar(CarObject car, Place destination){
-		_goingSomewhere = true;
-		_xDestination = car.getXPosition();
-		_yDestination = car.getYPosition();
+		//TODO set present position
+		
 		setPresent(true);
 	}
 
-	public void atCar(){
-		setPresent(false);
-		_commuter.msgAtCar();
-	}
-
-	 */	
 	public void getOnBus(){
 		setPresent(false);
 	}
 
 	public void getOffBus(BusStopObject busstop){
-		/*	currentPosition = busstop.positionX(); // setx
-		currentPosition = busstop.positionY(); // sety */
 		setPresent(true);
 	}
 

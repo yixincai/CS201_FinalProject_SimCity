@@ -74,22 +74,30 @@ public class MainGui extends JFrame
 		this.add(animationArea, Component.LEFT_ALIGNMENT);
 		
 		//Bus Stops
-		WorldViewBuilding b5 = _worldView.addBuilding(0, 0, 20);
-		BusStopObject busStop0 = new BusStopObject("Bus Stop " + 0, b5);
-		Directory.addPlace(busStop0);//
+		WorldViewBuilding bs0 = _worldView.addBuilding(0, 0, 20);
+		BusStopObject busStop0 = new BusStopObject("Bus Stop " + 0, bs0);
+		Directory.addPlace(busStop0);
 		AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, this.name, "Bus Stop 0 successfully added");
-		WorldViewBuilding b6 = _worldView.addBuilding(58, 0, 20);
-		BusStopObject busStop1 = new BusStopObject("Bus Stop " + 1, b6);
+		WorldViewBuilding bs1 = _worldView.addBuilding(29, 0, 20);
+		BusStopObject busStop1 = new BusStopObject("Bus Stop " + 1, bs1);
 		Directory.addPlace(busStop1);
 		AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, this.name, "Bus Stop 1 successfully added");
-		WorldViewBuilding b7 = _worldView.addBuilding(58, 28, 20);
-		BusStopObject busStop2 = new BusStopObject("Bus Stop " + 2, b7);
+		WorldViewBuilding bs2 = _worldView.addBuilding(58, 0, 20);
+		BusStopObject busStop2 = new BusStopObject("Bus Stop " + 2, bs2);
 		Directory.addPlace(busStop2);
 		AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, this.name, "Bus Stop 2 successfully added");
-		WorldViewBuilding b8 = _worldView.addBuilding(0, 28, 20);
-		BusStopObject busStop3 = new BusStopObject("Bus Stop " + 3, b8);
+		WorldViewBuilding bs3 = _worldView.addBuilding(58, 28, 20);
+		BusStopObject busStop3 = new BusStopObject("Bus Stop " + 3, bs3);
 		Directory.addPlace(busStop3);
 		AlertLog.getInstance().logMessage(AlertTag.GENERAL_CITY, this.name, "Bus Stop 3 successfully added");
+		WorldViewBuilding bs4 = _worldView.addBuilding(29, 28, 20);
+		BusStopObject busStop4 = new BusStopObject("Bus Stop " + 4, bs4);
+		Directory.addPlace(busStop4);
+		AlertLog.getInstance().logMessage(AlertTag.GENERAL_CITY, this.name, "Bus Stop 4 successfully added");
+		WorldViewBuilding bs5 = _worldView.addBuilding(0, 28, 20);
+		BusStopObject busStop5 = new BusStopObject("Bus Stop " + 5, bs5);
+		Directory.addPlace(busStop5);
+		AlertLog.getInstance().logMessage(AlertTag.GENERAL_CITY, this.name, "Bus Stop 5 successfully added");
 		
 		BusAgent bus = new BusAgent("Bus");
 		BusAgentGui busGui = new BusAgentGui(bus, null);
@@ -323,14 +331,19 @@ public class MainGui extends JFrame
 		Directory.intersections().add(new Semaphore(1,true));
 		Directory.intersections().add(new Semaphore(1,true));
 
+		//sidewalk
+		//left
 		Lane sw0 = new Lane( 8*10+41, 9*10+30, 80, 10, -1, 0, true, Color.yellow, Color.black );
 		Lane sw1 = new Lane( 24*10+41, 9*10+30, 120, 10, -1, 0, true, Color.yellow, Color.black );
 		Lane sw2 = new Lane( 44*10+41, 9*10+30, 80, 10, -1, 0, true, Color.yellow, Color.black );
+		//right
 		Lane sw3 = new Lane( 8*10+41, 18*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
 		Lane sw4 = new Lane( 24*10+41, 18*10+30, 120, 10, 1, 0, true, Color.green, Color.black );
 		Lane sw5 = new Lane( 44*10+41, 18*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
 		Lane sw6 = new Lane( 16*10+41, 5*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
+		//up
 		Lane sw7 = new Lane( 23*10+41, 5*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
+		//down
 		Lane sw8 = new Lane( 36*10+41, 5*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
 		Lane sw9 = new Lane( 43*10+41, 5*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
 		Lane sw10 = new Lane( 16*10+41, 19*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
@@ -352,6 +365,48 @@ public class MainGui extends JFrame
 		Directory.addSidewalk(sw12);
 		Directory.addSidewalk(sw13);
 		
+		//bus pedestrian lanes
+		Lane bl0 = new Lane( 15*10+41, 2*10+30, 10, 30, 0, -1, false, Color.blue, Color.black );
+		Lane bl1 = new Lane( 3*10+41, 2*10+30, 120, 10, -1, 0, true, Color.yellow, Color.black );
+		Lane bl2 = new Lane( 2*10+41, 3*10+30, 10, 20, 0, 1, false, Color.gray, Color.black );
+		Lane bl3 = new Lane( 3*10+41, 4*10+30, 60, 10, 1, 0, true, Color.green, Color.black );
+		Lane bl4 = new Lane( 29*10+41, 2*10+30, 10, 30, 0, 1, false, Color.gray, Color.black );
+		Lane bl5 = new Lane( 30*10+41, 2*10+30, 10, 30, 0, -1, false, Color.blue, Color.black );
+		Lane bl6 = new Lane( 44*10+41, 2*10+30, 10, 30, 0, -1, false, Color.blue, Color.black );
+		Lane bl7 = new Lane( 45*10+41, 2*10+30, 120, 10, 1, 0, true, Color.green, Color.black );
+		Lane bl8 = new Lane( 57*10+41, 3*10+30, 10, 20, 0, 1, false, Color.gray, Color.black );
+		Lane bl9 = new Lane( 51*10+41, 4*10+30, 60, 10, -1, 0, true, Color.yellow, Color.black );
+		Lane bl10 = new Lane( 44*10+41, 25*10+30, 10, 30, 0, 1, false, Color.gray, Color.black );
+		Lane bl11 = new Lane( 45*10+41, 27*10+30, 120, 10, 1, 0, true, Color.green, Color.black );
+		Lane bl12 = new Lane( 57*10+41, 25*10+30, 10, 20, 0, -1, false, Color.blue, Color.black );
+		Lane bl13 = new Lane( 51*10+41, 25*10+30, 60, 10, -1, 0, true, Color.yellow, Color.black );
+		Lane bl14 = new Lane( 30*10+41, 25*10+30, 10, 30, 0, -1, false, Color.blue, Color.black );
+		Lane bl15 = new Lane( 29*10+41, 25*10+30, 10, 30, 0, 1, false, Color.gray, Color.black );
+		Lane bl16 = new Lane( 15*10+41, 25*10+30, 10, 30, 0, 1, false, Color.gray, Color.black );
+		Lane bl17 = new Lane( 3*10+41, 27*10+30, 120, 10, -1, 0, true, Color.yellow, Color.black );
+		Lane bl18 = new Lane( 2*10+41, 25*10+30, 10, 20, 0, -1, false, Color.blue, Color.black );
+		Lane bl19 = new Lane( 3*10+41, 25*10+30, 60, 10, 1, 0, true, Color.green, Color.black );
+		
+		Directory.addBusSidewalk(bl0);
+		Directory.addBusSidewalk(bl1);
+		Directory.addBusSidewalk(bl2);
+		Directory.addBusSidewalk(bl3);
+		Directory.addBusSidewalk(bl4);
+		Directory.addBusSidewalk(bl5);
+		Directory.addBusSidewalk(bl6);
+		Directory.addBusSidewalk(bl7);
+		Directory.addBusSidewalk(bl8);
+		Directory.addBusSidewalk(bl9);
+		Directory.addBusSidewalk(bl10);
+		Directory.addBusSidewalk(bl11);
+		Directory.addBusSidewalk(bl12);
+		Directory.addBusSidewalk(bl13);
+		Directory.addBusSidewalk(bl14);
+		Directory.addBusSidewalk(bl15);
+		Directory.addBusSidewalk(bl16);
+		Directory.addBusSidewalk(bl17);
+		Directory.addBusSidewalk(bl18);
+		Directory.addBusSidewalk(bl19);
 		/*
 		//Create the BuildingPanel for each Building object
 		ArrayList<WorldViewBuilding> worldViewBuildings = _worldView.getBuildings();
@@ -378,31 +433,7 @@ public class MainGui extends JFrame
 			}
 		}
 		*/
-//		int xdim = 60;
-//	    int ydim = 30;
-//	    grid = new Semaphore[xdim][ydim];
-//	    for (int i=0; i<xdim; i++)
-//	    	for (int j=0; j<ydim; j++)
-//	    		grid[i][j] = new Semaphore(1,true);
-//	    //set access to all buildings to false
-//	    for (int i=8; i<16; i++)
-//	    	for (int j=5; j<9; j++)
-//	    		grid[i][j].tryAcquire();
-//	    for (int i=8; i<16; i++)
-//	    	for (int j=19; j<25; j++)
-//	    		grid[i][j].tryAcquire();
-//	    for (int i=24; i<36; i++)
-//	    	for (int j=5; j<9; j++)
-//	    		grid[i][j].tryAcquire();
-//	    for (int i=24; i<36; i++)
-//	    	for (int j=19; j<25; j++)
-//	    		grid[i][j].tryAcquire();
-//	    for (int i=44; i<52; i++)
-//	    	for (int j=5; j<9; j++)
-//	    		grid[i][j].tryAcquire();
-//	    for (int i=44; i<52; i++)
-//	    	for (int j=19; j<25; j++)
-//	    		grid[i][j].tryAcquire();
+
 		int xdim = 60;
 	    int ydim = 30;
 	    grid = new Semaphore[xdim][ydim];

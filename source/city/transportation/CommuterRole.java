@@ -243,7 +243,6 @@ public class CommuterRole extends Role implements Commuter{
 	public void actGoToBusStop(){
 		_busStop = Directory.getNearestBusStop(_gui.getX(), _gui.getY()); //Unit Testing will skip this for now
 		_gui.goToBusStop(_busStop);
-		waitForGuiToReachDestination();
 		_busStop.addCommuterRole(this);
 		_busStop = Directory.getNearestBusStopToDestination(_destination);
 		_tState = TravelState.waitingAtBusStop;
