@@ -333,11 +333,7 @@ public class RyanCookRole extends RestaurantCookRole{
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-<<<<<<< HEAD
     		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
-=======
-    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
->>>>>>> develop
     	}
 	}
 	

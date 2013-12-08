@@ -100,7 +100,7 @@ public class OmarRestaurantAnimationPanel extends JPanel implements ActionListen
         
         //Plating Area
         g2.setColor(Color.PINK);
-        g2.fillRect(550, 130, 110, 75);
+        g2.fillRect(550, 175, 110, 25);
         g2.setColor(Color.BLACK);
         g2.drawString("Plating Area", 560, 110);
         

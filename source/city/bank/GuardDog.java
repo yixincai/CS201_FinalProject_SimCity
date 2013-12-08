@@ -66,9 +66,9 @@ public class GuardDog extends Agent {
 			guardDogSem.acquire();
 		} catch (Exception e){
 			e.printStackTrace();
-		}
-		command = Command.None;
+		} 
 		hitList.remove(0);
+		if(hitList.size() == 0) { command = Command.None; }
 	}
 	
 	//---------- Commands --------
