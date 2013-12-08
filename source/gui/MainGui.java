@@ -282,18 +282,19 @@ public class MainGui extends JFrame
 		}
 		
 		
-		Lane l1 = new Lane( 8*10+41, 15*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
+		Lane l3 = new Lane( 8*10+41, 15*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
+		Lane l4 = new Lane( 24*10+41, 15*10+30, 120, 10, 1, 0, true, Color.green, Color.black );
+		Lane l5 = new Lane( 44*10+41, 15*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
+		Lane l2 = new Lane( 44*10+41, 12*10+30, 80, 10, -1, 0, true, Color.yellow, Color.black );
+		Lane l1 = new Lane( 24*10+41, 12*10+30, 120, 10, -1, 0, true, Color.yellow, Color.black );
+		Lane l0 = new Lane( 8*10+41, 12*10+30, 80, 10, -1, 0, true, Color.yellow, Color.black );
+		Directory.addLanes(l0);
 		Directory.addLanes(l1);
-		Lane l2 = new Lane( 24*10+41, 15*10+30, 120, 10, 1, 0, true, Color.green, Color.black );
 		Directory.addLanes(l2);
-		Lane l3 = new Lane( 44*10+41, 15*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
 		Directory.addLanes(l3);
-		Lane l6 = new Lane( 44*10+41, 12*10+30, 80, 10, -1, 0, true, Color.yellow, Color.black );
-		Directory.addLanes(l6);
-		Lane l5 = new Lane( 24*10+41, 12*10+30, 120, 10, -1, 0, true, Color.yellow, Color.black );
-		Directory.addLanes(l5);
-		Lane l4 = new Lane( 8*10+41, 12*10+30, 80, 10, -1, 0, true, Color.yellow, Color.black );
 		Directory.addLanes(l4);
+		Directory.addLanes(l5);
+
 		//intersections
 		Directory.intersections().add(new Semaphore(1,true));
 		Directory.intersections().add(new Semaphore(1,true));
