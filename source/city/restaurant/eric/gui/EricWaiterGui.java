@@ -141,7 +141,7 @@ public class EricWaiterGui implements Gui
     	// Hack (sorta) to pass the coordinates of the table to the CustomerGui (there might be a better way to do this)
     	customer.gui().cashierIsHere(
     			CASHIER.x ,
-    			CASHIER.y + EricAnimationConstants.PERSON_HEIGHT
+    			CASHIER.y - EricAnimationConstants.PERSON_HEIGHT
     			);
     }
     
@@ -154,7 +154,7 @@ public class EricWaiterGui implements Gui
     public void doNoBreak()
     {
     	// _restaurantGui.notGoingOnBreak(this);
-    	// don't need to go idle--continue with regular work.
+    	// don't need to go idle unless we replace the break location to be different from the idle location
     }
     
     public void doGoOnBreak()
