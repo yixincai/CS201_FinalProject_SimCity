@@ -4,7 +4,7 @@ import java.awt.geom.*;
 
 @SuppressWarnings("serial")
 public class WorldViewBuilding extends Rectangle2D.Double {
-	BuildingInteriorAnimationPanel myBuildingPanel;
+	BuildingInteriorAnimationPanel _myInteriorAnimationPanel;
 
 	// PROPERTIES
 	public int positionX() { return (int)x; }
@@ -19,10 +19,10 @@ public class WorldViewBuilding extends Rectangle2D.Double {
 	}
 
 	public void displayBuilding() {
-		myBuildingPanel.displayBuildingPanel();
+		_myInteriorAnimationPanel.displayBuildingPanel();
 	}
 
 	public void setBuildingPanel( BuildingInteriorAnimationPanel bp ) {
-		myBuildingPanel = bp;
+		_myInteriorAnimationPanel = bp;
 	}
 }

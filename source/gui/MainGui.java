@@ -18,6 +18,7 @@ import city.Time;
 import city.bank.Bank;
 import city.home.*;
 import city.market.Market;
+import city.restaurant.eric.EricRestaurant;
 import city.restaurant.omar.OmarRestaurant;
 import city.restaurant.ryan.RyanRestaurant;
 import city.restaurant.yixin.YixinRestaurant;
@@ -137,21 +138,21 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(rr.name());
 		_buildingInteriorAnimationPanels.add(bpR);
 
-		//TODO change to Eric's restaurant
-		WorldViewBuilding restaurantBuilding4 = _worldView.addBuilding(32, 19, 40);
-		BuildingInteriorAnimationPanel restaurantBuildingPanel4 = new BuildingInteriorAnimationPanel(this, "Eric's Restaurant", new city.restaurant.yixin.gui.YixinAnimationPanel());
-		restaurantBuilding4.setBuildingPanel(restaurantBuildingPanel4);
-		YixinRestaurant er = new YixinRestaurant("Eric's Restaurant", restaurantBuilding4, restaurantBuildingPanel4);
-		Directory.addPlace(er);
-		_buildingCardLayoutPanel.add( restaurantBuildingPanel4, restaurantBuildingPanel4.getName() );
-		cPanel.currentBuildingPanel.addBuilding(er.name());
-		_buildingInteriorAnimationPanels.add(restaurantBuildingPanel4);
+		// Eric's restaurant
+		WorldViewBuilding worldViewBuildingEric = _worldView.addBuilding(32, 19, 40);
+		BuildingInteriorAnimationPanel restaurantInteriorPanelEric = new BuildingInteriorAnimationPanel(this, "Eric's Restaurant", new city.restaurant.eric.gui.EricAnimationPanel(682, 360));
+		worldViewBuildingEric.setBuildingPanel(restaurantInteriorPanelEric);
+		EricRestaurant newEricRestaurant = new EricRestaurant("Eric's Restaurant", worldViewBuildingEric, restaurantInteriorPanelEric);
+		Directory.addPlace(newEricRestaurant);
+		_buildingCardLayoutPanel.add( restaurantInteriorPanelEric, restaurantInteriorPanelEric.getName() );
+		cPanel.currentBuildingPanel.addBuilding(newEricRestaurant.name());
+		_buildingInteriorAnimationPanels.add(restaurantInteriorPanelEric);
 		
 		//TODO change to Tanner's restaurant
 		WorldViewBuilding restaurantBuilding5 = _worldView.addBuilding(44, 5, 40);
-		BuildingInteriorAnimationPanel restaurantBuildingPanel5 = new BuildingInteriorAnimationPanel(this, "Tanner's Restaurant", new city.restaurant.yixin.gui.YixinAnimationPanel());
+		BuildingInteriorAnimationPanel restaurantBuildingPanel5 = new BuildingInteriorAnimationPanel(this, "Yixin's Restaurant 2", new city.restaurant.yixin.gui.YixinAnimationPanel());
 		restaurantBuilding5.setBuildingPanel(restaurantBuildingPanel5);
-		YixinRestaurant tr = new YixinRestaurant("Tanner's Restaurant", restaurantBuilding5, restaurantBuildingPanel5);
+		YixinRestaurant tr = new YixinRestaurant("Yixin's Restaurant 2", restaurantBuilding5, restaurantBuildingPanel5);
 		Directory.addPlace(tr);
 		_buildingCardLayoutPanel.add( restaurantBuildingPanel5, restaurantBuildingPanel5.getName() );
 		cPanel.currentBuildingPanel.addBuilding(tr.name());

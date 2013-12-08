@@ -139,7 +139,7 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
         for ( int i=0; i<buildings.size(); i++ ) {
                 WorldViewBuilding b = buildings.get(i);
                 if ( b.contains( e.getX(), e.getY() ) ) {
-                	if(b.myBuildingPanel != null){
+                	if(b._myInteriorAnimationPanel != null){
                         b.displayBuilding();
                 	}
                 }
