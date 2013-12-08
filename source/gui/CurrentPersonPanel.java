@@ -1,5 +1,7 @@
 package gui;
 
+import gui.trace.AlertTag;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,8 +13,10 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import city.Directory;
@@ -22,7 +26,15 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 {
 	JPanel view;
 	JPanel buttonPanel;
+	
 	JPanel infoPanel;
+	JCheckBox action;
+	JCheckBox action2;
+	JCheckBox action3;
+	JCheckBox action4;
+	JButton addSelectedActions;
+	PersonAgent _currentlySelectedPerson;
+	
 	JLabel nameField;
 	JLabel moneyField;
 	JLabel currentRoleField;
@@ -30,6 +42,7 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 	ControlPanel cPanel;
 	private final int WIDTH = 1024/3;
 	private final int HEIGHT = 720;
+	private final Dimension buttonDimension = new Dimension(340, 30);
 	
 	public CurrentPersonPanel(ControlPanel cp)
 	{
@@ -51,6 +64,53 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		infoPanel.add(nameField); 
 		infoPanel.add(moneyField); 
 		infoPanel.add(currentRoleField); 
+		
+		 action = new JCheckBox("Go To Omar Restaurant");
+		 action.setMinimumSize(buttonDimension);
+		 action.setMaximumSize(buttonDimension);
+         
+		 action2 = new JCheckBox("Go To Yixin Restaurant");
+		 action2.setMinimumSize(buttonDimension);
+		 action2.setMaximumSize(buttonDimension);
+         
+		 action3 = new JCheckBox("Go To Eric Restaurant");
+		 action3.setMinimumSize(buttonDimension);
+		 action3.setMaximumSize(buttonDimension);
+         
+		 action4 = new JCheckBox("Go To Ryan Restaurant");
+		 action4.setMinimumSize(buttonDimension);
+		 action4.setMaximumSize(buttonDimension);
+         
+		 addSelectedActions = new JButton("Add Actions");
+		 addSelectedActions.setMinimumSize(buttonDimension);
+		 addSelectedActions.setMaximumSize(buttonDimension);
+		 
+		 addSelectedActions.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+            	 if(_currentlySelectedPerson != null){
+	                 if(action.isSelected()){
+	                	 _currentlySelectedPerson.addActionToDo("Go to Omar Restaurant");
+	                 }
+	                 if(action2.isSelected()){
+	                	 _currentlySelectedPerson.addActionToDo("Go to Yixin Restaurant");
+	                 }
+	                 if(action3.isSelected()){
+	                	 _currentlySelectedPerson.addActionToDo("Go to Eric Restaurant");
+	                 }
+	                 if(action4.isSelected()){
+	                	 _currentlySelectedPerson.addActionToDo("Go to Ryan Restaurant");
+	                 }
+            	 }
+             }
+         });
+		 
+		 infoPanel.add(action);
+		 infoPanel.add(action2);
+		 infoPanel.add(action3);
+		 infoPanel.add(action4);
+		 infoPanel.add(addSelectedActions);
+         
 		this.add(infoPanel, BorderLayout.NORTH);
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
@@ -86,6 +146,7 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		{
 			if(tempPerson.name() == selected.getText())
 			{
+				_currentlySelectedPerson = tempPerson;
 				nameField.setText("Person Name: " + tempPerson.name());
 				moneyField.setText("Person Money: " + tempPerson.money() + "0");
 			//	currentRoleField.setText("Current Role: Need to implement toString() for the different roles.");
