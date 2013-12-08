@@ -1,5 +1,7 @@
 package city.restaurant.ryan;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -289,7 +291,7 @@ public class RyanCookRole extends RestaurantCookRole{
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-    		print("Unexpected exception caught in Agent thread:", a);
+    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
     	}
 	}
 	
@@ -331,7 +333,7 @@ public class RyanCookRole extends RestaurantCookRole{
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-    		print("Unexpected exception caught in Agent thread:", a);
+    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
     	}
 	}
 	

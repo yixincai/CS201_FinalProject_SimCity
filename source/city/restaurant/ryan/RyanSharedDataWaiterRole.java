@@ -1,5 +1,6 @@
 package city.restaurant.ryan;
 
+import gui.trace.AlertTag;
 import city.PersonAgent;
 import city.restaurant.ryan.RyanWaiterRole.customerState;
 import city.restaurant.ryan.RyanWaiterRole.waiterPlace;
@@ -23,7 +24,7 @@ public class RyanSharedDataWaiterRole extends RyanWaiterRole {
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-    		print("Unexpected exception caught in Agent thread:", a);
+    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
     	}
 		
 	}

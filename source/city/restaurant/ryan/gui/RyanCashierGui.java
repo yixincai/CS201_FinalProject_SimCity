@@ -20,7 +20,7 @@ public class RyanCashierGui extends JPanel implements Gui{
 	Command command = Command.noCommand;
 	
 	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Cashier.png"));
-    Image normal = a.getImage();
+    Image cashier = a.getImage();
     int xGap = 19;
     int yGap = 25;
 	
@@ -64,7 +64,7 @@ public class RyanCashierGui extends JPanel implements Gui{
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
 		if(agent.active){
-			g.drawImage(normal, xPos, yPos, xGap, yGap, this);
+			g.drawImage(cashier, xPos, yPos, xGap, yGap, this);
 		}
 	        
 		

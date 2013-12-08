@@ -18,8 +18,8 @@ public class MarketEmployeeGui extends JPanel implements Gui {
 	private Command command=Command.noCommand;
     
 	private ImageIcon a = new ImageIcon(this.getClass().getResource("/image/market/MarketEmployee.png"));
-	int xGap = 18;
-	int yGap = 23;
+	int xGap = 25;
+	int yGap = 32;
 	private Image employee = a.getImage();
     
     public MarketEmployeeGui(MarketEmployeeRole agent) {

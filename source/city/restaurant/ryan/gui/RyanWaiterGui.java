@@ -35,13 +35,12 @@ public class RyanWaiterGui extends JPanel implements Gui {
     Image normal = a.getImage();
     ImageIcon b = new ImageIcon(this.getClass().getResource("/image/restaurant/SharedDataWaiter.png"));
     Image shared = b.getImage();
-    int xGap, yGap;
+    int xGap = 17;
+    int yGap = 27;
     
     public boolean offScreen = false;
 
     public RyanWaiterGui(RyanWaiterRole agent, int count) {
-    	xGap = 17;
-    	yGap = 27;
         this.agent = agent;
         xDestination = 10;
         yDestination = 80 + 25*count;

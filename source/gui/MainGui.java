@@ -357,23 +357,23 @@ public class MainGui extends JFrame
 		this.pack();		
 		this.setVisible(true);
 		
-		// //Ryan Restaurant interaction
-		// cPanel.addPerson("Ryan", 300, "Restaurant Host", true, "apartment");
-		// cPanel.addPerson("Ryan1", 300, "Restaurant Cashier", true, "apartment");
-		// cPanel.addPerson("Ryan2", 300, "Cook", true, "apartment");
-		
-		// cPanel.addPerson("Ryan3", 300, "Restaurant Host", true, "apartment");
-		// cPanel.addPerson("Ryan4", 300, "Restaurant Cashier", true, "apartment");
-		// cPanel.addPerson("Ryan5", 300, "Cook", true, "apartment");
-		
-		// cPanel.addPerson("Ryan6", 300, "Restaurant Host", true, "apartment");
-		// cPanel.addPerson("Ryan7", 300, "Restaurant Cashier", true, "apartment");
-		// cPanel.addPerson("Ryan8", 300, "Cook", true, "apartment");
-		// cPanel.addPerson("Ryan9", 300, "Ryan Waiter", true, "house");
-		// cPanel.addPerson("Ryan10", 300, "Ryan Customer", true, "apartment");
-		
-		// cPanel.addPerson("Ryan11", 300, "Market Cashier", true, "apartment");
-		// cPanel.addPerson("Ryan12", 300, "Market Employee", true, "apartment");
+		//Ryan Restaurant interaction
+//		cPanel.addPerson("Ryan", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan1", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan2", 300, "Cook", true, "apartment");
+//		
+//		cPanel.addPerson("Ryan3", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan4", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan5", 300, "Cook", true, "apartment");
+//		
+//		cPanel.addPerson("Ryan6", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan7", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan8", 300, "Cook", true, "apartment");
+//		cPanel.addPerson("Ryan9", 300, "Ryan Waiter", true, "house");
+//		cPanel.addPerson("Ryan10", 300, "Ryan Customer", true, "apartment");
+//		
+//		cPanel.addPerson("Ryan11", 300, "Market Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan12", 300, "Market Employee", true, "apartment");
 		Time.startTimer();
 	}
 	

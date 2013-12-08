@@ -38,7 +38,7 @@ public class RyanCookGui extends JPanel implements Gui{
 	Command command = Command.noCommand;
 	
 	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Chef.png"));
-    Image normal = a.getImage();
+    Image cook = a.getImage();
     int xGap = 18;
     int yGap = 32;
 	
@@ -220,7 +220,7 @@ public class RyanCookGui extends JPanel implements Gui{
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
 		if(agent.active){
-			g.drawImage(normal, xPos, yPos, xGap, yGap, this);
+			g.drawImage(cook, xPos, yPos, xGap, yGap, this);
 		}
         
         if(hasIngredients){

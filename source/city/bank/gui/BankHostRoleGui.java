@@ -21,7 +21,7 @@ public class BankHostRoleGui extends JPanel implements Gui {
 	private int width = 20;
 	private int height = 20;
 	private int xCoord = 382;
-	private int yCoord = 180;
+	private int yCoord = 140;
 	
 	private ImageIcon a = new ImageIcon(this.getClass().getResource("/image/bank/BankHost.png"));
 	int xGap = 20;
