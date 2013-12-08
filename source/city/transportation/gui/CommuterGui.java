@@ -315,7 +315,7 @@ public class CommuterGui implements Gui {
 	public void getOffCar(){
 	}
 	 */	
-	
+
 	public void driveToLocation(Place destination){
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
@@ -554,9 +554,240 @@ public class CommuterGui implements Gui {
 
 	//Bus gui
 	public void goToBusStop(BusStopObject busstop){
-		//TODO set present position
-		
-		setPresent(true);
+		// set current x & y to _commuter.currrentPlace()
+		// set visible to true
+		//TODO set position and destination
+//		route.clear();
+//		setPresent(true);
+//		_destinationBlockX = getBlockX(placeX(destination));
+//		_destinationBlockY = getBlockY(placeY(destination));
+//		if (_destinationBlockX == _currentBlockX && _destinationBlockY == _currentBlockY){
+//			return;
+//		}
+//		route.add(_currentBlockX + 3 * _currentBlockY);
+//		if (_currentBlockY == 0){
+//			if ( _destinationBlockX > _currentBlockX){ //going right
+//				intersections.add(_currentBlockX + _currentBlockY);
+//				_currentBlockY++;
+//				route.add(_currentBlockX + 3 * _currentBlockY);
+//				while (_currentBlockX < _destinationBlockX){
+//					intersections.add(_currentBlockX + _currentBlockY);
+//					_currentBlockX++;
+//					route.add(_currentBlockX + 3 * _currentBlockY);
+//				}
+//				if (_currentBlockY > _destinationBlockY){
+//					intersections.add(_currentBlockX + _currentBlockY);
+//					_currentBlockY--;
+//					route.add(_currentBlockX + 3 * _currentBlockY);
+//				}
+//			}
+//			else{//going left or down
+//				while (_currentBlockX > _destinationBlockX){
+//					intersections.add(_currentBlockX + _currentBlockY);
+//					_currentBlockX--;
+//					route.add(_currentBlockX + 3 * _currentBlockY);
+//				}
+//				if (_currentBlockY < _destinationBlockY){
+//					intersections.add(_currentBlockX + _currentBlockY);
+//					_currentBlockY++;
+//					route.add(_currentBlockX + 3 * _currentBlockY);
+//				}
+//			}	
+//		}
+//		else if (_currentBlockY == 1){
+//			if ( _destinationBlockX > _currentBlockX){ //going right
+//				while (_currentBlockX < _destinationBlockX){
+//					intersections.add(_currentBlockX + _currentBlockY);
+//					_currentBlockX++;
+//					route.add(_currentBlockX + 3 * _currentBlockY);
+//				}
+//				if (_currentBlockY > _destinationBlockY){
+//					intersections.add(_currentBlockX + _currentBlockY);
+//					_currentBlockY--;
+//					route.add(_currentBlockX + 3 * _currentBlockY);
+//				}
+//			}
+//			else{//going left or up
+//				intersections.add(_currentBlockX + _currentBlockY);
+//				_currentBlockY--;
+//				route.add(_currentBlockX + 3 * _currentBlockY);
+//				while (_currentBlockX > _destinationBlockX){
+//					intersections.add(_currentBlockX + _currentBlockY);
+//					_currentBlockX--;
+//					route.add(_currentBlockX + 3 * _currentBlockY);
+//				}
+//				if (_currentBlockY < _destinationBlockY){
+//					intersections.add(_currentBlockX + _currentBlockY);
+//					_currentBlockY++;
+//					route.add(_currentBlockX + 3 * _currentBlockY);
+//				}
+//			}	
+//		}
+//		//		route.add(3);
+//		//		intersections.add(1);
+//		//		route.add(4);
+//		//		intersections.add(2);
+//		//		route.add(5);
+//		//		intersections.add(3);
+//		//		route.add(2);
+//		for (int i=0; i< route.size();i++){
+//			Lane lane = Directory.lanes().get(route.get(i));
+//			int starting_position = 0;
+//			if (i == 0) {
+//				if (parkingSpot > 0)
+//					starting_position = parkingSpot;
+//			}
+//			for (int j=starting_position; j< lane.permits.size();j++){//TODO change starting position
+//				while(!lane.permits.get(j).tryAcquire()){
+//					_lookUpDelay.schedule(new TimerTask(){
+//						@Override
+//						public void run() {
+//							_delayForMoving.release();
+//						}
+//					}, 10);
+//
+//					try{
+//						_delayForMoving.acquire();
+//					}
+//					catch(InterruptedException e){
+//						e.printStackTrace();
+//					}
+//				}
+//				if (lane.isHorizontal){
+//					if (lane.xVelocity>0){
+//						_xDestination = lane.xOrigin + 10 * lane.xVelocity * j;
+//						_yDestination = lane.yOrigin;
+//					}
+//					else {
+//						_xDestination = lane.xOrigin + 10 * lane.permits.size() + 10 * lane.xVelocity * (j+1);
+//						_yDestination = lane.yOrigin;
+//					}
+//				}
+//				else {
+//					if (lane.yVelocity>0){
+//						_yDestination = lane.yOrigin + 10 * lane.yVelocity * j;
+//						_xDestination = lane.xOrigin;
+//					}
+//					else{
+//						_yDestination = lane.yOrigin + 10 * lane.permits.size() + 10 * lane.yVelocity * (j+1);
+//						_xDestination = lane.xOrigin;
+//					}
+//				}
+//				_transportationMethod = Command.waitForAnimation;
+//				waitForLaneToFinish();
+//				//free parking spaces
+//				if (i == 0 && j == starting_position){
+//					lane.parking_spaces.get(j).release();
+//				}
+//				if (i != 0 && j == starting_position){
+//					Directory.intersections().get(intersections.get(i-1)).release();
+//				}
+//				//release the former spot
+//				if (j!=starting_position)
+//					lane.permits.get(j-1).release();
+//				//find parking spaces in last lane
+//				if (i == route.size() - 1){
+//					if (lane.parking_spaces.get(j).tryAcquire()){
+//						//move to the spot, release and record
+//						if (lane.isHorizontal){
+//							if (lane.xVelocity>0){
+//								_yDestination += 10;
+//							}
+//							else {
+//								_yDestination -=  10;
+//							}
+//						}
+//						else {
+//							if (lane.yVelocity>0){
+//								_xDestination -= 10;
+//							}
+//							else{
+//								_xDestination += 10;
+//							}
+//						}
+//						_transportationMethod = Command.waitForAnimation;
+//						waitForLaneToFinish();
+//						lane.permits.get(j).release();
+//						parkingSpot = j;
+//						return;
+//					}
+//					else {
+//						//go ahead and try another
+//						if (j == lane.permits.size() - 1){
+//							setPresent(false);
+//							if (lane.isHorizontal){
+//								if (lane.xVelocity>0){
+//									_yDestination += 10;
+//								}
+//								else {
+//									_yDestination -=  10;
+//								}
+//							}
+//							else {
+//								if (lane.yVelocity>0){
+//									_xDestination -= 10;
+//								}
+//								else{
+//									_xDestination += 10;
+//								}
+//							}
+//							_xPos = _xDestination;
+//							_yPos = _yDestination;
+//							lane.permits.get(j).release();
+//						}
+//					}
+//				}
+//			}
+//
+//			if (i<route.size() - 1){
+//				Lane next_lane = Directory.lanes().get(route.get(i+1));
+//				while(!Directory.intersections().get(intersections.get(i)).tryAcquire()){
+//					_lookUpDelay.schedule(new TimerTask(){
+//						@Override
+//						public void run() {
+//							_delayForMoving.release();
+//						}
+//					}, 10);
+//
+//					try{
+//						_delayForMoving.acquire();
+//					}
+//					catch(InterruptedException e){
+//						e.printStackTrace();
+//					}
+//				};
+//				if (next_lane.isHorizontal){
+//					if (next_lane.xVelocity>0){
+//						_xDestination = next_lane.xOrigin - 10;
+//						_yDestination = next_lane.yOrigin;
+//					}
+//					else {
+//						_xDestination = next_lane.xOrigin + 10 * next_lane.permits.size();
+//						_yDestination = next_lane.yOrigin;
+//					}
+//				}
+//				else {
+//					if (next_lane.yVelocity>0){
+//						_yDestination = next_lane.yOrigin - 10;
+//						_xDestination = next_lane.xOrigin;
+//					}
+//					else{
+//						_yDestination = next_lane.yOrigin + 10 * next_lane.permits.size();
+//						_xDestination = next_lane.xOrigin;
+//					}
+//				}
+//				_transportationMethod = Command.waitForAnimation;
+//				waitForLaneToFinish();
+//				//TODO to get rid of deadlock acquire both intersection and the first spot in next lane
+//				lane.permits.get(lane.permits.size()-1).release();
+//			}
+//		}
+//		//TODO if we have parking area do not set present to false but show in parking lot
+//		//setPresent(false);
+//		//set automatically
+//		_currentBlockX = _destinationBlockX;
+//		_currentBlockY = _destinationBlockY;				
+//		setPresent(true);
 	}
 
 	public void getOnBus(){
