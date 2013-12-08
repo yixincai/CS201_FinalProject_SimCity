@@ -5,9 +5,7 @@ package gui;
  * @author Tanner Zigrang
  */
 
-import gui.trace.AlertLog;
-import gui.trace.AlertTag;
-import gui.trace.TracePanel;
+import gui.trace.*;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -111,14 +109,15 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(market.name());
 		_buildingInteriorAnimationPanels.add(bp3);
 		
-		WorldViewBuilding marketBuilding2 = _worldView.addBuilding(28, 5, 40);
-		BuildingInteriorAnimationPanel marketBuildingPanel2 = new BuildingInteriorAnimationPanel(this, "Market 2", new city.market.gui.MarketAnimationPanel());
-		marketBuilding2.setBuildingPanel(marketBuildingPanel2);
-		Market market2 = new Market("Market 2", marketBuilding2, marketBuildingPanel2, _worldView);
-		Directory.addPlace(market2);
-		_buildingCardLayoutPanel.add( marketBuildingPanel2, marketBuildingPanel2.getName() );
-		cPanel.currentBuildingPanel.addBuilding(market2.name());
-		_buildingInteriorAnimationPanels.add(marketBuildingPanel2);
+		//Bank
+		WorldViewBuilding b2 = _worldView.addBuilding(28, 5, 40);
+		BuildingInteriorAnimationPanel bp2 = new BuildingInteriorAnimationPanel(this, "Bank", new city.bank.gui.BankAnimationPanel());
+		b2.setBuildingPanel(bp2);
+		Bank bank = new Bank("Bank", b2, bp2);
+		Directory.addPlace(bank);
+		_buildingCardLayoutPanel.add( bp2, bp2.getName() );
+		cPanel.currentBuildingPanel.addBuilding(bank.name());
+		_buildingInteriorAnimationPanels.add(bp2);
 		
 		// Yixin's Restaurant:
 		WorldViewBuilding b = _worldView.addBuilding(32, 5, 40);
@@ -159,9 +158,29 @@ public class MainGui extends JFrame
 		_buildingCardLayoutPanel.add( restaurantBuildingPanel4, restaurantBuildingPanel4.getName() );
 		cPanel.currentBuildingPanel.addBuilding(er.name());
 		_buildingInteriorAnimationPanels.add(restaurantBuildingPanel4);
+
+		//another market
+		WorldViewBuilding marketBuilding2 = _worldView.addBuilding(44, 5, 40);
+		BuildingInteriorAnimationPanel marketBuildingPanel2 = new BuildingInteriorAnimationPanel(this, "Market 2", new city.market.gui.MarketAnimationPanel());
+		marketBuilding2.setBuildingPanel(marketBuildingPanel2);
+		Market market2 = new Market("Market 2", marketBuilding2, marketBuildingPanel2, _worldView);
+		Directory.addPlace(market2);
+		_buildingCardLayoutPanel.add( marketBuildingPanel2, marketBuildingPanel2.getName() );
+		cPanel.currentBuildingPanel.addBuilding(market2.name());
+		_buildingInteriorAnimationPanels.add(marketBuildingPanel2);
+
+		//another bank
+		WorldViewBuilding bankBuilding2 = _worldView.addBuilding(48, 5, 40);
+		BuildingInteriorAnimationPanel bankBuildingPanel2 = new BuildingInteriorAnimationPanel(this, "Bank 2", new city.bank.gui.BankAnimationPanel());
+		bankBuilding2.setBuildingPanel(bankBuildingPanel2);
+		Bank bank2 = new Bank("Bank 2", bankBuilding2, bankBuildingPanel2);
+		Directory.addPlace(bank2);
+		_buildingCardLayoutPanel.add( bankBuildingPanel2, bankBuildingPanel2.getName() );
+		cPanel.currentBuildingPanel.addBuilding(bank2.name());
+		_buildingInteriorAnimationPanels.add(bankBuildingPanel2);
 		
 		//TODO change to Tanner's restaurant
-		WorldViewBuilding restaurantBuilding5 = _worldView.addBuilding(44, 5, 40);
+		WorldViewBuilding restaurantBuilding5 = _worldView.addBuilding(44, 19, 40);
 		BuildingInteriorAnimationPanel restaurantBuildingPanel5 = new BuildingInteriorAnimationPanel(this, "Tanner's Restaurant", new city.restaurant.yixin.gui.YixinAnimationPanel());
 		restaurantBuilding5.setBuildingPanel(restaurantBuildingPanel5);
 		YixinRestaurant tr = new YixinRestaurant("Tanner's Restaurant", restaurantBuilding5, restaurantBuildingPanel5);
@@ -169,25 +188,6 @@ public class MainGui extends JFrame
 		_buildingCardLayoutPanel.add( restaurantBuildingPanel5, restaurantBuildingPanel5.getName() );
 		cPanel.currentBuildingPanel.addBuilding(tr.name());
 		_buildingInteriorAnimationPanels.add(restaurantBuildingPanel5);
-		
-		//Bank
-		WorldViewBuilding b2 = _worldView.addBuilding(48, 5, 40);
-		BuildingInteriorAnimationPanel bp2 = new BuildingInteriorAnimationPanel(this, "Bank", new city.bank.gui.BankAnimationPanel());
-		b2.setBuildingPanel(bp2);
-		Bank bank = new Bank("Bank", b2, bp2);
-		Directory.addPlace(bank);
-		_buildingCardLayoutPanel.add( bp2, bp2.getName() );
-		cPanel.currentBuildingPanel.addBuilding(bank.name());
-		_buildingInteriorAnimationPanels.add(bp2);
-		
-//		WorldViewBuilding bankBuilding2 = _worldView.addBuilding(44, 19, 40);
-//		BuildingInteriorAnimationPanel bankBuildingPanel2 = new BuildingInteriorAnimationPanel(this, "Bank 2", new city.bank.gui.BankAnimationPanel());
-//		bankBuilding2.setBuildingPanel(bankBuildingPanel2);
-//		Bank bank2 = new Bank("Bank 2", bankBuilding2, bankBuildingPanel2);
-//		Directory.addPlace(bank2);
-//		_buildingCardLayoutPanel.add( bankBuildingPanel2, bankBuildingPanel2.getName() );
-//		cPanel.currentBuildingPanel.addBuilding(bank2.name());
-//		_buildingInteriorAnimationPanels.add(bankBuildingPanel2);
 		
 		//Initializing houses
 		for(int i = 1; i < 3; i++){
@@ -294,6 +294,23 @@ public class MainGui extends JFrame
 		Directory.addLanes(l3);
 		Directory.addLanes(l4);
 		Directory.addLanes(l5);
+		
+		Lane tl0 = new Lane( 19*10+41, 5*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
+		Lane tl1 = new Lane( 20*10+41, 5*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
+		Lane tl2 = new Lane( 39*10+41, 5*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
+		Lane tl3 = new Lane( 40*10+41, 5*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
+		Lane tl4 = new Lane( 19*10+41, 19*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
+		Lane tl5 = new Lane( 20*10+41, 19*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
+		Lane tl6 = new Lane( 39*10+41, 19*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
+		Lane tl7 = new Lane( 40*10+41, 19*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
+		Directory.addTruckLanes(tl0);
+		Directory.addTruckLanes(tl1);
+		Directory.addTruckLanes(tl2);
+		Directory.addTruckLanes(tl3);
+		Directory.addTruckLanes(tl4);
+		Directory.addTruckLanes(tl5);
+		Directory.addTruckLanes(tl6);
+		Directory.addTruckLanes(tl7);
 
 		//intersections
 		Directory.intersections().add(new Semaphore(1,true));

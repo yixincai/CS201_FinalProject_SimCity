@@ -113,6 +113,11 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 			l.draw( g2 );
 		}
 		
+		for ( int i=0; i<Directory.truckLanes().size(); i++ ) {
+			Lane l = Directory.truckLanes().get(i);
+			l.draw( g2 );
+		}
+		
 		try
 		{
 	        for(Gui gui : guis)
