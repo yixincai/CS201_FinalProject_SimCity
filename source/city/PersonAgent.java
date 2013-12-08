@@ -175,6 +175,22 @@ public class PersonAgent extends Agent implements Person
 					return;
 				}
 			}
+			
+			List<ApartmentBuilding> apartmentBuildings = Directory.apartmentBuildings();
+			for(ApartmentBuilding b : apartmentBuildings)
+			{
+				List<Apartment> apartments = b.apartments();
+				for(Apartment a : apartments)
+				{
+					HomeOccupantRole newHomeOccupantRole = a.tryGenerateHomeOccupantRole(this);
+					if(newHomeOccupantRole != null)
+					{
+						_homeOccupantRole = newHomeOccupantRole;
+						_homeBuyingRole = a.generateHomeBuyingRole(this);
+						return;
+					}
+				}
+			}
 		}
 		else
 		{

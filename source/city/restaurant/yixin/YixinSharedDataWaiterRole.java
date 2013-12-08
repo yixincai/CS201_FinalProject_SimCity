@@ -1,5 +1,6 @@
 package city.restaurant.yixin;
 
+import gui.trace.AlertTag;
 import city.PersonAgent;
 import city.Place;
 
@@ -10,12 +11,12 @@ public class YixinSharedDataWaiterRole extends YixinWaiterRole{
 
 	@Override
 	protected void processOrder(YixinWaiterRole.MyCustomer customer) {
-		print("Process order");
+		print(AlertTag.YIXIN_RESTAURANT,"Process order");
 		customer.state = MyCustomer.CustomerState.none;
 		DoGoToRevolvingStand();
-		print("Making a new order");
+		print(AlertTag.YIXIN_RESTAURANT,"Making a new order");
         Order data = new Order(this, customer.choice, customer.tableNumber, Order.OrderState.NotCooked);
-        print("Trying to put order on revolving stand");
+        print(AlertTag.YIXIN_RESTAURANT,"Trying to put order on revolving stand");
         restaurant.revolving_stand.insert(data);
 	}
 

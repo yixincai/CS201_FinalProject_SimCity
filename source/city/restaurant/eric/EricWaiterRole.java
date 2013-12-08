@@ -5,6 +5,7 @@ import city.Place;
 import city.interfaces.Person;
 import city.restaurant.eric.interfaces.*;
 import city.restaurant.eric.gui.EricWaiterGui;
+import gui.trace.AlertTag;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -102,7 +103,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 	
 	public void msgSeatCustomer(EricCustomer ca, int tableNumber) // from Host
 	{
-		print(_host.name() + " told me to seat " + ca.name());
+		print(AlertTag.ERIC_RESTAURANT, _host.name() + " told me to seat " + ca.name());
 		MyCustomer c = new MyCustomer();
 		c.agent = ca;
 		c.tableNumber = tableNumber;
@@ -126,7 +127,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 	
 	public void msgHeresMyChoice(EricCustomer sender, String choice)
 	{
-		print(sender.name() + " chooses " + choice);
+		print(AlertTag.ERIC_RESTAURANT, sender.name() + " chooses " + choice);
 		for(MyCustomer c : customers)
 		{
 			if(c.agent == sender)
@@ -149,7 +150,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 			{
 				if(c.order.choice.equals(choice))
 				{
-					print(_cook.name() + " says that we're out of " + c.agent.name() + "'s order of " + c.order.choice);
+					print(AlertTag.ERIC_RESTAURANT,_cook.name() + " says that we're out of " + c.agent.name() + "'s order of " + c.order.choice);
 					c.order.state = OrderState.GONE;
 					stateChanged();
 				}
@@ -215,7 +216,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 		if(_breakState == BreakState.NOT_ON_BREAK)
 		{
 			_breakState = BreakState.WANT_A_BREAK;
-			print("I want a break!");
+			print(AlertTag.ERIC_RESTAURANT,"I want a break!");
 			stateChanged();
 		}
 	}
@@ -228,14 +229,14 @@ public class EricWaiterRole extends Role implements EricWaiter
 	
 	public void msgFinishCustomersGoOnBreak()
 	{
-		print("I will finish my customers then go on break");
+		print(AlertTag.ERIC_RESTAURANT,"I will finish my customers then go on break");
 		_breakState = BreakState.HOST_SAID_GO_ON_BREAK;
 		stateChanged();
 	}
 	
 	public void msgBreaksOver()
 	{
-		print("Break's over!");
+		print(AlertTag.ERIC_RESTAURANT,"Break's over!");
 		_breakState = BreakState.RETURNING_FROM_BREAK;
 		stateChanged();
 	}
@@ -334,11 +335,11 @@ public class EricWaiterRole extends Role implements EricWaiter
 
 	private void actSeatCustomer(MyCustomer customer)
 	{
-		print("Going to front desk to get customer");
+		print(AlertTag.ERIC_RESTAURANT,"Going to front desk to get customer");
 		_gui.doGoToFrontDesk();
 		waitForGuiToReachDestination();
 		
-		print("Seating Customer " + customer.agent.name() + " at Table " + customer.tableNumber);
+		print(AlertTag.ERIC_RESTAURANT,"Seating Customer " + customer.agent.name() + " at Table " + customer.tableNumber);
 		
 		// This order is important; i.e. setting customer.state to CHOOSING_ORDER first (fixes a concurrency clobbering error that arises from getting msgReadyToOrder from CustomerAgent before this line executes)
 		customer.state = CustomerState.CHOOSING_ORDER;
@@ -352,7 +353,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 	
 	private void actTakeOrder(MyCustomer c)
 	{
-		print("Going to table " + c.tableNumber + " to take order from " + c.agent.name());
+		print(AlertTag.ERIC_RESTAURANT,"Going to table " + c.tableNumber + " to take order from " + c.agent.name());
 		
 		_gui.doGoToTable(c.tableNumber);
 		waitForGuiToReachDestination();
@@ -369,11 +370,11 @@ public class EricWaiterRole extends Role implements EricWaiter
 
 	private void actGiveOrderToCook(MyCustomer c)
 	{
-		print("Going to cook to give Customer " + c.agent.name() + "'s order");
+		print(AlertTag.ERIC_RESTAURANT,"Going to cook to give Customer " + c.agent.name() + "'s order");
 		_gui.doTakeOrderToCook(c.order.choice);
 		waitForGuiToReachDestination();
 		
-		print("Giving order of " + c.order.choice + " to cook.");
+		print(AlertTag.ERIC_RESTAURANT,"Giving order of " + c.order.choice + " to cook.");
 		
 		_cook.msgHereIsOrder(this, c.order.choice, c.tableNumber);
 		c.order.state = OrderState.COOKING;
@@ -383,7 +384,7 @@ public class EricWaiterRole extends Role implements EricWaiter
 	
 	private void actTellCustomerOutOfChoice(MyCustomer c)
 	{
-		print("Going to tell Customer " + c.agent.name() + " that we're out of his/her order of " + c.order.choice);
+		print(AlertTag.ERIC_RESTAURANT,"Going to tell Customer " + c.agent.name() + " that we're out of his/her order of " + c.order.choice);
 		
 		_gui.doGoToTable(c.tableNumber);
 		waitForGuiToReachDestination();
@@ -398,15 +399,15 @@ public class EricWaiterRole extends Role implements EricWaiter
 
 	private void actBringFoodToCustomer(MyCustomer c)
 	{
-		print("Going to cook to pick up " + c.agent.name() + "'s order of " + c.order.choice);
+		print(AlertTag.ERIC_RESTAURANT,"Going to cook to pick up " + c.agent.name() + "'s order of " + c.order.choice);
 		_gui.doGoToCook();
 		waitForGuiToReachDestination();
 		
-		print("Delivering " + c.agent.name() + "'s order of " + c.order.choice);
+		print(AlertTag.ERIC_RESTAURANT,"Delivering " + c.agent.name() + "'s order of " + c.order.choice);
 		
 		_gui.doDeliverFood(c.tableNumber, c.order.choice);
 		waitForGuiToReachDestination();
-		print("Giving " + c.order.choice + " to " + c.agent.name());
+		print(AlertTag.ERIC_RESTAURANT,"Giving " + c.order.choice + " to " + c.agent.name());
 		
 		c.agent.msgHeresYourFood(c.order.choice);
 		c.order.state = OrderState.AT_TABLE;
@@ -417,11 +418,11 @@ public class EricWaiterRole extends Role implements EricWaiter
 	
 	private void actGetCheckForCustomer(MyCustomer c)
 	{
-		print("Going to get check for Customer " + c.agent.name());
+		print(AlertTag.ERIC_RESTAURANT,"Going to get check for Customer " + c.agent.name());
 		_gui.doGoToCashier();
 		waitForGuiToReachDestination();
 		
-		print("Requesting check from " + _cashier.name());
+		print(AlertTag.ERIC_RESTAURANT,"Requesting check from " + _cashier.name());
 		_cashier.msgGiveMeCheck(this, c.order.choice, c.tableNumber);
 		
 		c.state = CustomerState.WAITING_FOR_CASHIER_TO_GIVE_ME_CHECK;
@@ -431,12 +432,12 @@ public class EricWaiterRole extends Role implements EricWaiter
 
 	private void actBringCheckToCustomer(MyCustomer c)
 	{
-		print("Going to bring check to Customer " + c.agent.name());
+		print(AlertTag.ERIC_RESTAURANT,"Going to bring check to Customer " + c.agent.name());
 		
 		_gui.doBringCheckToCustomer(c.agent, c.tableNumber);
 		waitForGuiToReachDestination();
 
-		print("Giving check to Customer " + c.agent.name());
+		print(AlertTag.ERIC_RESTAURANT,"Giving check to Customer " + c.agent.name());
 		
 		c.agent.msgHeresYourCheck(c.check, _cashier);
 		
@@ -447,44 +448,44 @@ public class EricWaiterRole extends Role implements EricWaiter
 	
 	private void actCustomerLeft(MyCustomer c)
 	{
-		print("Cleaning table number " + c.tableNumber);
+		print(AlertTag.ERIC_RESTAURANT,"Cleaning table number " + c.tableNumber);
 		_gui.doCleanTable(c.tableNumber);
 		waitForGuiToReachDestination();
 		// Might have to add another semaphore or something here if there's a cleaning animation
 		
-		print("Done cleaning table");
+		print(AlertTag.ERIC_RESTAURANT,"Done cleaning table");
 		
 		_gui.doGoIdle();
 		
-		print("Notifying " + _host.name() + " that table number " + c.tableNumber + " is now free.");
+		print(AlertTag.ERIC_RESTAURANT,"Notifying " + _host.name() + " that table number " + c.tableNumber + " is now free.");
 		_host.msgTableFree(this, c.tableNumber);
 		customers.remove(c);
 	}
 	
 	private void actTellHostIWantABreak()
 	{
-		print("Telling host I want a break.");
+		print(AlertTag.ERIC_RESTAURANT,"Telling host I want a break.");
 		_host.msgIWantABreak(this);
 		_breakState = BreakState.TOLD_HOST_WANT_A_BREAK;
 	}
 
 	private void actNoBreak()
 	{
-		print("Not going on break.");
+		print(AlertTag.ERIC_RESTAURANT,"Not going on break.");
 		_breakState = BreakState.NOT_ON_BREAK;
 		_gui.doNoBreak();
 	}
 	
 	private void actGoOnBreak()
 	{
-		print("Going on break.");
+		print(AlertTag.ERIC_RESTAURANT,"Going on break.");
 		_breakState = BreakState.ON_BREAK;
 		_gui.doGoOnBreak();
 	}
 	
 	private void actBackToWork()
 	{
-		print("Going back to work.");
+		print(AlertTag.ERIC_RESTAURANT,"Going back to work.");
 		_gui.doBackToWork();
 		_host.msgGoingBackToWork(this);
 		_breakState = BreakState.NOT_ON_BREAK;

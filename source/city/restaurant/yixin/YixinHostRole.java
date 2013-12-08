@@ -1,6 +1,7 @@
 package city.restaurant.yixin;
 
 import agent.Role;
+import gui.trace.AlertTag;
 
 import java.util.*;
 
@@ -59,7 +60,7 @@ public class YixinHostRole extends Role {//implements Host{
 	public void msgIWantFood(YixinCustomerRole cust, int count) {
 		synchronized(waitingCustomers){
 			waitingCustomers.add(new MyCustomer(cust, count));
-			print("Got customer " + waitingCustomers.size());
+			print(AlertTag.YIXIN_RESTAURANT,"Got customer " + waitingCustomers.size());
 			stateChanged();
 		}
 	}
@@ -68,7 +69,7 @@ public class YixinHostRole extends Role {//implements Host{
 		synchronized(waitingCustomers){
 			for (MyCustomer customer : waitingCustomers) {
 				if (customer.customer == cust) {
-					print(cust + " want to leave");
+					print(AlertTag.YIXIN_RESTAURANT,cust + " want to leave");
 					waitingCustomers.remove(customer);
 					stateChanged();
 					return;
@@ -81,7 +82,7 @@ public class YixinHostRole extends Role {//implements Host{
 		synchronized(waitingCustomers){
 			for (MyCustomer customer : waitingCustomers) {
 				if (customer.customer == cust) {
-					print(cust + " want to stay");
+					print(AlertTag.YIXIN_RESTAURANT,cust + " want to stay");
 					customer.state = MyCustomer.CustomerState.staying;
 					stateChanged();
 					return;
@@ -94,7 +95,7 @@ public class YixinHostRole extends Role {//implements Host{
 		synchronized(tables){
 			for (Table table : tables) {
 				if (table.tableNumber == tablenumber) {
-					print(cust + " leaving " + table);
+					print(AlertTag.YIXIN_RESTAURANT,cust + " leaving " + table);
 					table.setUnoccupied();
 					stateChanged();
 					return;
@@ -107,7 +108,7 @@ public class YixinHostRole extends Role {//implements Host{
 		synchronized(waiters){
 			for (MyWaiter waiter : waiters) {
 				if (waiter.w == w) {
-					print(w + " want to break");
+					print(AlertTag.YIXIN_RESTAURANT,w + " want to break");
 					waiter.state = MyWaiter.WaiterState.askingForBreak;
 					stateChanged();
 				}
@@ -130,7 +131,7 @@ public class YixinHostRole extends Role {//implements Host{
 			synchronized(waiters){
 				for (MyWaiter waiter : waiters) {
 					if (waiter.state == MyWaiter.WaiterState.askingForBreak && waiters.size() > 1) {
-						print("Break granted");
+						print(AlertTag.YIXIN_RESTAURANT,"Break granted");
 						waiter.w.msgBreakGranted();
 						waiters.remove(waiter);
 						return true;
@@ -192,7 +193,7 @@ public class YixinHostRole extends Role {//implements Host{
 			waiterNumber++;
 		else
 			waiterNumber = 0;
-		print("Telling waiter " + waiterNumber + " " + waiters.get(waiterNumber).w + " to seat customer");
+		print(AlertTag.YIXIN_RESTAURANT,"Telling waiter " + waiterNumber + " " + waiters.get(waiterNumber).w + " to seat customer");
 		waiters.get(waiterNumber).w.msgSitAtTable(customer, table.tableNumber, count);
 		table.setOccupant(customer);
 	}
