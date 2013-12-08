@@ -75,6 +75,13 @@ public class Bank extends Place implements PlaceWithAnimation {
 	
 	
 	// ----------------------------------- ROLE FACTORIES & ACQUIRES ---------------------------------------
+	public void setClosed(){
+		_open = false;
+		for(int i = 0; i < _tellers.size(); i++){
+			_tellers.get(i).cmdFinishAndLeave();
+		}
+		_bankHostRole.cmdFinishAndLeave();
+	}
 	
 	public BankTellerRole tryAcquireTeller(PersonAgent person){
 		if (_tellerSemaphore.tryAcquire()){
