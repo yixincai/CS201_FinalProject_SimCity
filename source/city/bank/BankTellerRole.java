@@ -126,7 +126,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	
 	public void msgRobbery(double _amount, BankCustomerRole robber) {
-		AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, this.name, "Being Robbed");
+		AlertLog.getInstance().logMessage(AlertTag.BANK, this.name, "Being Robbed");
 		robbery = true;
 		robbers.add(robber);
 		database.bankFunds-=_amount;
@@ -185,7 +185,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	private void actCallSecurity(){
 		//AlertLog.getInstance().logDebug(AlertTag.BANK, this.name, " " + robbers.size());
 		bank.getGuardDog().sicEm(robbers);
-		AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, this.name, "Sic' Em, Boy!");
+		AlertLog.getInstance().logMessage(AlertTag.BANK, this.name, "Sic' Em, Boy!");
 		robbery = false;
 		robbers.removeAll(robbers);
 	}

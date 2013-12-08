@@ -24,9 +24,6 @@ public enum AlertTag {
         BUS,				//Worldview
         BUS_STOP,
         
-        BANK_TELLER,
-        BANK_CUSTOMER,
-        
         HOME,
         
         GENERAL_CITY
