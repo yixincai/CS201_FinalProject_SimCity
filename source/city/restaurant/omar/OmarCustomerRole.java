@@ -1,5 +1,8 @@
 package city.restaurant.omar;
 
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.Semaphore;
@@ -90,7 +93,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	}
 	// Messages
 	public void gotHungry() {//from animation  //A CUSTOMER GETS HUNGRY
-		print("I'm hungry");
+		print(AlertTag.OMAR_RESTAURANT, "I'm hungry");
 		event = AgentEvent.GotHungry;
 		stateChanged();
 	}
@@ -140,7 +143,8 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	}
 	
 	public void msgHereIsCheck(OmarCashierRole cashier, double check){
-		System.out.println("Customer " +this.name+ " payment due: " + this.check);
+		//System.out.println("Customer " +this.name+ " payment due: " + this.check);
+		print(AlertTag.OMAR_RESTAURANT, "Customer " +this.name+ " payment due: " + this.check);
 		this.cashier = cashier;
 		
 		event = AgentEvent.GotCheck;
@@ -229,7 +233,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 
 	// Actions
 	private void goToRestaurant() {	//GOES TO RESTAURANT
-		print("Going to restaurant");
+		print(AlertTag.OMAR_RESTAURANT, "Going to restaurant");
 		restaurant.host.msgIWantFood(this);//send our instance, so he can respond to us
 		//he tells the host he's hungry
 		
@@ -272,7 +276,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	
 	private void notifyWaiter(){
 		customerGui.setCurrentStatus("Ready");
-		System.out.println(this.name + ": Chose Food.  Called waiter " + waiter.toString() + " over.");
+		System.out.println(this.name + ": Chose Food.  Called waiter " + waiter.getName() + " over.");
 		waiter.msgReadyToOrder(this);
 	}
 	
@@ -310,7 +314,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	}
 
 	private void doneEating() {
-		System.out.println(this.toString() + " done eating.");
+		print(AlertTag.OMAR_RESTAURANT, "Done eating.");
 		event = AgentEvent.DoneEating;
 		stateChanged();
 	}
@@ -379,10 +383,6 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 		this.hungerLevel = hungerLevel;
 	}
 
-	public String toString() {
-		return "customer " + getName();
-	}
-
 	public void setGui(OmarCustomerGui g) {
 		customerGui = g;
 	}
@@ -397,7 +397,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 
 	@Override
 	public void cmdGotHungry() {
-		print("I'm hungry");
+		print(AlertTag.OMAR_RESTAURANT, "I'm hungry");
 		event = AgentEvent.GotHungry;
 		stateChanged();
 	}

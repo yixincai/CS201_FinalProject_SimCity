@@ -57,7 +57,7 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
 		//TODO make a new customer that is initialized with a PersonAgent of person
-		RyanCustomerRole customer = new RyanCustomerRole(person, this, person.getName());
+		RyanCustomerRole customer = new RyanCustomerRole(person, this, person.name());
 		RyanCustomerGui RyanCustomerGui = new RyanCustomerGui(customer);
 		customer.setGui(RyanCustomerGui);
 		animationPanel().addGui(RyanCustomerGui);
@@ -65,14 +65,12 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 	}
 	
 	@Override
-	public Role generateWaiterRole(PersonAgent person) {
-		int i = (new Random()).nextInt(2);
-
+	public Role generateWaiterRole(PersonAgent person, boolean shared) {
 		RyanWaiterRole newWaiter;
-		if (i == 0)
-			newWaiter = new RyanNormalWaiterRole(person, this, person.getName());
+		if (!shared)
+			newWaiter = new RyanNormalWaiterRole(person, this, person.name());
 		else
-			newWaiter = new RyanSharedDataWaiterRole(person, this, person.getName());
+			newWaiter = new RyanSharedDataWaiterRole(person, this, person.name());
 		newWaiter.setCashier((RyanCashierRole)cashier);
 		newWaiter.setCook((RyanCookRole)cook);
 		newWaiter.setHost(host);
@@ -92,7 +90,7 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 	}
 
 	@Override
-	public Role getHostRole() {
+	public Role getHost() {
 		return host;
 	}
 

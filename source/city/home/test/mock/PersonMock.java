@@ -6,15 +6,15 @@ import city.interfaces.Person;
 public class PersonMock implements Person {
 	public boolean stateChangedCalled = false;
 	public boolean cmdNoLongerHungryCalled = false;
-	public void stateChanged() { stateChangedCalled = true; }
 	@Override
-	public String getName() {
+	public String name() {
 		// TODO Auto-generated method stub
 		return "PersonMock";
 	}
 	@Override
-	public void cmdNoLongerHungry() {
-		cmdNoLongerHungryCalled = true;
+	public double money() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	@Override
 	public HomeOccupantRole homeOccupantRole() {
@@ -22,8 +22,13 @@ public class PersonMock implements Person {
 		return null;
 	}
 	@Override
+	public void cmdNoLongerHungry() {
+		cmdNoLongerHungryCalled = true;
+	}
+	@Override
 	public void cmdChangeMoney(double amountReceived) {
 		// TODO Auto-generated method stub
 		
 	}
+	public void stateChanged() { stateChangedCalled = true; }
 }

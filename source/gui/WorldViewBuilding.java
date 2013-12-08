@@ -7,15 +7,15 @@ public class WorldViewBuilding extends Rectangle2D.Double {
 	BuildingInteriorAnimationPanel myBuildingPanel;
 
 	// PROPERTIES
-	public int xPosition() { return (int)x; }
-	public int yPosition() { return (int)y; }
+	public int positionX() { return (int)x; }
+	public int positionY() { return (int)y; }
 
 	public WorldViewBuilding( int x, int y, int width, int height ) {
 		super( x, y, width, height );
 	}
 
 	public WorldViewBuilding( int x, int y, int dim) {
-		super( x*50 + 20, y*50 + 20, dim, dim );
+		super( x*10 + 41, y*10 + 30, dim, dim );
 	}
 
 	public void displayBuilding() {

@@ -22,13 +22,13 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     private final int WINDOWX = 682;
     private final int WINDOWY = 360;
     private List<Gui> guis = new ArrayList<Gui>();
-    private ImageIcon ifridge = new ImageIcon("source/image/fridge.png");
+    private ImageIcon ifridge = new ImageIcon(this.getClass().getResource("/image/fridge.png"));
     private Image fridgeimage = ifridge.getImage();
-    private ImageIcon i2 = new ImageIcon("source/image/host.png");
+    private ImageIcon i2 = new ImageIcon(this.getClass().getResource("/image/host.png"));
     private Image plateimage = i2.getImage();
-    private ImageIcon igrill = new ImageIcon("source/image/grill.jpg");
+    private ImageIcon igrill = new ImageIcon(this.getClass().getResource("/image/grill.jpg"));
     private Image grillimage = igrill.getImage();
-    private ImageIcon irevolving = new ImageIcon("source/image/revolvingStand.jpg");
+    private ImageIcon irevolving = new ImageIcon(this.getClass().getResource("/image/revolvingStand.jpg"));
     private Image standimage = irevolving.getImage();
     private String WA = "Waiting Area";
     

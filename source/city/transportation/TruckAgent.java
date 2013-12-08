@@ -42,7 +42,7 @@ public class TruckAgent extends Agent implements Truck{
 	
 	//Constructor
 	public TruckAgent(Market market, WorldView worldView){
-		_name = market.getName() + "'s Truck";
+		_name = market.name() + "'s Truck";
 		_market = market;
 		_gui = new TruckAgentGui(this, _market);
 		worldView.addGui(_gui);
@@ -143,10 +143,10 @@ public class TruckAgent extends Agent implements Truck{
 		try {
 			isMoving.acquire();
 			if(aPackage._restaurant instanceof OmarRestaurant) { 
-				aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); } //Make sure GUI shows that it's dropped off !important!
+				aPackage._restaurant.getCook().msgOrderFulfillment(_market, aPackage._items); } //Make sure GUI shows that it's dropped off !important!
 			else if (aPackage._restaurant instanceof YixinRestaurant)
-				aPackage._restaurant.cook.msgOrderFulfillment(_market, aPackage._items); 
-			print("Delivered to restaurant " + aPackage._restaurant.getName());
+				aPackage._restaurant.getCook().msgOrderFulfillment(_market, aPackage._items); 
+			print("Delivered to restaurant " + aPackage._restaurant.name());
 			trState = truckState.atRestaurant;
 			packages.remove(aPackage);
 			stateChanged();
@@ -171,7 +171,7 @@ public class TruckAgent extends Agent implements Truck{
 	    
 	}
 	
-	public String getName(){
+	public String name(){
 		return _name;
 	}
 	

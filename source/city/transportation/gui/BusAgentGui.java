@@ -1,6 +1,8 @@
 package city.transportation.gui;
 
 import gui.Gui;
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -34,10 +36,10 @@ public class BusAgentGui implements Gui {
 	
 	//-------------------------------GUI Calls------------------------------------
 	public void goToBusStop(BusStopObject busstop){
-		System.out.println("Going To Bus Stop");
+		AlertLog.getInstance().logMessage(AlertTag.BUS, "Bus" ,"Going To Bus Stop");
 		_busStop = busstop;
-		_xDestination = busstop.xPosition();
-		_yDestination = busstop.yPosition();
+		_xDestination = busstop.positionX();
+		_yDestination = busstop.positionY();
 		moving = true;
 	}
 	

@@ -1,5 +1,7 @@
 package city;
 
+import gui.astar.AStarTraversal;
+
 import java.util.*;
 
 // TODO the gui packages are basically only here for the setOccupation() function. We will move the gui instantiation elsewhere, probably to the roles' respective constructors.
@@ -10,7 +12,6 @@ import city.bank.gui.*;
 import city.market.*;
 import city.market.gui.*;
 import city.restaurant.*;
-import city.restaurant.yixin.*;
 import city.transportation.CommuterRole;
 import agent.*;
 
@@ -75,7 +76,7 @@ public class PersonAgent extends Agent implements Person
 		
 		double time()
 		{
-			return Time.getTime();
+			return Time.currentTime();
 		}
 		
 		Time.Day today()
@@ -97,13 +98,14 @@ public class PersonAgent extends Agent implements Person
 	 * @param occupationType I.e. Restaurant Cashier or Restaurant Host or Bank Teller etc.
 	 * @param housingType House or Apartment
 	 */
-	public PersonAgent(String name, double money, String occupationType, String housingType) 
+	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType, AStarTraversal aStarTraversal) 
 	{
 		_name = name; 
-		_money = money; 
+		_money = money;
+		setWorkDays(weekday_notWeekend);
 		acquireOccupation(occupationType);
-		if(_occupation != null) print("Acquired occupation " + _occupation.toString() + ".");
-		else print("Acquired null occupation.");
+		if(_occupation != null) { print("Acquired occupation " + _occupation.typeToString() + "."); }
+		else { print("Acquired null occupation."); }
 		acquireHome(housingType);
 		
 		// For testing purposes for V1, choose a random action to do at home.
@@ -120,13 +122,13 @@ public class PersonAgent extends Agent implements Person
 			break;
 		}
 		
-		generateAndSetCommuterRole();
+		generateAndSetCommuterRole(aStarTraversal);
 		setNextRole(_homeOccupantRole);
 	}
 	/** Sets _commuterRole to a new CommuterRole */
-	public void generateAndSetCommuterRole()
+	public void generateAndSetCommuterRole(AStarTraversal aStarTraversal)
 	{
-		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
+		_commuterRole = new CommuterRole(this, null, aStarTraversal); // may replace null with _homeOccupantRole.place() to set the person's starting position
 	}
 	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
 	 * @param homeType Either "house" or "apartment" */
@@ -184,7 +186,7 @@ public class PersonAgent extends Agent implements Person
 		{
 			// note: if control reaches a break statement, the new occupation will be a waiter.
 			case "Waiter":
-				_occupation = restaurants.get(0).generateWaiterRole(this);
+				_occupation = restaurants.get(0).generateWaiterRole(this,false);
 				return; // waiter is generated right after this switch statement
 			case "Restaurant Cashier":
 				newOccupation = null;
@@ -297,27 +299,28 @@ public class PersonAgent extends Agent implements Person
 				return;
 			case "Bank Customer":
 				_occupation = banks.get(0).generateCustomerRole(this);
-				((BankCustomerRole)_occupation).cmdRequest("Deposit",100);
+				((BankCustomerRole)_occupation).cmdRequest("Robber", 10000);//"Deposit",100);
 				return;
 			case "Yixin Waiter":
-				_occupation = restaurants.get(0).generateWaiterRole(this);
+				_occupation = restaurants.get(0).generateWaiterRole(this, true);
 				return;
 			case "Omar Waiter":
-				_occupation = restaurants.get(1).generateWaiterRole(this);
+				_occupation = restaurants.get(1).generateWaiterRole(this, true);
 				return;
 			case "Ryan Waiter":
-				_occupation = restaurants.get(2).generateWaiterRole(this);
+				_occupation = restaurants.get(2).generateWaiterRole(this, false);
 				return;
 			case "None":
 				_occupation = null;
+				// this causes _occupation to be set to _homeOccupantRole
 				return;
 		}
 		// note: control reaches here because no jobs were found
-		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
+		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this, false);
 		_occupation = newOccupation;
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------
-	public String getName() { return _name; }
+	public String name() { return _name; }
 	public double money() { return _money; }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
 	public void setWorkDays(boolean weekday_notWeekend) {
@@ -325,6 +328,8 @@ public class PersonAgent extends Agent implements Person
 	}
 	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
 	public CommuterRole commuterRole() { return _commuterRole; }
+	
+	
 	
 	// ------------------------------------------------ COMMANDS -----------------------------------------------------------
 	public void cmdChangeMoney(double delta) { _money += delta; }
@@ -489,8 +494,7 @@ public class PersonAgent extends Agent implements Person
 	// (Peanut gallery)
 	private void actTellLongStory()
 	{
-		print("When I was a young programmer, my boss was skeptical of my design.  I proved him wrong. \n"
-				+ "Some of my students placed me in a giant hamster ball and dropped me in the middle of the Pacific Ocean, and I had to find my way back.");
+		print("When I was a young programmer, my boss was skeptical of my design.  I proved him wrong.");
 	}
 	private void actIWhale()
 	{
@@ -508,11 +512,11 @@ public class PersonAgent extends Agent implements Person
 	// ------------------------------------------ UTILITIES -------------------------------------
 	private boolean workingToday()
 	{
-		return true;
-		/*// Commenting this out because we're currently not taking account of weekends
+		//return true;
+		// Commenting this out because we're currently not taking account of weekends
 		return ((_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && !_weekday_notWeekend) ||
 				(!(_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && _weekday_notWeekend);
-				*/
+				
 	}
 	private boolean timeToBeAtWork()
 	{

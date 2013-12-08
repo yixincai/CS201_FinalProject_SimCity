@@ -78,7 +78,7 @@ public class TannerRestaurant extends Restaurant
 	}
 
 	@Override
-	public Role getHostRole() 
+	public Role getHost() 
 	{
 		return this.host;
 	}
@@ -95,7 +95,7 @@ public class TannerRestaurant extends Restaurant
 		if (count > 10){
 			count = -1;
 		}
-		TannerRestaurantCustomerRole customer = new TannerRestaurantCustomerRole(person, this, person.getName(), count);
+		TannerRestaurantCustomerRole customer = new TannerRestaurantCustomerRole(person, this, person.name(), count);
 		TannerRestaurantCustomerRoleGui tannerCustomerGui = new TannerRestaurantCustomerRoleGui(customer);
 		customer.setGui(tannerCustomerGui);
 		this.animationPanel.addGui(tannerCustomerGui);
@@ -103,14 +103,13 @@ public class TannerRestaurant extends Restaurant
 	}
 
 	@Override
-	public Role generateWaiterRole(PersonAgent person)
+	public Role generateWaiterRole(PersonAgent person, boolean shared)
 	{
-		int i = (new Random()).nextInt(2);
 		TannerRestaurantWaiter newWaiter;
-		if (i == 0)
-			newWaiter = new TannerRestaurantRegularWaiterRole(person, this, person.getName());
+		if (!shared)
+			newWaiter = new TannerRestaurantRegularWaiterRole(person, this, person.name());
 		else
-			newWaiter = new TannerRestaurantSharedDataWaiterRole(person, this, person.getName());
+			newWaiter = new TannerRestaurantSharedDataWaiterRole(person, this, person.name());
 		newWaiter.setCashier((TannerRestaurantCashier)cashier);
 		newWaiter.setCook((TannerRestaurantCook)cook);
 		newWaiter.setHost(host);

@@ -13,78 +13,90 @@ import city.interfaces.PlaceWithAnimation;
 
 public class Bank extends Place implements PlaceWithAnimation {
 
-	boolean open;
-	public List<BankTellerRole> tellers = new ArrayList<BankTellerRole>();
+	// --------------------------------------- DATA -------------------------------------------
+
+	boolean _open;
+	public List<BankTellerRole> _tellers = new ArrayList<BankTellerRole>();
 	BankAnimationPanel _animationPanel;
 	//complete
 	private BankHostRole _bankHostRole;
 	private Semaphore _tellerSemaphore = new Semaphore(1, true);
 	private Semaphore _hostSemaphore = new Semaphore(1, true);
+	private GuardDog guardDog;
+	
+
+	// ------------------------------------------- CONSTRUCTORS & PROPERTIES --------------------------------------------
 	
 	public Bank(String name, WorldViewBuilding wvb, BuildingInteriorAnimationPanel bp){
 		super("Bank", wvb);
 		this._animationPanel = (BankAnimationPanel)bp.getBuildingAnimation();
 		List<BankTeller> tellers_for_host = new ArrayList<BankTeller>();
 		BankTellerRole bankTellerRole = new BankTellerRole(null,this, 0);
-		tellers.add(bankTellerRole);
+		_tellers.add(bankTellerRole);
 		tellers_for_host.add(bankTellerRole);
 		_bankHostRole = new BankHostRole(null,this, tellers_for_host);
+		guardDog = new GuardDog(this);
+		guardDog.startThread();
 	}
 		
 	public Bank() {
 		super("Bank", null);
 		BankTellerRole teller = new BankTellerRole(null,this, 0);
-		tellers.add(teller);
+		_tellers.add(teller);
 	}
 
 	public BankAnimationPanel animationPanel() {
 		return _animationPanel;
 	}
-
-	public void updateBankStatus(){
-		if (tellers.isEmpty() || !_bankHostRole.active)
-			open = false;
-		else
-			open = true;
-	}
 	
-	public BankCustomerRole generateCustomerRole(PersonAgent p){
-		return (new BankCustomerRole(p, this));
-	}
-	
-	public void addTeller(PersonAgent p){ //
-		tellers.add(new BankTellerRole(p, this, tellers.size()));
-	}
-	
-	public List<BankTellerRole> getTellers(){
-		return tellers;
-	}
-	
-	public BankHostRole getHost(){
+	public BankHostRole host(){
 		return _bankHostRole;
 	}
 	
+	public void addTeller(PersonAgent p){ //
+		_tellers.add(new BankTellerRole(p, this, _tellers.size()));
+	}
+	
+	public List<BankTellerRole> tellers(){
+		return _tellers;
+	}
 	
 	
-	// -------------------- FACTORIES/TRY-ACQUIRES ------------------
+	
+	// ----------------------------------------- UTILITIES --------------------------------------------
+
+	public void updateBankStatus(){
+		if (_tellers.isEmpty() || !_bankHostRole.active)
+			_open = false;
+		else
+			_open = true;
+	}
+	
+	
+	
+	// ----------------------------------- ROLE FACTORIES & ACQUIRES ---------------------------------------
 	
 	public BankTellerRole tryAcquireTeller(PersonAgent person){
 		if (_tellerSemaphore.tryAcquire()){
-			tellers.get(0).setPersonAgent(person);
-			return tellers.get(0);
+			_tellers.get(0).setPerson(person);
+			return _tellers.get(0);
 		}
 		return null;
 	}
 
 	public BankHostRole tryAcquireHost(PersonAgent person){
 		if (_hostSemaphore.tryAcquire()){
-			_bankHostRole.setPersonAgent(person);;
+			_bankHostRole.setPerson(person);;
 			return _bankHostRole;
 		}
 		return null;
 	}
 	
-	public BankCustomerRole generateBankCustomerRole(PersonAgent person){
+	public BankCustomerRole generateCustomerRole(PersonAgent person){
 		return new BankCustomerRole(person, this);
+	}
+	
+	public GuardDog getGuardDog(){
+		return guardDog;
 	}
 }

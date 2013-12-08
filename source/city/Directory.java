@@ -1,8 +1,11 @@
 package city;
 
+import gui.Lane;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import city.bank.Bank;
 import city.home.ApartmentBuilding;
@@ -18,7 +21,8 @@ public class Directory {
 	
 	private static List<Place> _places = Collections.synchronizedList(new ArrayList<Place>());
 	private static List<PersonAgent> _personAgents = Collections.synchronizedList(new ArrayList<PersonAgent>());
-	
+	private static ArrayList<Lane> lanes = new ArrayList<Lane>();
+	private static ArrayList<Semaphore> intersections = new ArrayList<Semaphore>();
 	//Bus Fare (initialize in constructor?)
 	private static double _busFare = 2;
 	
@@ -28,6 +32,22 @@ public class Directory {
 	// ------------------------------------ PROPERTIES ---------------------------------------
 	public static double openingTime() { return _openingTime; }
 	public static double closingTime() { return _closingTime; }
+	
+	public static ArrayList<Lane> lanes(){
+		return lanes;
+	}
+	
+	public static ArrayList<Semaphore> intersections(){
+		return intersections;
+	}
+	
+	public static void addLanes(Lane lane){
+		lanes.add(lane);
+	}
+	
+	public static void addIntersections(Semaphore sem){
+		intersections.add(sem);
+	}
 	
 	/** Returns a new list of all places */
 	public static List<Place> places()
@@ -165,7 +185,7 @@ public class Directory {
 		{
 			if(p instanceof BusStopObject)
 			{
-				Distance2 = Math.abs(xStart - p.xPosition()) + Math.abs(yStart - p.yPosition());	
+				Distance2 = Math.abs(xStart - p.positionX()) + Math.abs(yStart - p.positionY());	
 				if(Distance1 < 0){
 					Distance1 = Distance2;
 					temp = (BusStopObject)p;
@@ -189,7 +209,7 @@ public class Directory {
 		{
 			if(p instanceof BusStopObject)
 			{
-				Distance2 = Math.abs(destination.xPosition() - p.xPosition()) + Math.abs(destination.yPosition() - p.yPosition());	
+				Distance2 = Math.abs(destination.positionX() - p.positionX()) + Math.abs(destination.positionY() - p.positionY());	
 				if(Distance1 < 0){
 					Distance1 = Distance2;
 					temp = (BusStopObject)p;

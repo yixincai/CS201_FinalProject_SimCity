@@ -1,13 +1,15 @@
 package city.transportation;
 
-import java.awt.Dimension;
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import agent.Agent;
 import city.Directory;
-import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.BusAgentGui;
 import city.transportation.interfaces.Bus;
@@ -72,42 +74,47 @@ public class BusAgent extends Agent implements Bus{
 	    stateChanged();
 	}
 
-	public void msgGotOff(Commuter passenger){
-	    _passengers.remove(findCommuter(passenger)); //Fix this
+	public synchronized void msgGotOff(Commuter passenger){
 	    setNumPeople(getNumPeople() - 1);
 	    stateChanged();
 	}
 
-	public void msgGettingOnBoard(Commuter person, Place destination, double payment){ //Check if payment is correct?
-	    _passengers.add(new MyCommuter(person, destination));
+	public synchronized void msgGettingOnBoard(Commuter person, Place destination, double payment){ //Check if payment is correct?
+		_passengers.add(new MyCommuter(person, destination));
 	    currentDestination.removeCommuterRole(person);
 	    _register += payment;
 	    setNumPeople(getNumPeople() + 1); //Fix this
+		System.out.println("I am getting on board " + _passengers.size());
 	    stateChanged();
 	}
 	
 	
 	//----------------------------------------------Scheduler----------------------------------------
 	public boolean pickAndExecuteAnAction(){
-		if(bState == BusState.notmoving){
-			GoToFirstBusStop();
-			return true;
+		try{
+			if(bState == BusState.notmoving){
+				GoToFirstBusStop();
+				return true;
+			}
+			
+			if(bState == BusState.atDestination){
+				DropOff();
+				return true;
+			}
+			
+			if(bState == BusState.droppingoff && getExpectedPeople() == getNumPeople()){
+				PickUp();
+				return true;
+			}
+			
+			if(bState == BusState.pickingup && getExpectedPeople() == getNumPeople()){
+				//System.out.println("Leaving");
+				Leave();
+				return true;
+			}
 		}
-		
-		if(bState == BusState.atDestination){
-			DropOff();
-			return true;
-		}
-		
-		if(bState == BusState.droppingoff && getExpectedPeople() == getNumPeople()){
-			PickUp();
-			return true;
-		}
-		
-		if(bState == BusState.pickingup && getExpectedPeople() == getNumPeople()){
-			System.out.println("Leaving");
-			Leave();
-			return true;
+		catch(ConcurrentModificationException e){
+			
 		}
 		
 		return false;
@@ -126,28 +133,34 @@ public class BusAgent extends Agent implements Bus{
 	}
 
 	public void DropOff(){
-		System.out.println("Bus: Dropping off from " + currentDestination.getName());
+		AlertLog.getInstance().logMessage(AlertTag.BUS, this.name() ,"Dropping off from " + currentDestination.name() + 
+				", Number of Passengers: " + _passengers.size());
 	    bState = BusState.droppingoff;
-	    for(MyCommuter commuter: _passengers){
-	        if(commuter.destination == currentDestination){
-	        	commuter.commuter.msgGetOffBus(currentDestination);
+	    for(int i = 0; i < _passengers.size() ; i++){
+	    	//System.out.println("The passenger is going to " + commuter.destination.getName());
+	        if(_passengers.get(i).destination == currentDestination){
+	        	_passengers.get(i).commuter.msgGetOffBus(currentDestination);
 	            setExpectedPeople(getExpectedPeople() - 1);
+	    	    _passengers.remove(_passengers.get(i)); //Fix this
+	            i--;
 	        }
 	    }
+    	AlertLog.getInstance().logMessage(AlertTag.BUS, this.name() ,"Finished dropping off " + getExpectedPeople() + " passengers");	    
 	    stateChanged();
 	}
 
 	public void PickUp(){
-		System.out.println("Bus: Picking up from " + currentDestination.getName());
+		AlertLog.getInstance().logMessage(AlertTag.BUS, this.name() ,"Picking up from " + currentDestination.name());
 		currentBusStopList = currentDestination.getList();
 		bState = BusState.pickingup;
     	for(Commuter comm: currentBusStopList){
     		if(getExpectedPeople() < capacity){
-	    		System.out.println("Picked up");
+    			AlertLog.getInstance().logMessage(AlertTag.BUS, this.name() ,"Picked up");
 	    		comm.msgGetOnBus(_fare, this);
 	            setExpectedPeople(getExpectedPeople() + 1);
     		}
         }
+    	AlertLog.getInstance().logMessage(AlertTag.BUS, this.name() ,"Finished Picking up " + getExpectedPeople() + " passengers");
 	    stateChanged();
 	}
 
@@ -173,7 +186,7 @@ public class BusAgent extends Agent implements Bus{
 		}
 	}
 	
-	public String getName(){
+	public String name(){
 		return _name;
 	}
 

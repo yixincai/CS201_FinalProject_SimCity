@@ -1,10 +1,11 @@
 package city.home;
 
+import gui.trace.AlertTag;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
-import city.PersonAgent;
 import city.Place;
 import city.Time;
 import city.home.gui.HomeOccupantGui;
@@ -171,7 +172,7 @@ public abstract class HomeOccupantRole extends Role
 	private void actGotHome()
 	{
 		// note: the whole getting-home process does not change the command, so you will be able to set a command then get home.
-		print("Just got home.");
+		print(AlertTag.HOME, "Just got home.");
 		// don't change _command (so PersonAgent can set commands before we get home)
 		// Note: _event had the value of GOT_HOME when this method got called; no longer need it to be that
 		_event = Event.NONE;
@@ -180,7 +181,7 @@ public abstract class HomeOccupantRole extends Role
 	}
 	private void actCookAndEat()
 	{
-		print("Starting to cook.");
+		print(AlertTag.HOME, "Starting to cook.");
 		_command = Command.NONE;
 		_event = Event.NONE;
 		_state = State.COOKING;
@@ -189,14 +190,14 @@ public abstract class HomeOccupantRole extends Role
 		_gui.doCookAndEatFood(); // calls a bunch of sequential actions for the animation
 		waitForGuiToReachDestination();
 		
-		print("Finished cooking and eating");
+		print(AlertTag.HOME, "Finished cooking and eating");
 		_person.cmdNoLongerHungry();
 		_state = State.IDLE;
 		_gui.doGoIdle();
 	}
 	private void actWatchTv()
 	{
-		print("Watching TV");
+		print(AlertTag.HOME, "Watching TV");
 		_command = Command.NONE;
 		// do we need to reset _event?
 		_state = State.IDLE;
@@ -205,7 +206,7 @@ public abstract class HomeOccupantRole extends Role
 	}
 	private void actGoToBed()
 	{
-		print("Going to bed.");
+		print(AlertTag.HOME, "Going to bed.");
 		_command = Command.NONE;
 		_event = Event.NONE; // this is important just to make sure that the scheduler won't wake up
 		_state = State.SLEEPING;
@@ -221,7 +222,7 @@ public abstract class HomeOccupantRole extends Role
 	}
 	private void actWakeUp()
 	{
-		print("Waking up.");
+		print(AlertTag.HOME, "Waking up.");
 		// do we need to reset _command?
 		_event = Event.NONE;
 		_state = State.IDLE;
@@ -229,13 +230,13 @@ public abstract class HomeOccupantRole extends Role
 	}
 	private void actLeave()
 	{
-		print("Leaving my home");
+		print(AlertTag.HOME, "Leaving my home");
 		_command = Command.NONE;
 		_event = Event.NONE;
 		_state = State.LEAVING;
 		_gui.doLeaveHome();
 		waitForGuiToReachDestination();
-		print("Finished leaving home");
+		print(AlertTag.HOME, "Finished leaving home");
 		_event = Event.GOT_HOME; // for next time
 		_state = State.AWAY;
 		active = false;

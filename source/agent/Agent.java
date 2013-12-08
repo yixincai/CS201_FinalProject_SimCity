@@ -11,12 +11,12 @@ import utilities.StringUtil;
  */
 public abstract class Agent
 {
-    private Semaphore sleepSemaphore = new Semaphore(1, true);//binary semaphore, fair
-    private AgentThread agentThread; // initialized in the startThread method
+    private Semaphore _sleepSemaphore = new Semaphore(1, true);//binary semaphore, fair
+    private AgentThread _agentThread; // initialized in the startThread method
     
     // For pausing agents:
-    private Semaphore pauseSemaphore = new Semaphore(0, true);
-    private boolean pauseBoolean = false;
+    // private Semaphore pauseSemaphore = new Semaphore(0, true);
+    // private boolean pauseBoolean = false;
     
     // TEST
     public EventLog log = new EventLog();
@@ -29,21 +29,21 @@ public abstract class Agent
      */
     public void stateChanged()
     {
-        sleepSemaphore.release();
+        _sleepSemaphore.release();
     }
     
-    public void pause()
-    {
-    	pauseBoolean = true;
-    	print("[paused]");
-    }
+    // public void pause()
+    // {
+    //	pauseBoolean = true;
+    //	print("[paused]");
+    // }
     
-    public void resume()
-    {
-    	pauseBoolean = false;
-    	pauseSemaphore.release();
-    	print("[resumed]");
-    }
+    // public void resume()
+    // {
+    //	pauseBoolean = false;
+    //	pauseSemaphore.release();
+    //	print("[resumed]");
+    // }
 
     /**
      * This is the scheduler.
@@ -58,7 +58,7 @@ public abstract class Agent
     /**
      * Return agent name for console messages.  Default is to return java instance name.
      */
-    public String getName()
+    public String name()
     {
         return StringUtil.shortName(this);
     }
@@ -89,7 +89,7 @@ public abstract class Agent
     protected void print(String msg, Throwable e)
     {
         StringBuffer sb = new StringBuffer();
-        sb.append(getName());
+        sb.append(name());
         sb.append(": ");
         sb.append(msg);
         sb.append("\n");
@@ -102,14 +102,14 @@ public abstract class Agent
      */
     public synchronized void startThread()
     {
-        if (agentThread == null)
+        if (_agentThread == null)
         {
-            agentThread = new AgentThread(getName());
-            agentThread.start(); // causes the run method to execute in the AgentThread below
+            _agentThread = new AgentThread(name());
+            _agentThread.start(); // causes the run method to execute in the AgentThread below
         }
         else
         {
-            agentThread.interrupt(); //don't worry about this for now
+            _agentThread.interrupt(); //don't worry about this for now
         }
     }
 
@@ -120,10 +120,10 @@ public abstract class Agent
     //When we have a user interface to agents, this can be called.
     public void stopThread()
     {
-        if (agentThread != null)
+        if (_agentThread != null)
         {
-            agentThread.stopAgent();
-            agentThread = null;
+            _agentThread.stopAgent();
+            _agentThread = null;
         }
     }
 
@@ -133,7 +133,7 @@ public abstract class Agent
      */
     private class AgentThread extends Thread
     {
-        private volatile boolean goOn = false;
+        private volatile boolean _goOn = false;
 
         private AgentThread(String name)
         {
@@ -145,17 +145,18 @@ public abstract class Agent
          */
         public void run()
         {
-            goOn = true;
+            _goOn = true;
             print("alive");
 
-            while (goOn)
+            while (_goOn)
             {
                 try
                 {
                 	// Freeze here if pausing
-                	if(pauseBoolean) pauseSemaphore.acquire();
+                	// if(pauseBoolean) pauseSemaphore.acquire();
+                	
                     // The agent sleeps here until someone calls stateChanged(), which causes a call to stateChange.give(), which wakes up agent.
-                    sleepSemaphore.acquire();
+                    _sleepSemaphore.acquire();
                     // print("[woke up]"); // for debug tracking
                     // The next while clause is the key to the control flow.  When the agent wakes up it will call the scheduler repeatedly until the scheduler returns false.
                     while (pickAndExecuteAnAction());
@@ -173,7 +174,7 @@ public abstract class Agent
 
         private void stopAgent()
         {
-            goOn = false;
+            _goOn = false;
             this.interrupt();
         }
     }

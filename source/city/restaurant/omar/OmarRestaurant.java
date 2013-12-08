@@ -38,7 +38,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		((OmarCookRole)cook).cashier = (OmarCashierRole)cashier;
 	}
 
-	//default constructor for unit testing DO NOT DELETE
+	// Default constructor for unit testing
 	public OmarRestaurant(){
 		super("Omar's Restaurant");    
 		cashier = new OmarCashierRole(null,this);
@@ -56,7 +56,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
-		OmarCustomerRole customer = new OmarCustomerRole(person, this, person.getName());
+		OmarCustomerRole customer = new OmarCustomerRole(person, this, person.name());
 		OmarCustomerGui customerGui = new OmarCustomerGui(customer, _animationPanel);
 		customer.setGui(customerGui);
 		animationPanel().addGui(customerGui);
@@ -64,10 +64,9 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	}
 
 	@Override
-	public Role generateWaiterRole(PersonAgent person) {
-		int i = (new Random()).nextInt(2);
+	public Role generateWaiterRole(PersonAgent person, boolean shared) {
 		OmarWaiterRole newWaiter;
-		if (i == 0)
+		if (!shared)
 			newWaiter = new OmarWaiterRole(person, this,(OmarCookRole)cook, host, null);
 		else
 			newWaiter = new OmarSharedDataWaiterRole(person, this, (OmarCookRole)cook, host, null);
@@ -90,7 +89,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	}
 
 	@Override
-	public Role getHostRole() {
+	public Role getHost() {
 		return host;
 	}
 	

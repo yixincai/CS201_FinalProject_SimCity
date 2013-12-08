@@ -1,5 +1,7 @@
 package city.restaurant.omar;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -41,7 +43,7 @@ public class OmarHostRole extends Role {
 
 	// Messages
 	public void msgIWantFood(OmarCustomerRole cust) { // 1 receives messages from hungry customers, puts them on list
-		print("Receive IWantFood from customer");
+		print(AlertTag.OMAR_RESTAURANT, "Receive IWantFood from customer");
 		waitingCustomers.add(cust);
 		stateChanged();
 	}
@@ -50,7 +52,7 @@ public class OmarHostRole extends Role {
 		synchronized(tables){
 		for (Table table : tables) {
 			if (table.getOccupant() == cust) {
-				print(cust + " leaving " + table);
+				print(AlertTag.OMAR_RESTAURANT, cust + " leaving " + table);
 				table.setUnoccupied();
 				stateChanged();
 			}
@@ -60,7 +62,7 @@ public class OmarHostRole extends Role {
 	
 	public void msgLeavingWaitList(OmarCustomerRole cust) {
 		waitingCustomers.remove(cust);
-		System.out.println("Customer " + cust.toString() + " left from waiting too long");
+		print(AlertTag.OMAR_RESTAURANT, "Customer " + cust.getName() + " left from waiting too long");
 		stateChanged();
 	}
 
@@ -123,11 +125,8 @@ public class OmarHostRole extends Role {
 
 	//utilities
 	private void DoCallWaiter(OmarWaiterRole w){
-		System.out.println("Called waiter" + w.toString());
-	}
-	
-	public String toString(){
-		return name;
+		//TODO remove this method??
+		System.out.println("Called waiter" + w.getName());
 	}
 	
 	public ArrayList<Table> getTableList(){

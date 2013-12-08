@@ -34,10 +34,10 @@ public class TruckAgentGui implements Gui{
 	
 	public TruckAgentGui(TruckAgent truck, Market market){
 		_market = market;
-		_xPos = _market.xPosition() - 10;
-		_yPos = _market.yPosition();
-		_xDestination = _market.xPosition() - 10;
-		_yDestination = _market.yPosition() + 2;
+		_xPos = _market.positionX() - 10;
+		_yPos = _market.positionY();
+		_xDestination = _market.positionX() - 10;
+		_yDestination = _market.positionY() + 2;
 		_truck = truck;
 		isPresent = true;
 		park = false;
@@ -48,8 +48,8 @@ public class TruckAgentGui implements Gui{
 		// TODO Auto-generated method stub
 		isPresent = true;
 		_point = Point.PointC;
-		_xDestination = market.xPosition();
-		_yDestination = market.yPosition();
+		_xDestination = market.positionX();
+		_yDestination = market.positionY();
 	}
 
 	public void goToMarketParkingLot(Market market) {
@@ -57,22 +57,22 @@ public class TruckAgentGui implements Gui{
 		isPresent = true;
 		park = true;
 		_point = Point.PointC;
-		_xDestination = _market.xPosition()- 35;
+		_xDestination = _market.positionX()- 35;
 	}
 
 	public void goToDockFromParkingLot(Market market) {
 		// TODO Auto-generated method stub
 		isPresent = true;
 		_point = Point.Dock;
-		_xDestination = market.xPosition()- 10;
-		_yDestination = market.yPosition() + 15;
+		_xDestination = market.positionX()- 10;
+		_yDestination = market.positionY() + 15;
 	}
 	
 	public void goToDock(Restaurant restaurant) {
 		// TODO Auto-generated method stub
 		isPresent = true;
 		_point = Point.PointC;
-		_xDestination = _market.xPosition()- 35;
+		_xDestination = _market.positionX()- 35;
 	}
 
 	public void goToDestination(Restaurant restaurant) {
@@ -80,8 +80,8 @@ public class TruckAgentGui implements Gui{
 		isPresent = true;
 		_restaurant = restaurant;
 		_point = Point.PointA;
-		_xDestination = _market.xPosition()- 35;
-		_yDestination = _market.yPosition() + 15;
+		_xDestination = _market.positionX()- 35;
+		_yDestination = _market.positionY() + 15;
 		
 	}
 	
@@ -103,15 +103,15 @@ public class TruckAgentGui implements Gui{
 		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.PointA){
 			_point = Point.PointB;
-			_yDestination = _restaurant.yPosition() + 15;
+			_yDestination = _restaurant.positionY() + 15;
 		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.PointB){
 			_point = Point.Restaurant;
-			if(_xPos < _restaurant.xPosition()){
-				_xDestination = _restaurant.xPosition() - 10;
+			if(_xPos < _restaurant.positionX()){
+				_xDestination = _restaurant.positionX() - 10;
 			}
 			else{
-				_xDestination = _restaurant.xPosition() + 40;
+				_xDestination = _restaurant.positionX() + 40;
 			}
 		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Restaurant){
@@ -119,12 +119,12 @@ public class TruckAgentGui implements Gui{
 		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.PointC){
 			_point = Point.PointD;
-			_yDestination = _market.yPosition() + 15;
+			_yDestination = _market.positionY() + 15;
 		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.PointD){
 			_point = Point.PointE;
-			_xDestination = _market.xPosition()- 10;
-			_yDestination = _market.yPosition() + 15;
+			_xDestination = _market.positionX()- 10;
+			_yDestination = _market.positionY() + 15;
 		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.PointE){
 			_point = Point.Market;
@@ -136,8 +136,8 @@ public class TruckAgentGui implements Gui{
 		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Market && park){
 			_point = Point.Park;
-			_xDestination = _market.xPosition()- 10;
-			_yDestination = _market.yPosition()+ 2;
+			_xDestination = _market.positionX()- 10;
+			_yDestination = _market.positionY()+ 2;
 			System.out.println("going to park");
 		}
 		if(_xPos == _xDestination && _yPos == _yDestination && _point == Point.Park && park){
@@ -150,11 +150,11 @@ public class TruckAgentGui implements Gui{
 	
 	public void draw(Graphics2D g) {
 		g.setColor(new Color(156, 93, 82));
-		g.fillRect(_market.xPosition() - 12, _market.yPosition(), 12, 14);
+		g.fillRect(_market.positionX() - 12, _market.positionY(), 12, 14);
 		
 		g.setColor(Color.black);
 		g.setFont(new Font("default", Font.PLAIN, 10));
-		g.drawString("Truck", _market.xPosition() - 12, _market.yPosition()-5);
+		g.drawString("Truck", _market.positionX() - 12, _market.positionY()-5);
 		
 		if(isPresent){
 			g.setColor(Color.blue);

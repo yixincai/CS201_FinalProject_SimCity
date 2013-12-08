@@ -1,11 +1,11 @@
 package city.restaurant;
 
-import city.PersonAgent;
+import city.interfaces.Person;
 import agent.Role;
 
 public abstract class RestaurantCustomerRole extends Role {
 
-	public RestaurantCustomerRole(PersonAgent person) {
+	public RestaurantCustomerRole(Person person) {
 		super(person);
 	}
 

@@ -122,7 +122,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			}
 			for (MarketBill bill : marketBills)
 				if (bill.state == MarketBill.BillState.changeReceived){
-					((YixinCookRole)restaurant.cook).msgOrderFinished();
+					((YixinCookRole)restaurant.getCook()).msgOrderFinished();
 					marketBills.remove(bill);
 					return true;
 				}
@@ -165,23 +165,23 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	//Bank
 	private void PayLoan(){
 		double amount = Math.min(money-150, bankDebt);
-		Directory.banks().get(0).tellers.get(0).msgWiredTransaction(restaurant, restaurant.getAccountNumber(), amount, "Pay Loan");
+		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(restaurant, restaurant.getAccountNumber(), amount, "Pay Loan");
 		money_state = MoneyState.OrderedFromBank;
 	}
 	
 	private void Withdraw(){
 		double amount = Math.min(50-money, bankBalance);
-		Directory.banks().get(0).tellers.get(0).msgWiredTransaction(restaurant, restaurant.getAccountNumber(), amount, "Withdraw");
+		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(restaurant, restaurant.getAccountNumber(), amount, "Withdraw");
 		money_state = MoneyState.OrderedFromBank;		
 	}
 	
 	private void AskForLoan(){
-		Directory.banks().get(0).tellers.get(0).msgWiredTransaction(restaurant, restaurant.getAccountNumber(), 50-money, "Withdraw Loan");
+		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(restaurant, restaurant.getAccountNumber(), 50-money, "Withdraw Loan");
 		money_state = MoneyState.OrderedFromBank;
 	}
 	
 	private void Deposit(){
-		Directory.banks().get(0).tellers.get(0).msgWiredTransaction(restaurant, restaurant.getAccountNumber(), money/2, "Deposit");
+		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(restaurant, restaurant.getAccountNumber(), money/2, "Deposit");
 		money_state = MoneyState.OrderedFromBank;
 	}
 	

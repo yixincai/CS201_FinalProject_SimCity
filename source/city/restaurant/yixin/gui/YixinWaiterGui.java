@@ -23,7 +23,7 @@ public class YixinWaiterGui extends JPanel implements Gui {
 	public static int xGap = 30;
 	public static int yGap = 30;
 	int count;
-	private ImageIcon i = new ImageIcon("source/image/waiter.png");
+	private ImageIcon i = new ImageIcon(this.getClass().getResource("/image/waiter.png"));
 	private Image image = i.getImage();
 
 	private enum Command {noCommand, GoToSeat};

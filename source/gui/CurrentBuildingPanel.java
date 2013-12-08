@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 
 import city.Directory;
 import city.Place;
+import city.bank.Bank;
 
 public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	
@@ -81,11 +82,11 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 		List<Place> places = Directory.places();
 		for(Place p : places)
 		{
-			if(p.getName() == selected.getText())
+			if(p.name() == selected.getText())
 			{
-				buildingName.setText("Building Name: " + p.getName());
+				buildingName.setText("Building Name: " + p.name());
 			//	buildingMoney.setText("Building Money: Need a money field in places");
-				p.getBuilding().displayBuilding();
+				p.worldViewBuilding().displayBuilding();
 			}
 		}
 	}

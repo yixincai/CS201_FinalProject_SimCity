@@ -16,8 +16,8 @@ public class YixinHostGui extends JPanel implements Gui {
 	public static int xGap = 40;
 	public static int yGap = 40;
 
-	private ImageIcon i = new ImageIcon("image/host.png");
-	private Image image = i.getImage();
+	//private ImageIcon i = new ImageIcon(this.getClass().getResource("image/host.png"));
+	//private Image image = i.getImage();
 	public YixinHostGui(YixinHostRole agent) {
 		this.agent = agent;
 	}

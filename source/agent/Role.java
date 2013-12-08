@@ -1,29 +1,31 @@
 package agent;
 
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
 import utilities.EventLog;
 import utilities.StringUtil;
-import city.PersonAgent;
 import city.Place;
 import city.interfaces.Person;
 
 public abstract class Role
 {
-	// ----------------------------- DATA ------------------------------------
+	// --------------------------------------- DATA ------------------------------------
 	protected Person _person;
 	public boolean active = false;
-	public EventLog log = new EventLog();
+	public EventLog log = new EventLog(); // unit testing
 	
 	// ----------------------------- CONSTRUCTOR & PROPERTIES ------------------------------------
 	public Role(Person person) { _person = person; }
-	public void setPersonAgent(PersonAgent person) { _person = person; }
+	public void setPerson(Person person) { _person = person; }
 	public abstract Place place();
-	public String toString() { return StringUtil.shortName(getClass()); }
+	public final String typeToString() { return StringUtil.shortName(getClass()); }
+	public final String toString() { return _person.name() + " as " + typeToString();}
 	
-	// ----------------------------- METHODS ------------------------------------
+	// ------------------------------------- METHODS ------------------------------------
 	protected void stateChanged()
 	{
 		if(_person != null) _person.stateChanged(); // this checking for _person != null is necessary in cases like when the cook sends a message to a market whose cashier role isn't yet filled 
-		// note: it should be okay to perform extra scheduler calls in the person (i.e. if active == false) (since they all take place in one thread anyway)
+		// note: it should be okay to perform extra scheduler calls in the person (i.e. no need to check if active == true) since they all take place in one thread anyway
 	}
 	
 	// --------- ABSTRACT ---------
@@ -34,19 +36,28 @@ public abstract class Role
 	/**
 	 * Print message with this agent's name and exception stack trace
 	 */
-	protected void print(String msg, Throwable e)
+	protected void print(AlertTag tag, String msg, Throwable e)
 	{
 		log.add(msg);
 		StringBuffer sb = new StringBuffer();
-		sb.append(_person.getName());
-		sb.append(": ");
 		sb.append(msg);
 		sb.append("\n");
 		if (e != null) sb.append(StringUtil.stackTraceString(e));
+		AlertLog.getInstance().logMessage(tag, _person.name(), sb.toString());
 		System.out.print(sb.toString());
 	}
+	protected void print(AlertTag tag, String msg)
+	{
+		print(tag, msg, null);
+	}
+	
 	protected void print(String msg)
 	{
-		print(msg, null);
+		print(AlertTag.GENERAL_CITY, msg, null);
+	}
+	
+	protected void logThis(String msg)
+	{
+		log.add(msg);
 	}
 }

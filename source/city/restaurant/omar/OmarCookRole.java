@@ -1,5 +1,7 @@
 package city.restaurant.omar;
 
+import gui.trace.AlertTag;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -182,7 +184,7 @@ public class OmarCookRole extends RestaurantCookRole {
 		if (check_state == CheckState.notChecked){
 			revolving_stand_timer.schedule(new TimerTask() {
 				public void run() {
-					print("Notify the cook to check revolving stand");
+					print(AlertTag.OMAR_RESTAURANT, "Notify the cook to check revolving stand");
 					notifyCook();
 				}
 			}, 10000);
@@ -260,7 +262,7 @@ public class OmarCookRole extends RestaurantCookRole {
 			e.printStackTrace();
 		}
 		cookGui.DoMoveFoodToPlatingArea();
-		System.out.println(this.name + ": Told Waiter " + o.getWaiter().toString()+ " that " + 
+		System.out.println(this.name + ": Told Waiter " + o.getWaiter().getName()+ " that " + 
 				o.toString() + " is ready");
 		o.status = OrderStatus.pickup;
 		o.getWaiter().msgOrderIsReady(o.getTableNumber());
@@ -276,9 +278,6 @@ public class OmarCookRole extends RestaurantCookRole {
 	}
 
 	//utilities
-	public String toString(){
-		return name;
-	}
 
 	public void setGui(OmarCookGui g){
 		this.cookGui = g;
@@ -291,7 +290,7 @@ public class OmarCookRole extends RestaurantCookRole {
 	@Override	//INTEGRATED
 	public void msgOrderFulfillment(Market market, List<Item> order) {
 		synchronized(markets){
-			print(market.toString() + " is giving me food");
+			print(AlertTag.OMAR_RESTAURANT, market.name() + " is giving me food");
 			for(MyMarket m:markets) {
 				if(m.market == market){
 					m.currentOrder = order;

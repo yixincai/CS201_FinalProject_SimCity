@@ -1,5 +1,7 @@
 package city.restaurant.omar;
 
+import gui.trace.AlertTag;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -181,7 +183,7 @@ public class OmarWaiterRole extends Role {
 	}
 	
 	private void DoSeatCustomer(OmarCustomerRole customer, Table table) {
-		print("Seating " + customer + " at " + table);
+		print(AlertTag.OMAR_RESTAURANT, "Seating " + customer + " at " + table);
 		waiterGui.DoBringToTable(customer, table); 
 		try {
 			waiterSem.acquire();
@@ -392,9 +394,6 @@ public class OmarWaiterRole extends Role {
 	//Utilities
 	public int getNumCustomers(){
 		return myCustomers.size();
-	}
-	public String toString(){
-		return name;
 	}
 	
 	public void setGui(OmarWaiterGui g) {

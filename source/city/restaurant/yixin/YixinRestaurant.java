@@ -59,7 +59,7 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		if (count > 10){
 			count = -1;
 		}
-		YixinCustomerRole customer = new YixinCustomerRole(person, this, person.getName(), count);
+		YixinCustomerRole customer = new YixinCustomerRole(person, this, person.name(), count);
 		YixinCustomerGui yixinCustomerGui = new YixinCustomerGui(customer,count);
 		customer.setGui(yixinCustomerGui);
 		animationPanel().addGui(yixinCustomerGui);
@@ -67,13 +67,12 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	}
 
 	@Override
-	public Role generateWaiterRole(PersonAgent person) {
-		int i = (new Random()).nextInt(2);
+	public Role generateWaiterRole(PersonAgent person, boolean isSharedDataWaiter) {
 		YixinWaiterRole newWaiter;
-		if (i == 0)
-			newWaiter = new YixinNormalWaiterRole(person, this, person.getName());
+		if (!isSharedDataWaiter)
+			newWaiter = new YixinNormalWaiterRole(person, this, person.name());
 		else
-			newWaiter = new YixinSharedDataWaiterRole(person, this, person.getName());
+			newWaiter = new YixinSharedDataWaiterRole(person, this, person.name());
 		newWaiter.setCashier((YixinCashierRole)cashier);
 		newWaiter.setCook((YixinCookRole)cook);
 		newWaiter.setHost(host);
@@ -95,7 +94,7 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	}
 
 	@Override
-	public Role getHostRole() {
+	public Role getHost() {
 		return host;
 	}
 
