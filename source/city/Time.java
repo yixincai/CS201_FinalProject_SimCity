@@ -32,6 +32,9 @@ public class Time {
 			return;
 		case FRIDAY:
 			_today = Day.SATURDAY;
+			for(int i = 0; i < Directory.banks().size(); i++){
+				Directory.banks().get(i).setClosed();
+			}
 			return;
 		case SATURDAY:
 			_today = Day.SUNDAY;

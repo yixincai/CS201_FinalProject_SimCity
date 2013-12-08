@@ -105,7 +105,7 @@ public class OmarHostRole extends Role {
 	}
 	
 	public void callWaiter(OmarCustomerRole customer, Table table, OmarWaiterRole w){
-			System.out.println(this.name + ": Called Waiter.");
+			print(AlertTag.OMAR_RESTAURANT, this.name + ": Called Waiter.");
 			if(waiters.size() != 0){
 				int custNum = waiters.get(0).getNumCustomers();
 				OmarWaiterRole selectedWaiter = null;

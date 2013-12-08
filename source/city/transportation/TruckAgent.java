@@ -81,94 +81,81 @@ public class TruckAgent extends Agent implements Truck{
 	//----------------------------------------------Scheduler------------------------------------------
 	public boolean pickAndExecuteAnAction(){
 		for(Package temp: packages){
-			if(temp.pState == packageState.inTruck && trState == truckState.docking){
-				DeliverToDestination(temp);
-				return true;
-			}
-			if(temp.pState == packageState.atMarket && trState == truckState.parkingLot){
-				PickFromDockFromParkingLot(temp);
-				return true;
-			}
-			if(temp.pState == packageState.atMarket && trState == truckState.atRestaurant){
-				PickFromDock(temp);
-				return true;
-			}
-		}
-		
-		if(packages.isEmpty() && out == true){
+			DeliverToDestination(temp);
 			GoBackToMarket();
 			return true;
 		}
+//		for(Package temp: packages){
+//			if(temp.pState == packageState.inTruck && trState == truckState.docking){
+//				DeliverToDestination(temp);
+//				return true;
+//			}
+//			if(temp.pState == packageState.atMarket && trState == truckState.parkingLot){
+//				PickFromDockFromParkingLot(temp);
+//				return true;
+//			}
+//			if(temp.pState == packageState.atMarket && trState == truckState.atRestaurant){
+//				PickFromDock(temp);
+//				return true;
+//			}
+//		}
+//		
+//		if(packages.isEmpty() && out == true){
+//			GoBackToMarket();
+//			return true;
+//		}
 		return false;
 	}
 	
 	//----------------------------------------------Actions------------------------------------------
-	public void PickFromDockFromParkingLot(Package aPackage){
-		trState = truckState.docking;
-		out = true;
-		_gui.goToDockFromParkingLot(_market);
-		print("Going to dock");
-		try {
-			isMoving.acquire();
-			//_market.msgPickUpItems();
-			print("Picked up");
-			aPackage.pState = packageState.inTruck;
-			stateChanged();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public void PickFromDock(Package aPackage){
-		trState = truckState.docking;
-		out = true;
-		_gui.goToDock(aPackage._restaurant);
-		print("Going to dock");
-		try {
-			isMoving.acquire();
-			//_market.msgPickUpItems();
-			print("Picked up");
-			aPackage.pState = packageState.inTruck;
-			stateChanged();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	public void PickFromDockFromParkingLot(Package aPackage){
+//		trState = truckState.docking;
+//		out = true;
+//		_gui.goToDockFromParkingLot(_market);
+//		print("Going to dock");
+//		try {
+//			isMoving.acquire();
+//			//_market.msgPickUpItems();
+//			print("Picked up");
+//			aPackage.pState = packageState.inTruck;
+//			stateChanged();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	public void PickFromDock(Package aPackage){
+//		trState = truckState.docking;
+//		out = true;
+//		_gui.goToDock(aPackage._restaurant);
+//		print("Going to dock");
+//		try {
+//			isMoving.acquire();
+//			//_market.msgPickUpItems();
+//			print("Picked up");
+//			aPackage.pState = packageState.inTruck;
+//			stateChanged();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public void DeliverToDestination(Package aPackage){
-		trState = truckState.drivingtoRestaurant;
 		_gui.goToDestination(aPackage._restaurant);
-		try {
-			isMoving.acquire();
-			if(aPackage._restaurant instanceof OmarRestaurant) { 
-				aPackage._restaurant.getCook().msgOrderFulfillment(_market, aPackage._items); } //Make sure GUI shows that it's dropped off !important!
-			else if (aPackage._restaurant instanceof YixinRestaurant)
-				aPackage._restaurant.getCook().msgOrderFulfillment(_market, aPackage._items); 
-			print("Delivered to restaurant " + aPackage._restaurant.name());
-			trState = truckState.atRestaurant;
-			packages.remove(aPackage);
-			stateChanged();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		if(aPackage._restaurant instanceof OmarRestaurant) { 
+			aPackage._restaurant.getCook().msgOrderFulfillment(_market, aPackage._items); } //Make sure GUI shows that it's dropped off !important!
+		else if (aPackage._restaurant instanceof YixinRestaurant)
+			aPackage._restaurant.getCook().msgOrderFulfillment(_market, aPackage._items); 
+		print("Delivered to restaurant " + aPackage._restaurant.name());
+		//trState = truckState.atRestaurant;
+		packages.remove(aPackage);
 	}
 
 	public void GoBackToMarket(){
-	    out = false;
+	    //out = false;
 	    _gui.goToMarketParkingLot(_market);
-	    try {
-			isMoving.acquire();
-			print("Going Back to parking lot");
-			trState = truckState.parkingLot;
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
 	}
 	
 	public String name(){
