@@ -113,7 +113,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		*/
 		print(AlertTag.MARKET, "Pay Market.");
 		DoGoToCashier();
-		DoGoToWaitingArea();
+		//DoGoToWaitingArea();
 		market.MarketCashier.msgPay(this, money);
 		money = 0;
 	}

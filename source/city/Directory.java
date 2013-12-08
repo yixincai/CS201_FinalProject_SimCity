@@ -44,7 +44,7 @@ public class Directory {
 	public static void addLanes(Lane lane){
 		lanes.add(lane);
 	}
-	
+
 	public static void addIntersections(Semaphore sem){
 		intersections.add(sem);
 	}
