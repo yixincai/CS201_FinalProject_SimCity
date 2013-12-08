@@ -19,8 +19,8 @@ import agent.*;
 public class PersonAgent extends Agent implements Person
 {
 	// Constants:
-	public static final Integer RICH_LEVEL = 250;
-	public static final Integer POOR_LEVEL = 10;
+	public static final int RICH_LEVEL = 250;
+	public static final int POOR_LEVEL = 10;
 	
 	// --------------------------------------- DATA -------------------------------------------
 	// Personal data:
