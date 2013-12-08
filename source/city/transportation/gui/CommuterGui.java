@@ -274,6 +274,24 @@ public class CommuterGui implements Gui {
 						//go ahead and try another
 						if (j == lane.permits.size() - 1){
 							setPresent(false);
+							if (lane.isHorizontal){
+								if (lane.xVelocity>0){
+									_yDestination += 10;
+								}
+								else {
+									_yDestination -=  10;
+								}
+							}
+							else {
+								if (lane.yVelocity>0){
+									_xDestination += 10;
+								}
+								else{
+									_xDestination -= 10;
+								}
+							}
+							_xPos = _xDestination;
+							_yPos = _yDestination;
 							lane.permits.get(j).release();
 						}
 					}
