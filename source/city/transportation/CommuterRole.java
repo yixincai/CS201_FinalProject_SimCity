@@ -51,16 +51,14 @@ public class CommuterRole extends Role implements Commuter{
 	CarState _cState = CarState.noCar; 
 
 	private Semaphore _reachedDestination = new Semaphore(0, true);
-	AStarTraversal _aStarTraversal;
 
 	//----------------------------------------------CONSTRUCTOR & PROPERTIES----------------------------------------
-	public CommuterRole(PersonAgent person, Place initialPlace, AStarTraversal aStarTraversal){
+	public CommuterRole(PersonAgent person, Place initialPlace){
 		super(person);
 		_person = person;
 		_currentPlace = initialPlace;
 		_destination = null;
 		_gui = new CommuterGui(this, initialPlace);
-		_aStarTraversal = aStarTraversal;
 	}
 
 	public CommuterGui gui() { return _gui; }

@@ -1,6 +1,5 @@
 package city;
 
-import gui.astar.AStarTraversal;
 import gui.trace.AlertLog;
 import gui.trace.AlertTag;
 
@@ -28,7 +27,7 @@ public class PersonAgent extends Agent implements Person
 	private String _name;
 	
 	// Role data:
-	private List<Role> _roles; // these are roles that you do when you're at a place e.g. RestaurantXCustomerRole, MarketCustomerRole, BankTellerRole
+	private List<Role> _roles; // these are roles that you have had do when you're at a place e.g. EricCustomerRole, MarketCustomerRole
 	private Role _currentRole; // this should never be null
 	private boolean _sentCmdFinishAndLeave = false;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
@@ -37,6 +36,9 @@ public class PersonAgent extends Agent implements Person
 	private boolean _weekday_notWeekend;
 	private HomeOccupantRole _homeOccupantRole;
 	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house (now, just pays rent on apartment)
+	
+	// Commands for scenarios
+	private List<String> _actionsToDo = new ArrayList<String>();
 	
 	// State data:
 	public double _money;
@@ -83,6 +85,11 @@ public class PersonAgent extends Agent implements Person
 	
 	// ------------------------------------------- CONSTRUCTORS & PROPERTIES --------------------------------------------
 	// ------------------ CONSTRUCTORS & SETUP ---------------------
+	/*public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType)
+	{
+		//TODO
+	}*/
+	// This constructor is for unit testing
 	public PersonAgent(String name) { _name = name; }
 	/**
 	 * Constructor
@@ -91,7 +98,7 @@ public class PersonAgent extends Agent implements Person
 	 * @param occupationType I.e. Restaurant Cashier or Restaurant Host or Bank Teller etc.
 	 * @param housingType House or Apartment
 	 */
-	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType, AStarTraversal aStarTraversal) 
+	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) 
 	{
 		_name = name; 
 		_money = money;
@@ -115,13 +122,13 @@ public class PersonAgent extends Agent implements Person
 			break;
 		}
 		
-		generateAndSetCommuterRole(aStarTraversal);
+		generateAndSetCommuterRole();
 		setNextRole(_homeOccupantRole);
 	}
 	/** Sets _commuterRole to a new CommuterRole */
-	public void generateAndSetCommuterRole(AStarTraversal aStarTraversal)
+	public void generateAndSetCommuterRole()
 	{
-		_commuterRole = new CommuterRole(this, null, aStarTraversal); // may replace null with _homeOccupantRole.place() to set the person's starting position
+		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
 	}
 	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
 	 * @param homeType Either "house" or "apartment" */
