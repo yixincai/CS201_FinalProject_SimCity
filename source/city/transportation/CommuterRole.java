@@ -30,7 +30,7 @@ public class CommuterRole extends Role implements Commuter{
 	public Bus _bus;
 	public double _fare;
 	CommuterGui _gui;
-	public boolean hasCar = true;
+	public boolean hasCar = false;//true;
 
 	public enum TravelState{choosing, 
 		choseCar, goToCar, atCar, driving, 
@@ -189,8 +189,8 @@ public class CommuterRole extends Role implements Commuter{
 		print("Choosing mode of transport");
 
 		_tState = TravelState.choseWalking;
-		_tState = TravelState.choseBus;
-		_tState = TravelState.choseCar;
+		//_tState = TravelState.choseBus;
+		//_tState = TravelState.choseCar;
 		/*
 	if(_gui.getManhattanDistanceToDestination(_destination) > 300){
 		if(_car != null){
@@ -222,16 +222,21 @@ public class CommuterRole extends Role implements Commuter{
 	public void actChooseNewTransportation(){ //Choosing when previous form of transportation doesn't work (Mostly for bus)
 		_tState = TravelState.none;
 	}
-
-	//Walking
-	public void actWalking(){
-		_tState = TravelState.walking;
-		_gui.walkToLocation(_destination);
-		waitForGuiToReachDestination();
+	
+	//Driving
+	public void actDriving(){
+		_gui.driveToLocation(_destination);
+		_tState = TravelState.done;
 		active = false;
 	}
 
-
+	//Walking
+	public void actWalking(){
+		_tState = TravelState.done;
+		_gui.walkToLocation(_destination);
+		active = false;
+	}
+	
 	//Bus
 	public void actGoToBusStop(){
 		_busStop = Directory.getNearestBusStop(_gui.getX(), _gui.getY()); //Unit Testing will skip this for now
@@ -256,12 +261,7 @@ public class CommuterRole extends Role implements Commuter{
 		actWalking(); //Calls this function here because after you get off of the bus stop you walk to the destination
 	}
 	
-	public void actDriving(){
-		_gui.driveToLocation(_destination);
-		//waitForGuiToReachDestination();
-		_tState = TravelState.done;
-		active = false;
-	}
+
 
 	//----------------------------------------------Hacks----------------------------------------
 	public void setPreferredTransportation(int choice){

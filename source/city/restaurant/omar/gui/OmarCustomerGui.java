@@ -5,9 +5,11 @@ import gui.Gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import javax.swing.JPanel;
+
 import city.restaurant.omar.OmarCustomerRole;
 
-public class OmarCustomerGui implements Gui {
+public class OmarCustomerGui extends JPanel implements Gui {
 
 	private OmarCustomerRole agent = null;
 	private boolean isPresent = true;

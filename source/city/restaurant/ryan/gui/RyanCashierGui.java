@@ -2,19 +2,27 @@ package city.restaurant.ryan.gui;
 
 import java.awt.*;
 
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
 import city.restaurant.ryan.RyanCashierRole;
 import city.restaurant.ryan.gui.RyanCustomerGui.State;
 
-public class RyanCashierGui implements Gui{
+public class RyanCashierGui extends JPanel implements Gui{
 	private RyanCashierRole agent = null;
 	
 	int xPos = 90; 
 	int yPos = 20;
-	int xDestination = 90;
-	int yDestination = 20;
+	int xDestination = 200;
+	int yDestination = -20;
 	
 	private enum Command {noCommand, LeaveRestaurant};
 	Command command = Command.noCommand;
+	
+	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Cashier.png"));
+    Image cashier = a.getImage();
+    int xGap = 19;
+    int yGap = 25;
 	
 	public RyanCashierGui(RyanCashierRole agent){
 		this.agent = agent;
@@ -56,8 +64,7 @@ public class RyanCashierGui implements Gui{
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
 		if(agent.active){
-			g.setColor(Color.BLUE);
-	        g.fillRect(xPos, yPos, 20, 20);
+			g.drawImage(cashier, xPos, yPos, xGap, yGap, this);
 		}
 	        
 		

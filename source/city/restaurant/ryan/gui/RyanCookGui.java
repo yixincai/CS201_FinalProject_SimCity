@@ -3,11 +3,15 @@ package city.restaurant.ryan.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import city.restaurant.ryan.RyanCookRole;
 
-public class RyanCookGui implements Gui{
+public class RyanCookGui extends JPanel implements Gui{
 	private RyanCookRole agent = null;
 	//RestaurantGui gui;
 	
@@ -26,11 +30,17 @@ public class RyanCookGui implements Gui{
 	
 	Dimension fridge = new Dimension(580, 80);
 	Dimension grill = new Dimension(580, 180);
+	Dimension revolvingStand = new Dimension(520, 50);
 	Dimension plate = new Dimension(520, 125);
 	Dimension home;
 	
-	enum Command{noCommand, goToFridge, goToGrill, goToGrill1, goToPlating, LeaveRestaurant};
+	enum Command{noCommand, goToStand, goToFridge, goToGrill, goToGrill1, goToPlating, LeaveRestaurant};
 	Command command = Command.noCommand;
+	
+	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Chef.png"));
+    Image cook = a.getImage();
+    int xGap = 18;
+    int yGap = 32;
 	
 	public RyanCookGui(RyanCookRole agent){
 		this.agent = agent;
@@ -77,6 +87,13 @@ public class RyanCookGui implements Gui{
 		}
 	}
 	
+
+	public void goToRevolvingStand() {
+		yDestination = revolvingStand.height;
+		xDestination = revolvingStand.width;
+		command = Command.goToStand;
+	}
+	
 	public void gotoFridge(){
 		yDestination = fridge.height;
 		xDestination = fridge.width;
@@ -94,6 +111,7 @@ public class RyanCookGui implements Gui{
 		yDestination = grill.height;
 		xDestination = grill.width;
 		command = Command.goToGrill1;
+		System.out.println("goToGrill");
 	}
 	
 	public void gotoPlate(){
@@ -139,6 +157,10 @@ public class RyanCookGui implements Gui{
 				System.out.println("atfridge");
 				hasIngredients = true;
 				gotoGrill();
+			}
+			else if (command==Command.goToStand){
+				System.out.println("atstand");
+				agent.msgAtStand();
 			}
 			else if(command==Command.goToGrill){
 				System.out.println("atgrill");
@@ -198,8 +220,7 @@ public class RyanCookGui implements Gui{
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
 		if(agent.active){
-			g.setColor(Color.BLACK);
-	        g.fillRect(xPos, yPos, 20, 20);
+			g.drawImage(cook, xPos, yPos, xGap, yGap, this);
 		}
         
         if(hasIngredients){
@@ -210,7 +231,7 @@ public class RyanCookGui implements Gui{
         for(Grill temp: grills){
         	if(temp.occupied == true){
         		g.setColor(Color.black);
-    			g.drawString((temp.choice), temp.x, (temp.y-5));
+    			g.drawString((temp.choice), (temp.x+2), (temp.y-7));
         	}
         }
         

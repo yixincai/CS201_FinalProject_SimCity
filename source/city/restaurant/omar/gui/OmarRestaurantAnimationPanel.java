@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -36,6 +37,23 @@ public class OmarRestaurantAnimationPanel extends JPanel implements ActionListen
 
     private List<Gui> guis = new ArrayList<Gui>();
     OmarHostRole host;
+    
+    ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Fridge.png"));
+    Dimension FridgePlace = new Dimension(630, 255);
+    Image fridge = a.getImage();
+    int xFGap = 25;
+    int yFGap = 48;
+    
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/restaurant/SingleGrill.png"));
+    Image grill = b.getImage();
+    int xGGap = 28;
+    int yGGap = 40;
+    
+    ImageIcon c = new ImageIcon(this.getClass().getResource("/image/restaurant/RevolvingStand.png"));
+    Dimension StandPlace = new Dimension(530, 300);
+    Image revolvingStand = c.getImage();
+    int xRGap = 20;
+    int yRGap = 30;
 
     public OmarRestaurantAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -77,32 +95,28 @@ public class OmarRestaurantAnimationPanel extends JPanel implements ActionListen
         
         //Cooking Area
         g2.setColor(Color.GRAY);
-        g2.fillRect(550, 200, 100, 75);
+        g2.fillRect(550, 200, 110, 110);
         g2.setColor(Color.BLACK);
-        g2.drawString("Cooking Area", 560, 300);
         
         //Plating Area
         g2.setColor(Color.PINK);
-        g2.fillRect(550, 130, 100, 75);
+        g2.fillRect(550, 175, 110, 25);
         g2.setColor(Color.BLACK);
         g2.drawString("Plating Area", 560, 110);
         
         //RevolvingStand
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(530, 300, 20, 20);
+        g2.drawImage(revolvingStand, StandPlace.width, StandPlace.height, xRGap, yRGap, this);
         g2.setColor(Color.BLACK);
-        g2.drawString("Revolving Stand", 520, 330);
+        g2.drawString("Revolving Stand", 560, 325);
         
         //Grills
         g2.setColor(Color.DARK_GRAY);
-        g2.fillRect(550, 200, 20, 20);
-        g2.fillRect(590, 200, 20, 20);
-        g2.fillRect(630, 200, 20, 20);
+        g2.drawImage(grill, 550, 200, xGGap, yGGap, this);
+        g2.drawImage(grill, 590, 200, xGGap, yGGap, this);
+        g2.drawImage(grill, 630, 200, xGGap, yGGap, this);
         
         //Fridge
-        g2.setColor(Color.lightGray);
-        g2.fillRect(630, 255, 20, 20);
-        g2.drawString("Fridge", 620, 285);
+        g2.drawImage(fridge, FridgePlace.width, FridgePlace.height, xFGap, yFGap, this);
         
         
         //Here is the table
