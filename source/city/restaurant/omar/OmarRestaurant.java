@@ -113,4 +113,9 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	public void generateHostGui() {
 		//TODO create cashier gui later	
 	}
+
+	@Override
+	public void clearInventory() {
+		cook.clearInventory();
+	}
 }

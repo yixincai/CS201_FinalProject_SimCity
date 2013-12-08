@@ -2,6 +2,7 @@ package city.restaurant.omar;
 
 import gui.trace.AlertTag;
 
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -60,10 +61,10 @@ public class OmarCookRole extends RestaurantCookRole {
 		//System.out.println("Chef Matt: About to Restock");
 
 		cookInventory = new Hashtable<String, Item>();
-		cookInventory.put("Pizza", new Item("Pizza", 0));
-		cookInventory.put("Hot Dog", new Item("Hot Dog", 0));
-		cookInventory.put("Burger", new Item("Burger", 0));
-		cookInventory.put("Filet Mignon", new Item("Filet Mignon", 0));
+		cookInventory.put("Pizza", new Item("Pizza", 10));
+		cookInventory.put("Hot Dog", new Item("Hot Dog", 10));
+		cookInventory.put("Burger", new Item("Burger", 10));
+		cookInventory.put("Filet Mignon", new Item("Filet Mignon", 10));
 		command = Command.None;
 	}
 
@@ -320,5 +321,17 @@ public class OmarCookRole extends RestaurantCookRole {
 	public void cmdFinishAndLeave() {
 		command = Command.Leave;
 		stateChanged();
+	}
+	
+	public void clearInventory(){
+		cookInventory.remove("Pizza");
+		cookInventory.remove("Hot Dog");
+		cookInventory.remove("Burger");
+		cookInventory.remove("Filet Mignon");
+		
+		cookInventory.put("Pizza", new Item("Pizza", 0));
+		cookInventory.put("Hot Dog", new Item("Hot Dog", 0));
+		cookInventory.put("Burger", new Item("Burger", 0));
+		cookInventory.put("Filet Mignon", new Item("Filet Mignon", 0));
 	}
 }

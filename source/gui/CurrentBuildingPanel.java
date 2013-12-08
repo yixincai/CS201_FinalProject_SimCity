@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,6 +18,11 @@ import javax.swing.JScrollPane;
 import city.Directory;
 import city.Place;
 import city.bank.Bank;
+import city.restaurant.Restaurant;
+import city.restaurant.eric.EricRestaurant;
+import city.restaurant.omar.OmarRestaurant;
+import city.restaurant.ryan.RyanRestaurant;
+import city.restaurant.yixin.YixinRestaurant;
 
 public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	
@@ -26,7 +32,12 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	JLabel buildingName;
 	JLabel buildingMoney;
 	JScrollPane buildingButtons;
-	ControlPanel cPanel;	
+	ControlPanel cPanel;
+	
+	Place _currentlySelectedBuilding;
+	JButton clearInventoryButton;
+	private final Dimension buttonDimension = new Dimension(340, 30);
+	
 	BuildingInteriorAnimationPanel currentBuildingPanel = null;
 	private final int WIDTH = 1024/3;
 	private final int HEIGHT = 720;
@@ -44,10 +55,26 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 			infoPanel.setMinimumSize(new Dimension(WIDTH, HEIGHT/2));
 			infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
 			infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+			
+			 clearInventoryButton = new JButton("Clear Inventory");
+			 clearInventoryButton.setMinimumSize(buttonDimension);
+			 clearInventoryButton.setMaximumSize(buttonDimension);
+			 clearInventoryButton.setVisible(false);
+			 
+			 clearInventoryButton.addActionListener(new ActionListener() {
+	             @Override
+	             public void actionPerformed(ActionEvent e) {
+	            	 if(_currentlySelectedBuilding != null){
+	            		 ((Restaurant) _currentlySelectedBuilding).clearInventory();
+	            	 }
+	             }
+	         });
+			 
 			buildingName = new JLabel("Building Name: ");
 			buildingMoney = new JLabel("Building Money: ");
 			infoPanel.add(buildingName); 
 			infoPanel.add(buildingMoney); 
+			infoPanel.add(clearInventoryButton);
 			this.add(infoPanel, BorderLayout.NORTH);
 			buttonPanel = new JPanel();
 			buttonPanel.setLayout(new BorderLayout());
@@ -79,11 +106,19 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	
 	public void updateInfo(JButton selected)
 	{
+		
 		List<Place> places = Directory.places();
 		for(Place p : places)
 		{
 			if(p.name() == selected.getText())
 			{
+				_currentlySelectedBuilding = p;
+				if(p instanceof OmarRestaurant || p instanceof YixinRestaurant || 
+						p instanceof EricRestaurant || p instanceof RyanRestaurant){
+					clearInventoryButton.setVisible(true);
+				} else {
+					clearInventoryButton.setVisible(false);
+				}
 				buildingName.setText("Building Name: " + p.name());
 			//	buildingMoney.setText("Building Money: Need a money field in places");
 				p.worldViewBuilding().displayBuilding();

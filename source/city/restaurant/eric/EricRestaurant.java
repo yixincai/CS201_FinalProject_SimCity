@@ -48,4 +48,9 @@ public class EricRestaurant extends Restaurant {
 
 	}
 
+	@Override
+	public void clearInventory() {
+		cook.clearInventory();
+	}
+
 }

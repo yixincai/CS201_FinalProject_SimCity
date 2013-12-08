@@ -310,4 +310,17 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 		return restaurant;
 	}
 
+	@Override
+	public void clearInventory() {
+		inventory.remove("Steak");
+		inventory.remove("Chicken");
+		inventory.remove("Salad");
+		inventory.remove("Pizza");
+		
+		inventory.put("Steak", new Food("Steak", 5000, 0, 3, 5));
+		inventory.put("Chicken", new Food("Chicken", 4000, 0, 3, 5));
+		inventory.put("Salad", new Food("Salad", 1000, 0, 3, 5));
+		inventory.put("Pizza", new Food("Pizza", 3000, 0, 3, 5));
+	}
+
 }

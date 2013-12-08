@@ -123,4 +123,9 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		animationPanel().addGui(hostGui);	
 		
 	}
+
+	@Override
+	public void clearInventory() {
+		cook.clearInventory();
+	}
 }

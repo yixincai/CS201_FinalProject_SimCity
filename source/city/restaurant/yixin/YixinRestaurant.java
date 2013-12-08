@@ -127,4 +127,9 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		animationPanel().addGui(hostGui);		
 	}
 
+	@Override
+	public void clearInventory() {
+		cook.clearInventory();
+	}
+
 }
