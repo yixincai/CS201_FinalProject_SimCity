@@ -134,6 +134,7 @@ public class CommuterGui implements Gui {
 					route.add(_currentBlockX + 3 * _currentBlockY);
 				}
 				if (_currentBlockY > _destinationBlockY){
+					System.out.println(_currentBlockY + "   " + _destinationBlockY);
 					intersections.add(_currentBlockX + _currentBlockY);
 					_currentBlockY--;
 					route.add(_currentBlockX + 3 * _currentBlockY);
@@ -529,9 +530,9 @@ public class CommuterGui implements Gui {
 	}
 
 	private int getBlockY(int yPos){
-		if (yPos >= 30 + 5 * 10 && yPos < 41 + 9 * 10)
+		if (yPos >= 30 + 5 * 10 && yPos < 30 + 9 * 10)
 			return 0;
-		if (yPos >= 41 + 19 * 10 && yPos < 41 + 25 * 10)
+		if (yPos >= 30 + 19 * 10 && yPos < 30 + 25 * 10)
 			return 1;
 		return -1;
 	}
