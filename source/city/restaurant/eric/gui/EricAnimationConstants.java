@@ -59,6 +59,6 @@ public class EricAnimationConstants
     public static final int TIMER_PERIOD = 5; // in ms
     
     // Font constant
-    public static final String FONT = "Consolas";
-    public static final Font FOOD_FONT = new Font(FONT, Font.BOLD, 16);
+    public static final String FONT_NAME = "Consolas";
+    public static final Font FONT = new Font(FONT_NAME, Font.BOLD, 16);
 }

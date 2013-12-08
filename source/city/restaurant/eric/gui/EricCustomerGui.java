@@ -213,7 +213,7 @@ public class EricCustomerGui implements Gui
         
         if(_food != null)
         {
-        	g.setFont(EricAnimationConstants.FOOD_FONT);
+        	g.setFont(EricAnimationConstants.FONT);
         	g.setColor(Color.BLACK);
         	g.drawString(_food,
         			_position.x + EricAnimationConstants.PERSON_WIDTH,
