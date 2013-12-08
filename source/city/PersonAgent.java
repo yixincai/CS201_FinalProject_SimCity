@@ -6,22 +6,17 @@ import gui.trace.AlertTag;
 import java.lang.reflect.Type;
 import java.util.*;
 
-// TODO the gui packages are basically only here for the setOccupation() function. We will move the gui instantiation elsewhere, probably to the roles' respective constructors.
-import city.home.*;
 import city.interfaces.Person;
+import city.home.*;
 import city.bank.*;
 import city.bank.gui.*;
 import city.market.*;
 import city.market.gui.*;
 import city.restaurant.*;
-import city.restaurant.eric.EricCustomerRole;
-import city.restaurant.eric.EricRestaurant;
-import city.restaurant.omar.OmarCustomerRole;
-import city.restaurant.omar.OmarRestaurant;
-import city.restaurant.ryan.RyanCustomerRole;
-import city.restaurant.ryan.RyanRestaurant;
-import city.restaurant.yixin.YixinCustomerRole;
-import city.restaurant.yixin.YixinRestaurant;
+import city.restaurant.eric.*;
+import city.restaurant.omar.*;
+import city.restaurant.ryan.*;
+import city.restaurant.yixin.*;
 import city.transportation.CommuterRole;
 import agent.*;
 
@@ -357,10 +352,15 @@ public class PersonAgent extends Agent implements Person
 	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
 	public CommuterRole commuterRole() { return _commuterRole; }
 	// Actions to do:
+	/** Adds an action to do to the back of the list of actions to do */
 	public void addActionToDo(String actionToDo) { _actionsToDo.add(actionToDo); }
+	/** Adds a list of actions to do to the back of the list of actions to do */
 	public void addActionsToDo(List<String> actionsToDo) { _actionsToDo.addAll(actionsToDo); }
+	/** Inserts an action to do at the beginning of the list */
+	public void insertFirstActionToDo(String actionToDo) { _actionsToDo.add(0, actionToDo); }
 	public boolean removeActionToDo(String actionToDo) { return _actionsToDo.remove(actionToDo); }
-	public String popNextActionToDo() { return _actionsToDo.remove(0); }
+	/** Removes and returns the first action in the list */
+	private String popFirstActionToDo() { return _actionsToDo.remove(0); }
 	/** Returns the current _actionsToDo list and resets it to a new, empty list. */
 	public List<String> clearActionsToDo() {
 		List<String> oldActionsToDo = _actionsToDo;
@@ -457,28 +457,33 @@ public class PersonAgent extends Agent implements Person
 				return true;
 			}
 			
+			
+			
 			// We will only get here if we just finished a role which is not _commuterRole.
 			// Choose a new role and call setNextRole on it
 			
+			
+			
+			// First, check if there are actions to do in the list.
 			if(!_actionsToDo.isEmpty())
 			{
-				String nextAction = popNextActionToDo();
+				String nextAction = popFirstActionToDo();
 				if(nextAction.contains("Restaurant"))
 				{
 					if(nextAction.contains("Eric")) {
-						if(goToRestaurantOfType("Eric")) return true;
+						if(actGoToRestaurantOfType("Eric")) return true;
 					}
 					if(nextAction.contains("Omar")) {
-						if(goToRestaurantOfType("Omar")) return true;
+						if(actGoToRestaurantOfType("Omar")) return true;
 					}
 					if(nextAction.contains("Ryan")) {
-						if(goToRestaurantOfType("Ryan")) return true;
+						if(actGoToRestaurantOfType("Ryan")) return true;
 					}
 				//	if(nextAction.contains("Tanner")) {
 				//		if(goToRestaurantOfType("Tanner")) return true;
 				//	}
 					if(nextAction.contains("Yixin")) {
-						if(goToRestaurantOfType("Yixin")) return true;
+						if(actGoToRestaurantOfType("Yixin")) return true;
 					}
 				}
 				else if(nextAction.contains("Bank"))
@@ -490,22 +495,27 @@ public class PersonAgent extends Agent implements Person
 				else if(nextAction.contains("Market"))
 				{
 					// Buy 3 meals from the market
-					if(buyMealsFromMarket(3)) return true;
+					if(actBuyMealsFromMarket(3)) return true;
 				}
 				else if(nextAction.contains("Home"))
 				{
 					if(nextAction.contains("Sleep")) {
 						_homeOccupantRole.cmdGoToBed();
 					}
-					else if(nextAction.contains("Cook")) {
+					else if(nextAction.contains("Eat") || nextAction.contains("Cook")) {
 						_homeOccupantRole.cmdCookAndEatFood();
 					}
 					else if(nextAction.contains("TV")) {
 						_homeOccupantRole.cmdWatchTv();
 					}
 					setNextRole(_homeOccupantRole);
+					return true;
 				}
 			}
+			
+			
+			
+			// Now we begin the free-running, autonomous behavior for the person.
 			if(_occupation != null && workingToday() && timeToBeAtWork())
 			{
 				setNextRole(_occupation);
@@ -526,42 +536,82 @@ public class PersonAgent extends Agent implements Person
 			{
 				if(_state.wealth() == WealthState.RICH)
 				{
-					goToAnyRestaurant();
+					actGoToAnyRestaurant();
 				}
 				else
 				{
 					Random rand = new Random();
 					if(rand.nextInt(4) == 0)
 					{
-						if(goToAnyRestaurant())
+						if(actGoToAnyRestaurant())
 						{
 							return true;
 						}
 					}
-					if(_homeOccupantRole.haveFood())
-					{
-						_homeOccupantRole.cmdCookAndEatFood();
-						setNextRole(_homeOccupantRole);
-						return true;
-					}
-					else
-					{
-						buyMealsFromMarket(3); // 3 meals
-						return true;
-					}
+					if(actEatAtHome()) return true;
 				}
 			}
 		}
 		
 		//check for and do non-important actions, like check your phone
-		if(_name.equals("Wilczynski"))
+		
+		// (Peanut gallery)
+		if(_name.contains("Wilczynski")) { actTellLongStory(); }
+		else if(_name.contains("iWhale")) { actIWhale(); }
+		return false;
+	}
+	
+	
+	
+	// ---------------------------------------- ACTIONS ----------------------------------------
+	// note: These really just set the next role.
+	
+	// ----------------- HOME -----------------
+	/** Eats at home if you have food, otherwise goes to market first then tries to eat at home. */
+	private boolean actEatAtHome()
+	{
+		if(_homeOccupantRole.haveFood())
 		{
-			actTellLongStory();
+			_homeOccupantRole.cmdCookAndEatFood();
+			setNextRole(_homeOccupantRole);
 			return true;
 		}
-		else if(_name.equals("iWhale"))
+		else
 		{
-			actIWhale();
+			if(actBuyMealsFromMarket(3)) // hard-coded 3 meals for now
+			{
+				insertFirstActionToDo("HomeEat");
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	
+	// ----------------- Market -----------------
+	private boolean actBuyMealsFromMarket(int meals)
+	{
+		// Search for a MarketCustomerRole in _roles, use that;
+		// if no MarketCustomerRole in _roles, choose a Market from the Directory, and get a new MarketCustomerRole from it
+		for(Role r : _roles)
+		{
+			if(r instanceof MarketCustomerRole)
+			{
+				MarketCustomerRole mcr = (MarketCustomerRole)r;
+				mcr.cmdBuyFood(meals);
+				setNextRole(mcr);
+				return true;
+			}
+		}
+		// note: we only get here if no MarketCustomerRole was found in _roles
+		List<Market> markets = Directory.markets();
+		for(Market m : markets)
+		{
+			MarketCustomerRole mcr = m.generateCustomerRole(this);
+			mcr.cmdBuyFood(meals);
+			setNextRole(mcr);
+			_roles.add(mcr);
 			return true;
 		}
 		return false;
@@ -569,9 +619,90 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	
-	// ---------------------------------------- ACTIONS ----------------------------------------
+	// ----------------- Restaurant -----------------
+	private boolean actGoToAnyRestaurant()
+	{
+		// Search for a RestaurantCustomerRole in _roles, use that;
+		// if no RestaurantCustomerRole in _roles, choose a Restaurant from the Directory, and get a new RestaurantCustomerRole from it
+		RestaurantCustomerRole rcr = (RestaurantCustomerRole)getRoleOfType(RestaurantCustomerRole.class);
+		if(rcr != null)
+		{
+			rcr.cmdGotHungry();
+			setNextRole(rcr);
+			return true;
+		}
+		// note: we only get here if no RestaurantCustomerRole was found in _roles
+		List<Restaurant> restaurants = Directory.restaurants();
+		for(Restaurant r : restaurants)
+		{
+			rcr = r.generateCustomerRole(this);
+			rcr.cmdGotHungry();
+			setNextRole(rcr);
+			_roles.add(rcr);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * Searches for a RestaurantCustomerRole of the correct type in _roles and then in Directory.restaurants() and calls setNextRole on it
+	 * @param type "Eric", "Omar", etc.
+	 * @return true if a restaurant of the passed-in type was chosen and setNextRole was called
+	 */
+	private boolean actGoToRestaurantOfType(String type)
+	{
+		RestaurantCustomerRole rcr = null;
+		switch(type)
+		{
+		case "Eric":
+			rcr = (RestaurantCustomerRole)getRoleOfType(EricCustomerRole.class);
+			if(rcr == null) {
+				rcr = getNewCustomerRoleFromRestaurantOfType(EricRestaurant.class);
+				if(rcr != null) _roles.add(rcr);
+			}
+			break;
+		case "Omar":
+			rcr = (RestaurantCustomerRole)getRoleOfType(OmarCustomerRole.class);
+			if(rcr == null) {
+				rcr = getNewCustomerRoleFromRestaurantOfType(OmarRestaurant.class);
+				if(rcr != null) _roles.add(rcr);
+			}
+			break;
+		case "Ryan":
+			rcr = (RestaurantCustomerRole)getRoleOfType(RyanCustomerRole.class);
+			if(rcr == null) {
+				rcr = getNewCustomerRoleFromRestaurantOfType(RyanRestaurant.class);
+				if(rcr != null) _roles.add(rcr);
+			}
+			break;
+		//case "Tanner":
+		//	rcr = (RestaurantCustomerRole)getRoleOfType(TannerCustomerRole.class);
+		//	if(rcr == null)
+		//	{
+		//		rcr = getNewCustomerRoleFromRestaurantOfType(TannerRestaurant.class);
+		//		if(rcr != null) _roles.add(rcr);
+		//	}
+		//	break;
+		case "Yixin":
+			rcr = (RestaurantCustomerRole)getRoleOfType(YixinCustomerRole.class);
+			if(rcr == null) {
+				rcr = getNewCustomerRoleFromRestaurantOfType(YixinRestaurant.class);
+				if(rcr != null) _roles.add(rcr);
+			}
+			break;
+		}
+		if(rcr != null)
+		{
+			rcr.cmdGotHungry();
+			setNextRole(rcr);
+			return true;
+		}
+		
+		return false;
+	}
 	
-	// (Peanut gallery)
+	
+	
+	// --------------- (Peanut gallery) ---------------------
 	private void actTellLongStory()
 	{
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(),"When I was a young programmer, my boss was skeptical of my design.  I proved him wrong.");
@@ -618,115 +749,6 @@ public class PersonAgent extends Agent implements Person
 		_currentRole.active = true;
 		stateChanged();
 	}
-	private boolean buyMealsFromMarket(int meals)
-	{
-		// Search for a MarketCustomerRole in _roles, use that;
-		// if no MarketCustomerRole in _roles, choose a Market from the Directory, and get a new MarketCustomerRole from it
-		for(Role r : _roles)
-		{
-			if(r instanceof MarketCustomerRole)
-			{
-				MarketCustomerRole mcr = (MarketCustomerRole)r;
-				mcr.cmdBuyFood(meals);
-				setNextRole(mcr);
-				return true;
-			}
-		}
-		// note: we only get here if no MarketCustomerRole was found in _roles
-		List<Market> markets = Directory.markets();
-		for(Market m : markets)
-		{
-			MarketCustomerRole mcr = m.generateCustomerRole(this);
-			mcr.cmdBuyFood(meals);
-			setNextRole(mcr);
-			_roles.add(mcr);
-			return true;
-		}
-		return false;
-	}
-	private boolean goToAnyRestaurant()
-	{
-		// Search for a RestaurantCustomerRole in _roles, use that;
-		// if no RestaurantCustomerRole in _roles, choose a Restaurant from the Directory, and get a new RestaurantCustomerRole from it
-		RestaurantCustomerRole rcr = (RestaurantCustomerRole)getRoleOfType(RestaurantCustomerRole.class);
-		if(rcr != null)
-		{
-			rcr.cmdGotHungry();
-			setNextRole(rcr);
-			return true;
-		}
-		// note: we only get here if no RestaurantCustomerRole was found in _roles
-		List<Restaurant> restaurants = Directory.restaurants();
-		for(Restaurant r : restaurants)
-		{
-			rcr = r.generateCustomerRole(this);
-			rcr.cmdGotHungry();
-			setNextRole(rcr);
-			_roles.add(rcr);
-			return true;
-		}
-		return false;
-	}
-	/**
-	 * Searches for a RestaurantCustomerRole of the correct type in _roles and then in Directory.restaurants() and calls setNextRole on it
-	 * @param type "Eric", "Omar", etc.
-	 * @return true if a restaurant of the passed-in type was chosen and setNextRole was called
-	 */
-	private boolean goToRestaurantOfType(String type)
-	{
-		RestaurantCustomerRole rcr = null;
-		switch(type)
-		{
-		case "Eric":
-			rcr = (RestaurantCustomerRole)getRoleOfType(EricCustomerRole.class);
-			if(rcr == null)
-			{
-				rcr = getNewCustomerRoleFromRestaurantOfType(EricRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
-			}
-			break;
-		case "Omar":
-			rcr = (RestaurantCustomerRole)getRoleOfType(OmarCustomerRole.class);
-			if(rcr == null)
-			{
-				rcr = getNewCustomerRoleFromRestaurantOfType(OmarRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
-			}
-			break;
-		case "Ryan":
-			rcr = (RestaurantCustomerRole)getRoleOfType(RyanCustomerRole.class);
-			if(rcr == null)
-			{
-				rcr = getNewCustomerRoleFromRestaurantOfType(RyanRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
-			}
-			break;
-		//case "Tanner":
-		//	rcr = (RestaurantCustomerRole)getRoleOfType(TannerCustomerRole.class);
-		//	if(rcr == null)
-		//	{
-		//		rcr = getNewCustomerRoleFromRestaurantOfType(TannerRestaurant.class);
-		//		if(rcr != null) _roles.add(rcr);
-		//	}
-		//	break;
-		case "Yixin":
-			rcr = (RestaurantCustomerRole)getRoleOfType(YixinCustomerRole.class);
-			if(rcr == null)
-			{
-				rcr = getNewCustomerRoleFromRestaurantOfType(YixinRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
-			}
-			break;
-		}
-		if(rcr != null)
-		{
-			rcr.cmdGotHungry();
-			setNextRole(rcr);
-			return true;
-		}
-		
-		return false;
-	}
 	private Role getRoleOfType(Type type)
 	{
 		for(Role r : _roles)
@@ -735,6 +757,9 @@ public class PersonAgent extends Agent implements Person
 		}
 		return null;
 	}
+	/** This method returns a new customer role from the restaurant type specified.
+	 * It does not take into account whether or not the restaurant's customer role already exists in _roles.
+	 */
 	private RestaurantCustomerRole getNewCustomerRoleFromRestaurantOfType(Type type)
 	{
 		List<Restaurant> restaurants = Directory.restaurants();
