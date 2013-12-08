@@ -85,10 +85,11 @@ public class PersonAgent extends Agent implements Person
 	
 	// ------------------------------------------- CONSTRUCTORS & PROPERTIES --------------------------------------------
 	// ------------------ CONSTRUCTORS & SETUP ---------------------
-	/*public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType)
+	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType, List<String> actionsToDo)
 	{
-		//TODO
-	}*/
+		this(name, money, occupationType, weekday_notWeekend, housingType);
+		_actionsToDo.addAll(actionsToDo);
+	}
 	// This constructor is for unit testing
 	public PersonAgent(String name) { _name = name; }
 	/**
@@ -319,6 +320,7 @@ public class PersonAgent extends Agent implements Person
 		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this, false);
 		_occupation = newOccupation;
 	}
+	
 	// ---------------------- OTHER PROPERTIES -------------------------
 	public String name() { return _name; }
 	public double money() { return _money; }
@@ -328,6 +330,8 @@ public class PersonAgent extends Agent implements Person
 	}
 	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
 	public CommuterRole commuterRole() { return _commuterRole; }
+	public void addActionToDo(String actionToDo) { _actionsToDo.add(actionToDo); }
+	public void addActionsToDo(List<String> actionsToDo) { _actionsToDo.addAll(actionsToDo); }
 	
 	
 	
