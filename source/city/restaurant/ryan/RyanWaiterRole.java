@@ -98,7 +98,7 @@ public abstract class RyanWaiterRole extends Role{
 	//messages******************************************************************************************************************
 	//Break
 	public void WantToGoOnBreak(){
-		print("I, " + waiterName + ", want to go on break");
+		print(AlertTag.RYAN_RESTAURANT,"I, " + waiterName + ", want to go on break");
 		wState = waiterState.WantBreak;
 		stateChanged();
 	}
@@ -122,7 +122,7 @@ public abstract class RyanWaiterRole extends Role{
 //	}
 	
 	public void msgJobsDone(){
-		print("Done with jobs. Going on break");
+		print(AlertTag.RYAN_RESTAURANT,"Done with jobs. Going on break");
 		stateChanged();
 	}
 	
@@ -139,7 +139,7 @@ public abstract class RyanWaiterRole extends Role{
 	
 	public void msgReadytoOrder(RyanCustomerRole customer){
 		MyCustomer cust = doSearch(customer);
-		print("Coming " + cust.customer.getName() + "!");
+		print(AlertTag.RYAN_RESTAURANT,"Coming " + cust.customer.getName() + "!");
 		cust.state = customerState.ReadyToOrder;
 		stateChanged();
 	}
@@ -148,13 +148,13 @@ public abstract class RyanWaiterRole extends Role{
 		MyCustomer cust = doSearch(customer);
 		cust.choice = choice;
 		cust.state = customerState.Ordered;
-		print("So customer " + cust.customer.getName() + " wants " + cust.choice);
+		print(AlertTag.RYAN_RESTAURANT,"So customer " + cust.customer.getName() + " wants " + cust.choice);
 		stateChanged();
 		//ordered
 	}
 	
 	public void msgOutofOrder(String choice, RyanCustomerRole customer){
-		print("We are out of " + choice);
+		print(AlertTag.RYAN_RESTAURANT,"We are out of " + choice);
 		MyCustomer cust = doSearch(customer);
 		cust.state = customerState.Out;
 		for(int i = 0; i < wMenu.size(); i++){
@@ -169,7 +169,7 @@ public abstract class RyanWaiterRole extends Role{
 	public void msgOrderDone(String choice, RyanCustomerRole customer){
 		MyCustomer cust = doSearch(customer);
 		cust.state = customerState.FoodIsDone;
-		print("Order " + cust.choice + " for Customer " + cust.customer.getName() + " is on counter");
+		print(AlertTag.RYAN_RESTAURANT,"Order " + cust.choice + " for Customer " + cust.customer.getName() + " is on counter");
 		stateChanged();
 	}
 	
@@ -264,10 +264,10 @@ public abstract class RyanWaiterRole extends Role{
 			try{
 				host.msgSeatUnoccupied(customer.seatNumber);
 				customer.state = customerState.Seated;
-				print("Seating " + customer.customer.getName() + " at " + customer.tableNumber);
+				print(AlertTag.RYAN_RESTAURANT,"Seating " + customer.customer.getName() + " at " + customer.tableNumber);
 				gui.DoGoToTable(customer.tableNumber);
 				customer.customer.msgFollowMe(customer.tableNumber, this, wMenu);
-				print("I'm " + waiterName);
+				print(AlertTag.RYAN_RESTAURANT,"I'm " + waiterName);
 				isMoving.acquire();
 				if(waiterName.equals("onbreak")){
 					WantToGoOnBreak();
@@ -289,7 +289,7 @@ public abstract class RyanWaiterRole extends Role{
 			gui.DoGoToTable(customer.tableNumber);
 			customer.state = customerState.Asked;
 			isMoving.acquire();
-			print("What is your order?");
+			print(AlertTag.RYAN_RESTAURANT,"What is your order?");
 			customer.customer.msgWhatsYourOrder();
 		}catch(InterruptedException a){
     		
@@ -305,12 +305,12 @@ public abstract class RyanWaiterRole extends Role{
 //			isMoving.acquire();
 //			wPlace = waiterPlace.inRestaurant;
 //			customer.state = customerState.WaitingForFood;
-//			print("Chef, Customer " + customer.customer.getName() + " wants " + customer.choice);
+//			print(AlertTag.RYAN_RESTAURANT,"Chef, Customer " + customer.customer.getName() + " wants " + customer.choice);
 //			cook.msgTryToCookOrder(this, (RyanCustomerRole) customer.customer, customer.choice);
 //		}catch(InterruptedException a){
 //    		
 //    	} catch(Exception a){
-//    		print("Unexpected exception caught in Agent thread:", a);
+//    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
 //    	}
 //	}
 	
@@ -319,12 +319,12 @@ public abstract class RyanWaiterRole extends Role{
 			gui.DoGoToTable(customer.tableNumber);
 			isMoving.acquire();
 			customer.state = customerState.Asked;
-			print("Please reorder, customer " + customer.customer.getName());
+			print(AlertTag.RYAN_RESTAURANT,"Please reorder, customer " + customer.customer.getName());
 			customer.customer.msgPleaseReorder(wMenu);
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
+    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
     	}
 	}
 	
@@ -338,14 +338,14 @@ public abstract class RyanWaiterRole extends Role{
 				gui.hasFood();
 				isMoving.acquire();
 				gui.noFood();
-				print("Bringing " + customer.choice + " to " + customer.customer.getName());
+				print(AlertTag.RYAN_RESTAURANT,"Bringing " + customer.choice + " to " + customer.customer.getName());
 				customer.state = customerState.Eating;
 				customer.customer.msgHeresYourFood();
-				print("Here's your food, customer " + customer.customer.getName());
+				print(AlertTag.RYAN_RESTAURANT,"Here's your food, customer " + customer.customer.getName());
 			}catch(InterruptedException a){
 	    		
 	    	} catch(Exception a){
-	    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
+	    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
 	    	}
 		}
 		else{
@@ -362,7 +362,7 @@ public abstract class RyanWaiterRole extends Role{
 	}
 	
 	public void AskReceipt(MyCustomer customer){
-		print("To Cashier: Get receipt for " + customer.customer.getName());
+		print(AlertTag.RYAN_RESTAURANT,"To Cashier: Get receipt for " + customer.customer.getName());
 		customer.state = customerState.AwaitingCheck;
 		cashier.msgMakeReceipt(this, customer.customer, customer.choice);
 	}
@@ -371,18 +371,18 @@ public abstract class RyanWaiterRole extends Role{
 		if(wPlace == waiterPlace.atCashier){
 			try{
 				wPlace = waiterPlace.inRestaurant;
-				print("Bringing check amount " + customer.payment + " to " + customer.customer.getName());
+				print(AlertTag.RYAN_RESTAURANT,"Bringing check amount " + customer.payment + " to " + customer.customer.getName());
 				gui.DoGoToTable(customer.tableNumber);
 				gui.hasCheck();
 				isMoving.acquire();
 				gui.noCheck();
 				customer.state = customerState.GotCheck;
-				print("Here's your check, customer " + customer.customer.getName());
+				print(AlertTag.RYAN_RESTAURANT,"Here's your check, customer " + customer.customer.getName());
 				customer.customer.msgHeresYourCheck(customer.payment);
 			}catch(InterruptedException a){
 	    		
 	    	} catch(Exception a){
-	    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
+	    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
 	    	}
 		}
 		else{
@@ -392,24 +392,24 @@ public abstract class RyanWaiterRole extends Role{
 			}catch(InterruptedException a){
 	    		
 	    	} catch(Exception a){
-	    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
+	    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
 	    	}
 		}
 	}
 	
 	public void SayGoodbye(MyCustomer customer){
-		print("Goodbye " + customer.customer.getName());
+		print(AlertTag.RYAN_RESTAURANT,"Goodbye " + customer.customer.getName());
 		customer.state = customerState.Gone;
 		Customers.remove(customer);
 		host.msgFreeTable((RyanCustomerRole) customer.customer);
 		if(Customers.isEmpty() && wState == waiterState.CanBreak){
-			print("Done with jobs. Going on break");
+			print(AlertTag.RYAN_RESTAURANT,"Done with jobs. Going on break");
 		}
 	}
 	
 	//Break
 	public void AskForBreak(){
-		print(host.getName() + ", Can I go on break?");
+		print(AlertTag.RYAN_RESTAURANT,host.getName() + ", Can I go on break?");
 		wState = waiterState.Waiting;
 		host.msgAskForBreak(this);
 	}
@@ -417,7 +417,7 @@ public abstract class RyanWaiterRole extends Role{
 //	public void goOnBreak(){
 //		Random generator = new Random();
 //		wState = waiterState.OnBreak;
-//		print("I'm on break");
+//		print(AlertTag.RYAN_RESTAURANT,"I'm on break");
 //		timer.schedule(new TimerTask() {
 //			public void run() {
 //				OffBreak();
@@ -427,7 +427,7 @@ public abstract class RyanWaiterRole extends Role{
 //	}
 	
 //	public void OffBreak(){
-//		print("My break is done");
+//		print(AlertTag.RYAN_RESTAURANT,"My break is done");
 //		onBreak = false;
 //		wState = waiterState.Working;
 //		host.msgOffBreak(this);
@@ -445,20 +445,20 @@ public abstract class RyanWaiterRole extends Role{
 	}
 	
 	public void msgAtTable() {//from animation
-		print("At Table");
+		print(AlertTag.RYAN_RESTAURANT,"At Table");
 		isMoving.release();// = true;
 		stateChanged();
 	}
 	
 	public void msgAtChef(){
-		print("At Chefs");
+		print(AlertTag.RYAN_RESTAURANT,"At Chefs");
 		wPlace = waiterPlace.atChef;
 		isMoving.release();// = true;
 		stateChanged();
 	}
 	
 	public void msgAtCashier(){
-		print("At Cashier");
+		print(AlertTag.RYAN_RESTAURANT,"At Cashier");
 		wPlace = waiterPlace.atCashier;
 		isMoving.release(); // = true;
 		stateChanged();

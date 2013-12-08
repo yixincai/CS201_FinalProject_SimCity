@@ -41,21 +41,16 @@ public abstract class Role
 		log.add(msg);
 		StringBuffer sb = new StringBuffer();
 		sb.append(msg);
-		sb.append("\n");
+		//sb.append("\n");
 		if (e != null) sb.append(StringUtil.stackTraceString(e));
 		if(_person != null){
 			AlertLog.getInstance().logMessage(tag, _person.name(), sb.toString());
 		}
-		System.out.print(sb.toString());
+		//System.out.print(sb.toString());
 	}
 	protected void print(AlertTag tag, String msg)
 	{
 		print(tag, msg, null);
-	}
-	
-	protected void print(String msg)
-	{
-		print(AlertTag.GENERAL_CITY, msg, null);
 	}
 	
 	protected void logThis(String msg)
