@@ -76,7 +76,7 @@ public class OmarCookGui extends JPanel implements Gui {
 		g.drawImage(cook, xPos, yPos, xGap, yGap, this);
 		
 		g.drawString(currentStatus, xPos + 5, yPos - 5);
-		g.drawString(pickupStatus, 590, 140);
+		g.drawString(pickupStatus, 590, 175);
 	}
 	
 	public void setPickupStatus(String pickupStatus){

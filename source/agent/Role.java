@@ -43,7 +43,9 @@ public abstract class Role
 		sb.append(msg);
 		sb.append("\n");
 		if (e != null) sb.append(StringUtil.stackTraceString(e));
-		AlertLog.getInstance().logMessage(tag, _person.name(), sb.toString());
+		if(_person != null){
+			AlertLog.getInstance().logMessage(tag, _person.name(), sb.toString());
+		}
 		System.out.print(sb.toString());
 	}
 	protected void print(AlertTag tag, String msg)

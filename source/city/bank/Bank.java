@@ -28,7 +28,7 @@ public class Bank extends Place implements PlaceWithAnimation {
 	// ------------------------------------------- CONSTRUCTORS & PROPERTIES --------------------------------------------
 	
 	public Bank(String name, WorldViewBuilding wvb, BuildingInteriorAnimationPanel bp){
-		super("Bank", wvb);
+		super(name, wvb);
 		this._animationPanel = (BankAnimationPanel)bp.getBuildingAnimation();
 		List<BankTeller> tellers_for_host = new ArrayList<BankTeller>();
 		BankTellerRole bankTellerRole = new BankTellerRole(null,this, 0);

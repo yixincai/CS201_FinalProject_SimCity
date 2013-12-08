@@ -48,7 +48,11 @@ public class CommuterGui implements Gui {
 	public CommuterGui(CommuterRole commuter, Place initialPlace) {
 		//System.out.println("Created CommuterGui");
 		// Note: placeX and placeY can safely receive values of null
-		Lane lane = Directory.lanes().get(_currentBlockX + 3 * _currentBlockY);
+		Lane lane;
+		if (commuter.hasCar())
+			lane = Directory.lanes().get(_currentBlockX + 3 * _currentBlockY);
+		else
+			lane = Directory.sidewalks().get(_currentBlockX + 3 * _currentBlockY);
 		if (lane.isHorizontal){
 			if (lane.xVelocity>0){
 				_xDestination = lane.xOrigin;
@@ -108,8 +112,6 @@ public class CommuterGui implements Gui {
 
 	//Walking gui-------------------------------------------------------------------------------------------
 	public void walkToLocation(Place destination){
-		// set current x & y to _commuter.currrentPlace()
-		// set visible to true
 		route.clear();
 		intersections.clear();
 		setPresent(true);
@@ -177,9 +179,10 @@ public class CommuterGui implements Gui {
 				}
 			}	
 		}
+
 		//TODO determine landing spot
 		for (int i=0; i< route.size();i++){
-			Lane lane = null; //Directory.sidewalks().get(route.get(i));//TODO THIS ARISES FROM A MERGE CONFLICT 
+			Lane lane = Directory.sidewalks().get(route.get(i));
 			int starting_position = 0;
 			if (i == 0) {
 				if (startingSpot > 0)
@@ -261,7 +264,7 @@ public class CommuterGui implements Gui {
 			}
 
 			if (i<route.size() - 1){
-				Lane next_lane = null; //Directory.sidewalks().get(route.get(i+1));
+				Lane next_lane = Directory.sidewalks().get(route.get(i+1));
 				while(!Directory.intersections().get(intersections.get(i)).tryAcquire()){
 					_lookUpDelay.schedule(new TimerTask(){
 						@Override
@@ -620,7 +623,10 @@ public class CommuterGui implements Gui {
 				g.setColor(Color.RED);
 				g.fillRect(_xPos, _yPos, 10, 10);
 			}
-				g.setColor(Color.GREEN);
+			else{
+				g.setColor(Color.magenta);
+				g.fillRect(_xPos, _yPos, 10, 10);
+			}
 		}
 	}
 
