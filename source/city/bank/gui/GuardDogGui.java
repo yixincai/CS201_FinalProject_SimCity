@@ -6,11 +6,15 @@ import gui.trace.AlertTag;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import city.bank.BankCustomerRole;
 import city.bank.GuardDog;
 
-public class GuardDogGui implements Gui {
+public class GuardDogGui extends JPanel implements Gui {
 
 	private GuardDog agent = null;
 	private boolean isPresent = true;
@@ -24,6 +28,11 @@ public class GuardDogGui implements Gui {
 	private final int RESTY = 30;
 	
 	Color myColor = Color.DARK_GRAY;
+	
+	private ImageIcon a = new ImageIcon(this.getClass().getResource("/image/bank/Dog.png"));
+	int xGap = 18;
+	int yGap = 30;
+	private Image dog = a.getImage();
 	
 	public GuardDogGui(GuardDog guardDog){
 		agent = guardDog;
@@ -81,8 +90,7 @@ public class GuardDogGui implements Gui {
 
 	@Override
 	public void draw(Graphics2D g) {
-			g.setColor(myColor);
-			g.fillRect(xPos, yPos, 10, 10);
+		g.drawImage(dog, xPos, yPos, xGap, yGap, this);
 	}
 
 	@Override
