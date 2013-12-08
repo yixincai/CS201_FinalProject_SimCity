@@ -303,16 +303,19 @@ public class MainGui extends JFrame
 		Lane tl5 = new Lane( 20*10+41, 19*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
 		Lane tl6 = new Lane( 39*10+41, 19*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
 		Lane tl7 = new Lane( 40*10+41, 19*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
-		Directory.addTruckLanes(tl0);
-		Directory.addTruckLanes(tl1);
-		Directory.addTruckLanes(tl2);
-		Directory.addTruckLanes(tl3);
-		Directory.addTruckLanes(tl4);
-		Directory.addTruckLanes(tl5);
-		Directory.addTruckLanes(tl6);
-		Directory.addTruckLanes(tl7);
+		Directory.addLanes(tl0);
+		Directory.addLanes(tl1);
+		Directory.addLanes(tl2);
+		Directory.addLanes(tl3);
+		Directory.addLanes(tl4);
+		Directory.addLanes(tl5);
+		Directory.addLanes(tl6);
+		Directory.addLanes(tl7);
 
 		//intersections
+		Directory.intersections().add(new Semaphore(1,true));
+		Directory.intersections().add(new Semaphore(1,true));
+		Directory.intersections().add(new Semaphore(1,true));
 		Directory.intersections().add(new Semaphore(1,true));
 		Directory.intersections().add(new Semaphore(1,true));
 		Directory.intersections().add(new Semaphore(1,true));

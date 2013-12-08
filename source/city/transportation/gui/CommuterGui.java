@@ -42,7 +42,7 @@ public class CommuterGui implements Gui {
 
 	//----------------------------------Constructor & Setters & Getters----------------------------------
 	public CommuterGui(CommuterRole commuter, Place initialPlace) {
-		System.out.println("Created CommuterGui");
+		//System.out.println("Created CommuterGui");
 		// Note: placeX and placeY can safely receive values of null
 		Lane lane = Directory.lanes().get(_currentBlockX + 3 * _currentBlockY);
 		if (lane.isHorizontal){
@@ -116,6 +116,7 @@ public class CommuterGui implements Gui {
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
 		route.clear();
+		intersections.clear();
 		setPresent(true);
 		_destinationBlockX = getBlockX(placeX(destination));
 		_destinationBlockY = getBlockY(placeY(destination));
@@ -134,7 +135,6 @@ public class CommuterGui implements Gui {
 					route.add(_currentBlockX + 3 * _currentBlockY);
 				}
 				if (_currentBlockY > _destinationBlockY){
-					System.out.println(_currentBlockY + "   " + _destinationBlockY);
 					intersections.add(_currentBlockX + _currentBlockY);
 					_currentBlockY--;
 					route.add(_currentBlockX + 3 * _currentBlockY);
@@ -192,12 +192,11 @@ public class CommuterGui implements Gui {
 		for (int i=0; i< route.size();i++){
 			Lane lane = Directory.lanes().get(route.get(i));
 			int starting_position = 0;
-			if (i!=0)
-				Directory.intersections().get(i-1).release();
-			else {
+			if (i == 0) {
 				if (parkingSpot > 0)
 					starting_position = parkingSpot;
 			}
+			//TODO debug when I put this down in the loop
 			for (int j=starting_position; j< lane.permits.size();j++){//TODO change size to the ending position and starting position
 				while(!lane.permits.get(j).tryAcquire()){
 					_lookUpDelay.schedule(new TimerTask(){
@@ -241,6 +240,9 @@ public class CommuterGui implements Gui {
 				if (i == 0 && j == starting_position){
 					lane.parking_spaces.get(j).release();
 				}
+				if (i != 0 && j == starting_position){
+					Directory.intersections().get(intersections.get(i-1)).release();
+				}
 				//release the former spot
 				if (j!=starting_position)
 					lane.permits.get(j-1).release();
@@ -258,10 +260,10 @@ public class CommuterGui implements Gui {
 						}
 						else {
 							if (lane.yVelocity>0){
-								_xDestination += 10;
+								_xDestination -= 10;
 							}
 							else{
-								_xDestination -= 10;
+								_xDestination += 10;
 							}
 						}
 						_transportationMethod = Command.car;
@@ -284,10 +286,10 @@ public class CommuterGui implements Gui {
 							}
 							else {
 								if (lane.yVelocity>0){
-									_xDestination += 10;
+									_xDestination -= 10;
 								}
 								else{
-									_xDestination -= 10;
+									_xDestination += 10;
 								}
 							}
 							_xPos = _xDestination;
@@ -300,7 +302,7 @@ public class CommuterGui implements Gui {
 
 			if (i<route.size() - 1){
 				Lane next_lane = Directory.lanes().get(route.get(i+1));
-				while(!Directory.intersections().get(i).tryAcquire()){
+				while(!Directory.intersections().get(intersections.get(i)).tryAcquire()){
 					_lookUpDelay.schedule(new TimerTask(){
 						@Override
 						public void run() {
@@ -321,17 +323,17 @@ public class CommuterGui implements Gui {
 						_yDestination = next_lane.yOrigin;
 					}
 					else {
-						_xDestination = next_lane.xOrigin + 10 * lane.permits.size();
+						_xDestination = next_lane.xOrigin + 10 * next_lane.permits.size();
 						_yDestination = next_lane.yOrigin;
 					}
 				}
 				else {
-					if (lane.yVelocity>0){
-						_yDestination = lane.yOrigin - 10;
+					if (next_lane.yVelocity>0){
+						_yDestination = next_lane.yOrigin - 10;
 						_xDestination = next_lane.xOrigin;
 					}
 					else{
-						_yDestination = lane.yOrigin + 10 * lane.permits.size();
+						_yDestination = next_lane.yOrigin + 10 * next_lane.permits.size();
 						_xDestination = next_lane.xOrigin;
 					}
 				}
@@ -344,8 +346,8 @@ public class CommuterGui implements Gui {
 		//TODO if we have parking area do not set present to false but show in parking lot
 		//setPresent(false);
 		//set automatically
-		//		_currentBlockX = _destinationBlockX;
-		//		_currentBlockY = _destinationBlockY;		
+				_currentBlockX = _destinationBlockX;
+				_currentBlockY = _destinationBlockY;		
 	}
 
 	//Bus gui
