@@ -1,4 +1,7 @@
 package city.market;
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -70,7 +73,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	//customer messages
 	public void msgPlaceOrder(MarketCustomer mc, List<Item> order){
 		log.add(new LoggedEvent("Received PlaceOrder from customer."));
-		print("Received PlaceOrder from customer.");
+		print(AlertTag.MARKET, "Received PlaceOrder from customer.");
 		customers.add(new CustomerOrder(mc,order, CustomerOrder.customerState.placedBill));
 		stateChanged();
 	}
@@ -88,7 +91,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	public void msgPay(MarketCustomer mc, double payment){
 		log.add(new LoggedEvent("Received Payment from customer."));
-		print("Received Payment from customer.");
+		print(AlertTag.MARKET, "Received Payment from customer.");
 		for (CustomerOrder customer : customers){
 			if( customer.mc == mc){
 				customer.payment = payment;
@@ -175,7 +178,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 
 	public void pickOrder(CustomerOrder customer){
-		print("Asking employee to pick up order.");
+		print(AlertTag.MARKET, "Asking employee to pick up order.");
 		for (Item item : customer.order){
 			int amount = Math.min(inventory.get(item.name).amount, item.amount);
 			inventory.get(item.name).amount -= amount;
@@ -198,14 +201,14 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public void giveChange(CustomerOrder customer){
 		if (customer.payment >= customer.bill){
 			moneyInHand += customer.bill;
-			print("Giving change to customer.");
+			print(AlertTag.MARKET, "Giving change to customer.");
 			customer.mc.msgHereIsGoodAndChange(customer.orderFulfillment, customer.payment - customer.bill);
 			customers.remove(customer);
 		}
 		else{
 			moneyInHand += customer.payment;
 			//pay next time
-			print("Giving debt to customer.");
+			print(AlertTag.MARKET, "Giving debt to customer.");
 			customer.mc.msgHereIsGoodAndDebt(customer.orderFulfillment, customer.bill - customer.payment);
 			customer.payment = 0;
 			customer.bill = customer.bill - customer.payment;

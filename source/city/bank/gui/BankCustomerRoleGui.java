@@ -2,16 +2,21 @@ package city.bank.gui;
 
 import gui.Gui;
 
-
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import city.bank.BankCustomerRole;
 
-public class BankCustomerRoleGui implements Gui {
+public class BankCustomerRoleGui extends JPanel implements Gui {
 
 	private BankCustomerRole agent = null;
 	private boolean isPresent = false;
+	private boolean isRobber = false;
+	private boolean isDead = false;
 	private boolean flag = true;
 	private int xPos, yPos;
 	private int xDestination, yDestination;
@@ -21,6 +26,21 @@ public class BankCustomerRoleGui implements Gui {
 	private int tellerY = 195;
 	private int exitX = 321;
 	private int exitY = 380;
+	
+	private int robberX = 0;
+	private int robberY = 0;
+	
+	Color myColor = Color.green;
+	
+	private ImageIcon a = new ImageIcon(this.getClass().getResource("/image/bank/Skull.png"));
+	int xGap = 20;
+	int yGap = 23;
+	private Image skull = a.getImage();
+	
+	private ImageIcon b = new ImageIcon(this.getClass().getResource("/image/bank/Robber.png"));
+	int xRGap = 25;
+	int yRGap = 32;
+	private Image robber = b.getImage();
 	
 	public BankCustomerRoleGui(BankCustomerRole c){
 		agent = c;
@@ -51,8 +71,16 @@ public class BankCustomerRoleGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		if(isPresent()){
-			g.setColor(Color.green);
-			g.fillRect(xPos, yPos, 20, 20);
+			if(isDead){
+				g.drawImage(skull, xPos, yPos, xGap, yGap, this);
+			}
+			else if(isRobber && !isDead){
+				g.drawImage(robber, xPos, yPos, xRGap, yRGap, this);
+			}
+			else{
+				g.setColor(myColor);
+				g.fillRect(xPos, yPos, 20, 20);
+			}
 		}
 	}
 
@@ -63,6 +91,14 @@ public class BankCustomerRoleGui implements Gui {
 		}
 		
 		return false;
+	}
+	
+	public void dead(){
+		isDead = true;
+		myColor = Color.red;
+		xDestination = xPos;
+		yDestination = yPos;
+		flag = true;
 	}
 
 	public void DoGoToLine() {
@@ -85,8 +121,25 @@ public class BankCustomerRoleGui implements Gui {
 	}
 
 	public void DoRobBank() {
-		// TODO Auto-generated method stub
-		//DONT DO TANNER, but please set up the animation panel to look nice.  Desk on the right as i showed
+		isRobber = true;
+		myColor = Color.orange;
+		xDestination = tellerX + 5;
+		yDestination = tellerY - 5;
+		flag = false;
+	}
+	
+	public void DoRun() {
+		xDestination = robberX;
+		yDestination = robberY;
+		flag = false;
+	}
+	
+	public int getX(){
+		return xPos;
+	}
+	
+	public int getY(){
+		return yPos;
 	}
 
 }

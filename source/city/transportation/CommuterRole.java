@@ -1,5 +1,7 @@
 package city.transportation;
 
+import gui.astar.AStarTraversal;
+
 import java.util.ConcurrentModificationException;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
@@ -28,7 +30,7 @@ public class CommuterRole extends Role implements Commuter{
 	public Bus _bus;
 	public double _fare;
 	CommuterGui _gui;
-	public boolean hasCar = false;
+	public boolean hasCar = true;
 
 	public enum TravelState{choosing, 
 		choseCar, goToCar, atCar, driving, 
@@ -49,14 +51,16 @@ public class CommuterRole extends Role implements Commuter{
 	CarState _cState = CarState.noCar; 
 
 	private Semaphore _reachedDestination = new Semaphore(0, true);
+	AStarTraversal _aStarTraversal;
 
 	//----------------------------------------------CONSTRUCTOR & PROPERTIES----------------------------------------
-	public CommuterRole(PersonAgent person, Place initialPlace){
+	public CommuterRole(PersonAgent person, Place initialPlace, AStarTraversal aStarTraversal){
 		super(person);
 		_person = person;
 		_currentPlace = initialPlace;
 		_destination = null;
 		_gui = new CommuterGui(this, initialPlace);
+		_aStarTraversal = aStarTraversal;
 	}
 
 	public CommuterGui gui() { return _gui; }
@@ -256,7 +260,7 @@ public class CommuterRole extends Role implements Commuter{
 	
 	public void actDriving(){
 		_gui.driveToLocation(_destination);
-		waitForGuiToReachDestination();
+		//waitForGuiToReachDestination();
 		_tState = TravelState.done;
 		active = false;
 	}

@@ -1,5 +1,7 @@
 package city.restaurant.omar;
 
+import gui.trace.AlertTag;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -58,10 +60,10 @@ public class OmarCookRole extends RestaurantCookRole {
 		//System.out.println("Chef Matt: About to Restock");
 
 		cookInventory = new Hashtable<String, Item>();
-		cookInventory.put("Pizza", new Item("Pizza", 0));
-		cookInventory.put("Hot Dog", new Item("Hot Dog", 0));
-		cookInventory.put("Burger", new Item("Burger", 0));
-		cookInventory.put("Filet Mignon", new Item("Filet Mignon", 0));
+		cookInventory.put("Pizza", new Item("Pizza", 5));
+		cookInventory.put("Hot Dog", new Item("Hot Dog", 5));
+		cookInventory.put("Burger", new Item("Burger", 5));
+		cookInventory.put("Filet Mignon", new Item("Filet Mignon", 5));
 		command = Command.None;
 	}
 
@@ -182,7 +184,7 @@ public class OmarCookRole extends RestaurantCookRole {
 		if (check_state == CheckState.notChecked){
 			revolving_stand_timer.schedule(new TimerTask() {
 				public void run() {
-					print("Notify the cook to check revolving stand");
+					print(AlertTag.OMAR_RESTAURANT, "Notify the cook to check revolving stand");
 					notifyCook();
 				}
 			}, 10000);
@@ -288,7 +290,7 @@ public class OmarCookRole extends RestaurantCookRole {
 	@Override	//INTEGRATED
 	public void msgOrderFulfillment(Market market, List<Item> order) {
 		synchronized(markets){
-			print(market.name() + " is giving me food");
+			print(AlertTag.OMAR_RESTAURANT, market.name() + " is giving me food");
 			for(MyMarket m:markets) {
 				if(m.market == market){
 					m.currentOrder = order;

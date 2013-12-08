@@ -45,8 +45,8 @@ public class EricRestaurant extends Restaurant {
 	}
 
 	@Override
-	public Role generateWaiterRole(PersonAgent person) {
-		// TODO add random (or nonrandom) choice of normal vs shared-data waiter roles
+	public Role generateWaiterRole(PersonAgent person, boolean isSharedDataWaiter) {
+		// TODO add random (or nonrandom) choice of normal vs shared-data waiter roles based on isSharedDataWaiter
 		EricWaiterRole newWaiter = new EricWaiterRole(person,this);
 		
 		newWaiter.setCashier((EricCashier)_cashier);

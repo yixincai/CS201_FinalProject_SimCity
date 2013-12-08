@@ -1,5 +1,8 @@
 package city;
 
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -29,6 +32,9 @@ public class Time {
 			return;
 		case FRIDAY:
 			_today = Day.SATURDAY;
+			for(int i = 0; i < Directory.banks().size(); i++){
+				Directory.banks().get(i).setClosed();
+			}
 			return;
 		case SATURDAY:
 			_today = Day.SUNDAY;
@@ -87,10 +93,11 @@ public class Time {
 			_currentTime = 0;
 			incrementDay();
 		}
-		System.out.printf("Day: " + today() + "; Time- %.0f:%.0f", (double)((int)(_currentTime)), 60.0*(_currentTime - ((int)_currentTime)));
+
+		String timePrint = String.format("Day: " + today() + "; Time- %.0f:%.0f", (double)((int)(_currentTime)), 60.0*(_currentTime - ((int)_currentTime)));
 		if(60.0*(_currentTime - ((int)_currentTime)) == 0){
-			System.out.print("0");
+			timePrint+="0";
 		}
-		System.out.println();
+		AlertLog.getInstance().logInfo(AlertTag.TIME, "Time in SimCity", timePrint);
 	}
 }

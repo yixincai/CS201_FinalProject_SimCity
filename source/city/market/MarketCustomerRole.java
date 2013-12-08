@@ -1,4 +1,6 @@
 package city.market;
+import gui.trace.AlertTag;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -64,7 +66,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 	
 	public void msgHereIsGoodAndChange(List<Item> orderFulfillment, double change){
-		print("Received change from cashier.");
+		print(AlertTag.MARKET, "Received change from cashier.");
 		this.orderFulfillment = orderFulfillment;
 		money += change;
 		state = CustomerState.pickUpItems;
@@ -109,9 +111,9 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		if (Math.abs(bill - payment) > 0.02)
 			System.out.println("Incorrect bill calculation by market");
 		*/
-		print("Pay Market.");
+		print(AlertTag.MARKET, "Pay Market.");
 		DoGoToCashier();
-		DoGoToWaitingArea();
+		//DoGoToWaitingArea();
 		market.MarketCashier.msgPay(this, money);
 		money = 0;
 	}
@@ -130,7 +132,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 	
 	public void pickUpItems(){
-		print("Go pick up items.");
+		print(AlertTag.MARKET, "Go pick up items.");
 		DoGoToCashier();
 		DoLeaveMarket();
 		active = false;

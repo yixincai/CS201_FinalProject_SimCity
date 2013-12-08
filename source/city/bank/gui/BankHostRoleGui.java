@@ -4,13 +4,17 @@ import gui.Gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import city.bank.BankCustomerRole;
 import city.bank.BankHostRole;
 import city.bank.BankTellerRole;
 import city.bank.interfaces.BankTeller;
 
-public class BankHostRoleGui implements Gui {
+public class BankHostRoleGui extends JPanel implements Gui {
 
 	private BankHostRole agent = null;
 	
@@ -18,6 +22,11 @@ public class BankHostRoleGui implements Gui {
 	private int height = 20;
 	private int xCoord = 382;
 	private int yCoord = 180;
+	
+	private ImageIcon a = new ImageIcon(this.getClass().getResource("/image/bank/BankHost.png"));
+	int xGap = 20;
+	int yGap = 34;
+	private Image host = a.getImage();
 	
 	public BankHostRoleGui(BankHostRole h){
 		agent = h;
@@ -30,8 +39,7 @@ public class BankHostRoleGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		if(isPresent()){
-			g.setColor(Color.BLUE);
-			g.fillRect(xCoord, yCoord, width, height);
+			g.drawImage(host, xCoord, yCoord, xGap, yGap, this);
 		}
 	}	
 

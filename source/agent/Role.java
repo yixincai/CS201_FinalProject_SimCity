@@ -1,5 +1,7 @@
 package agent;
 
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
 import utilities.EventLog;
 import utilities.StringUtil;
 import city.Place;
@@ -34,21 +36,26 @@ public abstract class Role
 	/**
 	 * Print message with this agent's name and exception stack trace
 	 */
-	protected void print(String msg, Throwable e)
+	protected void print(AlertTag tag, String msg, Throwable e)
 	{
 		log.add(msg);
 		StringBuffer sb = new StringBuffer();
-		sb.append(_person.name());
-		sb.append(": ");
 		sb.append(msg);
 		sb.append("\n");
 		if (e != null) sb.append(StringUtil.stackTraceString(e));
+		AlertLog.getInstance().logMessage(tag, _person.name(), sb.toString());
 		System.out.print(sb.toString());
 	}
+	protected void print(AlertTag tag, String msg)
+	{
+		print(tag, msg, null);
+	}
+	
 	protected void print(String msg)
 	{
-		print(msg, null);
+		print(AlertTag.GENERAL_CITY, msg, null);
 	}
+	
 	protected void logThis(String msg)
 	{
 		log.add(msg);

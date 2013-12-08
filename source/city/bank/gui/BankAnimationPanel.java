@@ -73,4 +73,8 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 	    public void addGui(BankTellerRoleGui gui) {
 	        guis.add(gui);
 	    }
+	    
+	    public void addGui(GuardDogGui gui){
+	    	guis.add(gui);
+	    }
 }

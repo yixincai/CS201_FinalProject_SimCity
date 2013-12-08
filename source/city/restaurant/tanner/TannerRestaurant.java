@@ -103,11 +103,10 @@ public class TannerRestaurant extends Restaurant
 	}
 
 	@Override
-	public Role generateWaiterRole(PersonAgent person)
+	public Role generateWaiterRole(PersonAgent person, boolean shared)
 	{
-		int i = (new Random()).nextInt(2);
 		TannerRestaurantWaiter newWaiter;
-		if (i == 0)
+		if (!shared)
 			newWaiter = new TannerRestaurantRegularWaiterRole(person, this, person.name());
 		else
 			newWaiter = new TannerRestaurantSharedDataWaiterRole(person, this, person.name());

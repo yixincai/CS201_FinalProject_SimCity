@@ -1,5 +1,7 @@
 package city;
 
+import gui.astar.AStarTraversal;
+
 import java.util.*;
 
 // TODO the gui packages are basically only here for the setOccupation() function. We will move the gui instantiation elsewhere, probably to the roles' respective constructors.
@@ -96,7 +98,7 @@ public class PersonAgent extends Agent implements Person
 	 * @param occupationType I.e. Restaurant Cashier or Restaurant Host or Bank Teller etc.
 	 * @param housingType House or Apartment
 	 */
-	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) 
+	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType, AStarTraversal aStarTraversal) 
 	{
 		_name = name; 
 		_money = money;
@@ -120,13 +122,13 @@ public class PersonAgent extends Agent implements Person
 			break;
 		}
 		
-		generateAndSetCommuterRole();
+		generateAndSetCommuterRole(aStarTraversal);
 		setNextRole(_homeOccupantRole);
 	}
 	/** Sets _commuterRole to a new CommuterRole */
-	public void generateAndSetCommuterRole()
+	public void generateAndSetCommuterRole(AStarTraversal aStarTraversal)
 	{
-		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
+		_commuterRole = new CommuterRole(this, null, aStarTraversal); // may replace null with _homeOccupantRole.place() to set the person's starting position
 	}
 	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
 	 * @param homeType Either "house" or "apartment" */
@@ -184,7 +186,7 @@ public class PersonAgent extends Agent implements Person
 		{
 			// note: if control reaches a break statement, the new occupation will be a waiter.
 			case "Waiter":
-				_occupation = restaurants.get(0).generateWaiterRole(this);
+				_occupation = restaurants.get(0).generateWaiterRole(this,false);
 				return; // waiter is generated right after this switch statement
 			case "Restaurant Cashier":
 				newOccupation = null;
@@ -297,16 +299,16 @@ public class PersonAgent extends Agent implements Person
 				return;
 			case "Bank Customer":
 				_occupation = banks.get(0).generateCustomerRole(this);
-				((BankCustomerRole)_occupation).cmdRequest("Deposit",100);
+				((BankCustomerRole)_occupation).cmdRequest("Robber", 10000);//"Deposit",100);
 				return;
 			case "Yixin Waiter":
-				_occupation = restaurants.get(0).generateWaiterRole(this);
+				_occupation = restaurants.get(0).generateWaiterRole(this, true);
 				return;
 			case "Omar Waiter":
-				_occupation = restaurants.get(1).generateWaiterRole(this);
+				_occupation = restaurants.get(1).generateWaiterRole(this, true);
 				return;
 			case "Ryan Waiter":
-				_occupation = restaurants.get(2).generateWaiterRole(this);
+				_occupation = restaurants.get(2).generateWaiterRole(this, false);
 				return;
 			case "None":
 				_occupation = null;
@@ -314,7 +316,7 @@ public class PersonAgent extends Agent implements Person
 				return;
 		}
 		// note: control reaches here because no jobs were found
-		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this);
+		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this, false);
 		_occupation = newOccupation;
 	}
 	// ---------------------- OTHER PROPERTIES -------------------------

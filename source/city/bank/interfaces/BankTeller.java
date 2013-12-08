@@ -9,4 +9,5 @@ public interface BankTeller {
 	public boolean isOccupied();
 	public void setOccupied(boolean b);
 	public int getTellerNum();
+	public void msgRobbery(double _amount, BankCustomerRole robber);
 }
