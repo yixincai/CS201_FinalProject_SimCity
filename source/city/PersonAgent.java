@@ -39,7 +39,6 @@ public class PersonAgent extends Agent implements Person
 	enum WealthState { RICH, NORMAL, BROKE, POOR } // the word "deadbeat" courtesy of Wilczynski lol
 	boolean _deadbeat = false; // if true, means this person doesn't pay loans
 	enum NourishmentState { HUNGRY, FULL }
-	enum LocationState { NONE, TRAVELING, HOME, WORK, BANK, MARKET, RESTAURANT }
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
 	class State
 	{
@@ -62,18 +61,6 @@ public class PersonAgent extends Agent implements Person
 			{
 				return WealthState.RICH;
 			}
-		}
-
-		LocationState location()
-		{
-			//if(_commuterRole.currentPlace instanceof Restaurant) return LocationState.RESTAURANT;
-			//else if(_commuterRole.currentPlace instanceof Bank) return LocationState.BANK;
-			//etc.
-			//else if(_commuterRole.currentPlace == null) {
-			//	return _commuterRole.active ? LocationState.TRAVELING : LocationState.NONE;
-			//}
-			
-			return LocationState.NONE; //TEMP
 		}
 		
 		double time()

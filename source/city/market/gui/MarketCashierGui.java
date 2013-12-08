@@ -18,8 +18,8 @@ public class MarketCashierGui extends JPanel implements Gui {
 	private Command command=Command.noCommand;
 	
 	private ImageIcon a = new ImageIcon(this.getClass().getResource("/image/market/MarketCashier.png"));
-	int xGap = 17;
-	int yGap = 24;
+	int xGap = 25;
+	int yGap = 35;
 	private Image cashier = a.getImage();
 	
     public MarketCashierGui(MarketCashierRole agent) {

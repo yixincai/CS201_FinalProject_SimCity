@@ -1,5 +1,6 @@
 package city.transportation;
 
+import java.awt.Dimension;
 import gui.trace.AlertLog;
 import gui.trace.AlertTag;
 

@@ -68,14 +68,8 @@ public class TruckAgentGui implements Gui{
 		setPresent(true);
 		_destinationBlockX = getBlockX(market.positionX());
 		_destinationBlockY = getBlockY(market.positionY());
-		System.out.println(_currentBlockX );
-		System.out.println(_currentBlockY );		
-		System.out.println(_destinationBlockX );
-		System.out.println(_destinationBlockY );
-
 		if (_destinationBlockX == 1){
 			if (_currentBlockX == 1 && _currentBlockY == 1){
-				System.out.println("--------------------------------");
 				route.add(11);
 				intersections.add(1);
 				route.add(7);
@@ -295,10 +289,6 @@ public class TruckAgentGui implements Gui{
 		setPresent(true);
 		_destinationBlockX = getBlockX(restaurant.positionX());
 		_destinationBlockY = getBlockY(restaurant.positionY());
-		System.out.println(_currentBlockX );
-		System.out.println(_currentBlockY );		
-		System.out.println(_destinationBlockX );
-		System.out.println(_destinationBlockY );
 		if (_currentBlockX == 1){
 			route.add(7);
 			intersections.add(4);

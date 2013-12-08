@@ -27,6 +27,7 @@ import city.restaurant.yixin.YixinRestaurant;
 import city.transportation.*;
 import city.transportation.gui.BusAgentGui;
 
+@SuppressWarnings("serial")
 public class MainGui extends JFrame 
 {
 	private static int FRAMEX = 1024;
@@ -281,7 +282,7 @@ public class MainGui extends JFrame
 			_buildingInteriorAnimationPanels.add(bp4);
 		}
 		
-		
+		//vehicle lanes
 		Lane l3 = new Lane( 8*10+41, 15*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
 		Lane l4 = new Lane( 24*10+41, 15*10+30, 120, 10, 1, 0, true, Color.green, Color.black );
 		Lane l5 = new Lane( 44*10+41, 15*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
@@ -295,6 +296,7 @@ public class MainGui extends JFrame
 		Directory.addLanes(l4);
 		Directory.addLanes(l5);
 		
+		//truck lanes
 		Lane tl0 = new Lane( 19*10+41, 5*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
 		Lane tl1 = new Lane( 20*10+41, 5*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
 		Lane tl2 = new Lane( 39*10+41, 5*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
@@ -320,6 +322,36 @@ public class MainGui extends JFrame
 		Directory.intersections().add(new Semaphore(1,true));
 		Directory.intersections().add(new Semaphore(1,true));
 		Directory.intersections().add(new Semaphore(1,true));
+
+		Lane sw0 = new Lane( 8*10+41, 9*10+30, 80, 10, -1, 0, true, Color.yellow, Color.black );
+		Lane sw1 = new Lane( 24*10+41, 9*10+30, 120, 10, -1, 0, true, Color.yellow, Color.black );
+		Lane sw2 = new Lane( 44*10+41, 9*10+30, 80, 10, -1, 0, true, Color.yellow, Color.black );
+		Lane sw3 = new Lane( 8*10+41, 18*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
+		Lane sw4 = new Lane( 24*10+41, 18*10+30, 120, 10, 1, 0, true, Color.green, Color.black );
+		Lane sw5 = new Lane( 44*10+41, 18*10+30, 80, 10, 1, 0, true, Color.green, Color.black );
+		Lane sw6 = new Lane( 16*10+41, 5*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
+		Lane sw7 = new Lane( 23*10+41, 5*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
+		Lane sw8 = new Lane( 36*10+41, 5*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
+		Lane sw9 = new Lane( 43*10+41, 5*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
+		Lane sw10 = new Lane( 16*10+41, 19*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
+		Lane sw11 = new Lane( 23*10+41, 19*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
+		Lane sw12 = new Lane( 36*10+41, 19*10+30, 10, 40, 0, 1, false, Color.gray, Color.black );
+		Lane sw13 = new Lane( 43*10+41, 19*10+30, 10, 40, 0, -1, false, Color.blue, Color.black );
+		Directory.addSidewalk(sw0);
+		Directory.addSidewalk(sw1);
+		Directory.addSidewalk(sw2);
+		Directory.addSidewalk(sw3);
+		Directory.addSidewalk(sw4);
+		Directory.addSidewalk(sw5);
+		Directory.addSidewalk(sw6);
+		Directory.addSidewalk(sw7);
+		Directory.addSidewalk(sw8);
+		Directory.addSidewalk(sw9);
+		Directory.addSidewalk(sw10);
+		Directory.addSidewalk(sw11);
+		Directory.addSidewalk(sw12);
+		Directory.addSidewalk(sw13);
+		
 		/*
 		//Create the BuildingPanel for each Building object
 		ArrayList<WorldViewBuilding> worldViewBuildings = _worldView.getBuildings();
@@ -346,6 +378,31 @@ public class MainGui extends JFrame
 			}
 		}
 		*/
+//		int xdim = 60;
+//	    int ydim = 30;
+//	    grid = new Semaphore[xdim][ydim];
+//	    for (int i=0; i<xdim; i++)
+//	    	for (int j=0; j<ydim; j++)
+//	    		grid[i][j] = new Semaphore(1,true);
+//	    //set access to all buildings to false
+//	    for (int i=8; i<16; i++)
+//	    	for (int j=5; j<9; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=8; i<16; i++)
+//	    	for (int j=19; j<25; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=24; i<36; i++)
+//	    	for (int j=5; j<9; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=24; i<36; i++)
+//	    	for (int j=19; j<25; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=44; i<52; i++)
+//	    	for (int j=5; j<9; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=44; i<52; i++)
+//	    	for (int j=19; j<25; j++)
+//	    		grid[i][j].tryAcquire();
 		int xdim = 60;
 	    int ydim = 30;
 	    grid = new Semaphore[xdim][ydim];
@@ -378,6 +435,23 @@ public class MainGui extends JFrame
 		this.pack();		
 		this.setVisible(true);
 		
+		//Ryan Restaurant interaction
+//		cPanel.addPerson("Ryan", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan1", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan2", 300, "Cook", true, "apartment");
+//		
+//		cPanel.addPerson("Ryan3", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan4", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan5", 300, "Cook", true, "apartment");
+//		
+//		cPanel.addPerson("Ryan6", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan7", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan8", 300, "Cook", true, "apartment");
+//		cPanel.addPerson("Ryan9", 300, "Ryan Waiter", true, "house");
+//		cPanel.addPerson("Ryan10", 300, "Ryan Customer", true, "apartment");
+//		
+//		cPanel.addPerson("Ryan11", 300, "Market Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan12", 300, "Market Employee", true, "apartment");
 		Time.startTimer();
 	}
 	

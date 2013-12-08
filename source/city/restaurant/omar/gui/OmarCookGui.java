@@ -4,10 +4,14 @@ import gui.Gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import city.restaurant.omar.OmarCookRole;
 
-public class OmarCookGui implements Gui {
+public class OmarCookGui extends JPanel implements Gui {
 
 	private static int XGRILL0 = 550; //change numbers to grill positions
 	private static int YGRILL0 = 200;
@@ -32,7 +36,12 @@ public class OmarCookGui implements Gui {
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
-
+	
+	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Chef.png"));
+    Image cook = a.getImage();
+    int xGap = 18;
+    int yGap = 32;
+	
 	public OmarCookGui(OmarCookRole c){
 		agent = c;
 		xPos = 590;
@@ -64,8 +73,7 @@ public class OmarCookGui implements Gui {
 	}
 
 	public void draw(Graphics2D g) {
-		g.setColor(myColor);
-		g.fillRect(xPos, yPos, 20, 20);
+		g.drawImage(cook, xPos, yPos, xGap, yGap, this);
 		
 		g.drawString(currentStatus, xPos + 5, yPos - 5);
 		g.drawString(pickupStatus, 590, 140);
