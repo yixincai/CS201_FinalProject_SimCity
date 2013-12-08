@@ -218,7 +218,19 @@ public class CommuterGui implements Gui {
 			if (i<route.size() - 1){
 				Lane next_lane = Directory.lanes().get(route.get(i+1));
 				while(!Directory.intersections().get(i).tryAcquire()){
+					_lookUpDelay.schedule(new TimerTask(){
+						@Override
+						public void run() {
+							_delayForMoving.release();
+						}
+					}, 10);
 
+					try{
+						_delayForMoving.acquire();
+					}
+					catch(InterruptedException e){
+						e.printStackTrace();
+					}
 				};
 				if (next_lane.isHorizontal){
 					if (next_lane.xVelocity>0){
