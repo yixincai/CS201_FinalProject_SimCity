@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 
 import city.Directory;
 import city.Place;
+import city.bank.Bank;
 
 public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	
