@@ -34,6 +34,7 @@ public class CommuterGui implements Gui {
 	private Semaphore _reachedDestination = new Semaphore(0, true);
 	private Semaphore _delayForMoving = new Semaphore(0, true);
 	private Timer _lookUpDelay = new Timer();
+	private int parkingSpot = -1;
 	CommuterRole _commuter;
 	AStarTraversal _aStarTraversal;
 
@@ -43,8 +44,29 @@ public class CommuterGui implements Gui {
 	public CommuterGui(CommuterRole commuter, Place initialPlace) {
 		System.out.println("Created CommuterGui");
 		// Note: placeX and placeY can safely receive values of null
-		/*	_xPos = placeX(initialPlace);
-		_yPos = placeY(initialPlace); */
+		Lane lane = Directory.lanes().get(_currentBlockX + 3 * _currentBlockY);
+		if (lane.isHorizontal){
+			if (lane.xVelocity>0){
+				_xDestination = lane.xOrigin;
+				_yDestination = lane.yOrigin + 10;
+			}
+			else {
+				_xDestination = lane.xOrigin + 10 * (lane.permits.size() - 1);
+				_yDestination = lane.yOrigin - 10;
+			}
+		}
+		else {
+			if (lane.yVelocity>0){
+				_yDestination = lane.yOrigin;
+				_xDestination = lane.xOrigin - 10;
+			}
+			else{
+				_yDestination = lane.yOrigin + 10 * (lane.permits.size() - 1);
+				_xDestination = lane.xOrigin + 10;
+			}
+		}
+		_xPos = _xDestination;
+		_yPos = _yDestination;
 		_commuter = commuter;
 		//currentPosition = convertPixelToGridSpace(placeX(initialPlace), placeY(initialPlace));
 	}
@@ -159,8 +181,6 @@ public class CommuterGui implements Gui {
 				}
 			}	
 		}
-
-
 		//		route.add(3);
 		//		intersections.add(1);
 		//		route.add(4);
@@ -170,9 +190,14 @@ public class CommuterGui implements Gui {
 		//		route.add(2);
 		for (int i=0; i< route.size();i++){
 			Lane lane = Directory.lanes().get(route.get(i));
+			int starting_position = 0;
 			if (i!=0)
 				Directory.intersections().get(i-1).release();
-			for (int j=0; j< lane.permits.size();j++){//TODO change size to the ending position and starting position
+			else {
+				if (parkingSpot > 0)
+					starting_position = parkingSpot;
+			}
+			for (int j=starting_position; j< lane.permits.size();j++){//TODO change size to the ending position and starting position
 				while(!lane.permits.get(j).tryAcquire()){
 					_lookUpDelay.schedule(new TimerTask(){
 						@Override
@@ -211,8 +236,47 @@ public class CommuterGui implements Gui {
 				}
 				_transportationMethod = Command.car;
 				waitForLaneToFinish();
-				if (j!=0)
+				//free parking spaces
+				if (i == 0 && j == starting_position){
+					lane.parking_spaces.get(j).release();
+				}
+				//release the former spot
+				if (j!=starting_position)
 					lane.permits.get(j-1).release();
+				//find parking spaces in last lane
+				if (i == route.size() - 1){
+					if (lane.parking_spaces.get(j).tryAcquire()){
+						//move to the spot, release and record
+						if (lane.isHorizontal){
+							if (lane.xVelocity>0){
+								_yDestination += 10;
+							}
+							else {
+								_yDestination -=  10;
+							}
+						}
+						else {
+							if (lane.yVelocity>0){
+								_xDestination += 10;
+							}
+							else{
+								_xDestination -= 10;
+							}
+						}
+						_transportationMethod = Command.car;
+						waitForLaneToFinish();
+						lane.permits.get(j).release();
+						parkingSpot = j;
+						return;
+					}
+					else {
+						//go ahead and try another
+						if (j == lane.permits.size() - 1){
+							setPresent(false);
+							lane.permits.get(j).release();
+						}
+					}
+				}
 			}
 
 			if (i<route.size() - 1){
@@ -257,7 +321,6 @@ public class CommuterGui implements Gui {
 				//TODO to get rid of deadlock acquire both intersection and the first spot in next lane
 				lane.permits.get(lane.permits.size()-1).release();
 			}
-			lane.permits.get(lane.permits.size()-1).release();
 		}
 		//TODO if we have parking area do not set present to false but show in parking lot
 		//setPresent(false);

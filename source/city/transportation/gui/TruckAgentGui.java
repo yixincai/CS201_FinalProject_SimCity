@@ -34,9 +34,9 @@ public class TruckAgentGui implements Gui{
 	
 	public TruckAgentGui(TruckAgent truck, Market market){
 		_market = market;
-		_xPos = _market.positionX() - 20;
+		_xPos = _market.positionX() - 30;
 		_yPos = _market.positionY();
-		_xDestination = _market.positionX() - 20;
+		_xDestination = _market.positionX() - 30;
 		_yDestination = _market.positionY() + 2;
 		_truck = truck;
 		isPresent = true;
@@ -150,7 +150,7 @@ public class TruckAgentGui implements Gui{
 	
 	public void draw(Graphics2D g) {
 		g.setColor(new Color(156, 93, 82));
-		g.fillRect(_market.positionX() - 22, _market.positionY(), 12, 14);
+		g.fillRect(_market.positionX() - 32, _market.positionY(), 12, 14);
 		
 		g.setColor(Color.black);
 		g.setFont(new Font("default", Font.PLAIN, 10));

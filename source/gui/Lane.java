@@ -24,6 +24,7 @@ public class Lane {
 	Color sideColor;
 	ArrayList<CommuterGui> vehicles;
 	public ArrayList<Semaphore> permits;
+	public ArrayList<Semaphore> parking_spaces;
 	
 	public Lane(int xo, int yo, int w, int h, int xv, int yv, boolean ish, Color lc, Color sc ) {
 		redLight = false;
@@ -51,13 +52,17 @@ public class Lane {
 		}
 		
 		permits = new ArrayList<Semaphore>();
+		parking_spaces = new ArrayList<Semaphore>();
+
 		if (isHorizontal)
 			for (int i=0;i<w/10;i++){
 				permits.add(new Semaphore(1,true));
+				parking_spaces.add(new Semaphore(1,true));
 			}
 		else
 			for (int i=0;i<h/10;i++){
 				permits.add(new Semaphore(1,true));
+				parking_spaces.add(new Semaphore(1,true));
 			}
 		vehicles = new ArrayList<CommuterGui>();
 	}
