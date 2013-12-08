@@ -13,14 +13,14 @@ public class MarketEmployeeGui extends JPanel implements Gui {
     private MarketEmployeeRole role = null;
 
     private int xPos = 400, yPos = 100;//default waiter position
-    public static int xGap = 30;
-    public static int yGap = 30;
     private int xDestination = 400, yDestination = 100;//default waiter position
 	private enum Command {noCommand, GoToSeat};
 	private Command command=Command.noCommand;
     
-    private ImageIcon i = new ImageIcon("image/cashier.jpg");
-    private Image image = i.getImage();  
+	private ImageIcon a = new ImageIcon(this.getClass().getResource("/image/market/MarketEmployee.png"));
+	int xGap = 18;
+	int yGap = 23;
+	private Image employee = a.getImage();
     
     public MarketEmployeeGui(MarketEmployeeRole agent) {
         this.role = agent;
@@ -44,8 +44,7 @@ public class MarketEmployeeGui extends JPanel implements Gui {
 
     public void draw(Graphics2D g) {
 		if(role.active){
-			g.fillRect(xPos, yPos, xGap, yGap);
-			//g.drawImage(image, xPos, yPos, xGap, yGap, this);
+			g.drawImage(employee, xPos, yPos, xGap, yGap, this);
 		}
     }
     

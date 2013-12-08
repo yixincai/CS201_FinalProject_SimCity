@@ -13,15 +13,15 @@ public class MarketCashierGui extends JPanel implements Gui {
     private MarketCashierRole role = null;
 
     private int xPos = 230, yPos = 130;//default waiter position
-    public static int xGap = 40;
-    public static int yGap = 40;
     private int xDestination = 230, yDestination = 130;//default waiter position
 	private enum Command {noCommand, GoToSeat};
 	private Command command=Command.noCommand;
 	
-    private ImageIcon i = new ImageIcon("image/cashier.jpg");
-    private Image image = i.getImage();
-    
+	private ImageIcon a = new ImageIcon(this.getClass().getResource("/image/market/MarketCashier.png"));
+	int xGap = 17;
+	int yGap = 24;
+	private Image cashier = a.getImage();
+	
     public MarketCashierGui(MarketCashierRole agent) {
         this.role = agent;
     }
@@ -55,8 +55,7 @@ public class MarketCashierGui extends JPanel implements Gui {
 
     public void draw(Graphics2D g) {
 		if(role.active){
-			g.fillRect(xPos, yPos, xGap, yGap);
-			//g.drawImage(image, xPos, yPos, xGap, yGap, this);
+			g.drawImage(cashier, xPos, yPos, xGap, yGap, this);
 		}
     }
 

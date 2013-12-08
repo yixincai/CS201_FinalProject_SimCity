@@ -19,13 +19,14 @@ public enum AlertTag {
         BANK,				//Internal Places
         MARKET,
         OMAR_RESTAURANT,
+        RYAN_RESTAURANT,
         YIXIN_RESTAURANT,
+        ERIC_RESTAURANT,
         
         BUS,				//Worldview
         BUS_STOP,
         
-        BANK_TELLER,
-        BANK_CUSTOMER,
+        HOME,
         
         GENERAL_CITY
 }
