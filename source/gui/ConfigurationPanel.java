@@ -15,8 +15,8 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 	
 	ControlPanel cPanel;
 	String[] configOptions = {"Robber", "Configuration 2", "Scenario C", 
-			"Configuration 4", "Configuration 5", "Scenario A", "Scenario B, "
-					+ "Scenario E, Scenario F, Scenario G, Scenario J"};
+			"Configuration 4", "Configuration 5", "Scenario A", "Scenario B",
+					"Scenario E", "Scenario F", "Scenario G", "Scenario J"};
 	JLabel configLabel;
 	JComboBox configBox;
 	JButton startButton;
