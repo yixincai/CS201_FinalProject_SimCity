@@ -23,7 +23,6 @@ class LogControlPanel extends JPanel {
     JButton enableTimeButton;
     
     JButton enableBusButton;
-    JButton enableBankCustTagButton;
     
     private final int WIDTH = 1024/3;
 	private final int HEIGHT = 720;
@@ -61,10 +60,6 @@ class LogControlPanel extends JPanel {
             enableBusButton = new JButton("Show Tag: BUS");
             enableBusButton.setMinimumSize(buttonDimension);
             enableBusButton.setMaximumSize(buttonDimension);
-            
-            enableBankCustTagButton = new JButton("Hide Tag: BANK");
-            enableBankCustTagButton.setMinimumSize(buttonDimension);
-            enableBankCustTagButton.setMaximumSize(buttonDimension);
             
           /*  enableAllLevelsButton.addActionListener(new ActionListener() {
                 @Override
@@ -138,25 +133,13 @@ class LogControlPanel extends JPanel {
                 		}
                 }
             });
-            enableBankCustTagButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                    	if(enableBankCustTagButton.getText().equalsIgnoreCase("Hide Tag: Bank")){
-                    		tracePanel.hideAlertsWithTag(AlertTag.BANK_CUSTOMER);
-	            			enableBankCustTagButton.setText("Show Tag: Bank");
-	            		} else {
-	            			tracePanel.showAlertsWithTag(AlertTag.BANK_CUSTOMER);
-	            			enableBankCustTagButton.setText("Hide Tag: Bank");
-	            		}
-                    }
-            });
+            
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             this.add(enableTimeButton);
             this.add(enableMessagesButton);
             this.add(enableInfoButton);
             this.add(enableErrorButton);
             this.add(enableBusButton);
-            this.add(enableBankCustTagButton);
             this.setMinimumSize(new Dimension(WIDTH, HEIGHT)); //dimensions should be fine
     }
 }
