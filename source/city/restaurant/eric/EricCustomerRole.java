@@ -1,5 +1,7 @@
 package city.restaurant.eric;
 
+import gui.trace.AlertTag;
+
 import java.util.Random;
 
 import city.Place;
@@ -87,7 +89,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 				initMoney = 0.00;
 			}
 			_person.cmdChangeMoney(-_person.money() + initMoney);
-			print("HACKER [money = " + _person.money() + "]");
+			print(AlertTag.ERIC_RESTAURANT,"HACKER [money = " + _person.money() + "]");
 		}
 	}
 
@@ -116,7 +118,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 
 	public void cmdGotHungry() // from CustomerGui
 	{
-		print("I'm hungry");
+		print(AlertTag.ERIC_RESTAURANT,"I'm hungry");
 		_hungerLevel = 10;
 		_event = CustomerEvent.GOT_HUNGRY;
 		stateChanged();
@@ -157,7 +159,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	{
 		_waiter = sender; // since this is the first time we get correspondence from Waiter
 		_menu = menu;
-		print("Received msgFollowMeToTable");
+		print(AlertTag.ERIC_RESTAURANT,"Received msgFollowMeToTable");
 		_event = CustomerEvent.TOLD_TO_FOLLOW_WAITER;
 		stateChanged();
 	}
@@ -170,7 +172,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	
 	public void msgWhatDoYouWant() // from Waiter
 	{
-		print("I will decide what to pick");
+		print(AlertTag.ERIC_RESTAURANT,"I will decide what to pick");
 		_event = CustomerEvent.WAITER_ASKED_FOR_ORDER;
 		stateChanged();
 	}
@@ -186,12 +188,12 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	{
 		if(_choice.equals(choice))
 		{
-			print("I just got my " + _choice);
+			print(AlertTag.ERIC_RESTAURANT,"I just got my " + _choice);
 			_event = CustomerEvent.GOT_FOOD;
 		}
 		else
 		{
-			print("I didn't order " + choice + "!");
+			print(AlertTag.ERIC_RESTAURANT,"I didn't order " + choice + "!");
 			// possibly enter another state; this should technically never happen.
 		}
 		stateChanged();
@@ -199,14 +201,14 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 
 	public void msgFinishedEating() // from CustomerGui
 	{
-		print("Done eating");
+		print(AlertTag.ERIC_RESTAURANT,"Done eating");
 		_event = CustomerEvent.FINISHED_EATING;
 		stateChanged();
 	}
 	
 	public void msgHeresYourCheck(Check check, EricCashier cashier)
 	{
-		print("Got check.");
+		print(AlertTag.ERIC_RESTAURANT,"Got check.");
 		_check = check;
 		_cashier = cashier;
 		_event = CustomerEvent.GOT_CHECK;
@@ -215,7 +217,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 
 	public void msgReachedCashier() // from CustomerGui // TODO change this to be the generic ReachedDestination
 	{
-		print("Reached cashier.");
+		print(AlertTag.ERIC_RESTAURANT,"Reached cashier.");
 		_event = CustomerEvent.GOT_TO_CASHIER;
 		stateChanged();
 	}
@@ -223,7 +225,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	public void msgHereIsChange(double change)
 	{
 		_person.cmdChangeMoney(change);
-		print("Received change. I now have $" + _person.money());
+		print(AlertTag.ERIC_RESTAURANT,"Received change. I now have $" + _person.money());
 		_event = CustomerEvent.RECEIVED_CHANGE;
 		stateChanged();
 	}
@@ -321,7 +323,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 
 	private void actGoToRestaurant()
 	{
-		print("Going to restaurant");
+		print(AlertTag.ERIC_RESTAURANT,"Going to restaurant");
 		_state = CustomerState.WAITING_TO_BE_SEATED;
 		_gui.doGoToWaiting();
 		_host.msgIWantFood(this);
@@ -334,12 +336,12 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 		if(rand.nextInt(2) == 0)
 		{
 			// Stay
-			print("Restaurant is full but I'm going to wait.");
+			print(AlertTag.ERIC_RESTAURANT,"Restaurant is full but I'm going to wait.");
 		}
 		else
 		{
 			// Leave
-			print("Restaurant is full. I'm leaving.");
+			print(AlertTag.ERIC_RESTAURANT,"Restaurant is full. I'm leaving.");
 			_host.msgLeaving(this);
 			_gui.doLeaveRestaurant();
 			_state = CustomerState.WALKING_OUT;
@@ -349,7 +351,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	
 	private void actGoToCashierToPayDebt()
 	{
-		print("Going to cashier to pay debt");
+		print(AlertTag.ERIC_RESTAURANT,"Going to cashier to pay debt");
 		_gui.doGoToCashier();
 		_state = CustomerState.GOING_TO_CASHIER_TO_PAY_DEBT;
 		_event = CustomerEvent.NONE;
@@ -357,7 +359,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 
 	private void actPayDebt()
 	{
-		print("Paying debt");
+		print(AlertTag.ERIC_RESTAURANT,"Paying debt");
 		_cashier.msgHereIsOwedMoney(this, _person.money());
 		_person.cmdChangeMoney(-_person.money());
 		_state = CustomerState.WAITING_FOR_CHANGE_DEBT;
@@ -366,7 +368,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 
 	private void actAngrilyLeave()
 	{
-		print("Angrily leaving restaurant");
+		print(AlertTag.ERIC_RESTAURANT,"Angrily leaving restaurant");
 		_gui.doLeaveRestaurant();
 		_state = CustomerState.WALKING_OUT;
 		_event = CustomerEvent.NONE;
@@ -374,14 +376,14 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	
 	private void actGoToFrontDesk()
 	{
-		print("Going to front desk to meet waiter");
+		print(AlertTag.ERIC_RESTAURANT,"Going to front desk to meet waiter");
 		_gui.doGoToFrontDesk();
 		_state = CustomerState.GOING_TO_FRONT_DESK;
 	}
 
 	private void actGoToTable()
 	{
-		print("Being seated. Going to table");
+		print(AlertTag.ERIC_RESTAURANT,"Being seated. Going to table");
 		_state = CustomerState.GOING_TO_TABLE;
 		_gui.doGoToTable(-1); // -1 is the seat number, which is not implemented yet
 		_event = CustomerEvent.NONE;
@@ -389,7 +391,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	
 	private void actSitDown()
 	{
-		print("Sitting down");
+		print(AlertTag.ERIC_RESTAURANT,"Sitting down");
 		
 		_state = CustomerState.SEATED;
 		_event = CustomerEvent.NONE;
@@ -400,7 +402,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	 */
 	private void actChooseOrder()
 	{
-		print("Choosing order");
+		print(AlertTag.ERIC_RESTAURANT,"Choosing order");
 
 		// Choose a random choice from the list of food choices and make sure customer can pay for it.
 		Random rand = new Random();
@@ -425,13 +427,13 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 					boolean flake = rand.nextInt(4) == 0;
 					if(_hacks.contains("Flake"))
 					{
-						print("HACKER [Flake]");
+						print(AlertTag.ERIC_RESTAURANT,"HACKER [Flake]");
 						flake = true;
 					}
 					if(flake)
 					{
 						choice = _menu.entrees().get(choiceNum).choice();
-						print("Don't have enough money for " + choice + " but I'm ordering it anyway, hehe");
+						print(AlertTag.ERIC_RESTAURANT,"Don't have enough money for " + choice + " but I'm ordering it anyway, hehe");
 						break;
 					}
 					// If I can't afford it, remove that entree from the menu, and on the next cycle of this do-loop, if there's still more options in the menu, choose again.
@@ -450,7 +452,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 		{
 			if(_hacks.contains(i.choice()))
 			{
-				print("HACKER [" + i.choice() + "]");
+				print(AlertTag.ERIC_RESTAURANT,"HACKER [" + i.choice() + "]");
 				choice = i.choice();
 				break;
 			}
@@ -459,12 +461,12 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 		if(choice == null)
 		{
 			// note: Since the menu passed to the customer only includes items that are available (at least after the waiter goes to and returns from the cook to check availability), this handles the customer not having enough money as well as there being no choices in stock.
-			print("No more affordable choices.");
+			print(AlertTag.ERIC_RESTAURANT,"No more affordable choices.");
 			actLeaveRestaurant();
 			return;
 		}
 		
-		print("Chose to order " + choice);
+		print(AlertTag.ERIC_RESTAURANT,"Chose to order " + choice);
 		
 		_choice = choice;
 		_waiter.msgReadyToOrder(this);
@@ -474,7 +476,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	
 	private void actGiveOrder()
 	{
-		print("Giving order of " + _choice + " to " + _waiter.name());
+		print(AlertTag.ERIC_RESTAURANT,"Giving order of " + _choice + " to " + _waiter.name());
 		_gui.doOrderFood(_choice);
 		_waiter.msgHeresMyChoice(this, _choice);
 		_state = CustomerState.WAITING_FOR_FOOD;
@@ -483,7 +485,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 
 	private void actChooseAgain()
 	{
-		print("Choosing again.");
+		print(AlertTag.ERIC_RESTAURANT,"Choosing again.");
 		
 		_state = CustomerState.SEATED;
 		_event = CustomerEvent.NONE;
@@ -491,7 +493,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 
 	private void actEatFood()
 	{
-		print("Eating food");
+		print(AlertTag.ERIC_RESTAURANT,"Eating food");
 		_gui.doEatFood(_hungerLevel, _choice);
 		_state = CustomerState.EATING;
 		_event = CustomerEvent.NONE;
@@ -499,7 +501,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	
 	private void actRequestCheck()
 	{
-		print("Asking for check");
+		print(AlertTag.ERIC_RESTAURANT,"Asking for check");
 		_waiter.msgGiveMeCheck(this);
 		_state = CustomerState.WAITING_FOR_CHECK;
 		_event = CustomerEvent.NONE;
@@ -507,7 +509,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	
 	private void actGoToCashier()
 	{
-		print("Going to cashier.");
+		print(AlertTag.ERIC_RESTAURANT,"Going to cashier.");
 		_state = CustomerState.GOING_TO_CASHIER;
 		_gui.doGoToCashier();
 		_event = CustomerEvent.NONE;
@@ -515,7 +517,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	
 	private void actPay()
 	{
-		print("Paying.");
+		print(AlertTag.ERIC_RESTAURANT,"Paying.");
 		_cashier.msgHereIsMoney(this, _person.money(), _check); // awkwardly giving cashier whole wallet
 		_person.cmdChangeMoney(-_person.money());
 		_state = CustomerState.WAITING_FOR_CHANGE;
@@ -524,7 +526,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 
 	private void actLeaveRestaurant()
 	{
-		print("Leaving restaurant");
+		print(AlertTag.ERIC_RESTAURANT,"Leaving restaurant");
 		_waiter.msgLeaving(this);
 		_gui.doLeaveRestaurant();
 		_state = CustomerState.WALKING_OUT;
@@ -533,7 +535,7 @@ public class EricCustomerRole extends RestaurantCustomerRole implements EricCust
 	
 	private void actLeftRestaurantReset()
 	{
-		print("Left restaurant.");
+		print(AlertTag.ERIC_RESTAURANT,"Left restaurant.");
 		_state = CustomerState.IDLE;
 		_event = CustomerEvent.NONE;
 	}

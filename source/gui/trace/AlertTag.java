@@ -25,6 +25,7 @@ public enum AlertTag {
         
         BUS,				//Worldview
         BUS_STOP,
+        WORLDVIEW,
         
         HOME,
         

@@ -1,5 +1,7 @@
 package city.restaurant.eric;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.Collections;
 //import java.util.Collection;
@@ -93,7 +95,7 @@ public class EricHostRole extends Role implements EricHost
 		w.agent = sender;
 		w.state = WaiterState.WORKING;
 		
-		print(sender.name() + " on duty.");
+		print(AlertTag.ERIC_RESTAURANT,sender.name() + " on duty.");
 
 		_waiters.add(w);
 		
@@ -106,7 +108,7 @@ public class EricHostRole extends Role implements EricHost
 	 */
 	public void msgIWantFood(EricCustomer sender)
 	{
-		print("Customer " + sender.name() + " wants food");
+		print(AlertTag.ERIC_RESTAURANT,"Customer " + sender.name() + " wants food");
 		
 		// Check if sender has already paid debt
 		for(MyCustomer c : _customers)
@@ -137,21 +139,21 @@ public class EricHostRole extends Role implements EricHost
 			{
 				if(owedAmount > 0 && c.state == CustomerState.CONFIRMING_DEBT)
 				{
-					print(c.agent.name() + " owes $" + owedAmount);
+					print(AlertTag.ERIC_RESTAURANT,c.agent.name() + " owes $" + owedAmount);
 					c.state = CustomerState.HAS_DEBT;
 					stateChanged();
 					return;
 				}
 				else if(owedAmount > 0 && c.state == CustomerState.CONFIRMING_DEBT_AGAIN)
 				{
-					print(c.agent.name() + " still owes $" + owedAmount + "; we will refuse service");
+					print(AlertTag.ERIC_RESTAURANT,c.agent.name() + " still owes $" + owedAmount + "; we will refuse service");
 					c.state = CustomerState.SEND_AWAY;
 					stateChanged();
 					return;
 				}
 				else
 				{
-					print(c.agent.name() + " doesn't owe anything.");
+					print(AlertTag.ERIC_RESTAURANT,c.agent.name() + " doesn't owe anything.");
 					c.state = CustomerState.ARRIVED;
 					stateChanged();
 					return;
@@ -166,7 +168,7 @@ public class EricHostRole extends Role implements EricHost
 		{
 			if(c.agent == sender)
 			{
-				print(c.agent.name() + " is leaving.");
+				print(AlertTag.ERIC_RESTAURANT,c.agent.name() + " is leaving.");
 				_customers.remove(c);
 				stateChanged();
 				return;
@@ -180,7 +182,7 @@ public class EricHostRole extends Role implements EricHost
 		{
 			if(w.agent == sender)
 			{
-				print("Waiter " + w.agent.name() + " finished a customer");
+				print(AlertTag.ERIC_RESTAURANT,"Waiter " + w.agent.name() + " finished a customer");
 				w.numberOfCustomers--;
 				break;
 			}
@@ -189,7 +191,7 @@ public class EricHostRole extends Role implements EricHost
 		{
 			if(t.number == tableNumber)
 			{
-				print("Table number " + t.number + " is free");
+				print(AlertTag.ERIC_RESTAURANT,"Table number " + t.number + " is free");
 				_customers.remove(t.occupant);
 				t.occupant = null;
 				break;
@@ -204,7 +206,7 @@ public class EricHostRole extends Role implements EricHost
 		{
 			if(w.agent == sender)
 			{
-				print(w.agent.name() + " wants a break.");
+				print(AlertTag.ERIC_RESTAURANT,w.agent.name() + " wants a break.");
 				_waitersThatWantABreak.add(w);
 				stateChanged();
 				return;
@@ -218,7 +220,7 @@ public class EricHostRole extends Role implements EricHost
 		{
 			if(w.agent == sender)
 			{
-				print(w.agent.name() + " is coming back from a break.");
+				print(AlertTag.ERIC_RESTAURANT,w.agent.name() + " is coming back from a break.");
 				w.state = WaiterState.WORKING;
 				stateChanged();
 				return;
@@ -326,7 +328,7 @@ public class EricHostRole extends Role implements EricHost
 	
 	private void actCheckDebt(MyCustomer c)
 	{
-		print("Checking if " + c.agent.name() + " has debt");
+		print(AlertTag.ERIC_RESTAURANT,"Checking if " + c.agent.name() + " has debt");
 		_cashier.msgDoesCustomerOwe(c.agent);
 		if(c.state == CustomerState.CONFIRM_DEBT)
 		{
@@ -340,14 +342,14 @@ public class EricHostRole extends Role implements EricHost
 	
 	private void actSendCustomerToPayDebt(MyCustomer c)
 	{
-		print("Sending " + c.agent.name() + " to cashier to pay.");
+		print(AlertTag.ERIC_RESTAURANT,"Sending " + c.agent.name() + " to cashier to pay.");
 		c.agent.msgGoToCashierAndPayDebt(_cashier);
 		c.state = CustomerState.PAYING_DEBT;
 	}
 	
 	private void actSendCustomerAway(MyCustomer c)
 	{
-		print("Sending customer " + c.agent.name() + " away.");
+		print(AlertTag.ERIC_RESTAURANT,"Sending customer " + c.agent.name() + " away.");
 		c.agent.msgWeWontServeYou();
 		_customers.remove(c);
 	}
@@ -360,7 +362,7 @@ public class EricHostRole extends Role implements EricHost
 	
 	private void actAssignCustomer(MyCustomer c, Table t)
 	{
-		print("Will seat customer " + c.agent.name());
+		print(AlertTag.ERIC_RESTAURANT,"Will seat customer " + c.agent.name());
 		
 		t.occupant = c;
 		c.state = CustomerState.EATING;
@@ -379,7 +381,7 @@ public class EricHostRole extends Role implements EricHost
 			}
 		}
 		
-		print("Assigning customer " + c.agent.name() + " to waiter " + leastBusyWaiter.agent.name());
+		print(AlertTag.ERIC_RESTAURANT,"Assigning customer " + c.agent.name() + " to waiter " + leastBusyWaiter.agent.name());
 
 		leastBusyWaiter.numberOfCustomers++;
 		c.agent.msgComeToFrontDesk();
@@ -388,14 +390,14 @@ public class EricHostRole extends Role implements EricHost
 	
 	private void actNoBreak(MyWaiter w)
 	{
-		print("Denying a break for " + w.agent.name());
+		print(AlertTag.ERIC_RESTAURANT,"Denying a break for " + w.agent.name());
 		_waitersThatWantABreak.remove(w);
 		w.agent.msgNoBreak();
 	}
 	
 	private void actGiveBreak(MyWaiter w)
 	{
-		print("Giving " + w.agent.name() + " a break");
+		print(AlertTag.ERIC_RESTAURANT,"Giving " + w.agent.name() + " a break");
 		w.state = WaiterState.ON_BREAK;
 		_waitersThatWantABreak.remove(w);
 		w.agent.msgFinishCustomersGoOnBreak();

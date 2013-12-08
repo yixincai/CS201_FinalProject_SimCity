@@ -16,7 +16,7 @@ public class RyanNormalWaiterRole extends RyanWaiterRole {
 			isMoving.acquire();
 			wPlace = waiterPlace.inRestaurant;
 			customer.state = customerState.WaitingForFood;
-			print("Chef, Customer " + customer.customer.getName() + " wants " + customer.choice);
+			print(AlertTag.RYAN_RESTAURANT, "Chef, Customer " + customer.customer.getName() + " wants " + customer.choice);
 			cook.msgTryToCookOrder(this, (RyanCustomerRole) customer.customer, customer.choice);
 		}catch(InterruptedException a){
     		

@@ -1,5 +1,7 @@
 package city.restaurant.yixin;
 
+import gui.trace.AlertTag;
+
 import java.util.*;
 
 import utilities.LoggedEvent;
@@ -42,14 +44,14 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 
 	// Messages
 	public void msgComputeBill(YixinWaiterRole w, YixinCustomerRole c, String choice) {
-		print("Bill Request received");
+		print(AlertTag.YIXIN_RESTAURANT, "Bill Request received");
 		log.add(new LoggedEvent("Received ComputeBill from waiter. Choice = "+ choice));
 		bills.add(new CustomerBill(w,c,choice));
 		stateChanged();
 	}
 
 	public void msgHereIsThePayment(YixinCustomerRole c, double check, double cash) {
-		print("Payment received");
+		print(AlertTag.YIXIN_RESTAURANT,"Payment received");
 		log.add(new LoggedEvent("Received HereIsTheCheck from customer. Check = "+ check + " Payment = "+ cash));
 		for (CustomerBill bill : bills)
 			if (bill.customer == c){
@@ -61,14 +63,14 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	}
 
 	public void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list){
-		print("Market bill received with amount of " + bill);
+		print(AlertTag.YIXIN_RESTAURANT,"Market bill received with amount of " + bill);
 		log.add(new LoggedEvent("Received HereIsTheBill from market. Bill = "+ bill));
 		marketBills.add(new MarketBill(m, bill, price_list));
 		stateChanged();
 	}
 
 	public void msgHereIsTheChange(Market m, double change){
-		print("Market change received with amount of " + change);
+		print(AlertTag.YIXIN_RESTAURANT,"Market change received with amount of " + change);
 		money += change;
 		for (MarketBill bill : marketBills){
 			if (bill.market == m)
@@ -187,22 +189,22 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	
 	//Customer Bill
 	private void computeBill(CustomerBill bill) {
-		print("The Bills is computed.");
+		print(AlertTag.YIXIN_RESTAURANT,"The Bills is computed.");
 		bill.state = CustomerBill.BillState.None;
 		bill.waiter.msgHereIsTheCheck(bill.price, bill.customer);
 	}
 
 	private void makeChange(CustomerBill bill) {
 		if(bill.cash - bill.price < 0){
-			print("Customer DO NOT HAVE ENOUGH MONEY.");
+			print(AlertTag.YIXIN_RESTAURANT,"Customer DO NOT HAVE ENOUGH MONEY.");
 			bill.customer.msgYouDoNotHaveEnoughMoney(bill.price - bill.cash);
 			money += bill.cash;
-			print("Remaining money is " + money);
+			print(AlertTag.YIXIN_RESTAURANT,"Remaining money is " + money);
 			return;
 		}
-		print("Giving change to customer");
+		print(AlertTag.YIXIN_RESTAURANT,"Giving change to customer");
 		money += bill.price;
-		print("Remaining money is " + money);
+		print(AlertTag.YIXIN_RESTAURANT,"Remaining money is " + money);
 		bill.customer.msgHereIsTheChange(bill.cash - bill.price);
 	}
 
@@ -211,12 +213,12 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 		for (Item item : bill.invoice)
 			amount += (item.amount * bill.price_list.get(item.name));
 		if (Math.abs(bill.balance - amount) > 0.02)
-			print("Incorrect bill calculation by market");
+			print(AlertTag.YIXIN_RESTAURANT,"Incorrect bill calculation by market");
 		else 
-			print("Correct bill calculation by market. Paying Market Bill");
+			print(AlertTag.YIXIN_RESTAURANT,"Correct bill calculation by market. Paying Market Bill");
 		if (money >= bill.balance){
 			money -= bill.balance;
-			print("Remaining money is " + money);
+			print(AlertTag.YIXIN_RESTAURANT,"Remaining money is " + money);
 			bill.market.MarketCashier.msgHereIsPayment(restaurant, bill.balance);
 			bill.state = MarketBill.BillState.none;
 		}
@@ -224,7 +226,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 			marketBills.get(0).balance -= money;
 			bill.market.MarketCashier.msgHereIsPayment(restaurant, money);
 			money = 0;
-			print("Do not have enough money with " + bill.balance +" debt");
+			print(AlertTag.YIXIN_RESTAURANT,"Do not have enough money with " + bill.balance +" debt");
 		}
 	}
 	
