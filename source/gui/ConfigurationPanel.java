@@ -16,7 +16,7 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 	ControlPanel cPanel;
 	String[] configOptions = {"Robber", "Configuration 2", "Scenario C", 
 			"Configuration 4", "Configuration 5", "Scenario A", "Scenario B",
-					"Scenario E", "Scenario F", "Scenario G", "Scenario J"};
+					"Scenario E", "Scenario F", "Scenario G", "Scenario J", "Ryan Restaurant"};
 	JLabel configLabel;
 	JComboBox configBox;
 	JButton startButton;
@@ -222,7 +222,24 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("Eric", 300, "None", true, "house");
 		} else if(configBox.getSelectedIndex() == 9){
 			//TODO Scenario G
-		}
+		} else if(configBox.getSelectedIndex() == 10){
+			
+		} else if(configBox.getSelectedIndex() == 11){
+			cPanel.addPerson("Ryan", 300, "Restaurant Host", true, "apartment");
+			cPanel.addPerson("Ryan1", 300, "Restaurant Cashier", true, "apartment");
+			cPanel.addPerson("Ryan2", 300, "Cook", true, "apartment");
+			cPanel.addPerson("Ryan3", 300, "Restaurant Host", true, "apartment");
+			cPanel.addPerson("Ryan4", 300, "Restaurant Cashier", true, "apartment");
+			cPanel.addPerson("Ryan5", 300, "Cook", true, "apartment");
+			cPanel.addPerson("Ryan6", 300, "Restaurant Host", true, "apartment");
+			cPanel.addPerson("Ryan7", 300, "Restaurant Cashier", true, "apartment");
+			cPanel.addPerson("Ryan8", 300, "Cook", true, "apartment");
+			cPanel.addPerson("Ryan9", 300, "Ryan Waiter", true, "house");
+			cPanel.addPerson("Ryan10", 300, "Ryan Customer", true, "apartment");
+			cPanel.addPerson("Ryan11", 300, "Market Cashier", true, "apartment");
+			cPanel.addPerson("Ryan12", 300, "Market Employee", true, "apartment");
+		}  
+		
 	}
 
 }
