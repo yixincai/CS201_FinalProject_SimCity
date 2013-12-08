@@ -620,10 +620,9 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	// ----------------- Restaurant -----------------
+	/** If a RestaurantCustomerRole exists in _roles, set that to the next role.  Else, get a new customer role from a randomly chosen restaurant */
 	private boolean actGoToAnyRestaurant()
 	{
-		// Search for a RestaurantCustomerRole in _roles, use that;
-		// if no RestaurantCustomerRole in _roles, choose a Restaurant from the Directory, and get a new RestaurantCustomerRole from it
 		RestaurantCustomerRole rcr = (RestaurantCustomerRole)getRoleOfType(RestaurantCustomerRole.class);
 		if(rcr != null)
 		{
@@ -631,21 +630,23 @@ public class PersonAgent extends Agent implements Person
 			setNextRole(rcr);
 			return true;
 		}
+		
 		// note: we only get here if no RestaurantCustomerRole was found in _roles
 		List<Restaurant> restaurants = Directory.restaurants();
-		for(Restaurant r : restaurants)
+		if(restaurants.size() != 0)
 		{
-			rcr = r.generateCustomerRole(this);
+			rcr = restaurants.get(new Random().nextInt(restaurants.size())).generateCustomerRole(this);
 			rcr.cmdGotHungry();
 			setNextRole(rcr);
 			_roles.add(rcr);
 			return true;
 		}
+		
 		return false;
 	}
 	/**
 	 * Searches for a RestaurantCustomerRole of the correct type in _roles and then in Directory.restaurants() and calls setNextRole on it
-	 * @param type "Eric", "Omar", etc.
+	 * @param type "Eric", "Omar", "Ryan", or "Yixin".  Case-sensitive and must match exactly.
 	 * @return true if a restaurant of the passed-in type was chosen and setNextRole was called
 	 */
 	private boolean actGoToRestaurantOfType(String type)
