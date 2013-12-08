@@ -4,12 +4,18 @@ import gui.Gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import city.restaurant.omar.OmarCustomerRole;
+import city.restaurant.omar.OmarSharedDataWaiterRole;
 import city.restaurant.omar.OmarWaiterRole;
 import city.restaurant.omar.Table;
+import city.restaurant.ryan.RyanSharedDataWaiterRole;
 
-public class OmarWaiterGui implements Gui {
+public class OmarWaiterGui extends JPanel implements Gui {
 
 	private OmarWaiterRole agent = null;
 	private boolean gotAct = false;
@@ -36,6 +42,13 @@ public class OmarWaiterGui implements Gui {
 	
 	private int HOMEX = 0;
 	private int HOMEY = 0;
+	
+	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/NormalWaiter.png"));
+    Image normal = a.getImage();
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/restaurant/SharedDataWaiter.png"));
+    Image shared = b.getImage();
+    int xGap = 17;
+    int yGap = 27;
 
 	    public OmarWaiterGui(OmarWaiterRole agent, OmarRestaurantAnimationPanel gui) {
 	        this.agent = agent;
@@ -64,9 +77,8 @@ public class OmarWaiterGui implements Gui {
 
 	    public void draw(Graphics2D g) {
 	    	if(agent.active){
-		        g.setColor(Color.MAGENTA);
-		        g.fillRect(xPos, yPos, TOFFSET, TOFFSET);
-		        
+    			g.drawImage(normal, xPos, yPos, xGap, yGap, this);
+    			
 		        if(xPos == HOMEX && yPos == HOMEY){
 		        	g.drawString("Home", xPos + 5, yPos - 5);
 		        } else {

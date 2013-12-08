@@ -1,5 +1,7 @@
 package city.restaurant.ryan;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -56,13 +58,14 @@ public class RyanCookRole extends RestaurantCookRole{
 		super(p);
 		this.name = name;
 		_restaurant = r;
+		currentMarket = Directory.markets().get(market_count);
 		
 		cookTimes.put("Steak", 2500);
 		cookTimes.put("Chicken", 1000);
 		cookTimes.put("Salad", 500);
 		cookTimes.put("Pizza", 750);
 		
-		foods.add(new Food("Steak", 20, 5, 2000));
+		foods.add(new Food("Steak", 0, 5, 2000));
 		foods.add(new Food("Chicken", 20, 5, 1000));
 		foods.add(new Food("Pizza", 20, 5, 1000));
 		foods.add(new Food("Salad", 20, 5, 500));
@@ -80,13 +83,14 @@ public class RyanCookRole extends RestaurantCookRole{
 		super(p);
 		this.name = "TestCook";
 		_restaurant = r;
+		currentMarket = Directory.markets().get(market_count);
 		
 		cookTimes.put("Steak", 2500);
 		cookTimes.put("Chicken", 1000);
 		cookTimes.put("Salad", 500);
 		cookTimes.put("Pizza", 750);
 		
-		foods.add(new Food("Steak", 20, 5, 2000));
+		foods.add(new Food("Steak", 0, 5, 2000));
 		foods.add(new Food("Chicken", 20, 5, 1000));
 		foods.add(new Food("Pizza", 20, 5, 1000));
 		foods.add(new Food("Salad", 20, 5, 500));
@@ -143,6 +147,10 @@ public class RyanCookRole extends RestaurantCookRole{
 	
 	public void msgCanCookOrder(){
 		stateChanged();
+	}
+	
+	public void msgAtStand(){
+		isCMoving.release();
 	}
 	
 	public void msgFoodPutOnGrill(){
@@ -211,7 +219,7 @@ public class RyanCookRole extends RestaurantCookRole{
 		}
 		RyanOrder order = _restaurant.revolvingStand.remove();
 		if (order!=null){
-			//DoGoToRevolvingStand(); add animation and gui
+			DoGoToRevolvingStand(); 
 			orders.add(order);
 			return true;
 		}
@@ -245,6 +253,16 @@ public class RyanCookRole extends RestaurantCookRole{
 	
 	//Actions*******************************************************************************************************************************************************************************
 	//Cooking Actions
+	private void DoGoToRevolvingStand() {
+		print("Going to revolving stand");
+		gui.goToRevolvingStand();
+		try{
+			isCMoving.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void CheckInventory(RyanOrder currentOrder){
 		for(int i = 0; i < foods.size(); i++){
 			Food temp = foods.get(i);
@@ -273,7 +291,7 @@ public class RyanCookRole extends RestaurantCookRole{
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-    		print("Unexpected exception caught in Agent thread:", a);
+    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
     	}
 	}
 	
@@ -315,7 +333,11 @@ public class RyanCookRole extends RestaurantCookRole{
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-    		print("Unexpected exception caught in Agent thread:", a);
+<<<<<<< HEAD
+    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
+=======
+    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
+>>>>>>> develop
     	}
 	}
 	
@@ -328,6 +350,7 @@ public class RyanCookRole extends RestaurantCookRole{
 	
 	//Resupply Actions	
 	public void Restock(){
+		print("Restocking on Food");
 		List<Item> order = new ArrayList<Item>();
 		for(Food temp: foods){
 			if(temp.amount <= temp.lowLevel){

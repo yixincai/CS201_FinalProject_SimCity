@@ -80,7 +80,7 @@ public class OmarCookRole extends RestaurantCookRole {
 
 	public void msgIHaveNoFood(Market market){
 		synchronized(markets){
-			System.out.println("Market is out of Food! Ordering from next Market, Paid previous market $2");
+			print(AlertTag.OMAR_RESTAURANT, "Market is out of Food! Ordering from next Market, Paid previous market $2");
 			for(MyMarket m: markets){
 				if(m.market == market){
 					m.marketState = MarketStatus.gone;
@@ -159,7 +159,7 @@ public class OmarCookRole extends RestaurantCookRole {
 			synchronized(orders){
 				for(Order o: orders){
 					if(o.status == OrderStatus.cooked){
-						System.out.println("Order " + o.toString() + " is ready.");
+						print(AlertTag.OMAR_RESTAURANT,"Order " + o.toString() + " is ready.");
 						tellWaiter(o);
 						return true;
 					}
@@ -197,7 +197,7 @@ public class OmarCookRole extends RestaurantCookRole {
 	public void addMarkets(){
 		for(int i = 0; i < Directory.markets().size(); i++){
 			markets.add(new MyMarket(Directory.markets().get(i)));
-				System.out.println("Added Market");
+			print(AlertTag.OMAR_RESTAURANT, "Added Market");
 		}
 	}
 
@@ -220,7 +220,7 @@ public class OmarCookRole extends RestaurantCookRole {
 				cookInventory.put(f.name, f);
 			}
 		}
-		System.out.println("Restocking from market");
+		print(AlertTag.OMAR_RESTAURANT, "Restocking from market");
 		m.marketState = MarketStatus.paid;
 		stateChanged();
 	}
@@ -248,7 +248,7 @@ public class OmarCookRole extends RestaurantCookRole {
 			}
 			cookGui.DoGoBackToRest();
 			o.status = OrderStatus.cooking;
-			System.out.println("Cooking Order " + o.toString());
+			print(AlertTag.OMAR_RESTAURANT,"Cooking Order " + o.toString());
 			o.isCooking();
 		}
 	}
@@ -262,7 +262,7 @@ public class OmarCookRole extends RestaurantCookRole {
 			e.printStackTrace();
 		}
 		cookGui.DoMoveFoodToPlatingArea();
-		System.out.println(this.name + ": Told Waiter " + o.getWaiter().getName()+ " that " + 
+		print(AlertTag.OMAR_RESTAURANT, this.name + ": Told Waiter " + o.getWaiter().getName()+ " that " + 
 				o.toString() + " is ready");
 		o.status = OrderStatus.pickup;
 		o.getWaiter().msgOrderIsReady(o.getTableNumber());
@@ -273,7 +273,7 @@ public class OmarCookRole extends RestaurantCookRole {
 	public void tellCashierToPayMarket(MyMarket m){ //initialize cashier
 		cashier.msgPayInvoice(m.market, m.currentOrder);
 		m.marketState = MarketStatus.available;
-		System.out.println("Told Cashier To Pay Market");
+		print(AlertTag.OMAR_RESTAURANT, "Told Cashier To Pay Market");
 		stateChanged();
 	}
 

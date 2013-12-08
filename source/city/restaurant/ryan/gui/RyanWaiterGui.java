@@ -4,9 +4,13 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
+import city.restaurant.ryan.RyanSharedDataWaiterRole;
 import city.restaurant.ryan.RyanWaiterRole;
 
-public class RyanWaiterGui implements Gui {
+public class RyanWaiterGui extends JPanel implements Gui {
 
     private RyanWaiterRole agent = null;
     
@@ -24,7 +28,15 @@ public class RyanWaiterGui implements Gui {
     
     Dimension CashierPosition = new Dimension(200, 65);
     Dimension ChefPosition = new Dimension(475, 115);
+    Dimension RevolvingStandPosition = new Dimension(475, 50);
     Dimension HomePosition;
+    
+    ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/NormalWaiter.png"));
+    Image normal = a.getImage();
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/restaurant/SharedDataWaiter.png"));
+    Image shared = b.getImage();
+    int xGap = 17;
+    int yGap = 27;
     
     public boolean offScreen = false;
 
@@ -33,6 +45,11 @@ public class RyanWaiterGui implements Gui {
         xDestination = 10;
         yDestination = 80 + 25*count;
         HomePosition = new Dimension(xDestination,yDestination);
+        if(agent instanceof RyanSharedDataWaiterRole){
+        	ImageIcon i = new ImageIcon(this.getClass().getResource("/image/restaurant/SharedDataWaiter.png"));
+        	Image _image = i.getImage();
+        }
+        
     }
     
     public void updatePosition() {
@@ -71,6 +88,11 @@ public class RyanWaiterGui implements Gui {
         	agent.msgAtCashier();
         }
         
+        if(xPos == xDestination && yPos == yDestination
+        		& (xDestination == RevolvingStandPosition.width) & (yDestination == RevolvingStandPosition.height)){
+        	agent.msgAtChef();
+        }
+        
         if(xPos == -20 && yPos== -20){
         	offScreen = true;
         }
@@ -80,8 +102,12 @@ public class RyanWaiterGui implements Gui {
 
     public void draw(Graphics2D g) {
     	if(agent.active){
-    		g.setColor(Color.MAGENTA);
-    		g.fillRect(xPos, yPos, 20, 20);
+    		if(agent instanceof RyanSharedDataWaiterRole){
+    			g.drawImage(shared, xPos, yPos, xGap, yGap, this);
+    		}
+    		else{
+    			g.drawImage(normal, xPos, yPos, xGap, yGap, this);
+    		}
     	}
         
         if(holding == true){
@@ -124,6 +150,11 @@ public class RyanWaiterGui implements Gui {
     public void DoGoToChef(){
     	xDestination = ChefPosition.width;
     	yDestination = ChefPosition.height;
+    }
+    
+    public void DoGoToRevolvingStand(){
+    	xDestination = RevolvingStandPosition.width;
+    	yDestination = RevolvingStandPosition.height;
     }
     
     public void DoGoToCashier(){

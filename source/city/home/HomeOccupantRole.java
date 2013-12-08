@@ -247,7 +247,7 @@ public abstract class HomeOccupantRole extends Role
 	// ------------------------------------ UTILITIES -----------------------------------
 	private void waitForGuiToReachDestination()
 	{
-		// for DEBUG: print("Waiting for gui to reach destination.");
+		//print("Waiting for gui to reach destination.");
 		try { _reachedDestination.acquire(); }
 		catch (InterruptedException e) { e.printStackTrace(); }
 	}

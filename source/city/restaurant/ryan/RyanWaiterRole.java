@@ -1,5 +1,7 @@
 package city.restaurant.ryan;
 
+import gui.trace.AlertTag;
+
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -273,7 +275,7 @@ public abstract class RyanWaiterRole extends Role{
     		}catch(InterruptedException a){
         		
         	} catch(Exception a){
-        		print("Unexpected exception caught in Agent thread:", a);
+        		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
         	}
 		}
 		else{
@@ -292,7 +294,7 @@ public abstract class RyanWaiterRole extends Role{
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-    		print("Unexpected exception caught in Agent thread:", a);
+    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
     	}
 	}
 	
@@ -322,7 +324,7 @@ public abstract class RyanWaiterRole extends Role{
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-    		print("Unexpected exception caught in Agent thread:", a);
+    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
     	}
 	}
 	
@@ -343,7 +345,7 @@ public abstract class RyanWaiterRole extends Role{
 			}catch(InterruptedException a){
 	    		
 	    	} catch(Exception a){
-	    		print("Unexpected exception caught in Agent thread:", a);
+	    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
 	    	}
 		}
 		else{
@@ -353,7 +355,7 @@ public abstract class RyanWaiterRole extends Role{
 			}catch(InterruptedException a){
 	    		
 	    	} catch(Exception a){
-	    		print("Unexpected exception caught in Agent thread:", a);
+	    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
 	    	}
 		}
 		
@@ -380,7 +382,7 @@ public abstract class RyanWaiterRole extends Role{
 			}catch(InterruptedException a){
 	    		
 	    	} catch(Exception a){
-	    		print("Unexpected exception caught in Agent thread:", a);
+	    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
 	    	}
 		}
 		else{
@@ -390,7 +392,7 @@ public abstract class RyanWaiterRole extends Role{
 			}catch(InterruptedException a){
 	    		
 	    	} catch(Exception a){
-	    		print("Unexpected exception caught in Agent thread:", a);
+	    		print(AlertTag.RYAN_RESTAURANT,"Unexpected exception caught in Agent thread:", a);
 	    	}
 		}
 	}

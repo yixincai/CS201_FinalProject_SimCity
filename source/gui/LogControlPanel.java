@@ -32,7 +32,7 @@ class LogControlPanel extends JPanel {
     public LogControlPanel(final TracePanel tracePanel) {
             this.tp = tracePanel;
             
-/*            enableAllLevelsButton = new JButton("Show All Levels");
+/*          enableAllLevelsButton = new JButton("Show All Levels");
             enableAllLevelsButton.setMinimumSize(buttonDimension);
             enableAllLevelsButton.setMaximumSize(buttonDimension);
             

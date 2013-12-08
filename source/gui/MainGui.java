@@ -27,6 +27,7 @@ import city.restaurant.yixin.YixinRestaurant;
 import city.transportation.*;
 import city.transportation.gui.BusAgentGui;
 
+@SuppressWarnings("serial")
 public class MainGui extends JFrame 
 {
 	private static int FRAMEX = 1024;
@@ -377,6 +378,31 @@ public class MainGui extends JFrame
 			}
 		}
 		*/
+//		int xdim = 60;
+//	    int ydim = 30;
+//	    grid = new Semaphore[xdim][ydim];
+//	    for (int i=0; i<xdim; i++)
+//	    	for (int j=0; j<ydim; j++)
+//	    		grid[i][j] = new Semaphore(1,true);
+//	    //set access to all buildings to false
+//	    for (int i=8; i<16; i++)
+//	    	for (int j=5; j<9; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=8; i<16; i++)
+//	    	for (int j=19; j<25; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=24; i<36; i++)
+//	    	for (int j=5; j<9; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=24; i<36; i++)
+//	    	for (int j=19; j<25; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=44; i<52; i++)
+//	    	for (int j=5; j<9; j++)
+//	    		grid[i][j].tryAcquire();
+//	    for (int i=44; i<52; i++)
+//	    	for (int j=19; j<25; j++)
+//	    		grid[i][j].tryAcquire();
 		int xdim = 60;
 	    int ydim = 30;
 	    grid = new Semaphore[xdim][ydim];
@@ -409,6 +435,23 @@ public class MainGui extends JFrame
 		this.pack();		
 		this.setVisible(true);
 		
+		//Ryan Restaurant interaction
+//		cPanel.addPerson("Ryan", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan1", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan2", 300, "Cook", true, "apartment");
+//		
+//		cPanel.addPerson("Ryan3", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan4", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan5", 300, "Cook", true, "apartment");
+//		
+//		cPanel.addPerson("Ryan6", 300, "Restaurant Host", true, "apartment");
+//		cPanel.addPerson("Ryan7", 300, "Restaurant Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan8", 300, "Cook", true, "apartment");
+//		cPanel.addPerson("Ryan9", 300, "Ryan Waiter", true, "house");
+//		cPanel.addPerson("Ryan10", 300, "Ryan Customer", true, "apartment");
+//		
+//		cPanel.addPerson("Ryan11", 300, "Market Cashier", true, "apartment");
+//		cPanel.addPerson("Ryan12", 300, "Market Employee", true, "apartment");
 		Time.startTimer();
 	}
 	
