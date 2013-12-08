@@ -92,8 +92,7 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	
-	// ------------------------------------------- CONSTRUCTORS & PROPERTIES --------------------------------------------
-	// ------------------ CONSTRUCTORS & SETUP ---------------------
+	// ------------------------------------------- CONSTRUCTORS & SETUP --------------------------------------------
 	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType, List<String> actionsToDo)
 	{
 		this(name, money, occupationType, weekday_notWeekend, housingType);
@@ -346,7 +345,9 @@ public class PersonAgent extends Agent implements Person
 		_occupation = newOccupation;
 	}
 	
-	// ---------------------- OTHER PROPERTIES -------------------------
+	
+	
+	// ------------------------------------------- PROPERTIES --------------------------------------------------
 	public String name() { return _name; }
 	public double money() { return _money; }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
@@ -355,8 +356,17 @@ public class PersonAgent extends Agent implements Person
 	}
 	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
 	public CommuterRole commuterRole() { return _commuterRole; }
+	// Actions to do:
 	public void addActionToDo(String actionToDo) { _actionsToDo.add(actionToDo); }
 	public void addActionsToDo(List<String> actionsToDo) { _actionsToDo.addAll(actionsToDo); }
+	public boolean removeActionToDo(String actionToDo) { return _actionsToDo.remove(actionToDo); }
+	public String popNextActionToDo() { return _actionsToDo.remove(0); }
+	/** Returns the current _actionsToDo list and resets it to a new, empty list. */
+	public List<String> clearActionsToDo() {
+		List<String> oldActionsToDo = _actionsToDo;
+		_actionsToDo = new ArrayList<String>();
+		return oldActionsToDo;
+	}
 	
 	
 	
@@ -452,7 +462,7 @@ public class PersonAgent extends Agent implements Person
 			
 			if(!_actionsToDo.isEmpty())
 			{
-				String nextAction = _actionsToDo.remove(0);
+				String nextAction = popNextActionToDo();
 				if(nextAction.contains("Restaurant"))
 				{
 					if(nextAction.contains("Eric")) {
@@ -473,7 +483,9 @@ public class PersonAgent extends Agent implements Person
 				}
 				else if(nextAction.contains("Bank"))
 				{
-					//TODO
+					if(nextAction.contains("Withdraw")) {
+						//TODO
+					}
 				}
 				else if(nextAction.contains("Market"))
 				{

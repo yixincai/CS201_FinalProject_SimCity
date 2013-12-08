@@ -31,7 +31,7 @@ public class CommuterTest extends TestCase{
 		
 		person = new PersonAgent("Person 1"); 
 		person.cmdChangeMoney(100);
-		commuter = new CommuterRole(person, null, null);
+		commuter = new CommuterRole(person, null);
 		gui = new CommuterGui(commuter, null);
 		commuter.setGui(gui);
 		
