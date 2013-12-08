@@ -494,6 +494,15 @@ public class PersonAgent extends Agent implements Person
 				}
 				else if(nextAction.contains("Home"))
 				{
+					if(nextAction.contains("Sleep")) {
+						_homeOccupantRole.cmdGoToBed();
+					}
+					else if(nextAction.contains("Cook")) {
+						_homeOccupantRole.cmdCookAndEatFood();
+					}
+					else if(nextAction.contains("TV")) {
+						_homeOccupantRole.cmdWatchTv();
+					}
 					setNextRole(_homeOccupantRole);
 				}
 			}
