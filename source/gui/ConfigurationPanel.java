@@ -14,7 +14,9 @@ import javax.swing.SpringLayout;
 public class ConfigurationPanel extends JPanel implements ActionListener {
 	
 	ControlPanel cPanel;
-	String[] configOptions = {"Robber", "Configuration 2", "Scenario C", "Configuration 4", "Configuration 5", "Scenario A", "Scenario B"};
+	String[] configOptions = {"Robber", "Configuration 2", "Scenario C", 
+			"Configuration 4", "Configuration 5", "Scenario A", "Scenario B, "
+					+ "Scenario E, Scenario F, Scenario G, Scenario J"};
 	JLabel configLabel;
 	JComboBox configBox;
 	JButton startButton;
@@ -210,6 +212,16 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("Eric", 300, "None", true, "house"); //need to have each one take different transportation
 			cPanel.addPerson("Eric", 300, "None", true, "house");
 			cPanel.addPerson("Eric", 300, "None", true, "house");
+		} else if(configBox.getSelectedIndex() == 7){
+			//Three people need to take bus
+			cPanel.addPerson("Eric", 300, "None", true, "house"); //need to have each one take different transportation
+			cPanel.addPerson("Eric", 300, "None", true, "house");
+			cPanel.addPerson("Eric", 300, "None", true, "house");
+		} else if(configBox.getSelectedIndex() == 8){
+			//TODO somehow close places
+			cPanel.addPerson("Eric", 300, "None", true, "house");
+		} else if(configBox.getSelectedIndex() == 9){
+			//TODO Scenario G
 		}
 	}
 

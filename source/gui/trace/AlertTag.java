@@ -27,5 +27,7 @@ public enum AlertTag {
         BANK_TELLER,
         BANK_CUSTOMER,
         
+        HOME,
+        
         GENERAL_CITY
 }

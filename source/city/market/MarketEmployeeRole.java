@@ -1,4 +1,6 @@
 package city.market;
+import gui.trace.AlertTag;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -41,13 +43,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	public void msgPickOrder(CustomerOrder mc){
-		print("employee received customer order");
+		print(AlertTag.MARKET, "employee received customer order");
 		pickUpOrders.add(mc);		
 		stateChanged();
 	}
 
 	public void msgPickOrder(RestaurantOrder rc){
-		print("employee received restaurant order");		
+		print(AlertTag.MARKET, "employee received restaurant order");		
 		deliverOrders.add(rc);
 		stateChanged();
 	}

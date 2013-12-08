@@ -50,5 +50,10 @@ public class MockBankTeller extends Mock implements BankTeller{
 	public int getTellerNum() {
 		return tellerNum;
 	}
+
+	@Override
+	public void msgRobbery(double _amount, BankCustomerRole robber) {
+		log.add(new LoggedEvent("msgRobbery received"));
+	}
 	
 }
