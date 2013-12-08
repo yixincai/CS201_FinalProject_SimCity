@@ -280,4 +280,11 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 			print(AlertTag.ERIC_RESTAURANT,"      amount coming: " + f.amountComing);
 		}
 	}
+	
+	public void clearInventory(){
+		for(Food f : _foods)
+		{
+			f.inventory = 0;
+		}
+	}
 }

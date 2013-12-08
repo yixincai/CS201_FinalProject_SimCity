@@ -471,5 +471,13 @@ public class RyanCookRole extends RestaurantCookRole{
 		roleState = RoleState.WantToLeave;
 		stateChanged();		
 	}
+
+	@Override
+	public void clearInventory() {
+		for(Food f: foods){
+			f.amount = 0;
+		}
+	}
+	
 	
 }

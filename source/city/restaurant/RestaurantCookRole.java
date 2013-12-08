@@ -14,5 +14,7 @@ public abstract class RestaurantCookRole extends Role{
 		super(person);
 	}
 	public abstract void msgOrderFulfillment(Market m, List<Item> order);
+	
+	public abstract void clearInventory();
 
 }
