@@ -14,7 +14,8 @@ public class RyanAnimationPanel extends JPanel implements ActionListener { //Add
     private final int WINDOWY = 700;
     List<Dimension> tables = new ArrayList<Dimension>();
     List<Dimension> kitchen = new ArrayList<Dimension>(); //For grill, and placing area
-    List<Dimension> seats = new ArrayList<Dimension>();
+    List<Dimension> seats = new ArrayList<Dimension>(); //Waiting area
+    List<Dimension> chairs = new ArrayList<Dimension>(); //Table Area
     int numSeats = 5; 
     private int width = 50;
     private int height = 50;
@@ -45,15 +46,63 @@ public class RyanAnimationPanel extends JPanel implements ActionListener { //Add
     int xRGap = 24;
     int yRGap = 32;
     
+    ImageIcon e = new ImageIcon(this.getClass().getResource("/image/restaurant/WaitChair.png"));
+    Image waitChair = e.getImage();
+    int xWGap = 20;
+    int yWGap = 23;
+    
+    ImageIcon f = new ImageIcon(this.getClass().getResource("/image/restaurant/Chair.png"));
+    Image chairimage = f.getImage();
+    int xCGap = 20;
+    int yCGap = 18;
+    
+    ImageIcon g = new ImageIcon(this.getClass().getResource("/image/restaurant/Table.png"));
+    Image table = g.getImage();
+    int xTGap = 50;
+    int yTGap = 53;
+    
+    ImageIcon h = new ImageIcon(this.getClass().getResource("/image/restaurant/KitchenFloor.png"));
+    Image kitchenFloor = h.getImage();
+    int xKFGap = 175;
+    int yKFGap = 360;
+    
+    ImageIcon i = new ImageIcon(this.getClass().getResource("/image/restaurant/WoodFloor.png"));
+    Image restaurantFloor = i.getImage();
+    int xRFGap = 500;
+    int yRFGap = 360;
+    
+    ImageIcon j = new ImageIcon(this.getClass().getResource("/image/restaurant/CashierCounter.png"));
+    Image cashierCounter = j.getImage();
+    int xCCounterGap = 63;
+    int yCCounterGap = 51;
+    
+    ImageIcon k = new ImageIcon(this.getClass().getResource("/image/restaurant/Counter.png"));
+    Image counter = k.getImage();
+    int xCounterGap = 20;
+    int yCounterGap = 350;
+    
     private List<Gui> guis = new ArrayList<Gui>();
 
     public RyanAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         
-        tables.add(new Dimension(150, 150));
-        tables.add(new Dimension(250, 150));
-        tables.add(new Dimension(350, 150));
+        tables.add(new Dimension(150, 170));
+        tables.add(new Dimension(250, 170));
+        tables.add(new Dimension(350, 170));
+        
+        chairs.add(new Dimension(150, 150));
+        chairs.add(new Dimension(180, 150));
+        chairs.add(new Dimension(250, 150));
+        chairs.add(new Dimension(280, 150));
+        chairs.add(new Dimension(350, 150));
+        chairs.add(new Dimension(380, 150));
+        chairs.add(new Dimension(150, 225));
+        chairs.add(new Dimension(180, 225));
+        chairs.add(new Dimension(250, 225));
+        chairs.add(new Dimension(280, 225));
+        chairs.add(new Dimension(350, 225));
+        chairs.add(new Dimension(380, 225));
         
         kitchen.add(new Dimension(500, 85));
         kitchen.add(new Dimension(600, 145));
@@ -77,23 +126,18 @@ public class RyanAnimationPanel extends JPanel implements ActionListener { //Add
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
         
-        
-        g2.setColor(Color.GRAY);
-        g2.fillRect(180, 10, 10, 40);
-        
-        g2.setColor(Color.GRAY);
-        g2.fillRect(180, 50, 50, 10);
-        
-        g2.setColor(Color.GRAY);
-        g2.fillRect(500, 0, 20, 500);
-        
-        //g2.setColor(Color.RED);
-        //g2.fillRect(90, 65, 20, 20);
+        g2.drawImage(restaurantFloor, 0, 0, xRFGap, yRFGap, this);
+        g2.drawImage(kitchenFloor, 520, 0, xKFGap, yKFGap, this);
+        g2.drawImage(cashierCounter, 180, 20, xCCounterGap, yCCounterGap, this);
+        g2.drawImage(counter, 500, 0, xCounterGap, yCounterGap, this);
         
         //Seats
         for(Dimension seat: seats){
-        	g2.setColor(Color.ORANGE);
-        	g2.fillRect(seat.width, seat.height, agentWidth, agentHeight);
+        	g2.drawImage(waitChair, seat.width, seat.height, xWGap, yWGap, this);
+        }
+        
+        for(Dimension chair: chairs){
+        	g2.drawImage(chairimage, chair.width, chair.height, xCGap, yCGap, this);
         }
         
         //Kitchen Places
@@ -105,14 +149,9 @@ public class RyanAnimationPanel extends JPanel implements ActionListener { //Add
         
         g2.drawImage(plating, PlatePlace.width, PlatePlace.height, xPGap, yPGap, this); //Plating
         
-//        g2.setColor(Color.black);
-//        g2.drawString("Grill", 620, 215);
-//        g2.drawString("Plating", 490, 180);
-        
         //Here is the table
         for(Dimension temp: tables){
-        	g2.setColor(Color.ORANGE);
-            g2.fillRect(temp.width, temp.height, width, height);
+        	g2.drawImage(table, temp.width, temp.height, xTGap, yTGap, this);
         }
 
 
