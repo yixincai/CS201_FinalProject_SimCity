@@ -3,13 +3,16 @@ package city.home.gui;
 import gui.Gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -22,8 +25,8 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public static final int BEDY = 300;
     public static final int STOVEX = 570;
     public static final int STOVEY = 300;
-    public static final int FRIDGEX = 550;
-    public static final int FRIDGEY = 300;
+    public static final int FRIDGEX = 540;
+    public static final int FRIDGEY = 292;
     public static final int TVX = 382;
     public static final int TVY = 310;
     
@@ -82,8 +85,28 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public static final int WINDOWX = 682;
     public static final int WINDOWY = 360;
     
-    
     private List<Gui> _guis = new ArrayList<Gui>();
+    
+    ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Fridge.png"));
+    Dimension FridgePlace = new Dimension(600, 80);
+    Image fridge = a.getImage();
+    int xFGap = 25;
+    int yFGap = 48;
+    
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/restaurant/SingleGrill.png"));
+    Image grill = b.getImage();
+    int xGGap = 28;
+    int yGGap = 40;
+    
+    ImageIcon c = new ImageIcon(this.getClass().getResource("/image/home/Bed1.png"));
+    Image bed = c.getImage();
+    int xBGap = 33;
+    int yBGap = 72;
+    
+    ImageIcon d = new ImageIcon(this.getClass().getResource("/image/home/ApartmentFloor.png"));
+    Image floor = d.getImage();
+    int xFlGap = WINDOWX;
+    int yFlGap = WINDOWY;
     
     public ApartmentAnimationPanel()
     {
@@ -109,30 +132,34 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
 
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
-        g2.fillRect(0, 0, WINDOWX, WINDOWY );
+        g2.drawImage(floor, 0, 0, xFlGap, yFlGap, this);
 
-        //Here is the table
+		//Here is the table
+		
+		g2.drawImage(grill, STOVEX, STOVEY, xGGap, yGGap, this);
+		
+		g2.drawImage(fridge, FRIDGEX, FRIDGEY, xFGap, yFGap, this);
 
         //beds
         g2.setColor(Color.CYAN);
-        g2.fillRect(BEDX, BEDY, BEDWIDTH, BEDHEIGHT);
-        g2.fillRect(BEDX2, BEDY2, BEDWIDTH, BEDHEIGHT);
-        g2.fillRect(BEDX3, BEDY3, BEDWIDTH, BEDHEIGHT);
-        g2.fillRect(BEDX4, BEDY4, BEDWIDTH, BEDHEIGHT);
+        g2.drawImage(bed, BEDX, BEDY, xBGap, yBGap, this);
+		g2.drawImage(bed, BEDX2, BEDY2, xBGap, yBGap, this);
+		g2.drawImage(bed, BEDX3, BEDY3, xBGap, yBGap, this);
+		g2.drawImage(bed, BEDX4, BEDY4, xBGap, yBGap, this);
         
         //stoves
         g2.setColor(Color.BLACK);
-        g2.fillRect(STOVEX, STOVEY, STOVEDIM, STOVEDIM);
-        g2.fillRect(STOVEX2, STOVEY2, STOVEDIM, STOVEDIM);
-        g2.fillRect(STOVEX3, STOVEY3, STOVEDIM, STOVEDIM);
-        g2.fillRect(STOVEX4, STOVEY4, STOVEDIM, STOVEDIM);
+        g2.drawImage(grill, STOVEX, STOVEY, xGGap, yGGap, this);
+        g2.drawImage(grill, STOVEX2, STOVEY2, xGGap, yGGap, this);
+        g2.drawImage(grill, STOVEX3, STOVEY3, xGGap, yGGap, this);
+        g2.drawImage(grill, STOVEX4, STOVEY4, xGGap, yGGap, this);
         
         //fridges
         g2.setColor(Color.WHITE);
-        g2.fillRect(FRIDGEX, FRIDGEY, FRIDGEDIM, FRIDGEDIM);
-        g2.fillRect(FRIDGEX2, FRIDGEY2, FRIDGEDIM, FRIDGEDIM);
-        g2.fillRect(FRIDGEX3, FRIDGEY3, FRIDGEDIM, FRIDGEDIM);
-        g2.fillRect(FRIDGEX4, FRIDGEY4, FRIDGEDIM, FRIDGEDIM);
+        g2.drawImage(fridge, FRIDGEX, FRIDGEY, xFGap, yFGap, this);
+        g2.drawImage(fridge, FRIDGEX2, FRIDGEY4, xFGap, yFGap, this);
+        g2.drawImage(fridge, FRIDGEX3, FRIDGEY3, xFGap, yFGap, this);
+        g2.drawImage(fridge, FRIDGEX4, FRIDGEY2, xFGap, yFGap, this);
         
         //walls
         g2.setColor(Color.BLUE);
