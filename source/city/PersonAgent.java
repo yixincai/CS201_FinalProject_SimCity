@@ -1,6 +1,8 @@
 package city;
 
 import gui.astar.AStarTraversal;
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
 
 import java.util.*;
 
@@ -91,8 +93,8 @@ public class PersonAgent extends Agent implements Person
 		_money = money;
 		setWorkDays(weekday_notWeekend);
 		acquireOccupation(occupationType);
-		if(_occupation != null) { print("Acquired occupation " + _occupation.typeToString() + "."); }
-		else { print("Acquired null occupation."); }
+		if(_occupation != null) { AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(), "Acquired occupation " + _occupation.typeToString() + "."); }
+		else { AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(),"Acquired null occupation."); }
 		acquireHome(housingType);
 		
 		// For testing purposes for V1, choose a random action to do at home.
@@ -158,7 +160,7 @@ public class PersonAgent extends Agent implements Person
 			throw new IllegalArgumentException("Invalid value of homeType: " + homeType);
 		}
 		
-		print("Failed to acquire a(n) " + homeType + ".");
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(),"Failed to acquire a(n) " + homeType + ".");
 		_homeOccupantRole = new HomelessRole(this);
 		_homeBuyingRole = null;
 	}
@@ -481,7 +483,7 @@ public class PersonAgent extends Agent implements Person
 	// (Peanut gallery)
 	private void actTellLongStory()
 	{
-		print("When I was a young programmer, my boss was skeptical of my design.  I proved him wrong.");
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(),"When I was a young programmer, my boss was skeptical of my design.  I proved him wrong.");
 	}
 	private void actIWhale()
 	{
