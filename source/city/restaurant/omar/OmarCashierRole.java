@@ -1,5 +1,7 @@
 package city.restaurant.omar;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -173,7 +175,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		}
 		
 		void processOrder(Order o){
-			System.out.println("Processed Order.  Gave market $" + (int)o.cost);
+			print(AlertTag.OMAR_RESTAURANT, "Processed Order.  Gave market $" + (int)o.cost);
 			o.market.MarketCashier.msgHereIsPayment(restaurant, o.cost);
 			cashierFunds-=(int)o.cost;
 			orders.remove(o);
@@ -225,7 +227,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		public void msgHereIsTheBill(Market m, double bill,
 				Map<String, Double> price_list) {
 			orders.add(new Order(m, price_list, bill));
-			System.out.println("Market Order Added");
+			print(AlertTag.OMAR_RESTAURANT, "Market Order Added");
 			stateChanged();
 		}
 		
