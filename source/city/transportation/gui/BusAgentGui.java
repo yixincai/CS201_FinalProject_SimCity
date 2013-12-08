@@ -5,13 +5,18 @@ import gui.trace.AlertLog;
 import gui.trace.AlertTag;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import city.Place;
 import city.transportation.BusAgent;
 import city.transportation.BusStopObject;
 
-public class BusAgentGui implements Gui {
+public class BusAgentGui extends JPanel implements Gui {
 	
 	int _xPos, _yPos;
 	BusStopObject _busStop;
@@ -22,6 +27,24 @@ public class BusAgentGui implements Gui {
 	
 	boolean moving;
 	boolean isPresent;
+	
+	enum BusDirection{BusUp, BusDown, BusRight, BusLeft, BusNone};
+	BusDirection direction = BusDirection.BusNone;
+	
+	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/transportation/BusUp.png"));
+    Image busUp = a.getImage();
+    
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/transportation/BusDown.png"));
+    Image busDown = b.getImage();
+    
+    ImageIcon c = new ImageIcon(this.getClass().getResource("/image/transportation/BusLeft.png"));
+    Image busLeft = c.getImage();
+    
+    ImageIcon d = new ImageIcon(this.getClass().getResource("/image/transportation/BusRight.png"));
+    Image busRight = d.getImage();
+    
+    int xBGap = 25;
+    int yBGap = 48;
 	
 	//-------------------------------Constructor-------------------------------
 	public BusAgentGui(BusAgent bus, Place startingPlace) {
@@ -50,15 +73,23 @@ public class BusAgentGui implements Gui {
 	
 	//-------------------------------Animation Stuff-------------------------------
 	public void updatePosition() {
-		if (_xPos < _xDestination)
+		if (_xPos < _xDestination){
 			_xPos++;
-		else if (_xPos > _xDestination)
+			direction = BusDirection.BusRight;
+		}
+		else if (_xPos > _xDestination){
 			_xPos--;
-
-		if (_yPos < _yDestination)
+			direction = BusDirection.BusLeft;
+		}
+		
+		if (_yPos < _yDestination){
 			_yPos++;
-		else if (_yPos > _yDestination)
+			direction = BusDirection.BusDown;
+		}
+		else if (_yPos > _yDestination){
 			_yPos--;
+			direction = BusDirection.BusUp;
+		}
 		
 		if(_xPos == _xDestination && _yPos == _yDestination && moving){
 			atBusStop();
@@ -69,9 +100,20 @@ public class BusAgentGui implements Gui {
 	
 	public void draw(Graphics2D g) {
 		if(isPresent){
-			g.setColor(Color.GREEN);
-			g.fillRect(_xPos, _yPos, 30, 30);
 			g.setColor(Color.BLUE);
+			if(direction == BusDirection.BusDown){
+				g.drawImage(busDown, _xPos, _yPos, 16, 37, this);
+			}
+			else if(direction == BusDirection.BusUp){
+				g.drawImage(busUp, _xPos, _yPos, 16, 37, this);
+			}
+			else if(direction == BusDirection.BusRight){
+				g.drawImage(busRight, _xPos, _yPos, 36, 23, this);
+			}
+			else if(direction == BusDirection.BusLeft){
+				g.drawImage(busLeft, _xPos, _yPos, 37, 23, this);
+			}
+			
 			if(_xPos == 20){
 				g.drawString(currentStatus, _xPos + 35, _yPos + 20);
 			} else if(_xPos == 620) {
