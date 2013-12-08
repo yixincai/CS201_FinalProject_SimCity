@@ -13,8 +13,8 @@ public class RyanCashierGui extends JPanel implements Gui{
 	
 	int xPos = 90; 
 	int yPos = 20;
-	int xDestination = 90;
-	int yDestination = 20;
+	int xDestination = 200;
+	int yDestination = -20;
 	
 	private enum Command {noCommand, LeaveRestaurant};
 	Command command = Command.noCommand;
