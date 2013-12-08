@@ -6,19 +6,13 @@ import gui.Lane;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import city.Directory;
-import city.Place;
+import city.*;
 import city.market.Market;
 import city.restaurant.Restaurant;
-import city.transportation.BusStopObject;
 import city.transportation.TruckAgent;
-import city.transportation.gui.CommuterGui.Command;
 
 
 public class TruckAgentGui implements Gui{
@@ -51,7 +45,7 @@ public class TruckAgentGui implements Gui{
 		_xDestination = _market.positionX() - 30;
 		_yDestination = _market.positionY();
 		_currentBlockX = getBlockX(market.positionX());
-		_currentBlockY = getBlockY(market.positionX());
+		_currentBlockY = getBlockY(market.positionY());
 		_truck = truck;
 		isPresent = true;
 		restaurants = Directory.restaurants();
@@ -74,19 +68,24 @@ public class TruckAgentGui implements Gui{
 		setPresent(true);
 		_destinationBlockX = getBlockX(market.positionX());
 		_destinationBlockY = getBlockY(market.positionY());
+		System.out.println(_currentBlockX );
+		System.out.println(_currentBlockY );		
+		System.out.println(_destinationBlockX );
+		System.out.println(_destinationBlockY );
 
-		if (_currentBlockX == 1){
-			if (_destinationBlockX == 1 && _destinationBlockY == 1){
+		if (_destinationBlockX == 1){
+			if (_currentBlockX == 1 && _currentBlockY == 1){
+				System.out.println("--------------------------------");
 				route.add(11);
 				intersections.add(1);
 				route.add(7);
 			}
-			else if (_destinationBlockX == 1 && _destinationBlockY == 0){
+			else if (_currentBlockX == 1 && _currentBlockY == 0){
 				route.add(1);
 				intersections.add(1);
 				route.add(7);
 			}
-			else if (_destinationBlockX == 2 && _destinationBlockY == 1){
+			else if (_currentBlockX == 2 && _currentBlockY == 1){
 				route.add(5);
 				intersections.add(3);
 				route.add(2);
@@ -96,22 +95,22 @@ public class TruckAgentGui implements Gui{
 				route.add(7);
 			} 
 		}
-		else if (_currentBlockX == 2){
-			if (_destinationBlockX == 1 && _destinationBlockY == 1){
+		else if (_destinationBlockX == 2){
+			if (_currentBlockX == 1 && _currentBlockY == 1){
 				route.add(12);
 				intersections.add(7);
 				route.add(13);
 				intersections.add(2);
 				route.add(9);
 			}
-			else if (_destinationBlockX == 1 && _destinationBlockY == 0){
+			else if (_currentBlockX == 1 && _currentBlockY == 0){
 				route.add(1);
 				intersections.add(1);
 				route.add(4);
 				intersections.add(2);
 				route.add(9);
 			}
-			else if (_destinationBlockX == 2 && _destinationBlockY == 1){
+			else if (_currentBlockX == 2 && _currentBlockY == 1){
 				route.add(13);
 				intersections.add(2);
 				route.add(9);
@@ -296,7 +295,10 @@ public class TruckAgentGui implements Gui{
 		setPresent(true);
 		_destinationBlockX = getBlockX(restaurant.positionX());
 		_destinationBlockY = getBlockY(restaurant.positionY());
-
+		System.out.println(_currentBlockX );
+		System.out.println(_currentBlockY );		
+		System.out.println(_destinationBlockX );
+		System.out.println(_destinationBlockY );
 		if (_currentBlockX == 1){
 			route.add(7);
 			intersections.add(4);
@@ -339,7 +341,8 @@ public class TruckAgentGui implements Gui{
 				route.add(13);
 			} 
 		}
-
+		_currentBlockX = _destinationBlockX;
+		_currentBlockY = _destinationBlockY;
 		for (int i=0; i< route.size();i++){
 			Lane lane = Directory.lanes().get(route.get(i));
 			int starting_position = 0;
@@ -491,8 +494,6 @@ public class TruckAgentGui implements Gui{
 				lane.permits.get(lane.permits.size()-1).release();
 			}
 		}
-		_currentBlockX = _destinationBlockX;
-		_currentBlockY = _destinationBlockY;
 	}
 
 	//Animation
