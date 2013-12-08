@@ -1,5 +1,6 @@
 package city.restaurant.omar;
 
+import gui.trace.AlertTag;
 import city.PersonAgent;
 import city.Place;
 
@@ -10,7 +11,7 @@ public class OmarSharedDataWaiterRole extends OmarWaiterRole {
 
 	@Override
 	protected void giveOrderToCook(OmarWaiterRole.MyCustomer m, OmarCookRole cook) {
-		print("Process order");
+		print(AlertTag.OMAR_RESTAURANT, "Process order");
 		m.myCustomerState = MycustomerState.waitingForFood;
 		waiterGui.DoGoToRevolvingStand();
 		try {
@@ -20,7 +21,7 @@ public class OmarSharedDataWaiterRole extends OmarWaiterRole {
 		}
 		
 		//print("Making a new order");
-        print("Trying to put order on revolving stand"); //FoodTicket put on revolving stand
+        print(AlertTag.OMAR_RESTAURANT, "Trying to put order on revolving stand"); //FoodTicket put on revolving stand
         restaurant.revolving_stand.insert(new FoodTicket(this, m.customer));
 	}
 
