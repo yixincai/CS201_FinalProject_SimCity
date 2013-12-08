@@ -22,6 +22,7 @@ public class Directory {
 	private static List<Place> _places = Collections.synchronizedList(new ArrayList<Place>());
 	private static List<PersonAgent> _personAgents = Collections.synchronizedList(new ArrayList<PersonAgent>());
 	private static ArrayList<Lane> lanes = new ArrayList<Lane>();
+	private static ArrayList<Lane> sidewalks = new ArrayList<Lane>();
 	private static ArrayList<Semaphore> intersections = new ArrayList<Semaphore>();
 	//Bus Fare (initialize in constructor?)
 	private static double _busFare = 2;
@@ -37,6 +38,10 @@ public class Directory {
 		return lanes;
 	}
 	
+	public static ArrayList<Lane> sidewalks(){
+		return sidewalks;
+	}
+	
 	public static ArrayList<Semaphore> intersections(){
 		return intersections;
 	}
@@ -45,6 +50,10 @@ public class Directory {
 		lanes.add(lane);
 	}
 
+	public static void addSidewalk(Lane lane){
+		sidewalks.add(lane);
+	}
+	
 	public static void addIntersections(Semaphore sem){
 		intersections.add(sem);
 	}
