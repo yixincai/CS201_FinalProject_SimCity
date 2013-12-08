@@ -3,6 +3,7 @@ package city;
 import gui.trace.AlertLog;
 import gui.trace.AlertTag;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 // TODO the gui packages are basically only here for the setOccupation() function. We will move the gui instantiation elsewhere, probably to the roles' respective constructors.
@@ -13,6 +14,14 @@ import city.bank.gui.*;
 import city.market.*;
 import city.market.gui.*;
 import city.restaurant.*;
+import city.restaurant.eric.EricCustomerRole;
+import city.restaurant.eric.EricRestaurant;
+import city.restaurant.omar.OmarCustomerRole;
+import city.restaurant.omar.OmarRestaurant;
+import city.restaurant.ryan.RyanCustomerRole;
+import city.restaurant.ryan.RyanRestaurant;
+import city.restaurant.yixin.YixinCustomerRole;
+import city.restaurant.yixin.YixinRestaurant;
 import city.transportation.CommuterRole;
 import agent.*;
 
@@ -421,57 +430,87 @@ public class PersonAgent extends Agent implements Person
 				_currentRole.active = true;
 				return true;
 			}
-			else
+			
+			// We will only get here if we just finished a role which is not _commuterRole.
+			// Choose a new role and call setNextRole on it
+			
+			if(!_actionsToDo.isEmpty())
 			{
-				// note: the program will only get to here if we just finished a role that is not transportation role.
-				// Choose the next role to do.  Set _nextRole to the next role you will do, set _currentRole to _commuterRole
-				
-				if(_occupation != null && workingToday() && timeToBeAtWork())
+				String nextAction = _actionsToDo.remove(0);
+				if(nextAction.contains("Restaurant"))
 				{
-					setNextRole(_occupation);
-					return true;
+					if(nextAction.contains("Eric")) {
+						if(goToRestaurantOfType("Eric")) return true;
+					}
+					if(nextAction.contains("Omar")) {
+						if(goToRestaurantOfType("Omar")) return true;
+					}
+					if(nextAction.contains("Ryan")) {
+						if(goToRestaurantOfType("Ryan")) return true;
+					}
+				//	if(nextAction.contains("Tanner")) {
+				//		if(goToRestaurantOfType("Tanner")) return true;
+				//	}
+					if(nextAction.contains("Yixin")) {
+						if(goToRestaurantOfType("Yixin")) return true;
+					}
 				}
-				else if(_occupation == null)
+				else if(nextAction.contains("Bank"))
+				{
+					//TODO
+				}
+				else if(nextAction.contains("Market"))
+				{
+					// Buy 3 meals from the market
+					if(buyMealsFromMarket(3)) return true;
+				}
+				else if(nextAction.contains("Home"))
 				{
 					setNextRole(_homeOccupantRole);
-					return true;
 				}
-				else if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime()) //could replace with variables for sleepTime and wakeTime
+			}
+			if(_occupation != null && workingToday() && timeToBeAtWork())
+			{
+				setNextRole(_occupation);
+				return true;
+			}
+			else if(_occupation == null)
+			{
+				setNextRole(_homeOccupantRole);
+				return true;
+			}
+			else if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime()) //could replace with variables for sleepTime and wakeTime
+			{
+				_homeOccupantRole.cmdGoToBed();
+				setNextRole(_homeOccupantRole);
+				return true;
+			}
+			else if(_state.nourishment() == NourishmentState.HUNGRY)
+			{
+				if(_state.wealth() == WealthState.RICH)
 				{
-					_homeOccupantRole.cmdGoToBed();
-					setNextRole(_homeOccupantRole);
-					return true;
+					goToAnyRestaurant();
 				}
-				else if(_state.nourishment() == NourishmentState.HUNGRY)
+				else
 				{
-					if(_state.wealth() == WealthState.RICH)
+					Random rand = new Random();
+					if(rand.nextInt(4) == 0)
 					{
-						goToRestaurant();
+						if(goToAnyRestaurant())
+						{
+							return true;
+						}
+					}
+					if(_homeOccupantRole.haveFood())
+					{
+						_homeOccupantRole.cmdCookAndEatFood();
+						setNextRole(_homeOccupantRole);
+						return true;
 					}
 					else
 					{
-						Random rand = new Random();
-						if(rand.nextInt(4) == 0)
-						{
-							if(goToRestaurant())
-							{
-								return true;
-							}
-						}
-						else
-						{
-							if(_homeOccupantRole.haveFood())
-							{
-								_homeOccupantRole.cmdCookAndEatFood();
-								setNextRole(_homeOccupantRole);
-								return true;
-							}
-							else
-							{
-								buyMealsFromMarket(3); // 3 meals
-								return true;
-							}
-						}
+						buyMealsFromMarket(3); // 3 meals
+						return true;
 					}
 				}
 			}
@@ -568,30 +607,104 @@ public class PersonAgent extends Agent implements Person
 		}
 		return false;
 	}
-	private boolean goToRestaurant()
+	private boolean goToAnyRestaurant()
 	{
-		// Search for a YixinCustomerRole in _roles, use that;
-		// if no YixinCustomerRole in _roles, choose a Restaurant from the Directory, and get a new YixinCustomerRole from it
-		for(Role r : _roles)
+		// Search for a RestaurantCustomerRole in _roles, use that;
+		// if no RestaurantCustomerRole in _roles, choose a Restaurant from the Directory, and get a new RestaurantCustomerRole from it
+		RestaurantCustomerRole rcr = (RestaurantCustomerRole)getRoleOfType(RestaurantCustomerRole.class);
+		if(rcr != null)
 		{
-			if(r instanceof RestaurantCustomerRole)
-			{
-				RestaurantCustomerRole restaurantCustomerRole = (RestaurantCustomerRole)r;
-				restaurantCustomerRole.cmdGotHungry();
-				setNextRole(restaurantCustomerRole);
-				return true;
-			}
+			rcr.cmdGotHungry();
+			setNextRole(rcr);
+			return true;
 		}
-		// note: we only get here if no YixinCustomerRole was found in _roles
+		// note: we only get here if no RestaurantCustomerRole was found in _roles
 		List<Restaurant> restaurants = Directory.restaurants();
 		for(Restaurant r : restaurants)
 		{
-			RestaurantCustomerRole ycr = r.generateCustomerRole(this);
-			ycr.cmdGotHungry();
-			setNextRole(ycr);
-			_roles.add(ycr);
+			rcr = r.generateCustomerRole(this);
+			rcr.cmdGotHungry();
+			setNextRole(rcr);
+			_roles.add(rcr);
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * Searches for a RestaurantCustomerRole of the correct type in _roles and then in Directory.restaurants() and calls setNextRole on it
+	 * @param type "Eric", "Omar", etc.
+	 * @return true if a restaurant of the passed-in type was chosen and setNextRole was called
+	 */
+	private boolean goToRestaurantOfType(String type)
+	{
+		RestaurantCustomerRole rcr = null;
+		switch(type)
+		{
+		case "Eric":
+			rcr = (RestaurantCustomerRole)getRoleOfType(EricCustomerRole.class);
+			if(rcr == null)
+			{
+				rcr = getNewCustomerRoleFromRestaurantOfType(EricRestaurant.class);
+				if(rcr != null) _roles.add(rcr);
+			}
+			break;
+		case "Omar":
+			rcr = (RestaurantCustomerRole)getRoleOfType(OmarCustomerRole.class);
+			if(rcr == null)
+			{
+				rcr = getNewCustomerRoleFromRestaurantOfType(OmarRestaurant.class);
+				if(rcr != null) _roles.add(rcr);
+			}
+			break;
+		case "Ryan":
+			rcr = (RestaurantCustomerRole)getRoleOfType(RyanCustomerRole.class);
+			if(rcr == null)
+			{
+				rcr = getNewCustomerRoleFromRestaurantOfType(RyanRestaurant.class);
+				if(rcr != null) _roles.add(rcr);
+			}
+			break;
+		//case "Tanner":
+		//	rcr = (RestaurantCustomerRole)getRoleOfType(TannerCustomerRole.class);
+		//	if(rcr == null)
+		//	{
+		//		rcr = getNewCustomerRoleFromRestaurantOfType(TannerRestaurant.class);
+		//		if(rcr != null) _roles.add(rcr);
+		//	}
+		//	break;
+		case "Yixin":
+			rcr = (RestaurantCustomerRole)getRoleOfType(YixinCustomerRole.class);
+			if(rcr == null)
+			{
+				rcr = getNewCustomerRoleFromRestaurantOfType(YixinRestaurant.class);
+				if(rcr != null) _roles.add(rcr);
+			}
+			break;
+		}
+		if(rcr != null)
+		{
+			rcr.cmdGotHungry();
+			setNextRole(rcr);
+			return true;
+		}
+		
+		return false;
+	}
+	private Role getRoleOfType(Type type)
+	{
+		for(Role r : _roles)
+		{
+			if(r.getClass().equals(type)) return r;
+		}
+		return null;
+	}
+	private RestaurantCustomerRole getNewCustomerRoleFromRestaurantOfType(Type type)
+	{
+		List<Restaurant> restaurants = Directory.restaurants();
+		for(Restaurant r : restaurants)
+		{
+			if(r.getClass().equals(type)) return r.generateCustomerRole(this);
+		}
+		return null;
 	}
 }
