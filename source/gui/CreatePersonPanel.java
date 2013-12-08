@@ -7,6 +7,7 @@ package gui;
  */
 
 import java.awt.Dimension;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
@@ -24,8 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import city.Constants;
+import city.PersonAgent;
 
 public class CreatePersonPanel extends JPanel implements ActionListener, ChangeListener
 {
@@ -66,8 +66,8 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 		moneySlider.setMajorTickSpacing(25);
 		moneySlider.setPaintTicks(true);
 		Hashtable<Integer, JLabel> sliderLabels = new Hashtable<Integer, JLabel>();
-		sliderLabels.put(city.Constants.POOR_LEVEL, new JLabel("Poor"));
-		sliderLabels.put(city.Constants.RICH_LEVEL, new JLabel("Rich"));
+		sliderLabels.put(PersonAgent.POOR_LEVEL, new JLabel("Poor"));
+		sliderLabels.put(PersonAgent.RICH_LEVEL, new JLabel("Rich"));
 		moneySlider.setPaintLabels(true);
 		moneySlider.setLabelTable(sliderLabels);
 		moneySlider.addChangeListener(this);
