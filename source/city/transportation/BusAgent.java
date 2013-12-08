@@ -11,7 +11,6 @@ import java.util.concurrent.Semaphore;
 
 import agent.Agent;
 import city.Directory;
-import city.PersonAgent;
 import city.Place;
 import city.transportation.gui.BusAgentGui;
 import city.transportation.interfaces.Bus;

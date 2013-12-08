@@ -27,6 +27,7 @@ import city.restaurant.yixin.YixinRestaurant;
 import city.transportation.*;
 import city.transportation.gui.BusAgentGui;
 
+@SuppressWarnings("serial")
 public class MainGui extends JFrame 
 {
 	private static int FRAMEX = 1024;
@@ -371,6 +372,31 @@ public class MainGui extends JFrame
 //	    for (int i=44; i<52; i++)
 //	    	for (int j=19; j<25; j++)
 //	    		grid[i][j].tryAcquire();
+		int xdim = 60;
+	    int ydim = 30;
+	    grid = new Semaphore[xdim][ydim];
+	    for (int i=0; i<xdim; i++)
+	    	for (int j=0; j<ydim; j++)
+	    		grid[i][j] = new Semaphore(1,true);
+	    //set access to all buildings to false
+	    for (int i=8; i<16; i++)
+	    	for (int j=5; j<9; j++)
+	    		grid[i][j].tryAcquire();
+	    for (int i=8; i<16; i++)
+	    	for (int j=19; j<25; j++)
+	    		grid[i][j].tryAcquire();
+	    for (int i=24; i<36; i++)
+	    	for (int j=5; j<9; j++)
+	    		grid[i][j].tryAcquire();
+	    for (int i=24; i<36; i++)
+	    	for (int j=19; j<25; j++)
+	    		grid[i][j].tryAcquire();
+	    for (int i=44; i<52; i++)
+	    	for (int j=5; j<9; j++)
+	    		grid[i][j].tryAcquire();
+	    for (int i=44; i<52; i++)
+	    	for (int j=19; j<25; j++)
+	    		grid[i][j].tryAcquire();
 		//The code below will add a tabbed panel to hold all the control panels.  Should take the right third of the window
 		
 		this.add(cPanel, Component.RIGHT_ALIGNMENT);

@@ -8,9 +8,7 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import gui.Gui;
-import gui.astar.AStarNode;
-import gui.astar.AStarTraversal;
-import gui.astar.Position;
+import gui.astar.*;
 import gui.Lane;
 import city.Directory;
 import city.Place;
@@ -21,7 +19,8 @@ public class CommuterGui implements Gui {
 
 	private static final int NULL_POSITION_X = 300;
 	private static final int NULL_POSITION_Y = 300;
-	
+
+
 	int _xPos, _yPos;
 	int _currentBlockX = 0, _currentBlockY = 0;//TODO set the block positions used by cars
 	int _destinationBlockX, _destinationBlockY; 
@@ -29,13 +28,17 @@ public class CommuterGui implements Gui {
 	List<Integer> intersections = new ArrayList<Integer>();
 	Place _destination;
 	int _xDestination, _yDestination;
-	enum Command { none, walk, car}
+	enum Command { none, waitForAnimation}
 	Command _transportationMethod = Command.none;
+	enum PedestrianState { none, waitForAnimation}
+	PedestrianState _showPedestrian = PedestrianState.none;	
 	boolean isPresent = true;
 	private Semaphore _reachedDestination = new Semaphore(0, true);
 	private Semaphore _delayForMoving = new Semaphore(0, true);
 	private Timer _lookUpDelay = new Timer();
 	private int parkingSpot = -1;
+	private int startingSpot = -1;
+	private int landingSpot = 0;	
 	CommuterRole _commuter;
 	AStarTraversal _aStarTraversal;
 
@@ -69,7 +72,7 @@ public class CommuterGui implements Gui {
 		_xPos = _xDestination;
 		_yPos = _yDestination;
 		_commuter = commuter;
-		currentPosition = convertPixelToGridSpace(placeX(initialPlace), placeY(initialPlace));
+		currentPosition = new Position(_xPos, _yPos);
 	}
 
 	public double getManhattanDistanceToDestination(Place destination){
@@ -107,10 +110,202 @@ public class CommuterGui implements Gui {
 	public void walkToLocation(Place destination){
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
+		route.clear();
+		intersections.clear();
 		setPresent(true);
-		_transportationMethod = Command.walk;
-		Position destinationP = convertPixelToGridSpace(placeX(destination), placeY(destination) - 10); // offset by 10
-		guiMoveFromCurrentPositionTo(destinationP);
+		_destinationBlockX = getBlockX(placeX(destination));
+		_destinationBlockY = getBlockY(placeY(destination));
+		if (_destinationBlockX == _currentBlockX && _destinationBlockY == _currentBlockY){
+			return;
+		}
+		route.add(_currentBlockX + 3 * _currentBlockY);
+		if (_currentBlockY == 0){
+			if ( _destinationBlockX > _currentBlockX){ //going right
+				intersections.add(_currentBlockX + _currentBlockY);
+				_currentBlockY++;
+				route.add(_currentBlockX + 3 * _currentBlockY);
+				while (_currentBlockX < _destinationBlockX){
+					intersections.add(_currentBlockX + _currentBlockY);
+					_currentBlockX++;
+					route.add(_currentBlockX + 3 * _currentBlockY);
+				}
+				if (_currentBlockY > _destinationBlockY){
+					intersections.add(_currentBlockX + _currentBlockY);
+					_currentBlockY--;
+					route.add(_currentBlockX + 3 * _currentBlockY);
+				}
+			}
+			else{//going left or down
+				while (_currentBlockX > _destinationBlockX){
+					intersections.add(_currentBlockX + _currentBlockY);
+					_currentBlockX--;
+					route.add(_currentBlockX + 3 * _currentBlockY);
+				}
+				if (_currentBlockY < _destinationBlockY){
+					intersections.add(_currentBlockX + _currentBlockY);
+					_currentBlockY++;
+					route.add(_currentBlockX + 3 * _currentBlockY);
+				}
+			}	
+		}
+		else if (_currentBlockY == 1){
+			if ( _destinationBlockX > _currentBlockX){ //going right
+				while (_currentBlockX < _destinationBlockX){
+					intersections.add(_currentBlockX + _currentBlockY);
+					_currentBlockX++;
+					route.add(_currentBlockX + 3 * _currentBlockY);
+				}
+				if (_currentBlockY > _destinationBlockY){
+					intersections.add(_currentBlockX + _currentBlockY);
+					_currentBlockY--;
+					route.add(_currentBlockX + 3 * _currentBlockY);
+				}
+			}
+			else{//going left or up
+				intersections.add(_currentBlockX + _currentBlockY);
+				_currentBlockY--;
+				route.add(_currentBlockX + 3 * _currentBlockY);
+				while (_currentBlockX > _destinationBlockX){
+					intersections.add(_currentBlockX + _currentBlockY);
+					_currentBlockX--;
+					route.add(_currentBlockX + 3 * _currentBlockY);
+				}
+				if (_currentBlockY < _destinationBlockY){
+					intersections.add(_currentBlockX + _currentBlockY);
+					_currentBlockY++;
+					route.add(_currentBlockX + 3 * _currentBlockY);
+				}
+			}	
+		}
+		//TODO determine landing spot
+		for (int i=0; i< route.size();i++){
+			Lane lane = null; //Directory.sidewalks().get(route.get(i));//TODO THIS ARISES FROM A MERGE CONFLICT 
+			int starting_position = 0;
+			if (i == 0) {
+				if (startingSpot > 0)
+					starting_position = startingSpot;
+			}
+			for (int j=starting_position; j< lane.permits.size();j++){//TODO change size to the ending position and starting position
+				while(!lane.permits.get(j).tryAcquire()){
+					_lookUpDelay.schedule(new TimerTask(){
+						@Override
+						public void run() {
+							_delayForMoving.release();
+						}
+					}, 10);
+
+					try{
+						_delayForMoving.acquire();
+					}
+					catch(InterruptedException e){
+						e.printStackTrace();
+					}
+				}
+				if (lane.isHorizontal){
+					if (lane.xVelocity>0){
+						_xDestination = lane.xOrigin + 10 * lane.xVelocity * j;
+						_yDestination = lane.yOrigin;
+					}
+					else {
+						_xDestination = lane.xOrigin + 10 * lane.permits.size() + 10 * lane.xVelocity * (j+1);
+						_yDestination = lane.yOrigin;
+					}
+				}
+				else {
+					if (lane.yVelocity>0){
+						_yDestination = lane.yOrigin + 10 * lane.yVelocity * j;
+						_xDestination = lane.xOrigin;
+					}
+					else{
+						_yDestination = lane.yOrigin + 10 * lane.permits.size() + 10 * lane.yVelocity * (j+1);
+						_xDestination = lane.xOrigin;
+					}
+				}
+				_transportationMethod = Command.waitForAnimation;
+				waitForLaneToFinish();
+				//free parking spaces
+				if (i != 0 && j == starting_position){
+					Directory.intersections().get(intersections.get(i-1)).release();
+				}
+				//release the former spot
+				if (j!=starting_position)
+					lane.permits.get(j-1).release();
+				//find parking spaces in last lane
+				if (i == route.size() - 1){
+					if (j == landingSpot){
+						//move to the spot, release and record
+						if (lane.isHorizontal){
+							if (lane.xVelocity>0){
+								_yDestination += 10;
+							}
+							else {
+								_yDestination -=  10;
+							}
+						}
+						else {
+							if (lane.yVelocity>0){
+								_xDestination -= 10;
+							}
+							else{
+								_xDestination += 10;
+							}
+						}
+						_transportationMethod = Command.waitForAnimation;
+						waitForLaneToFinish();
+						setPresent(false);
+						lane.permits.get(j).release();
+						startingSpot = j;
+						return;
+					}
+				}
+			}
+
+			if (i<route.size() - 1){
+				Lane next_lane = null; //Directory.sidewalks().get(route.get(i+1));
+				while(!Directory.intersections().get(intersections.get(i)).tryAcquire()){
+					_lookUpDelay.schedule(new TimerTask(){
+						@Override
+						public void run() {
+							_delayForMoving.release();
+						}
+					}, 10);
+
+					try{
+						_delayForMoving.acquire();
+					}
+					catch(InterruptedException e){
+						e.printStackTrace();
+					}
+				};
+				if (next_lane.isHorizontal){
+					if (next_lane.xVelocity>0){
+						_xDestination = next_lane.xOrigin - 10;
+						_yDestination = next_lane.yOrigin;
+					}
+					else {
+						_xDestination = next_lane.xOrigin + 10 * next_lane.permits.size();
+						_yDestination = next_lane.yOrigin;
+					}
+				}
+				else {
+					if (next_lane.yVelocity>0){
+						_yDestination = next_lane.yOrigin - 10;
+						_xDestination = next_lane.xOrigin;
+					}
+					else{
+						_yDestination = next_lane.yOrigin + 10 * next_lane.permits.size();
+						_xDestination = next_lane.xOrigin;
+					}
+				}
+				_transportationMethod = Command.waitForAnimation;
+				waitForLaneToFinish();
+				//TODO to get rid of deadlock acquire both intersection and the first spot in next lane
+				lane.permits.get(lane.permits.size()-1).release();
+			}
+		}
+		//set automatically
+		_currentBlockX = _destinationBlockX;
+		_currentBlockY = _destinationBlockY;	
 	}
 
 	public void driveToLocation(Place destination){
@@ -197,8 +392,7 @@ public class CommuterGui implements Gui {
 				if (parkingSpot > 0)
 					starting_position = parkingSpot;
 			}
-			//TODO debug when I put this down in the loop
-			for (int j=starting_position; j< lane.permits.size();j++){//TODO change size to the ending position and starting position
+			for (int j=starting_position; j< lane.permits.size();j++){//TODO change starting position
 				while(!lane.permits.get(j).tryAcquire()){
 					_lookUpDelay.schedule(new TimerTask(){
 						@Override
@@ -214,7 +408,6 @@ public class CommuterGui implements Gui {
 						e.printStackTrace();
 					}
 				}
-				//TODO change waiting to timer based
 				if (lane.isHorizontal){
 					if (lane.xVelocity>0){
 						_xDestination = lane.xOrigin + 10 * lane.xVelocity * j;
@@ -235,7 +428,7 @@ public class CommuterGui implements Gui {
 						_xDestination = lane.xOrigin;
 					}
 				}
-				_transportationMethod = Command.car;
+				_transportationMethod = Command.waitForAnimation;
 				waitForLaneToFinish();
 				//free parking spaces
 				if (i == 0 && j == starting_position){
@@ -267,7 +460,7 @@ public class CommuterGui implements Gui {
 								_xDestination += 10;
 							}
 						}
-						_transportationMethod = Command.car;
+						_transportationMethod = Command.waitForAnimation;
 						waitForLaneToFinish();
 						lane.permits.get(j).release();
 						parkingSpot = j;
@@ -321,6 +514,7 @@ public class CommuterGui implements Gui {
 				if (next_lane.isHorizontal){
 					if (next_lane.xVelocity>0){
 						_xDestination = next_lane.xOrigin - 10;
+						_yDestination = next_lane.yOrigin;
 					}
 					else {
 						_xDestination = next_lane.xOrigin + 10 * next_lane.permits.size();
@@ -337,7 +531,7 @@ public class CommuterGui implements Gui {
 						_xDestination = next_lane.xOrigin;
 					}
 				}
-				_transportationMethod = Command.car;
+				_transportationMethod = Command.waitForAnimation;
 				waitForLaneToFinish();
 				//TODO to get rid of deadlock acquire both intersection and the first spot in next lane
 				lane.permits.get(lane.permits.size()-1).release();
@@ -346,13 +540,13 @@ public class CommuterGui implements Gui {
 		//TODO if we have parking area do not set present to false but show in parking lot
 		//setPresent(false);
 		//set automatically
-				_currentBlockX = _destinationBlockX;
-				_currentBlockY = _destinationBlockY;		
+		_currentBlockX = _destinationBlockX;
+		_currentBlockY = _destinationBlockY;		
 	}
 
 	//Bus gui
 	public void goToBusStop(BusStopObject busstop){
-		_transportationMethod = Command.walk;
+		//_transportationMethod = Command.walk;
 		Position destinationP = convertPixelToGridSpace(busstop.positionX(), busstop.positionY() - 10);
 		guiMoveFromCurrentPositionTo(destinationP);
 		setPresent(true);
@@ -385,19 +579,17 @@ public class CommuterGui implements Gui {
 	//------------------------------------------Animation---------------------------------------
 	@Override
 	public void updatePosition() {
-		if (currentPosition.getX() < _xDestination)
+		if (_xPos < _xDestination)
 			_xPos++;
-		else if (currentPosition.getX() > _xDestination)
+		else if (_xPos > _xDestination)
 			_xPos--;
 
-		if (currentPosition.getY() < _yDestination)
+		if (_yPos < _yDestination)
 			_yPos++;
 		else if (_yPos > _yDestination)
 			_yPos--; 
 
-
-
-		if (_transportationMethod == Command.car){
+		if (_commuter.hasCar()){
 			if (_xPos < _xDestination)
 				_xPos++;
 			else if (_xPos > _xDestination)
@@ -408,14 +600,11 @@ public class CommuterGui implements Gui {
 			else if (_yPos > _yDestination)
 				_yPos--;
 		}
-		
 
 		if(_xPos == _xDestination &&  _yPos == _yDestination &&
-				(_transportationMethod == Command.car || _transportationMethod == Command.walk)){
+				(_transportationMethod == Command.waitForAnimation)){
 			_transportationMethod = Command.none;
-			//setPresent(false);
 			releaseSemaphore();
-			//_commuter.msgReachedDestination();
 		}
 	}
 
@@ -427,11 +616,11 @@ public class CommuterGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		if(isPresent){
-			if(_commuter.hasCar())
+			if(_commuter.hasCar()){
 				g.setColor(Color.RED);
-			else
+				g.fillRect(_xPos, _yPos, 10, 10);
+			}
 				g.setColor(Color.GREEN);
-			g.fillRect(_xPos, _yPos, 10, 10);
 		}
 	}
 
@@ -537,9 +726,9 @@ public class CommuterGui implements Gui {
 	}
 
 	Position convertPixelToGridSpace(int x, int y){
-		return new Position(x/11, y/12);
+		return new Position((x-41)/10, (y-30)/10);
 	}
-	
+
 	private int getBlockX(int xPos){
 		if (xPos >= 41 + 8 * 10 && xPos < 41 + 16 * 10)
 			return 0;
@@ -557,7 +746,7 @@ public class CommuterGui implements Gui {
 			return 1;
 		return -1;
 	}
-	
+
 	private void waitForLaneToFinish() {
 		try {
 			_reachedDestination.acquire();
