@@ -19,6 +19,10 @@ import agent.*;
 
 public class PersonAgent extends Agent implements Person
 {
+	// Constants:
+	public static final Integer RICH_LEVEL = 250;
+	public static final Integer POOR_LEVEL = 10;
+	
 	// --------------------------------------- DATA -------------------------------------------
 	// Personal data:
 	private String _name;
@@ -49,11 +53,11 @@ public class PersonAgent extends Agent implements Person
 		/** Get the current wealth state, based on money and occupation status. */
 		WealthState wealth()
 		{
-			if(_money < Constants.POOR_LEVEL)
+			if(_money < POOR_LEVEL)
 			{
 				return (_occupation != null) ? WealthState.BROKE : WealthState.POOR;
 			}
-			else if(_money < Constants.RICH_LEVEL)
+			else if(_money < RICH_LEVEL)
 			{
 				return WealthState.NORMAL;
 			}
