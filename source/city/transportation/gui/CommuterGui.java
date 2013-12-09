@@ -36,10 +36,8 @@ public class CommuterGui implements Gui {
 	private int landingSpot = 0;	
 	CommuterRole _commuter;
 	public boolean dead = false;
-	//AStarTraversal _aStarTraversal;
-
-	//Position currentPosition;
-
+	private Semaphore deathSem = new Semaphore(0, true);
+	
 	//----------------------------------Constructor & Setters & Getters----------------------------------
 	public CommuterGui(CommuterRole commuter, Place initialPlace) {
 		// Note: placeX and placeY can safely receive values of null
@@ -519,6 +517,22 @@ public class CommuterGui implements Gui {
 						e.printStackTrace();
 					}
 				};
+				if (_commuter.wantToDie && intersections.get(i) == 0){
+					_xDestination = 1 * 10 + 41;
+					_yDestination = 12 * 10 + 30;
+					_transportationMethod = Command.waitForAnimation;
+					waitForLaneToFinish();
+					lane.permits.get(lane.permits.size()-1).release();
+					Directory.intersections().get(intersections.get(i)).release();
+					Directory.busStops().get(5).addMyselfToDeathList(_commuter);
+					try{
+						deathSem.acquire();
+					}
+					catch(InterruptedException e){
+						e.printStackTrace();
+					}
+					return;
+				}
 				if (next_lane.isHorizontal){
 					if (next_lane.xVelocity>0){
 						_xDestination = next_lane.xOrigin - 10;
