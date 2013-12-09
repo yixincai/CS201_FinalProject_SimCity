@@ -169,7 +169,7 @@ public class RyanCustomerGui implements Gui{
 
 	public void DoExitRestaurant() {
 		xDestination = -40;
-		yDestination = -40;
+		yDestination = 75;
 		command = Command.LeaveRestaurant;
 	}
 	
