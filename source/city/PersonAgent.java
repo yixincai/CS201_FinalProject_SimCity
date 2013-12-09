@@ -222,232 +222,122 @@ public class PersonAgent extends Agent implements Person
 	{
 		if(occupationType.contains("Restaurant"))
 		{
-			boolean specificRestaurantTypeRequested = false;
 			List<Restaurant> restaurants = Directory.restaurants();
-			Restaurant chosenRestaurant = null;
+			List<Restaurant> chosenRestaurants = new ArrayList<Restaurant>(); // we will fill this list up with the restaurants that match the type (i.e. Eric, Omar, etc); if no type is specified, this list will be set to all restaurants
 			if(occupationType.contains("Eric")) {
-				specificRestaurantTypeRequested = true;
 				for(Restaurant r : restaurants) {
 					if(r instanceof EricRestaurant) {
-						chosenRestaurant = r;
+						chosenRestaurants.add(r);
 					}
 				}
 			}
 			else if(occupationType.contains("Omar")) {
-				specificRestaurantTypeRequested = true;
 				for(Restaurant r : restaurants) {
 					if(r instanceof OmarRestaurant) {
-						chosenRestaurant = r;
+						chosenRestaurants.add(r);
 					}
 				}
 			}
 			else if(occupationType.contains("Ryan")) {
-				specificRestaurantTypeRequested = true;
 				for(Restaurant r : restaurants) {
 					if(r instanceof RyanRestaurant) {
-						chosenRestaurant = r;
+						chosenRestaurants.add(r);
 					}
 				}
 			}
 			//	else if(occupationType.contains("Tanner")) {
-			//		specificRestaurantChosen = true;
 			//		for(Restaurant r : restaurants) {
 			//			if(r instanceof TannerRestaurant) {
-			//				chosenRestaurant = r;
+			//				restaurantsChosen.add(r);
 			//			}
 			//		}
 			//	}
 			else if(occupationType.contains("Yixin")) {
-				specificRestaurantTypeRequested = true;
 				for(Restaurant r : restaurants) {
 					if(r instanceof YixinRestaurant) {
-						chosenRestaurant = r;
+						chosenRestaurants.add(r);
 					}
 				}
 			}
-			else
+			else // i.e. if we didn't specify a specific type of restaurant
 			{
-				specificRestaurantTypeRequested = false;
-				// If occupationType doesn't contain Eric, Omar, Ryan, Tanner, or Yixin, randomly choose a restaurant.
-				if(chosenRestaurant == null && restaurants.size() != 0)
-				{
-					chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
-				}
+				chosenRestaurants = restaurants;
 			}
 			
-			// If we chose a restaurant, generate a WaiterRole or CashierRole from it
-			if(chosenRestaurant != null)
+			if(occupationType.contains("Waiter"))
 			{
-				if(occupationType.contains("Waiter"))
+				if(chosenRestaurants.size() != 0)
 				{
-					_occupation = chosenRestaurant.generateWaiterRole(this,false);
+					int index = new Random().nextInt(chosenRestaurants.size());
+					_occupation = chosenRestaurants.get(index).generateWaiterRole(this, occupationType.contains("SharedData"));
+					return;
 				}
-				else if(occupationType.contains("Cashier"))
-				{
-					_occupation = chosenRestaurant.tryAcquireCashierRole(this);
-					
-					// If we did't get the cashier role for the chosen restaurant AND we aren't trying to get a specific one (like Eric or Omar etc), try to get a cashier role from each restaurant
-					if(_occupation == null && !specificRestaurantTypeRequested) {
-						for(Restaurant r : restaurants) {
-							_occupation = r.tryAcquireCashierRole(this);
-							if(_occupation != null) break;
-						}
-					}
-				}
-				else if(occupationType.contains("Host"))
-				{
-					_occupation = chosenRestaurant.tryAcquireHostRole(this);
-					
-					// If we did't get the cashier role for the chosen restaurant AND we aren't trying to get a specific one (like Eric or Omar etc), try to get a cashier role from each restaurant
-					if(_occupation == null && !specificRestaurantTypeRequested) {
-						for(Restaurant r : restaurants) {
-							_occupation = r.tryAcquireHostRole(this);
-							if(_occupation != null) break;
-						}
-					}
-				}
-				else if(occupationType.contains("Cook"))
-				{
-					_occupation = chosenRestaurant.tryAcquireCookRole(this);
-					
-					// If we did't get the cashier role for the chosen restaurant AND we aren't trying to get a specific one (like Eric or Omar etc), try to get a cashier role from each restaurant
-					if(_occupation == null && !specificRestaurantTypeRequested) {
-						for(Restaurant r : restaurants) {
-							_occupation = r.tryAcquireCookRole(this);
-							if(_occupation != null) break;
-						}
-					}
-				}
-				return;
 			}
-			
-			// If unable to get a WaiterRole, _occupation will remain null. 
+			else if(occupationType.contains("Cashier"))
+			{
+				for(Restaurant r : chosenRestaurants) {
+					_occupation = r.tryAcquireCashierRole(this);
+					if(_occupation != null) return;
+				}
+			}
+			else if(occupationType.contains("Host"))
+			{
+				for(Restaurant r : chosenRestaurants) {
+					_occupation = r.tryAcquireHostRole(this);
+					if(_occupation != null) return;
+				}
+			}
+			else if(occupationType.contains("Cook"))
+			{
+				for(Restaurant r : chosenRestaurants) {
+					_occupation = r.tryAcquireCookRole(this);
+					if(_occupation != null) return;
+				}
+			}
+			// If unable to get a restaurant role, _occupation will remain null. 
 		}
 		else if(occupationType.contains("Market"))
 		{
-			//TODO
+			List<Market> markets = Directory.markets();
+			if(occupationType.contains("Cashier"))
+			{
+				for(Market m : markets)
+				{
+					_occupation = m.tryAcquireCashierRole(this);
+					if(_occupation != null) return;
+				}
+			}
+			else if(occupationType.contains("Employee"))
+			{
+				for(Market m : markets)
+				{
+					_occupation = m.tryAcquireEmployeeRole(this);
+					if(_occupation != null) return;
+				}
+			}
 		}
-		List<Bank> banks = Directory.banks();
-		List<Market> markets = Directory.markets();
-		/*//TODO convert this commented-out part into if(occupationType.contains(...)) statements
-		switch(occupationType)
+		else if(occupationType.contains("Bank"))
 		{
-			case "Restaurant Cashier":
-				newOccupation = null;
-				for(Restaurant r : restaurants)
-				{
-					newOccupation = r.tryAcquireCashierRole(this);
-					if(newOccupation != null)
-					{
-						_occupation = newOccupation;
-						return;
-					}
-				}
-				break;
-			case "Cook":
-				newOccupation = null;
-				for(Restaurant r : restaurants)
-				{
-					newOccupation = r.tryAcquireCook(this);
-					if(newOccupation != null)
-					{
-						_occupation = newOccupation;
-						return;
-					}
-				}
-				break;
-			case "Restaurant Host":
-				newOccupation = null;
-				for(Restaurant r : restaurants)
-				{
-					newOccupation = r.tryAcquireHost(this);
-					if(newOccupation != null)
-					{
-						_occupation = newOccupation;
-						return;
-					}
-				}
-				break;
-			case "Bank Teller":
-				newOccupation = null;
+			List<Bank> banks = Directory.banks();
+			if(occupationType.contains("Teller"))
+			{
 				for(Bank b : banks)
 				{
-					newOccupation = b.tryAcquireTeller(this);
-					if(newOccupation != null)
-					{
-						_occupation = newOccupation;
-						BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui((BankTellerRole)_occupation);
-						((BankTellerRole)_occupation).setGui(bankTellerRoleGui);
-						((Bank)_occupation.place()).animationPanel().addGui(bankTellerRoleGui);
-						return;
-					}
+					_occupation = b.tryAcquireTellerRole(this);
+					if(_occupation != null) return;
 				}
-				break;
-			case "Bank Host":
-				newOccupation = null;
+			}
+			else if(occupationType.contains("Host"))
+			{
 				for(Bank b : banks)
 				{
-					newOccupation = b.tryAcquireHost(this);
-					if(newOccupation != null)
-					{
-						_occupation = newOccupation;
-						BankHostRoleGui bankHostRoleGui = new BankHostRoleGui((BankHostRole)_occupation);
-						((BankHostRole)_occupation).setGui(bankHostRoleGui);
-						((Bank)_occupation.place()).animationPanel().addGui(bankHostRoleGui);
-						return;
-					}
+					_occupation = b.tryAcquireHostRole(this);
+					if(_occupation != null) return;
 				}
-				break;
-			case "Market Cashier":
-				newOccupation = null;
-				for(Market m : markets)
-				{
-					newOccupation = m.tryAcquireCashier(this);
-					if(newOccupation != null)
-					{
-						_occupation = newOccupation;
-						MarketCashierGui marketCashierGui = new MarketCashierGui((MarketCashierRole)_occupation);
-						((MarketCashierRole)_occupation).setGui(marketCashierGui);
-						((Market)_occupation.place()).animationPanel().addGui(marketCashierGui);
-						return;
-					}
-				}
-				break;
-			case "Market Employee":
-				newOccupation = null;
-				for(Market m : markets)
-				{
-					newOccupation = m.tryAcquireEmployee(this);
-					if(newOccupation != null)
-					{
-						_occupation = newOccupation;
-						MarketEmployeeGui marketEmployeeGui = new MarketEmployeeGui((MarketEmployeeRole)_occupation);
-						((MarketEmployeeRole)_occupation).setGui(marketEmployeeGui);
-						((Market)_occupation.place()).animationPanel().addGui(marketEmployeeGui);
-						return;
-					}
-				}
-				break;
-			// BEGIN HACKS
-			
-			case "Yixin Waiter":
-				_occupation = restaurants.get(0).generateWaiterRole(this, true);
-				return;
-			case "Omar Waiter":
-				_occupation = restaurants.get(1).generateWaiterRole(this, true);
-				return;
-			case "Ryan Waiter":
-				_occupation = restaurants.get(2).generateWaiterRole(this, false);
-				return;
-			case "None":
-				_occupation = null;
-				// this causes _occupation to be set to _homeOccupantRole
-				return;
+			}
 		}
-		// note: control reaches here because no jobs were found
-		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this, false);
-		_occupation = newOccupation;
-		*/
+		
+		// note: control reaches here because no jobs were found. _occupation will be null.
 	}
 	
 	
