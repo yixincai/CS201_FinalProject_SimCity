@@ -22,6 +22,7 @@ public class ImageAtlas {
 		mapAtlas.put("EricRestaurant", ImageIO.read(new File("wvimage/EricRestaurant.png")));
 		mapAtlas.put("House", ImageIO.read(new File("wvimage/House1.png")));
 		mapAtlas.put("Apartment", ImageIO.read(new File("wvimage/Apartment1.png")));
+		mapAtlas.put("Bus Stop", ImageIO.read(new File("wvimage/BusStop.png")));
 	/*	mapAtlas.put(key, value);
 		mapAtlas.put(key, value);
 		mapAtlas.put(key, value);
