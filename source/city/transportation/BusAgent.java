@@ -154,11 +154,16 @@ public class BusAgent extends Agent implements Bus{
 		AlertLog.getInstance().logMessage(AlertTag.BUS, this.name() ,"Picking up from " + currentDestination.name());
 		currentBusStopList = currentDestination.getList();
 		bState = BusState.pickingup;
-    	for(Commuter comm: currentBusStopList){
+		setExpectedPeople(getExpectedPeople() + currentBusStopList.size());
+		ArrayList<Commuter> waitingList = new ArrayList<Commuter>();
+		for(Commuter comm: currentBusStopList){
+	    	waitingList.add(comm);
+        }
+		//doing this because currentBusStopList is modified at the same time
+		for(Commuter comm: waitingList){
     		if(getExpectedPeople() < capacity){
     			AlertLog.getInstance().logMessage(AlertTag.BUS, this.name() ,"Picked up");
-	    		comm.msgGetOnBus(_fare, this);
-	            setExpectedPeople(getExpectedPeople() + 1);
+    			comm.msgGetOnBus(_fare, this);
     		}
         }
     	AlertLog.getInstance().logMessage(AlertTag.BUS, this.name() ,"Finished Picking up " + getExpectedPeople() + " passengers");

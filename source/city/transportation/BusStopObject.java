@@ -16,12 +16,12 @@ public class BusStopObject extends Place {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void addCommuterRole(Commuter person){
+	public synchronized void addCommuterRole(Commuter person){
 		System.out.println("Added person to waitlist");
 		_waitList.add(person);
 	}
 	
-	public void removeCommuterRole(Commuter person){
+	public synchronized void removeCommuterRole(Commuter person){
 		_waitList.remove(person);
 	}
 	
