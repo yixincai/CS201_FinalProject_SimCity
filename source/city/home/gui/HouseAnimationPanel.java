@@ -85,6 +85,35 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     int xCGap = 12;
     int yCGap = 14;
     
+    ImageIcon f = new ImageIcon(this.getClass().getResource("/image/home/TV.png"));
+    Dimension TVPlace = new Dimension(225, 20);
+    Image TV = f.getImage();
+    int xTVGap = 56;
+    int yTVGap = 58;
+    
+    ImageIcon g = new ImageIcon(this.getClass().getResource("/image/home/DisplayCabinet.png"));
+    Dimension DCPlace = new Dimension(100, 40);
+    Image dcabinet = g.getImage();
+    int xDGap = 72;
+    int yDGap = 42;
+    
+    ImageIcon h = new ImageIcon(this.getClass().getResource("/image/home/FloorMat.png"));
+    Image mat = h.getImage();
+    int xMGap = 52;
+    int yMGap = 32;
+//    
+//    ImageIcon e = new ImageIcon(this.getClass().getResource("/image/home/HomeChair.png"));
+//    Image chair = e.getImage();
+//    int xCGap = 12;
+//    int yCGap = 14;
+//    
+//    ImageIcon e = new ImageIcon(this.getClass().getResource("/image/home/HomeChair.png"));
+//    Image chair = e.getImage();
+//    int xCGap = 12;
+//    int yCGap = 14;
+    
+    
+    
     ImageIcon x = new ImageIcon(this.getClass().getResource("/image/home/HomeFloor.png"));
     Image floor = x.getImage();
     int xFlGap = WINDOWX;
@@ -144,8 +173,11 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 		
 		g2.drawImage(chair, CHAIRX, CHAIRY, xCGap, yCGap, this);
 		
-		g2.setColor(Color.black);
-		g2.fillRect(TVX, TVY, TVDIM, TVDIM);
+		g2.drawImage(TV, TVPlace.width, TVPlace.height, xTVGap, yTVGap, this);
+		
+		g2.drawImage(dcabinet, DCPlace.width, DCPlace.height, xDGap, yDGap, this);
+		
+		g2.drawImage(mat, FRONTDOORX, FRONTDOORY-40, xMGap, yMGap, this);
 
 		for(Gui gui : _guis) {
 			gui.draw(g2);
