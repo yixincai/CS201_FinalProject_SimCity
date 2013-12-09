@@ -373,6 +373,9 @@ public class PersonAgent extends Agent implements Person
 	public void setWorkDays(boolean weekday_notWeekend) {
 		_weekday_notWeekend = weekday_notWeekend;
 	}
+	public Role currentRole() { return _currentRole; }
+	public String occupationTypeToString() { return (_occupation != null) ? _occupation.typeToString() : "None"; }
+	public String nextRoleTypeToString() { return (_nextRole != null && _nextRole != _currentRole) ? _nextRole.typeToString() : "None"; }
 	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
 	public CommuterRole commuterRole() { return _commuterRole; }
 	// Actions to do:
@@ -771,6 +774,7 @@ public class PersonAgent extends Agent implements Person
 	}
 	private void setNextRole(Role nextRole)
 	{
+		//TODO call actionPerformed on the CurrentPersonPanel to notify of the change.
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
 		_currentRole = _commuterRole;
