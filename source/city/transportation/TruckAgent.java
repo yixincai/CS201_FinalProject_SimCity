@@ -20,7 +20,7 @@ public class TruckAgent extends Agent implements Truck{
 	Market _market;
 	TruckAgentGui _gui;
 	Boolean out = false;
-	
+	private Timer _loadingDelay = new Timer();
 	public enum truckState{parkingLot, docking, drivingtoRestaurant, atRestaurant, drivingtoMarket};
 	public truckState trState = truckState.parkingLot;
 	
@@ -151,6 +151,18 @@ public class TruckAgent extends Agent implements Truck{
 		print("Delivered to restaurant " + aPackage._restaurant.name());
 		//trState = truckState.atRestaurant;
 		packages.remove(aPackage);
+		_loadingDelay.schedule(new TimerTask(){
+			@Override
+			public void run() {
+				isMoving.release();
+			}
+		}, 5000);
+		try{
+			isMoving.acquire();
+		}
+		catch(InterruptedException e){
+			e.printStackTrace();
+		}
 	}
 
 	public void GoBackToMarket(){

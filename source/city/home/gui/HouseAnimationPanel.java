@@ -21,16 +21,22 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	
 	// Note: I changed these to public so that they can be accessed by HouseOccupantGui and ApartmentOccupantGui --Eric
 	
-	public static final int STOVEX = 290;
-	public static final int STOVEY = 100;
+	public static final int STOVEX = 500;
+	public static final int STOVEY = 20;
 	public static final int STOVEDIM = 20;
 	
-	public static final int FRIDGEX = 320;
-	public static final int FRIDGEY = 92;
+	public static final int FRIDGEX = 530;
+	public static final int FRIDGEY = 12;
 	public static final int FRIDGEDIM = 20;
 	
-	public static final int BEDX = 600;
-	public static final int BEDY = 250;
+	public static final int TABLEX = 600;
+	public static final int TABLEY = 80;
+	
+	public static final int CHAIRX = 580;
+	public static final int CHAIRY = 87;
+	
+	public static final int BEDX = 570;
+	public static final int BEDY = 210;
 	public static final int BEDWIDTH = 30;
 	public static final int BEDHEIGHT = 30;
 	
@@ -42,7 +48,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	public static final int BEDWALLX2 = 400;
 	public static final int BEDWALLY2 = 200;
 	
-	public static final int TVX = 400;
+	public static final int TVX = 250;
 	public static final int TVY = 170;
 	public static final int TVDIM = 10;
 
@@ -55,7 +61,6 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	private List<Gui> _guis = new ArrayList<Gui>();
 	
 	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Fridge.png"));
-    Dimension FridgePlace = new Dimension(600, 80);
     Image fridge = a.getImage();
     int xFGap = 25;
     int yFGap = 48;
@@ -70,10 +75,32 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     int xBGap = 33;
     int yBGap = 72;
     
-    ImageIcon d = new ImageIcon(this.getClass().getResource("/image/home/HomeFloor.png"));
-    Image floor = d.getImage();
+    ImageIcon d = new ImageIcon(this.getClass().getResource("/image/home/HomeTable.png"));
+    Image table = d.getImage();
+    int xTGap = 44;
+    int yTGap = 31;
+    
+    ImageIcon e = new ImageIcon(this.getClass().getResource("/image/home/HomeChair.png"));
+    Image chair = e.getImage();
+    int xCGap = 12;
+    int yCGap = 14;
+    
+    ImageIcon x = new ImageIcon(this.getClass().getResource("/image/home/HomeFloor.png"));
+    Image floor = x.getImage();
     int xFlGap = WINDOWX;
     int yFlGap = WINDOWY;
+    
+    ImageIcon y = new ImageIcon(this.getClass().getResource("/image/home/KitchenFloor1.png"));
+    Dimension kitchenPlace = new Dimension(400, 0);
+    Image kfloor = y.getImage();
+    int xKFlGap = 300;
+    int yKFlGap = 180;
+    
+    ImageIcon z = new ImageIcon(this.getClass().getResource("/image/home/BedroomFloor.png"));
+    Dimension bedroomPlace = new Dimension(400, 180);
+    Image bfloor = z.getImage();
+    int xBFlGap = 300;
+    int yBFlGap = 160;
     
     
 	
@@ -102,22 +129,23 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 		g2.setColor(getBackground());
 		g2.fillRect(0, 0, WINDOWX, WINDOWY );
 		g2.drawImage(floor, 0, 0, xFlGap, yFlGap, this);
+		g2.drawImage(kfloor, kitchenPlace.width, kitchenPlace.height, xKFlGap, yKFlGap, this);
+		g2.drawImage(bfloor, bedroomPlace.width, bedroomPlace.height, xBFlGap, yBFlGap, this);
 
 		//Here is the table
 
 		g2.drawImage(bed, BEDX, BEDY, xBGap, yBGap, this);
 		
-		g2.setColor(Color.ORANGE);
-		g2.fillRect(TVX, TVY, TVDIM, TVDIM);
-		
 		g2.drawImage(grill, STOVEX, STOVEY, xGGap, yGGap, this);
 		
 		g2.drawImage(fridge, FRIDGEX, FRIDGEY, xFGap, yFGap, this);
 		
-		g2.setColor(Color.BLACK);
-		g2.fillRect(BEDWALLX, BEDWALLY, BEDWALLWIDTH, BEDWALLHEIGHT);
-		g2.fillRect(BEDWALLX2, BEDWALLY2, BEDWALLWIDTH, BEDWALLHEIGHT);
+		g2.drawImage(table, TABLEX, TABLEY, xTGap, yTGap, this);
 		
+		g2.drawImage(chair, CHAIRX, CHAIRY, xCGap, yCGap, this);
+		
+		g2.setColor(Color.black);
+		g2.fillRect(TVX, TVY, TVDIM, TVDIM);
 
 		for(Gui gui : _guis) {
 			gui.draw(g2);

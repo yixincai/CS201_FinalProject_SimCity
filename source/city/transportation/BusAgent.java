@@ -1,12 +1,15 @@
 package city.transportation;
 
 import java.awt.Dimension;
+
 import gui.trace.AlertLog;
 import gui.trace.AlertTag;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import agent.Agent;
@@ -27,14 +30,14 @@ public class BusAgent extends Agent implements Bus{
 	List<BusStopObject> _busStops = new ArrayList<BusStopObject>();
 	
 	
-	BusStopObject currentDestination;
+	public BusStopObject currentDestination;
 	int _busStopNum;
 	public List<Commuter> currentBusStopList = new ArrayList<Commuter>();
 	Semaphore busSem = new Semaphore(0, true);
 	
 	static double _fare;
 	double _register;
-
+	private Timer _deathDelay = new Timer();
 	static int capacity = 20;
 	private int numPeople = 0;
 	private int expectedPeople = 0;
@@ -171,6 +174,18 @@ public class BusAgent extends Agent implements Bus{
 	}
 
 	public void Leave(){
+		//TODO change this to be better
+		for (int i = 0; i < currentDestination.getSuicideList().size(); i++){
+			final int j = i;
+			_deathDelay.schedule(new TimerTask(){
+				@Override
+				public void run() {
+					currentDestination.getSuicideList().get(j).msgYouAreAllowedToDie();
+					if (j == currentDestination.getSuicideList().size() - 1)
+						currentDestination.getSuicideList().clear();
+				}
+			}, 120 * i);
+		}
 	    bState = BusState.moving;
 	    _busStopNum++;
 		

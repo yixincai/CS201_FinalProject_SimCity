@@ -35,6 +35,7 @@ public class CommuterGui implements Gui {
 	private int startingSpot = -1;
 	private int landingSpot = 0;	
 	CommuterRole _commuter;
+	public boolean dead = false;
 	//AStarTraversal _aStarTraversal;
 
 	//Position currentPosition;
@@ -666,12 +667,56 @@ public class CommuterGui implements Gui {
 					_transportationMethod = Command.waitForAnimation;
 					waitForLaneToFinish();
 					lane.permits.get(j).release();
-					//TODO maybe change this
-					setPresent(false);
+					if (!_commuter.wantToDie)
+						setPresent(false);
 					return;
 				}
 			}
 		}
+	}
+
+	public void goDie(){
+		setPresent(true);
+		if (_currentBlockX == 0 && _currentBlockY == 0){
+			_yDestination -= 10;
+			_transportationMethod = Command.waitForAnimation;
+			waitForLaneToFinish();
+			_xDestination += _commuter.deadListNumber * 10;
+		}
+		else if (_currentBlockX == 1 && _currentBlockY == 0){
+			_yDestination -= 10;
+			_xDestination += 10;
+			_transportationMethod = Command.waitForAnimation;
+			waitForLaneToFinish();
+			_xDestination += _commuter.deadListNumber * 10;
+		}
+		else if (_currentBlockX == 2 && _currentBlockY == 0){
+			_xDestination += 10;
+			_transportationMethod = Command.waitForAnimation;
+			waitForLaneToFinish();
+			_yDestination += _commuter.deadListNumber * 10;
+		}
+		if (_currentBlockX == 0 && _currentBlockY == 1){
+			_xDestination -= 10;
+			_transportationMethod = Command.waitForAnimation;
+			waitForLaneToFinish();
+			_yDestination -= _commuter.deadListNumber * 10;
+		}
+		else if (_currentBlockX == 1 && _currentBlockY == 1){
+			_xDestination -= 20;
+			_yDestination += 10;
+			_transportationMethod = Command.waitForAnimation;
+			waitForLaneToFinish();
+			_xDestination -= _commuter.deadListNumber * 10;
+		}
+		else if (_currentBlockX == 2 && _currentBlockY == 1){
+			_yDestination += 10;
+			_transportationMethod = Command.waitForAnimation;
+			waitForLaneToFinish();
+			_xDestination -= _commuter.deadListNumber * 10;
+		}
+		_transportationMethod = Command.waitForAnimation;
+		waitForLaneToFinish();
 	}
 
 	public void getOnBus(){
@@ -885,8 +930,13 @@ public class CommuterGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		if(isPresent){
+			if (dead){
+				g.setColor(Color.red);
+				g.fillRect(_xPos, _yPos, 10, 10);
+				return;
+			}
 			if(_commuter.hasCar()){
-				g.setColor(Color.RED);
+				g.setColor(Color.ORANGE);
 				g.fillRect(_xPos, _yPos, 10, 10);
 			}
 			else{
