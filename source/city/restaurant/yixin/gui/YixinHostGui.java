@@ -12,9 +12,9 @@ public class YixinHostGui extends JPanel implements Gui {
 
 	private YixinHostRole agent = null;
 
-	private int xPos = 120, yPos = 20;//default waiter position
-	public static int xGap = 40;
-	public static int yGap = 40;
+	private int xPos = 120, yPos = 0;//default waiter position
+	public static int xGap = 20;
+	public static int yGap = 20;
 
 	//private ImageIcon i = new ImageIcon(this.getClass().getResource("image/host.png"));
 	//private Image image = i.getImage();

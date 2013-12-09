@@ -19,8 +19,8 @@ public class YixinCustomerGui extends JPanel implements Gui{
 	private Command command=Command.noCommand;
 	private int count = 0;
 
-	public static final int xTable1 = 450, xTable2 = 300, xTable3 = 150;
-	public static final int yTable = 150;
+	public static final int TableX = 500;
+	public static final int TableY1 = 60, TableY2 = 130, TableY3 = 200;
 	private final int GAPX = 30;
 	private final int GAPY = 30;
 	private final int OriginX = -60;
@@ -95,16 +95,16 @@ public class YixinCustomerGui extends JPanel implements Gui{
 
 	public void DoGoToSeat(int seatnumber) {//later you will map seatnumber to table coordinates.
 		if (seatnumber == 1){
-			xDestination = xTable1;
-			yDestination = yTable;
+			xDestination = TableX;
+			yDestination = TableY1;
 		}
 		else if(seatnumber == 2){
-			xDestination = xTable2;
-			yDestination = yTable;
+			xDestination = TableX;
+			yDestination = TableY2;
 		}
 		else if (seatnumber == 3){
-			xDestination = xTable3;
-			yDestination = yTable;
+			xDestination = TableX;
+			yDestination = TableY3;
 		}
 		command = Command.GoToSeat;
 		show_choice = false;
@@ -114,7 +114,7 @@ public class YixinCustomerGui extends JPanel implements Gui{
 		show_choice = false;
 		choice = "";
 		xDestination = 300;
-		yDestination = 70;
+		yDestination = 0 + GAPY;
 		command = Command.GoToCashier;
 	}
 
