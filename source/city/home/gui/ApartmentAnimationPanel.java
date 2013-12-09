@@ -192,9 +192,9 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
         
         //Items
         g2.drawImage(game, FRIDGEX, FRIDGEY, xFGap, yFGap, this);
-        g2.drawImage(fridge, FRIDGEX2, FRIDGEY2, xFGap, yFGap, this);
+        //g2.drawImage(fridge, FRIDGEX2, FRIDGEY2, xFGap, yFGap, this);
         g2.drawImage(game, FRIDGEX3, FRIDGEY3, xFGap, yFGap, this);
-        g2.drawImage(fridge, FRIDGEX4, FRIDGEY4, xFGap, yFGap, this);
+        //g2.drawImage(fridge, FRIDGEX4, FRIDGEY4, xFGap, yFGap, this);
         
         //walls
         g2.setColor(Color.BLUE);
