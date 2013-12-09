@@ -384,8 +384,6 @@ public class PersonAgent extends Agent implements Person
 	// =========================================================================================================================
 	@Override
 	protected boolean pickAndExecuteAnAction() {
-		// here, check for and do emergencies/important actions
-		
 		if(_currentRole.active)
 		{
 			// Finish current role because you have to get to work:
@@ -521,18 +519,18 @@ public class PersonAgent extends Agent implements Person
 				setNextRole(_occupation);
 				return true;
 			}
-			else if(_occupation == null)
+			if(_occupation == null)
 			{
 				setNextRole(_homeOccupantRole);
 				return true;
 			}
-			else if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime()) //could replace with variables for sleepTime and wakeTime
+			if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime()) //could replace with variables for sleepTime and wakeTime
 			{
 				_homeOccupantRole.cmdGoToBed();
 				setNextRole(_homeOccupantRole);
 				return true;
 			}
-			else if(_state.nourishment() == NourishmentState.HUNGRY)
+			if(_state.nourishment() == NourishmentState.HUNGRY)
 			{
 				if(_state.wealth() == WealthState.RICH)
 				{
@@ -551,7 +549,12 @@ public class PersonAgent extends Agent implements Person
 					if(actEatAtHome()) return true;
 				}
 			}
+			_homeOccupantRole.cmdWatchTv();
+			setNextRole(_homeOccupantRole);
+			return true;
 		}
+		
+		// note: The thread will get to this point if a role is active and its scheduler returned false. If the current role is inactive, 
 		
 		//check for and do non-important actions, like check your phone
 		
