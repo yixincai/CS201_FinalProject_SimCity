@@ -51,9 +51,24 @@ public class ControlPanel extends JTabbedPane {
 
 	public void addPerson(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) //TODO finish with new person instantiation stuff
 	{
+		PersonAgent newPerson;
+		if(!occupationType.contains("Restaurant")){
+			newPerson = new PersonAgent(name, money, occupationType, weekday_notWeekend, housingType);
+		} else{
+			newPerson = new PersonAgent(name,money,"None",weekday_notWeekend,housingType);
+			if(occupationType.contains("Omar")){
+				newPerson.addActionToDo("OmarRestaurant");
+			} if(occupationType.contains("Yixin")){
+				newPerson.addActionToDo("YixinRestaurant");
+			} if(occupationType.contains("Eric")){
+				newPerson.addActionToDo("EricRestaurant");
+			} if(occupationType.contains("Ryan")){
+				newPerson.addActionToDo("RyanRestaurant");
+			}/* if(occupationType.contains("Bank")){
+				newPerson.addActionToDo("Bank Customer");
+			}  */
+		}
 		currentPersonPanel.addPerson(name);
-		AStarTraversal aStarTraversal = new AStarTraversal(mainGui.grid);
-		PersonAgent newPerson = new PersonAgent(name, money, occupationType, weekday_notWeekend, housingType);
 		Directory.addPerson(newPerson);
 		mainGui.getWorldView().addGui(newPerson.commuterRole().gui());
 		this.setSelectedComponent(currentPersonPanel);

@@ -65,19 +65,19 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		infoPanel.add(moneyField); 
 		infoPanel.add(currentRoleField); 
 		
-		 action = new JCheckBox("Go To Omar Restaurant");
+		 action = new JCheckBox("Go To OmarRestaurant");
 		 action.setMinimumSize(buttonDimension);
 		 action.setMaximumSize(buttonDimension);
          
-		 action2 = new JCheckBox("Go To Yixin Restaurant");
+		 action2 = new JCheckBox("Go To YixinRestaurant");
 		 action2.setMinimumSize(buttonDimension);
 		 action2.setMaximumSize(buttonDimension);
          
-		 action3 = new JCheckBox("Go To Eric Restaurant");
+		 action3 = new JCheckBox("Go To EricRestaurant");
 		 action3.setMinimumSize(buttonDimension);
 		 action3.setMaximumSize(buttonDimension);
          
-		 action4 = new JCheckBox("Go To Ryan Restaurant");
+		 action4 = new JCheckBox("Go To RyanRestaurant");
 		 action4.setMinimumSize(buttonDimension);
 		 action4.setMaximumSize(buttonDimension);
          
