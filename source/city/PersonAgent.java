@@ -45,39 +45,63 @@ public class PersonAgent extends Agent implements Person
 	private List<String> _actionsToDo = new ArrayList<String>();
 	
 	// State data:
-	public double _money;
+	public double _money; //TODO change to private and change appropriate other values
 	enum WealthState { RICH, NORMAL, BROKE, POOR } // the word "deadbeat" courtesy of Wilczynski lol
 	boolean _deadbeat = false; // if true, means this person doesn't pay loans
-	enum NourishmentState { HUNGRY, FULL }
+	enum NourishmentState { HUNGRY, NORMAL, FULL }
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
 	class State
 	{
-		NourishmentState nourishment = NourishmentState.FULL; //TODO implement value for hunger
-		double nourishmentLevel;
-		NourishmentState nourishment() { return nourishment; }
+		// Constructor
+		public State() {
+			nourishmentTimer.schedule(new TimerTask() { public void run() { hourlyHungerChange(); }}, Time.getRealTime(1));
+		}
 		
+		// Nourishment/hunger
+		double nourishmentLevel = 5;
+		Timer nourishmentTimer = new Timer();
+		NourishmentState nourishment() {
+			if(nourishmentLevel < 2) {
+				return NourishmentState.HUNGRY;
+			}
+			else if(nourishmentLevel < 6) {
+				return NourishmentState.NORMAL;
+			}
+			else {
+				return NourishmentState.FULL;
+			}
+		}
+		private void hourlyHungerChange() {
+			double hourlyNourishmentDecrease = 0.5;
+			if(nourishmentLevel >= hourlyNourishmentDecrease) {
+				nourishmentLevel -= hourlyNourishmentDecrease;
+			}
+			else {
+				nourishmentLevel = 0;
+			}
+			nourishmentTimer.schedule(new TimerTask() { public void run() { hourlyHungerChange(); }}, Time.getRealTime(1));
+		}
+		
+		// Wealth
 		/** Get the current wealth state, based on money and occupation status. */
 		WealthState wealth()
 		{
-			if(_money < POOR_LEVEL)
-			{
+			if(_money < POOR_LEVEL) {
 				return (_occupation != null) ? WealthState.BROKE : WealthState.POOR;
 			}
-			else if(_money < RICH_LEVEL)
-			{
+			else if(_money < RICH_LEVEL) {
 				return WealthState.NORMAL;
 			}
-			else
-			{
+			else {
 				return WealthState.RICH;
 			}
 		}
 		
+		// Time
 		double time()
 		{
 			return Time.currentTime();
 		}
-		
 		Time.Day today()
 		{
 			return Time.today();
@@ -384,8 +408,6 @@ public class PersonAgent extends Agent implements Person
 	// =========================================================================================================================
 	@Override
 	protected boolean pickAndExecuteAnAction() {
-		// here, check for and do emergencies/important actions
-		
 		if(_currentRole.active)
 		{
 			// Finish current role because you have to get to work:
@@ -521,18 +543,18 @@ public class PersonAgent extends Agent implements Person
 				setNextRole(_occupation);
 				return true;
 			}
-			else if(_occupation == null)
+			if(_occupation == null)
 			{
 				setNextRole(_homeOccupantRole);
 				return true;
 			}
-			else if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime()) //could replace with variables for sleepTime and wakeTime
+			if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime()) //could replace with variables for sleepTime and wakeTime
 			{
 				_homeOccupantRole.cmdGoToBed();
 				setNextRole(_homeOccupantRole);
 				return true;
 			}
-			else if(_state.nourishment() == NourishmentState.HUNGRY)
+			if(_state.nourishment() == NourishmentState.HUNGRY)
 			{
 				if(_state.wealth() == WealthState.RICH)
 				{
@@ -551,7 +573,12 @@ public class PersonAgent extends Agent implements Person
 					if(actEatAtHome()) return true;
 				}
 			}
+			_homeOccupantRole.cmdWatchTv();
+			setNextRole(_homeOccupantRole);
+			return true;
 		}
+		
+		// note: The thread will get to this point if a role is active and its scheduler returned false. If the current role is inactive, 
 		
 		//check for and do non-important actions, like check your phone
 		
@@ -620,10 +647,9 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	// ----------------- Restaurant -----------------
+	/** If a RestaurantCustomerRole exists in _roles, set that to the next role.  Else, get a new customer role from a randomly chosen restaurant */
 	private boolean actGoToAnyRestaurant()
 	{
-		// Search for a RestaurantCustomerRole in _roles, use that;
-		// if no RestaurantCustomerRole in _roles, choose a Restaurant from the Directory, and get a new RestaurantCustomerRole from it
 		RestaurantCustomerRole rcr = (RestaurantCustomerRole)getRoleOfType(RestaurantCustomerRole.class);
 		if(rcr != null)
 		{
@@ -631,21 +657,23 @@ public class PersonAgent extends Agent implements Person
 			setNextRole(rcr);
 			return true;
 		}
+		
 		// note: we only get here if no RestaurantCustomerRole was found in _roles
 		List<Restaurant> restaurants = Directory.restaurants();
-		for(Restaurant r : restaurants)
+		if(restaurants.size() != 0)
 		{
-			rcr = r.generateCustomerRole(this);
+			rcr = restaurants.get(new Random().nextInt(restaurants.size())).generateCustomerRole(this);
 			rcr.cmdGotHungry();
 			setNextRole(rcr);
 			_roles.add(rcr);
 			return true;
 		}
+		
 		return false;
 	}
 	/**
 	 * Searches for a RestaurantCustomerRole of the correct type in _roles and then in Directory.restaurants() and calls setNextRole on it
-	 * @param type "Eric", "Omar", etc.
+	 * @param type "Eric", "Omar", "Ryan", or "Yixin".  Case-sensitive and must match exactly.
 	 * @return true if a restaurant of the passed-in type was chosen and setNextRole was called
 	 */
 	private boolean actGoToRestaurantOfType(String type)
