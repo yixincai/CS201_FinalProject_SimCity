@@ -56,7 +56,6 @@ public class OmarWaiterGui extends JPanel implements Gui {
 	    }
 
 	    public void updatePosition() {
-	    	if(gotAct){
 		        if (xPos < xDestination)
 		            xPos++;
 		        else if (xPos > xDestination)
@@ -67,13 +66,14 @@ public class OmarWaiterGui extends JPanel implements Gui {
 		        else if (yPos > yDestination)
 		            yPos--;
 		        
-		        if(xPos == xDestination && yPos == yDestination){
+		        if(xPos == xDestination && yPos == yDestination && gotAct){
 		        	gotAct = false;
 			    	agent.msgArrived();
+			    	DoGoIdle();
 			    	return;
 			    }
-	    	}
 	    }
+	  
 
 	    public void draw(Graphics2D g) {
 	    	if(agent.active){
@@ -96,13 +96,18 @@ public class OmarWaiterGui extends JPanel implements Gui {
 	    }
 	    
 	    public void DoGetCustomer(OmarCustomerRole customer, Table table){
-	    	xDestination = -1 * TOFFSET + 100;
-	    	yDestination = -1 * TOFFSET + 30;
+	    	/*xDestination = -1 * TOFFSET + 100;
+	    	yDestination = -1 * TOFFSET + 30; */
+	    	
+	    	setCurrentStatus("Customer");
+	    	xDestination = customer.getGui().getX() - 20;
+	    	yDestination = customer.getGui().getY() + 20;
 	    	
 	    	gotAct = true;
 	    }
 	    
 	    public void DoBringToTable(OmarCustomerRole customer, Table table) {
+	    	setCurrentStatus("Going to Table");
 	    	xDestination = table.getX() + TOFFSET;
 	    	yDestination = table.getY() - TOFFSET;
 	    	
@@ -110,6 +115,7 @@ public class OmarWaiterGui extends JPanel implements Gui {
 	    }
 	    
 	    public void DoTakeCustomerOrder(OmarCustomerRole c, Table table){
+	    	setCurrentStatus("Taking Order");
 	    	xDestination = table.getX() + TOFFSET;
 	    	yDestination = table.getY() - TOFFSET;
 	    	
@@ -117,6 +123,7 @@ public class OmarWaiterGui extends JPanel implements Gui {
 	    }
 	    
 	    public void DoGiveOrderToCook(){
+	    	setCurrentStatus("Giving Order To Cook");
 	    	xDestination = COOKLOCX;
 	    	yDestination = COOKLOCY;
 	    	
@@ -124,6 +131,7 @@ public class OmarWaiterGui extends JPanel implements Gui {
 	    }
 	    
 	    public void DoGoToRevolvingStand(){
+	    	setCurrentStatus("Rev. Stand");
 	    	xDestination = REVOLVINGX;
 	    	yDestination = REVOLVINGY;
 	    			
@@ -131,6 +139,7 @@ public class OmarWaiterGui extends JPanel implements Gui {
 	    }
 	    
 	    public void DoGetFoodFromCook(){
+	    	setCurrentStatus("Getting Food");
 	    	xDestination = 540;
 	    	yDestination = 220;
 	    	
@@ -138,6 +147,7 @@ public class OmarWaiterGui extends JPanel implements Gui {
 	    }
 	    
 	    public void DoGiveCustomerFood(OmarCustomerRole c, Table table){
+	    	setCurrentStatus("Food");
 	    	xDestination = table.getX() + TOFFSET;
 	    	yDestination = table.getY() - TOFFSET;
 	    	
@@ -161,10 +171,9 @@ public class OmarWaiterGui extends JPanel implements Gui {
 	    }
 
 	    public void DoGoIdle() {
+	    	setCurrentStatus("Idle");
 	        xDestination = HOMEX;
 	        yDestination = HOMEY;
-	        
-	        gotAct = true;
 	    }
 	    
 	    public void DoGoOnBreak() {
@@ -188,7 +197,7 @@ public class OmarWaiterGui extends JPanel implements Gui {
 	    public void setHomePosition(int x, int y){
 	    	HOMEX = x;
 	    	HOMEY = y;
-	    	
+	    	setCurrentStatus("Idle");
 	    	xDestination = HOMEX;
 	    	yDestination = HOMEY;
 	    	

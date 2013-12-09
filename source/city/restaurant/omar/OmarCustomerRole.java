@@ -244,7 +244,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 			event = AgentEvent.DoneLeaving;
 			customerGui.leftWaitingList();
 		}
-		waitTimer = new Timer(10000, new ActionListener() { 
+		waitTimer = new Timer(20000, new ActionListener() { 
 			public void actionPerformed(ActionEvent e){
 				if(state == AgentState.WaitingInRestaurant && event == AgentEvent.GotHungry){
 					restaurant.host.msgLeavingWaitList(OmarCustomerRole.this);

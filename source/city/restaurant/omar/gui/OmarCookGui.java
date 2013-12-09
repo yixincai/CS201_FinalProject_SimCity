@@ -127,7 +127,7 @@ public class OmarCookGui extends JPanel implements Gui {
 	public void DoMoveFoodToPlatingArea(){
 		setPickupStatus("PICKUP");
 		xDestination = 590;
-		yDestination = 140;
+		yDestination = 240;
 		flag = true;
 	}
 	

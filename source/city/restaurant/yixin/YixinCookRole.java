@@ -321,6 +321,8 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 		inventory.put("Chicken", new Food("Chicken", 4000, 0, 3, 5));
 		inventory.put("Salad", new Food("Salad", 1000, 0, 3, 5));
 		inventory.put("Pizza", new Food("Pizza", 3000, 0, 3, 5));
+		lowInFood = true;
+		stateChanged();
 	}
 
 }

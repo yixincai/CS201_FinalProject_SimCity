@@ -24,6 +24,13 @@ class LogControlPanel extends JPanel {
     
     JButton enableBusButton;
     
+ /*   JButton enableBankButton;
+    JButton enableMarketButton;
+    JButton enableOmarRestaurantButton;
+    JButton enableYixinRestaurantButton;
+    JButton enableEricRestaurantButton;
+    JButton enableRyanRestaurantButton; */
+    
     private final int WIDTH = 1024/3;
 	private final int HEIGHT = 720;
 	

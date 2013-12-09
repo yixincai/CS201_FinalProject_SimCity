@@ -30,7 +30,9 @@ import city.PersonAgent;
 public class CreatePersonPanel extends JPanel implements ActionListener, ChangeListener
 {
 	String[] occupations = {"None", "Waiter", "Restaurant Cashier", "Cook", "Restaurant Host", 
-								"Bank Teller", "Bank Host", "Market Cashier", "Market Employee"};
+								"Bank Teller", "Bank Host", "Market Cashier", "Market Employee", 
+								"OmarRestaurant Customer", "YixinRestaurantCustomer", "EricRestaurantCustomer",
+								"RyanRestaurant Customer"};
 	JComboBox occupationBox = new JComboBox(occupations);
 	JLabel moneyField = new JLabel("$0.00");
 	JTextField nameField = new JTextField(15);
@@ -71,7 +73,7 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 		moneySlider.setPaintLabels(true);
 		moneySlider.setLabelTable(sliderLabels);
 		moneySlider.addChangeListener(this);
-		JLabel occupationLabel = new JLabel("Occupation:");
+		JLabel occupationLabel = new JLabel("Occupation/Role:");
 		this.add(nameLabel);
 		this.add(moneyLabel);
 		this.add(occupationLabel);

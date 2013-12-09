@@ -22,40 +22,48 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
 	//TODO change constant names to be 0-indexed
 	
     public static final int BEDX = 600;
-    public static final int BEDY = 300;
-    public static final int STOVEX = 570;
-    public static final int STOVEY = 300;
-    public static final int FRIDGEX = 540;
-    public static final int FRIDGEY = 292;
-    public static final int TVX = 382;
-    public static final int TVY = 310;
+    public static final int BEDY = 180;
+    public static final int STOVEX = 400;
+    public static final int STOVEY = 180;
+    public static final int FRIDGEX = 370;
+    public static final int FRIDGEY = 172;
+    public static final int TVX = 500;
+    public static final int TVY = 250;
+    public static final int FRONTDOORX = 500;
+    public static final int FRONTDOORY = 380;
     
     public static final int BEDX2 = 600;
-    public static final int BEDY2 = 30;
-    public static final int STOVEX2 = 570;
-    public static final int STOVEY2 = 30;
-    public static final int FRIDGEX2 = 550;
-    public static final int FRIDGEY2 = 30;
-    public static final int TVX2 = 382;
-    public static final int TVY2 = 50;
+    public static final int BEDY2 = 15;
+    public static final int STOVEX2 = 400;
+    public static final int STOVEY2 = 15;
+    public static final int FRIDGEX2 = 370;
+    public static final int FRIDGEY2 = 7;
+    public static final int TVX2 = 500;
+    public static final int TVY2 = 90;
+    public static final int FRONTDOORX2 = 500;
+    public static final int FRONTDOORY2 = -20;
     
     public static final int BEDX3 = 20;
-    public static final int BEDY3 = 300;
-    public static final int STOVEX3 = 60;
-    public static final int STOVEY3 = 300;
-    public static final int FRIDGEX3 = 80;
-    public static final int FRIDGEY3 = 300;
-    public static final int TVX3 = 300;
-    public static final int TVY3 = 310;
+    public static final int BEDY3 = 180;
+    public static final int STOVEX3 = 260;
+    public static final int STOVEY3 = 180;
+    public static final int FRIDGEX3 = 290;
+    public static final int FRIDGEY3 = 172;
+    public static final int TVX3 = 170;
+    public static final int TVY3 = 250;
+    public static final int FRONTDOORX3 = 170;
+    public static final int FRONTDOORY3 = 380;
     
     public static final int BEDX4 = 20;
-    public static final int BEDY4 = 30;
-    public static final int STOVEX4 = 60;
-    public static final int STOVEY4 = 30;
-    public static final int FRIDGEX4 = 80;
-    public static final int FRIDGEY4 = 30;
-    public static final int TVX4 = 300;
-    public static final int TVY4 = 50;
+    public static final int BEDY4 = 15;
+    public static final int STOVEX4 = 260;
+    public static final int STOVEY4 = 15;
+    public static final int FRIDGEX4 = 290;
+    public static final int FRIDGEY4 = 7;
+    public static final int TVX4 = 170;
+    public static final int TVY4 = 90;
+    public static final int FRONTDOORX4 = 170;
+    public static final int FRONTDOORY4 = -20;
     
     public static final int BEDWIDTH = 30;
     public static final int BEDHEIGHT = 30;
@@ -63,7 +71,7 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public static final int FRIDGEDIM = 20;
     
     public static final int WALLX1 = 0;
-    public static final int WALLY1 = 180;
+    public static final int WALLY1 = 160;
     
     public static final int WALLX2 = 530;
     public static final int WALLY2 = 180;
@@ -78,9 +86,6 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public static final int WALLDIMV = 150;
     
     public static final int TVDIM = 10;
-
-    public static final int FRONTDOORX = 0;
-    public static final int FRONTDOORY = 0;
 
     public static final int WINDOWX = 682;
     public static final int WINDOWY = 360;
@@ -107,6 +112,16 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     Image floor = d.getImage();
     int xFlGap = WINDOWX;
     int yFlGap = WINDOWY;
+    
+    ImageIcon e = new ImageIcon(this.getClass().getResource("/image/home/FloorMat.png"));
+    Image mat = e.getImage();
+    int xMGap = 26;
+    int yMGap = 16;
+    
+    ImageIcon f = new ImageIcon(this.getClass().getResource("/image/home/TVGame.png"));
+    Image game = f.getImage();
+    int xGameGap = 32;
+    int yGameGap = 29;
     
     public ApartmentAnimationPanel()
     {
@@ -157,16 +172,26 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
         //fridges
         g2.setColor(Color.WHITE);
         g2.drawImage(fridge, FRIDGEX, FRIDGEY, xFGap, yFGap, this);
-        g2.drawImage(fridge, FRIDGEX2, FRIDGEY4, xFGap, yFGap, this);
+        g2.drawImage(fridge, FRIDGEX2, FRIDGEY2, xFGap, yFGap, this);
         g2.drawImage(fridge, FRIDGEX3, FRIDGEY3, xFGap, yFGap, this);
-        g2.drawImage(fridge, FRIDGEX4, FRIDGEY2, xFGap, yFGap, this);
+        g2.drawImage(fridge, FRIDGEX4, FRIDGEY4, xFGap, yFGap, this);
+        
+        g2.drawImage(mat, FRONTDOORX-7, FRONTDOORY-60, xMGap, yMGap, this);
+        g2.drawImage(mat, FRONTDOORX2-7, FRONTDOORY2+20, xMGap, yMGap, this);
+        g2.drawImage(mat, FRONTDOORX3-7, FRONTDOORY3-60, xMGap, yMGap, this);
+        g2.drawImage(mat, FRONTDOORX4-7, FRONTDOORY4+20, xMGap, yMGap, this);
         
         //walls
         g2.setColor(Color.BLUE);
-        g2.fillRect(WALLX1, WALLY1, WALLDIMV, WALLDIMH);
-        g2.fillRect(WALLX2, WALLY2, WALLDIMV, WALLDIMH);
-        g2.fillRect(WALLX3, WALLY3, WALLDIMH, WALLDIMV);
-        g2.fillRect(WALLX4, WALLY4, WALLDIMH, WALLDIMV);
+        g2.fillRect(WALLX1, WALLY1, 700, WALLDIMH);
+        g2.fillRect(WALLX3, WALLY3, WALLDIMH, 400);
+        
+        g2.setColor(Color.BLACK);
+        g2.fillRect(TVX, TVY, 10, 10);
+        g2.fillRect(TVX2, TVY2, 10, 10);
+        g2.fillRect(TVX3, TVY3, 10, 10);
+        g2.fillRect(TVX4, TVY4, 10, 10);
+        
 
         for(Gui gui : _guis) {
         	gui.draw(g2);

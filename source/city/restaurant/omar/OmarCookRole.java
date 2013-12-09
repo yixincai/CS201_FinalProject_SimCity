@@ -333,5 +333,7 @@ public class OmarCookRole extends RestaurantCookRole {
 		cookInventory.put("Hot Dog", new Item("Hot Dog", 0));
 		cookInventory.put("Burger", new Item("Burger", 0));
 		cookInventory.put("Filet Mignon", new Item("Filet Mignon", 0));
+		markets.get(0).marketState = MarketStatus.ordering;
+		stateChanged();
 	}
 }

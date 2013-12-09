@@ -1,5 +1,6 @@
 package city.transportation.interfaces;
 
+import gui.trace.AlertTag;
 import city.Place;
 import city.transportation.BusAgent;
 import city.transportation.BusStopObject;
@@ -17,5 +18,7 @@ public interface Commuter {
 	
 	//Msg At Destination from GUI
 	public void msgAtDestination(Place place);
+	
+	public void msgYouAreAllowedToDie();
 
 }
