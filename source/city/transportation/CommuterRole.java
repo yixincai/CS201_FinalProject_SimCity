@@ -198,19 +198,19 @@ public class CommuterRole extends Role implements Commuter{
 		//Choosing
 		public void actChooseTransportation(){
 			print(AlertTag.WORLDVIEW,"Choosing mode of transport");
+			if (_person.name().contains("CS201"))
+				wantToDie = true;
+			else
+				wantToDie = false;
+			if (_person._money >= 200)
+				hasCar = true;
+			else
+				hasCar = false;
 			if (hasCar){
 				_tState = TravelState.choseCar;
-//				if ((new Random()).nextInt(100) == 0)
-					wantToDie = true;
-//				else 
-//					wantToDie = false;
 			}
 			else{
 				if (_person._money >= 100){
-					if ((new Random()).nextInt(2) == 0)
-						wantToDie = true;
-					else 
-						wantToDie = false;
 					_tState = TravelState.choseBus;
 				}
 				else
