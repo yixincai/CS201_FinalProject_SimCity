@@ -42,7 +42,6 @@ public class CommuterGui implements Gui {
 
 	//----------------------------------Constructor & Setters & Getters----------------------------------
 	public CommuterGui(CommuterRole commuter, Place initialPlace) {
-		//System.out.println("Created CommuterGui");
 		// Note: placeX and placeY can safely receive values of null
 		Lane lane;
 		if (commuter.hasCar())
@@ -558,7 +557,6 @@ public class CommuterGui implements Gui {
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
 		//TODO set position and destination
-		System.out.println(busstop.positionX() + "  " +busstop.positionY());
 		route.clear();
 		if (_currentBlockX == 0 && _currentBlockY == 0){
 			_xPos = 41 + 15 * 10;
