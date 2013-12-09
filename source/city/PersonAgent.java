@@ -217,7 +217,7 @@ public class PersonAgent extends Agent implements Person
 		_homeOccupantRole = new HomelessRole(this);
 		_homeBuyingRole = null;
 	}
-	/** Sets the value of _occupation to a role that is requested by occupationType if possible; else it sets _occupation to a new waiter role from a randomly chosen restaurant. */
+	/** Sets the value of _occupation to a role that is requested by occupationType if possible; else it sets _occupation to null. */
 	public void acquireOccupation(String occupationType) 
 	{
 		if(occupationType.contains("Restaurant"))
