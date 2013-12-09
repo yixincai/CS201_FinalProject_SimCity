@@ -28,7 +28,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	public YixinCashierRole(PersonAgent p, YixinRestaurant r) {
 		super(p);
 		this.restaurant = r;
-		money = 130.0;
+		money = 10000.0;
 		bankBalance = 0;
 		bankDebt = 0;
 		
