@@ -20,6 +20,7 @@ import city.transportation.gui.TruckAgentGui;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -52,9 +53,9 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
        guis.add(gui);
     }
 	
-	public WorldViewBuilding addBuilding(int x, int y, int dim)
+	public WorldViewBuilding addBuilding(int x, int y, int dim, BufferedImage image)
 	{
-		 WorldViewBuilding b = new WorldViewBuilding( x, y, dim );
+		 WorldViewBuilding b = new WorldViewBuilding( x, y, dim, image );
 		 buildings.add( b );
 		 return b;
 	}
@@ -85,27 +86,14 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setColor( Color.black );
 		
-		g.drawString("Bank 1", 530, 230);
-		g.drawString("Bank 2", 330, 325);
-		g.drawString("YixinRestaurant", 530, 130);
-		g.drawString("Market 1", 530, 325);
-		g.drawString("Market 2", 430, 325);
-		g.drawString("OmarRestaurant", 380, 230);
-		g.drawString("RyanRestaurant", 380, 125);
-		g.drawString("EricRestaurant", 280, 125);
-		g.drawString("TannerRestaurant", 280, 230);
-		
 		g.drawString("Bus Stop", 60, 40);
 		g.drawString("Bus Stop", 560, 40);
 		g.drawString("Bus Stop", 560, 340);
 		g.drawString("Bus Stop", 60, 340);
 		
-		g.drawString("Houses", 60, 300);
-		g.drawString("Apartments", 100, 60);
-		
 		for ( int i=0; i<buildings.size(); i++ ) {
 			WorldViewBuilding b = buildings.get(i);
-		    g2.fill( b );
+		    g2.drawImage(b.image, (int)b.x, (int)b.y, (int)b.width, (int)b.height, null, null);
 		}
 		
 		for ( int i=0; i<Directory.lanes().size(); i++ ) {
