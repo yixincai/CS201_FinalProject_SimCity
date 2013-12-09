@@ -174,9 +174,9 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
 			cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
 			cPanel.addPerson("Yixin3", 300, "Waiter", true, "house");
-			cPanel.addPerson("Yixin4", 300, "Yixin Customer", true, "apartment");
-			cPanel.addPerson("Yixin7", 300, "Market Cashier", true, "apartment");
-			cPanel.addPerson("Yixin8", 300, "Market Employee", true, "apartment");
+			cPanel.addPerson("Yixin4", 50, "Yixin Customer", true, "apartment");
+			cPanel.addPerson("Yixin7", 50, "Market Cashier", true, "apartment");
+			cPanel.addPerson("Yixin8", 50, "Market Employee", true, "apartment");
 		} else if (configBox.getSelectedIndex() == 4){
 			cPanel.addPerson("Eric", 300, "None", true, "house");
 			cPanel.addPerson("Omar", 300, "None", true, "house");
