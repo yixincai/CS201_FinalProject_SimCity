@@ -12,9 +12,9 @@ public class YixinCashierGui extends JPanel implements Gui {
 
 	private YixinCashierRole agent = null;
 
-	private int xPos = 300, yPos = 30;//default waiter position
-	public static int xGap = 40;
-	public static int yGap = 40;
+	private int xPos = 300, yPos = 0;//default waiter position
+	public static int xGap = 20;
+	public static int yGap = 20;
 
 	private ImageIcon i = new ImageIcon(this.getClass().getResource("/image/cashier.jpg"));
 	private Image image = i.getImage();

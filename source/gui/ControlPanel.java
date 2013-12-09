@@ -52,7 +52,7 @@ public class ControlPanel extends JTabbedPane {
 	public void addPerson(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) //TODO finish with new person instantiation stuff
 	{
 		PersonAgent newPerson;
-		if(!occupationType.contains("Restaurant")){
+		if(!(occupationType.contains("Restaurant") && occupationType.contains("Customer"))){
 			newPerson = new PersonAgent(name, money, occupationType, weekday_notWeekend, housingType);
 		} else{
 			newPerson = new PersonAgent(name,money,"None",weekday_notWeekend,housingType);
