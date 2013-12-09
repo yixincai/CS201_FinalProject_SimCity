@@ -45,39 +45,63 @@ public class PersonAgent extends Agent implements Person
 	private List<String> _actionsToDo = new ArrayList<String>();
 	
 	// State data:
-	public double _money;
+	public double _money; //TODO change to private and change appropriate other values
 	enum WealthState { RICH, NORMAL, BROKE, POOR } // the word "deadbeat" courtesy of Wilczynski lol
 	boolean _deadbeat = false; // if true, means this person doesn't pay loans
-	enum NourishmentState { HUNGRY, FULL }
+	enum NourishmentState { HUNGRY, NORMAL, FULL }
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
 	class State
 	{
-		NourishmentState nourishment = NourishmentState.FULL; //TODO implement value for hunger
-		double nourishmentLevel;
-		NourishmentState nourishment() { return nourishment; }
+		// Constructor
+		public State() {
+			nourishmentTimer.schedule(new TimerTask() { public void run() { hourlyHungerChange(); }}, Time.getRealTime(1));
+		}
 		
+		// Nourishment/hunger
+		double nourishmentLevel = 5;
+		Timer nourishmentTimer = new Timer();
+		NourishmentState nourishment() {
+			if(nourishmentLevel < 2) {
+				return NourishmentState.HUNGRY;
+			}
+			else if(nourishmentLevel < 6) {
+				return NourishmentState.NORMAL;
+			}
+			else {
+				return NourishmentState.FULL;
+			}
+		}
+		private void hourlyHungerChange() {
+			double hourlyNourishmentDecrease = 0.5;
+			if(nourishmentLevel >= hourlyNourishmentDecrease) {
+				nourishmentLevel -= hourlyNourishmentDecrease;
+			}
+			else {
+				nourishmentLevel = 0;
+			}
+			nourishmentTimer.schedule(new TimerTask() { public void run() { hourlyHungerChange(); }}, Time.getRealTime(1));
+		}
+		
+		// Wealth
 		/** Get the current wealth state, based on money and occupation status. */
 		WealthState wealth()
 		{
-			if(_money < POOR_LEVEL)
-			{
+			if(_money < POOR_LEVEL) {
 				return (_occupation != null) ? WealthState.BROKE : WealthState.POOR;
 			}
-			else if(_money < RICH_LEVEL)
-			{
+			else if(_money < RICH_LEVEL) {
 				return WealthState.NORMAL;
 			}
-			else
-			{
+			else {
 				return WealthState.RICH;
 			}
 		}
 		
+		// Time
 		double time()
 		{
 			return Time.currentTime();
 		}
-		
 		Time.Day today()
 		{
 			return Time.today();
