@@ -38,6 +38,8 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 	JLabel nameField;
 	JLabel moneyField;
 	JLabel currentRoleField;
+	JLabel nextRoleField;
+	JLabel occupationField;
 	JScrollPane peopleButtons;
 	ControlPanel cPanel;
 	private final int WIDTH = 1024/3;
@@ -58,12 +60,16 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		infoPanel.setMaximumSize(new Dimension(WIDTH, HEIGHT/2));
 		infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-		nameField = new JLabel("Person Name:");
-		moneyField = new JLabel("Person Money:");
-		currentRoleField = new JLabel("Person Current Role:");
-		infoPanel.add(nameField); 
-		infoPanel.add(moneyField); 
-		infoPanel.add(currentRoleField); 
+		nameField = new JLabel("Name:");
+		moneyField = new JLabel("Money:");
+		currentRoleField = new JLabel("Current Role:");
+		nextRoleField = new JLabel("Next Role:");
+		occupationField = new JLabel("Occupation:");
+		infoPanel.add(nameField);
+		infoPanel.add(moneyField);
+		infoPanel.add(currentRoleField);
+		infoPanel.add(nextRoleField);
+		infoPanel.add(occupationField);
 		
 		 action = new JCheckBox("Go To OmarRestaurant");
 		 action.setMinimumSize(buttonDimension);
@@ -149,7 +155,9 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 				_currentlySelectedPerson = tempPerson;
 				nameField.setText("Person Name: " + tempPerson.name());
 				moneyField.setText("Person Money: " + tempPerson.money() + "0");
-			//	currentRoleField.setText("Current Role: Need to implement toString() for the different roles.");
+				currentRoleField.setText("Current Role: " + tempPerson.currentRole().typeToString());
+				nextRoleField.setText("Next Role: " + tempPerson.nextRoleTypeToString());
+				occupationField.setText("Occupation: " + tempPerson.occupationTypeToString());
 			}
 		}
 	}
