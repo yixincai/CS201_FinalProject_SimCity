@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class YixinAnimationPanel extends JPanel implements ActionListener {
-    private final int TABLEX1 = 450;
-    private final int TABLEX2 = 300;
-    private final int TABLEX3 = 150;
-    private final int TABLEY = 150;
-    private final int GAPX = 50;
-    private final int GAPY = 50;
+    private final int TABLEX = 500;
+    private final int TABLEY1 = 60;
+    private final int TABLEY2 = 130;
+    private final int TABLEY3 = 200;
+    private final int GAPX = 30;
+    private final int GAPY = 30;
     private final int ICON_X = 30;
     private final int ICON_Y = 30;    
     private final int WINDOWX = 682;
@@ -61,9 +61,9 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
         //Here is the table
 
         g2.setColor(Color.red);
-        g2.fillRect(TABLEX1, TABLEY, GAPX, GAPY);//200 and 250 need to be table params
-        g2.fillRect(TABLEX2, TABLEY, GAPX, GAPY);
-        g2.fillRect(TABLEX3, TABLEY, GAPX, GAPY);
+        g2.fillRect(TABLEX, TABLEY1, GAPX, GAPY);//200 and 250 need to be table params
+        g2.fillRect(TABLEX, TABLEY2, GAPX, GAPY);
+        g2.fillRect(TABLEX, TABLEY3, GAPX, GAPY);
     	g.drawString(WA, 30, 10);
 
         //here is the cooking area 
