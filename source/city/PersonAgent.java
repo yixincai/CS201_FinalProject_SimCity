@@ -9,9 +9,7 @@ import java.util.*;
 import city.interfaces.Person;
 import city.home.*;
 import city.bank.*;
-import city.bank.gui.*;
 import city.market.*;
-import city.market.gui.*;
 import city.restaurant.*;
 import city.restaurant.eric.*;
 import city.restaurant.omar.*;
@@ -226,12 +224,31 @@ public class PersonAgent extends Agent implements Person
 		List<Restaurant> restaurants = Directory.restaurants();
 		List<Bank> banks = Directory.banks();
 		List<Market> markets = Directory.markets();
+		if(occupationType.contains("Waiter"))
+		{
+			Restaurant chosenRestaurant = null;
+			if(occupationType.contains("Eric")) {
+				for(Restaurant r : restaurants) {
+					if(r instanceof EricRestaurant) {
+						
+					}
+				}
+			}
+			if(chosenRestaurant == null && restaurants.size() != 0)
+			{
+				chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
+			}
+			if(chosenRestaurant != null)
+			{
+				_occupation = chosenRestaurant.generateWaiterRole(this,false);
+				return;
+			}
+		}
+		/*//TODO convert this commented-out part into if(occupationType.contains(...)) statements
 		switch(occupationType)
 		{
-			// note: if control reaches a break statement, the new occupation will be a waiter.
 			case "Waiter":
-				_occupation = restaurants.get(0).generateWaiterRole(this,false);
-				return; // waiter is generated right after this switch statement
+				return;
 			case "Restaurant Cashier":
 				newOccupation = null;
 				for(Restaurant r : restaurants)
@@ -329,22 +346,7 @@ public class PersonAgent extends Agent implements Person
 				}
 				break;
 			// BEGIN HACKS
-			case "Market Customer":
-				_occupation = markets.get(0).generateCustomerRole(this);
-				return;
-			case "Yixin Customer":
-				_occupation = restaurants.get(0).generateCustomerRole(this);
-				return;
-			case "Omar Customer":
-				_occupation = restaurants.get(1).generateCustomerRole(this);
-				return;
-			case "Ryan Customer":
-				_occupation = restaurants.get(2).generateCustomerRole(this);
-				return;
-			case "Bank Customer":
-				_occupation = banks.get(0).generateCustomerRole(this);
-				((BankCustomerRole)_occupation).cmdRequest("Robber", 10000);//"Deposit",100);
-				return;
+			
 			case "Yixin Waiter":
 				_occupation = restaurants.get(0).generateWaiterRole(this, true);
 				return;
@@ -362,6 +364,7 @@ public class PersonAgent extends Agent implements Person
 		// note: control reaches here because no jobs were found
 		newOccupation = restaurants.get((new Random()).nextInt(restaurants.size())).generateWaiterRole(this, false);
 		_occupation = newOccupation;
+		*/
 	}
 	
 	
