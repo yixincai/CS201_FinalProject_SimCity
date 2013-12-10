@@ -1,5 +1,7 @@
 package city.restaurant.tanner;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -114,7 +116,7 @@ public class TannerRestaurantCashierRole extends RestaurantCashierRole implement
 	@Override
 	public void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list) 
 	{
-		print("Market bill received with amount of " + bill);
+		print(AlertTag.TANNER_RESTAURANT, "Market bill received with amount of " + bill);
 		log.add(new LoggedEvent("Received HereIsTheBill from market. Bill = "+ bill));
 		marketBills.add(new MarketBill(bill, m, price_list));
 		stateChanged();
@@ -131,7 +133,7 @@ public class TannerRestaurantCashierRole extends RestaurantCashierRole implement
 	}
 	
 	public void msgHereIsTheChange(Market m, double change){
-		print("Market change received with amount of " + change);
+		print(AlertTag.TANNER_RESTAURANT, "Market change received with amount of " + change);
 		myMoney += change;
 		for (MarketBill bill : marketBills){
 			if (bill.market == m)
@@ -258,7 +260,7 @@ public class TannerRestaurantCashierRole extends RestaurantCashierRole implement
 	
 	private void ComputeBill(Bill b)
 	{
-		print("Compute bill");
+		print(AlertTag.TANNER_RESTAURANT, "Compute bill");
 		log.add(new LoggedEvent("Compute Bill"));
 		b.state = BillState.pending;
 		b.waiter.msgHereIsTheChek(b.amount, b.customer);
@@ -287,12 +289,12 @@ public class TannerRestaurantCashierRole extends RestaurantCashierRole implement
 		for (Item item : mb.invoice)
 			amount += (item.amount * mb.price_list.get(item.name));
 		if (Math.abs(mb.amount - amount) > 0.02)
-			print("Incorrect bill calculation by market");
+			print(AlertTag.TANNER_RESTAURANT, "Incorrect bill calculation by market");
 		else 
-			print("Correct bill calculation by market. Paying Market Bill");
+			print(AlertTag.TANNER_RESTAURANT, "Correct bill calculation by market. Paying Market Bill");
 		if (myMoney >= mb.amount){
 			myMoney -= mb.amount;
-			print("Remaining money is " + myMoney);
+			print(AlertTag.TANNER_RESTAURANT, "Remaining money is " + myMoney);
 			mb.market.MarketCashier.msgHereIsPayment(restaurant, mb.amount);
 			mb.billState = MarketBillState.none;
 		}
@@ -300,7 +302,7 @@ public class TannerRestaurantCashierRole extends RestaurantCashierRole implement
 			marketBills.get(0).amount -= myMoney;
 			mb.market.MarketCashier.msgHereIsPayment(restaurant, myMoney);
 			myMoney = 0;
-			print("Do not have enough money with " + mb.amount +" debt");
+			print(AlertTag.TANNER_RESTAURANT, "Do not have enough money with " + mb.amount +" debt");
 		}
 	}
 //-----------------------------------------Commands------------------------------------------------------------

@@ -29,7 +29,7 @@ public class PersonAgent extends Agent implements Person
 	private String _name;
 	
 	// Role data:
-	private List<Role> _roles; // these are roles that you have had do when you're at a place e.g. EricCustomerRole, MarketCustomerRole
+	private List<Role> _roles = new ArrayList<Role>(); // these are roles that you have had do when you're at a place e.g. EricCustomerRole, MarketCustomerRole
 	private Role _currentRole; // this should never be null
 	private boolean _sentCmdFinishAndLeave = false;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.

@@ -11,8 +11,8 @@ import city.restaurant.ryan.gui.RyanCustomerGui.State;
 public class RyanCashierGui extends JPanel implements Gui{
 	private RyanCashierRole agent = null;
 	
-	int xPos = 90; 
-	int yPos = 20;
+	int xPos = 200; 
+	int yPos = -20;
 	int xDestination = 200;
 	int yDestination = -20;
 	
