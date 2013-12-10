@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import city.Directory;
@@ -21,6 +22,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -34,12 +37,19 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
     private List<Gui> guis = new ArrayList<Gui>();
 	
 	ArrayList<WorldViewBuilding> buildings;
+	Image background;
 	
 	public WorldView()
 	{
 		this.setPreferredSize(new Dimension(WINDOWX, WINDOWY));
 		this.setBorder(BorderFactory.createTitledBorder("World View"));
 		 buildings = new ArrayList<WorldViewBuilding>();
+		 try {
+			background = ImageIO.read(new File("wvimage/wvbackground.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		 
          
          addMouseListener( this );
@@ -86,6 +96,7 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setColor( Color.black );
 		
+		g2.drawImage(background, null,  null);
 		g.drawString("Bus Stop", 60, 40);
 		g.drawString("Bus Stop", 560, 40);
 		g.drawString("Bus Stop", 560, 340);
