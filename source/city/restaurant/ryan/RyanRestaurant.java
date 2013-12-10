@@ -75,6 +75,7 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		newWaiter.setCook((RyanCookRole)cook);
 		newWaiter.setHost(host);
 		waiter_count++;
+		Waiters.add(newWaiter);
 		RyanWaiterGui RyanWaiterGui = new RyanWaiterGui(newWaiter, waiter_count);
 		newWaiter.setGui(RyanWaiterGui);
 		animationPanel().addGui(RyanWaiterGui);
