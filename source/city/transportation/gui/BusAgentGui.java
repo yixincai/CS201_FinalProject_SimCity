@@ -146,6 +146,65 @@ public class BusAgentGui extends JPanel implements Gui {
 			direction = BusDirection.BusUp;
 		}
 		
+		if (_xPos < _xDestination){
+			if ((_xPos - _xStarting) % 10 == 0){
+				deathCount = (_xPos - _xStarting)/ 10;
+				if (deathList.size() != 0){
+					if (deathCount < deathList.size())
+						deathList.get(deathCount).msgYouAreAllowedToDie();
+					else
+						deathList.clear();
+				}
+			}
+			_xPos++;
+			direction = BusDirection.BusRight;
+		}
+		else if (_xPos > _xDestination){
+			if ((_xStarting - _xPos) % 10 == 0){
+				deathCount = (_xStarting - _xPos)/ 10 - 2;
+				if (deathList.size() != 0 && deathCount >= 0){
+					if (deathCount < deathList.size())
+						deathList.get(deathCount).msgYouAreAllowedToDie();
+					else
+						deathList.clear();
+				}
+			}
+			_xPos--;
+			direction = BusDirection.BusLeft;
+		}
+		
+		if (_yPos < _yDestination){
+			if ((_yPos - _yStarting) % 10 == 0){
+				deathCount = (_yPos - _yStarting)/ 10;
+				if (deathList.size() != 0){
+					if (deathCount < deathList.size())
+						deathList.get(deathCount).msgYouAreAllowedToDie();
+					else
+						deathList.clear();
+				}
+			}
+			_yPos++;
+			direction = BusDirection.BusDown;
+		}
+		else if (_yPos > _yDestination){
+			if ((_yStarting - _yPos) % 10 == 0){
+				deathCount = (_yStarting - _yPos)/ 10 - 2;
+				if (deathList.size() != 0 && deathCount >= 0){
+					if (deathCount < deathList.size())
+						deathList.get(deathCount).msgYouAreAllowedToDie();
+					else
+						deathList.clear();
+				}
+			}
+			if (_yStarting - _yPos == 160 && carList.size() != 0){
+				for (int i = 0; i<carList.size(); i++)
+					carList.get(i).msgYouAreAllowedToDie();
+				carList.clear();
+			}
+			_yPos--;
+			direction = BusDirection.BusUp;
+		}
+		
 		if(_xPos == _xDestination && _yPos == _yDestination && moving){
 			atBusStop();
 			_bus.releaseSem();
