@@ -73,7 +73,7 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 		moneySlider.setPaintLabels(true);
 		moneySlider.setLabelTable(sliderLabels);
 		moneySlider.addChangeListener(this);
-		JLabel occupationLabel = new JLabel("Occupation/Role:");
+		JLabel occupationLabel = new JLabel("Occupation:");
 		this.add(nameLabel);
 		this.add(moneyLabel);
 		this.add(occupationLabel);
