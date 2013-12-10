@@ -17,7 +17,6 @@ import city.transportation.interfaces.Truck;
 
 public class TruckAgent extends Agent implements Truck{
 	List<Package> packages = new ArrayList<Package>();
-	List<Package> delayedPackages = new ArrayList<Package>();
 	String _name;
 	Semaphore isMoving = new Semaphore(0, true);
 	Market _market;
@@ -28,14 +27,14 @@ public class TruckAgent extends Agent implements Truck{
 	public truckState trState = truckState.parkingLot;
 	boolean timerSet = false;
 	Timer deliverTimer = new Timer();
-	enum packageState{atMarket, inTruck, delivering, unloaded, done};
+	enum packageState{notdelivered, needRedeliver, done};
 
 	class Package{
 		List<Item> _items;
 		Restaurant _restaurant;
 		int orderId;
 		double bill;
-		packageState pState = packageState.atMarket;
+		packageState pState = packageState.notdelivered;
 
 		Package(List<Item> items, Restaurant restaurant){
 			_items=items;
@@ -90,12 +89,12 @@ public class TruckAgent extends Agent implements Truck{
 	//----------------------------------------------Scheduler------------------------------------------
 	public boolean pickAndExecuteAnAction(){
 		for(Package temp: packages){
-			DeliverToDestination(temp);
-			GoBackToMarket();
-			return true;
-		}
-		for(Package temp: delayedPackages){
-			if(temp._restaurant.isOpen()) {
+			if (temp.pState == packageState.notdelivered){
+				DeliverToDestination(temp);
+				GoBackToMarket();
+				return true;
+			}
+			if (temp.pState == packageState.needRedeliver && temp._restaurant.isOpen()){
 				ReDeliverToDestination(temp);
 				GoBackToMarket();
 				return true;
@@ -182,8 +181,7 @@ public class TruckAgent extends Agent implements Truck{
 		}
 		else{
 			print("Restaurant is closed. Failed to deliver to " + aPackage._restaurant.name());
-			packages.remove(aPackage);
-			delayedPackages.add(aPackage);
+			aPackage.pState = packageState.needRedeliver;
 		}
 
 		_loadingDelay.schedule(new TimerTask(){
@@ -212,8 +210,9 @@ public class TruckAgent extends Agent implements Truck{
 			//TODO add more restaurants
 			print("ReDelivered to restaurant " + aPackage._restaurant.name());
 			//trState = truckState.atRestaurant;
-			delayedPackages.remove(aPackage);
+			packages.remove(aPackage);
 		}
+		//else do nothing
 
 		_loadingDelay.schedule(new TimerTask(){
 			@Override

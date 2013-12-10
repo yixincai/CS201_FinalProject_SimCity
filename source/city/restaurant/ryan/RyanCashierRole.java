@@ -157,7 +157,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 			}
 			for (Bill bill : bills){
 				if (bill.state == Bill.BillState.changeReceived){
-					cook.msgOrderFinished();
+					((RyanCookRole)_restaurant.getCook()).msgOrderFinished();
 					bills.remove(bill);
 					return true;
 				}
