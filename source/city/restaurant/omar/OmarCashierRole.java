@@ -40,42 +40,38 @@ public class OmarCashierRole extends RestaurantCashierRole {
 				money = 0;
 			}
 		}
-		
-		public enum CustomerState {paying, paid, awaitingChange, canAfford, cantAfford};
-		enum Command{None, Leave};
-		Command command;
+	}
 
-		class Food {
-			String foodType;
-			double cookTime;
-			int price;
-			int inventoryAmount;
-			
-			Food(String type, double cookTime, int inventoryAmount){
-				this.foodType = type;
-				this.cookTime = cookTime;
-				this.inventoryAmount = inventoryAmount;
-			}
+	public enum CustomerState {paying, paid, awaitingChange, canAfford, cantAfford};
+	enum Command{None, Leave};
+	Command command;
+
+	class Food {
+		String foodType;
+		double cookTime;
+		int price;
+		int inventoryAmount;
+
+		Food(String type, double cookTime, int inventoryAmount){
+			this.foodType = type;
+			this.cookTime = cookTime;
+			this.inventoryAmount = inventoryAmount;
 		}
-		
-		
-		enum MarketOrderState{none, billReceived, payBill};
-		private class Order {
-			public Market market;
-			public Map<String, Double> price_list;
-			public double cost;
-			List<Item> orderItems;
-			MarketOrderState orderState = MarketOrderState.none;
-			
-			public Order(Market market, Map<String, Double> price_list, double bill){
-				this.market = market;
-				this.price_list = price_list;
-				this.cost = bill;
-			}
-			
-			public void setOrderItems(List<Item> orderItems){
-				this.orderItems = orderItems;
-			}
+	}
+
+
+	enum MarketOrderState{none, billReceived, payBill};
+	private class Order {
+		public Market market;
+		public Map<String, Double> price_list;
+		public double cost;
+		List<Item> orderItems;
+		MarketOrderState orderState = MarketOrderState.none;
+
+		public Order(Market market, Map<String, Double> price_list, double bill){
+			this.market = market;
+			this.price_list = price_list;
+			this.cost = bill;
 		}
 		
 		public List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
@@ -102,19 +98,23 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			foodPrices.put("Filet Mignon", 35.0);
 		}
 
-		/**
-		 * Scheduler.  Determine what action is called for, and do it.
-		 */
-		public boolean pickAndExecuteAnAction() {
-			synchronized(orders){
-				for(Order o: orders){
-					if(o.orderState == MarketOrderState.payBill){
-						processOrder(o);
-						return true;
-					}
+		public void setOrderItems(List<Item> orderItems){
+			this.orderItems = orderItems;
+		}
+
+	/**
+	 * Scheduler.  Determine what action is called for, and do it.
+	 */
+	public boolean pickAndExecuteAnAction() {
+		synchronized(orders){
+			for(Order o: orders){
+				if(o.orderState == MarketOrderState.payBill){
+					processOrder(o);
+					return true;
 				}
 			}
-			
+		}
+
 		synchronized(myCustomers){
 			for(MyCustomer m: myCustomers){
 				if(m.state == CustomerState.paying){
@@ -139,82 +139,82 @@ public class OmarCashierRole extends RestaurantCashierRole {
 				}
 			}
 		}
-		
-		if(!restaurant.open && orders.isEmpty() && myCustomers.isEmpty()){
+
+		if(command == Command.Leave && orders.isEmpty() && myCustomers.isEmpty()){
 			leave();
 			return true;
 		}
-			return false;
-		}
+		return false;
+	}
 
-		//Actions
-		void calcCheck(MyCustomer m){
-			String tempChoice = m.choice;
-			double checkAmount = 0.0;
-			if(tempChoice.equals("Pizza")){
-				checkAmount = 12.99;
-			} else if(tempChoice.equals("Hot Dog")){
-				checkAmount = 14.99;
-			} else if(tempChoice.equals("Burger")){
-				checkAmount = 19.99;
-			} else {
-				checkAmount = 34.99;
-			}//
-			m.waiter.msgHereIsCheck(m.customer, checkAmount);
-			m.state = CustomerState.awaitingChange;
-			stateChanged();
-		}
-		
-		void calcChange(MyCustomer m){
-			String tempChoice = m.choice;
-			double change = m.money - foodPrices.get(tempChoice);;
-			m.customer.msgHereIsYourChange(change);
-			myCustomers.remove(m);
-		}
-		
-		void customerDies(MyCustomer m){
-			m.customer.msgGoDie();
-			m.waiter.msgCustomerPaidWithLabor(m.customer);
-			myCustomers.remove(m);
-		}
-		
-		void processOrder(Order o){
-			print(AlertTag.OMAR_RESTAURANT, "Processed Order.  Gave market $" + (int)o.cost);
-			o.market.MarketCashier.msgHereIsPayment(restaurant, o.cost);
-			cashierFunds-=(int)o.cost;
-			orders.remove(o);
-			stateChanged();
-		}
-		
-		void leave(){
-			active = false;
-		}
-		
-		//Messages
-		public void msgCustomerDoneAndNeedsToPay(OmarCustomerRole c, OmarWaiterRole w, String choice){
-			MyCustomer m = new MyCustomer(c, w, choice);
-			myCustomers.add(m);
-			m.state = CustomerState.paying;
-			stateChanged();
-		}
-		
-		public void msgTakeMoney(OmarCustomerRole c, int customerMoney){
-			synchronized(myCustomers){
+	//Actions
+	void calcCheck(MyCustomer m){
+		String tempChoice = m.choice;
+		double checkAmount = 0.0;
+		if(tempChoice.equals("Pizza")){
+			checkAmount = 12.99;
+		} else if(tempChoice.equals("Hot Dog")){
+			checkAmount = 14.99;
+		} else if(tempChoice.equals("Burger")){
+			checkAmount = 19.99;
+		} else {
+			checkAmount = 34.99;
+		}//
+		m.waiter.msgHereIsCheck(m.customer, checkAmount);
+		m.state = CustomerState.awaitingChange;
+		stateChanged();
+	}
+
+	void calcChange(MyCustomer m){
+		String tempChoice = m.choice;
+		double change = m.money - foodPrices.get(tempChoice);;
+		m.customer.msgHereIsYourChange(change);
+		myCustomers.remove(m);
+	}
+
+	void customerDies(MyCustomer m){
+		m.customer.msgGoDie();
+		m.waiter.msgCustomerPaidWithLabor(m.customer);
+		myCustomers.remove(m);
+	}
+
+	void processOrder(Order o){
+		print(AlertTag.OMAR_RESTAURANT, "Processed Order.  Gave market $" + (int)o.cost);
+		o.market.MarketCashier.msgHereIsPayment(restaurant, o.cost);
+		cashierFunds-=(int)o.cost;
+		orders.remove(o);
+		stateChanged();
+	}
+
+	void leave(){
+		active = false;
+	}
+
+	//Messages
+	public void msgCustomerDoneAndNeedsToPay(OmarCustomerRole c, OmarWaiterRole w, String choice){
+		MyCustomer m = new MyCustomer(c, w, choice);
+		myCustomers.add(m);
+		m.state = CustomerState.paying;
+		stateChanged();
+	}
+
+	public void msgTakeMoney(OmarCustomerRole c, int customerMoney){
+		synchronized(myCustomers){
 			int i;
 			for(i = 0; i < myCustomers.size(); i++){
 				if(myCustomers.get(i).customer == c){
 					break;
 				}
 			}
-			
+
 			myCustomers.get(i).state = CustomerState.canAfford;
 			myCustomers.get(i).money = customerMoney;
 			stateChanged();
-			}
 		}
-		
-		public void msgICantAffordMyMeal(OmarCustomerRole c){
-			synchronized(myCustomers){
+	}
+
+	public void msgICantAffordMyMeal(OmarCustomerRole c){
+		synchronized(myCustomers){
 			int i;
 			for(i = 0; i < myCustomers.size(); i++){
 				if(myCustomers.get(i).customer == c){
@@ -223,48 +223,48 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			}
 			myCustomers.get(i).state = CustomerState.cantAfford;
 			stateChanged();
+		}
+	}
+
+	//utilities
+
+	public void msgHereIsTheBill(Market m, double bill,
+			Map<String, Double> price_list) {
+		orders.add(new Order(m, price_list, bill));
+		print(AlertTag.OMAR_RESTAURANT, "Market Order Added");
+		stateChanged();
+	}
+
+	public void msgPayInvoice(Market m, List<Item> currentOrder){
+		for(Order o: orders){
+			if(o.market == m){
+				o.setOrderItems(currentOrder);
+				o.orderState = MarketOrderState.payBill;
+				stateChanged();
+				return;
 			}
 		}
-		
-		//utilities
+	}
 
-		public void msgHereIsTheBill(Market m, double bill,
-				Map<String, Double> price_list) {
-			orders.add(new Order(m, price_list, bill));
-			print(AlertTag.OMAR_RESTAURANT, "Market Order Added");
-			stateChanged();
-		}
-		
-		public void msgPayInvoice(Market m, List<Item> currentOrder){
-			for(Order o: orders){
-				if(o.market == m){
-					o.setOrderItems(currentOrder);
-					o.orderState = MarketOrderState.payBill;
-					stateChanged();
-					return;
-				}
-			}
-		}
+	@Override 
+	public void msgHereIsTheChange(Market m, double change) {
+		cashierFunds+=change;
+	}
 
-		@Override 
-		public void msgHereIsTheChange(Market m, double change) {
-			cashierFunds+=change;
-		}
+	@Override
+	public void msgTransactionComplete(double amount, Double balance,
+			Double debt, int newAccountNumber) {
+		//Never called
+	}
 
-		@Override
-		public void msgTransactionComplete(double amount, Double balance,
-				Double debt, int newAccountNumber) {
-			//Never called
-		}
+	@Override
+	public Place place() {
+		return restaurant;
+	}
 
-		@Override
-		public Place place() {
-			return restaurant;
-		}
-
-		@Override
-		public void cmdFinishAndLeave() {
-			command = Command.Leave;
-			stateChanged();
-		}	
+	@Override
+	public void cmdFinishAndLeave() {
+		command = Command.Leave;
+		stateChanged();
+	}	
 }
