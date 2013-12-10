@@ -124,7 +124,12 @@ public class CommuterGui implements Gui {
 		if (_destinationBlockY == 1)
 			landingSpot = getSpotX(placeX(destination)) + 1;
 		else
-			landingSpot = 9 - getSpotX(placeX(destination));			
+			if (_destinationBlockX == 1)
+				landingSpot = 10 - getSpotX(placeX(destination));
+			else if (_destinationBlockX == 0)
+				landingSpot = 7 - getSpotX(placeX(destination));
+			else
+				landingSpot = 6 - getSpotX(placeX(destination));
 		if (_destinationBlockX == _currentBlockX && _destinationBlockY == _currentBlockY){
 			setPresent(false);
 			return;
