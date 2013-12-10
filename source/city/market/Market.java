@@ -74,13 +74,6 @@ public class Market extends Place implements PlaceWithAnimation {
 	public void msgPickUpItems(){
 		animationPanel.hideRestaurantOrder(0);
 	}
-		
-	public void updateMarketStatus(){
-		if (MarketCashier == null || MarketEmployee == null)
-			open = false;
-		else
-			open = true;
-	}
 	
 	public MarketCustomerRole generateCustomerRole(PersonAgent p){
 		MarketCustomerRole customer = new MarketCustomerRole(p,this);
