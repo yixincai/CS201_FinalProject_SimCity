@@ -37,7 +37,7 @@ public class PersonAgent extends Agent implements Person
 	private Role _occupation = null;
 	private boolean _weekday_notWeekend;
 	private HomeOccupantRole _homeOccupantRole;
-	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house (now, just pays rent on apartment)
+	// private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house (now, just pays rent on apartment)
 	private BankCustomerRole _bankCustomerRole = null;
 	
 	// Commands for scenarios
@@ -176,7 +176,7 @@ public class PersonAgent extends Agent implements Person
 					if(newHomeOccupantRole != null)
 					{
 						_homeOccupantRole = newHomeOccupantRole;
-						_homeBuyingRole = a.generateHomeBuyingRole(this);
+						// _homeBuyingRole = a.generateHomeBuyingRole(this);
 						return;
 					}
 				}
@@ -191,7 +191,7 @@ public class PersonAgent extends Agent implements Person
 				if(newHomeOccupantRole != null)
 				{
 					_homeOccupantRole = newHomeOccupantRole;
-					_homeBuyingRole = null; // will eventually change this to HomeOwnerRole
+					// _homeBuyingRole = null; // will eventually change this to HomeOwnerRole
 					return;
 				}
 			}
@@ -206,7 +206,7 @@ public class PersonAgent extends Agent implements Person
 					if(newHomeOccupantRole != null)
 					{
 						_homeOccupantRole = newHomeOccupantRole;
-						_homeBuyingRole = a.generateHomeBuyingRole(this);
+						// _homeBuyingRole = a.generateHomeBuyingRole(this);
 						return;
 					}
 				}
@@ -219,7 +219,7 @@ public class PersonAgent extends Agent implements Person
 		
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(),"Failed to acquire a(n) " + homeType + ".");
 		_homeOccupantRole = new HomelessRole(this);
-		_homeBuyingRole = null;
+		// _homeBuyingRole = null;
 	}
 	/** Sets the value of _occupation to a role that is requested by occupationType if possible; else it sets _occupation to null. */
 	public void acquireOccupation(String occupationType) 
@@ -396,29 +396,38 @@ public class PersonAgent extends Agent implements Person
 	protected boolean pickAndExecuteAnAction() {
 		if(_currentRole.active)
 		{
-			// Finish current role because you have to get to work:
-			if(workingToday() && !_sentCmdFinishAndLeave)
+			if(!_sentCmdFinishAndLeave)
 			{
-				if(_occupation != null)
+				if(!_actionsToDo.isEmpty())
 				{
-					if(_currentRole == _occupation)
-					{
-						// note: you're currently at you job.
-						// If your shift just finished, leave.
-						if(!timeToBeAtWork())
-						{
-							finishAndLeaveCurrentRole();
-							return true;
-						}
+					if(_currentRole == _homeOccupantRole) {
+						_currentRole.cmdFinishAndLeave();
 					}
-					else
+				}
+				// Finish current role because you have to get to work:
+				if(workingToday())
+				{
+					if(_occupation != null)
 					{
-						// note: you're not currently at your job.
-						// If you need to go to work, finish your current role.
-						if(timeToBeAtWork())
+						if(_currentRole == _occupation)
 						{
-							finishAndLeaveCurrentRole();
-							return true;
+							// note: you're currently at you job.
+							// If your shift just finished, leave.
+							if(!timeToBeAtWork())
+							{
+								finishAndLeaveCurrentRole();
+								return true;
+							}
+						}
+						else
+						{
+							// note: you're not currently at your job.
+							// If you need to go to work, finish your current role.
+							if(timeToBeAtWork())
+							{
+								finishAndLeaveCurrentRole();
+								return true;
+							}
 						}
 					}
 				}
