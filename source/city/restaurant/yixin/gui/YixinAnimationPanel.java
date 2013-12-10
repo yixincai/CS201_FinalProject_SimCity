@@ -11,26 +11,36 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class YixinAnimationPanel extends JPanel implements ActionListener {
-    private final int TABLEX = 500;
-    private final int TABLEY1 = 60;
-    private final int TABLEY2 = 130;
-    private final int TABLEY3 = 200;
+    private final int TABLEX = 450;
+    private final int TABLEY1 = 40;
+    private final int TABLEY2 = 110;
+    private final int TABLEY3 = 180;
     private final int GAPX = 30;
     private final int GAPY = 30;
-    private final int ICON_X = 30;
-    private final int ICON_Y = 30;    
+    private final int ICON_X = 32;
+    private final int ICON_Y = 32;    
     private final int WINDOWX = 682;
     private final int WINDOWY = 360;
     private List<Gui> guis = new ArrayList<Gui>();
-    private ImageIcon ifridge = new ImageIcon(this.getClass().getResource("/image/fridge.png"));
+    private ImageIcon ifridge = new ImageIcon(this.getClass().getResource("/image/restaurant/fridge.png"));
     private Image fridgeimage = ifridge.getImage();
     private ImageIcon i2 = new ImageIcon(this.getClass().getResource("/image/host.png"));
     private Image plateimage = i2.getImage();
-    private ImageIcon igrill = new ImageIcon(this.getClass().getResource("/image/grill.jpg"));
+    private ImageIcon igrill = new ImageIcon(this.getClass().getResource("/image/restaurant/singlegrill.png"));
     private Image grillimage = igrill.getImage();
-    private ImageIcon irevolving = new ImageIcon(this.getClass().getResource("/image/revolvingStand.jpg"));
+    private ImageIcon irevolving = new ImageIcon(this.getClass().getResource("/image/restaurant/revolvingStand.png"));
     private Image standimage = irevolving.getImage();
     private String WA = "Waiting Area";
+    
+    ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/YixinBackground.png"));
+    Image floor = a.getImage();
+    int xFlGap = 682;
+    int yFlGap = 360;
+    
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/restaurant/KitchenCounter.png"));
+    Image counter = b.getImage();
+    int xKCGap = 682;
+    int yKCGap = 30;
     
     public YixinAnimationPanel()
     {
@@ -57,6 +67,10 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
+        g.drawImage(floor, 0, 0, xFlGap, yFlGap, this);
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 248, WINDOWX, 10);
+        g.drawImage(counter, 0, 248, xKCGap, yKCGap, this);
 
         //Here is the table
 
@@ -68,10 +82,10 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
 
         //here is the cooking area 
         
-    	g.drawImage(plateimage, 170, 250, ICON_X, ICON_Y, this);
-    	g.drawImage(standimage, 140, 250, ICON_X, ICON_Y, this);
-    	g.drawImage(grillimage, 300, 250, ICON_X, ICON_Y, this);
-    	g.drawImage(fridgeimage, 430, 250, ICON_X, ICON_Y, this);
+    	g.drawImage(plateimage, 170, 248, 20, 20, this);
+    	g.drawImage(standimage, 145, 248, 20, 20, this);
+    	g.drawImage(grillimage, 300, 248, ICON_X, ICON_Y, this);
+    	g.drawImage(fridgeimage, 430, 232, ICON_X, 48, this);
     	
 //    	g2.fillRect(170, 250, ICON_X, ICON_Y);
 //    	g2.fillRect(140, 250, ICON_X, ICON_Y);
