@@ -133,6 +133,7 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 			event = AgentEvent.billArrived;
 			this.cashier = (YixinCashierRole) cashier;
 			this.check = money;
+			_person.cmdChangeMoney(-money);
 			stateChanged();
 		}
 	}
