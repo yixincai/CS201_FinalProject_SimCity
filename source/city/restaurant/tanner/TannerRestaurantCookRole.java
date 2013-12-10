@@ -1,5 +1,7 @@
 package city.restaurant.tanner;
 
+import gui.trace.AlertTag;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +41,7 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 	TannerRestaurant restaurant;
 	Market markets;
 	boolean canOrder = true;
+	boolean checked_stand = false;
 	
 	
 //----------------------------------------Constructors-----------------------------------------------------------------	
@@ -76,6 +79,12 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 
 //------------------------------------------Messages------------------------------------------------------------------
 	
+	
+	public void checkStand()
+	{
+		checked_stand = false;
+		stateChanged();
+	}
 	
 	@Override
 	public void msgHereIsANewOrder(int choice, int tableNumber, TannerRestaurantWaiter w) 
@@ -199,9 +208,15 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 				orders.add(order);
 				return true;
 			}
-			else
+			if(checked_stand == false)
 			{
-				
+				cookTimer.schedule(new TimerTask() {
+					public void run() {
+						print(AlertTag.TANNER_RESTAURANT, "Check revolving stand");
+						checkStand();
+					}
+				}, 10000);
+				checked_stand = true;
 			}
 			
 		} catch (ConcurrentModificationException e) {
@@ -236,7 +251,7 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 	
 	private void PlaceNewMarketOrder()
 	{
-		print("Ordering from market");
+		print(AlertTag.TANNER_RESTAURANT, "Ordering from market");
 		List<Item> groceryList = new ArrayList<Item>();
 		for(int i = 1; i <= restaurant.numDishes; i++)
 		{
@@ -251,7 +266,7 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 	
 	private void CookOrder(final Order o)
 	{
-		print("Cook food");
+		print(AlertTag.TANNER_RESTAURANT, "Cook food");
 		myGui.DoGoToIngredients();
 		try {
 			doingAction.acquire();
@@ -279,7 +294,7 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 	
 	private void PlateOrder(Order o)
 	{
-		print("Plate Food");
+		print(AlertTag.TANNER_RESTAURANT, "Plate Food");
 		myGui.DoGoToGrills();
 		try {
 			doingAction.acquire();
@@ -304,6 +319,15 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 	public void cmdFinishAndLeave() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void clearInventory() 
+	{
+		for(int i = 0; i < restaurant.numDishes; i++)
+		{
+			restaurant.menu.get(i).stock = 0;
+		}
 	}
 
 

@@ -1,5 +1,6 @@
 package city.restaurant.tanner;
 
+import gui.trace.AlertTag;
 import city.PersonAgent;
 import city.Place;
 import city.restaurant.tanner.MyCustomer.customerState;
@@ -21,7 +22,7 @@ public class TannerRestaurantRegularWaiterRole extends TannerRestaurantBaseWaite
 	@Override
 	protected void SubmitOrder(MyCustomer c) 
 	{
-		print("Submit order to cook");
+		print(AlertTag.TANNER_RESTAURANT, "Submit order to cook");
 		myGUI.DoGoToCook(cook.getPosition());
 		try {
 			doingAction.acquire();

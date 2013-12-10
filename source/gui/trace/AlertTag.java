@@ -22,6 +22,7 @@ public enum AlertTag {
         RYAN_RESTAURANT,
         YIXIN_RESTAURANT,
         ERIC_RESTAURANT,
+        TANNER_RESTAURANT,
         
         BUS,				//Worldview
         BUS_STOP,

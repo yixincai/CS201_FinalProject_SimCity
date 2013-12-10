@@ -1,5 +1,6 @@
 package city.restaurant.tanner;
 
+import gui.trace.AlertTag;
 import city.PersonAgent;
 import city.Place;
 import city.restaurant.tanner.MyCustomer.customerState;
@@ -21,7 +22,7 @@ public class TannerRestaurantSharedDataWaiterRole extends TannerRestaurantBaseWa
 	@Override
 	protected void SubmitOrder(MyCustomer c) 
 	{
-		print("Process order");
+		print(AlertTag.TANNER_RESTAURANT, "Process order");
 		c.currentState = customerState.orderIn; 
 		myGUI.DoGoToRevolvingStand();
 		try {
@@ -31,7 +32,7 @@ public class TannerRestaurantSharedDataWaiterRole extends TannerRestaurantBaseWa
 			e.printStackTrace();
 		}
         Order o = new Order(this, c.order, c.tableNumber);
-        print("Trying to put order on revolving stand");
+        print(AlertTag.TANNER_RESTAURANT, "Trying to put order on revolving stand");
         restaurant.revolvingStand.insert(o);		
 	}
 
