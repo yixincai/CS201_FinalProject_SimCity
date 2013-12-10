@@ -175,7 +175,7 @@ public class BankTellerRole extends Role implements BankTeller {
 			}
 		}
 		
-		if(myCustomers.isEmpty() && command == Command.Leave && host.isWaitingCustomersEmpty()){
+		if(myCustomers.isEmpty() && command == Command.Leave && bank.host().isWaitingCustomersEmpty()){
 			actLeaveBank();
 		}
 		return false;
