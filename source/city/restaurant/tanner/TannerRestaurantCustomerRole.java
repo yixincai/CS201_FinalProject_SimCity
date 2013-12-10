@@ -1,5 +1,7 @@
 package city.restaurant.tanner;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Random;
@@ -303,21 +305,21 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 	
 	private void SitDown()
 	{
-		print("Sit Down");
+		print(AlertTag.TANNER_RESTAURANT, "Sit Down");
 		myState = State.BeingSeated;
 		myGui.DoGoToSeat(table.tableNumber);
 	}
 	
 	private void LookAtMenu()
 	{
-		print("Look at menu");
+		print(AlertTag.TANNER_RESTAURANT, "Look at menu");
 		myState = State.WaitingToOrder;
 		myGui.DoLookAtMenu();
 	}
 	
 	private void CallWaiterToOrder()
 	{
-		print("Call waiter to order");
+		print(AlertTag.TANNER_RESTAURANT, "Call waiter to order");
 		myState = State.Ordering;
 		waiter.msgImReadyToOrder(this);	
 	}
@@ -333,7 +335,7 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 			{
 				if(restaurant.menu.get(i).cost < cheapestPrice)
 				{
-					print("Order cheapest food");
+					print(AlertTag.TANNER_RESTAURANT, "Order cheapest food");
 					cheapestPrice = restaurant.menu.get(i).cost;
 					index = i;
 				}
@@ -341,13 +343,13 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 			
 			if(myMoney < cheapestPrice)
 			{
-				print("Cant afford anything");
+				print(AlertTag.TANNER_RESTAURANT, "Cant afford anything");
 				waiter.msgICantAffordAnything(this);
 				Leave();
 			}
 			else
 			{
-				print("order cheapest food");
+				print(AlertTag.TANNER_RESTAURANT, "order cheapest food");
 				choice = menu.get(index);
 				waiter.msgHereIsMyOrder(this, choice);
 				myState = State.WaitingForFood;
@@ -356,7 +358,7 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 		
 		else
 		{
-			print("Order normally");
+			print(AlertTag.TANNER_RESTAURANT, "Order normally");
 			Random orderGenerator = new Random();
 			int choiceIndex = orderGenerator.nextInt(menu.size());
 			choice = menu.get(choiceIndex);
@@ -382,13 +384,13 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 			
 			if(myMoney < cheapestPrice)
 			{
-				print("cant afford anyhting");
+				print(AlertTag.TANNER_RESTAURANT, "cant afford anyhting");
 				waiter.msgICantAffordAnything(this);
 				Leave();
 			}
 			else
 			{
-				print("Ordering food");
+				print(AlertTag.TANNER_RESTAURANT, "Ordering food");
 				choice = menu.get(index);
 				waiter.msgHereIsMyReOrder(this, choice);
 				myState = State.WaitingForFood;
@@ -396,7 +398,7 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 		}
 		else
 		{
-			print("Ordering food");
+			print(AlertTag.TANNER_RESTAURANT, "Ordering food");
 			Random orderGenerator = new Random();
 			int choiceIndex = orderGenerator.nextInt(menu.size());
 			choice = menu.get(choiceIndex);
@@ -407,14 +409,14 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 	
 	private void EatFood()
 	{
-		print("Eat food");
+		print(AlertTag.TANNER_RESTAURANT, "Eat food");
 		myState = State.Eating;
 		myGui.DoEatFood();
 	}
 	
 	private void GetCheck()
 	{
-		print("Asking waiter for check");
+		print(AlertTag.TANNER_RESTAURANT, "Asking waiter for check");
 		myState = State.WaitingForCheck;
 		waiter.msgIWouldLikeTheCheck(this, choice);
 	}
@@ -431,19 +433,19 @@ public class TannerRestaurantCustomerRole extends RestaurantCustomerRole impleme
 		myState = State.Paying;
 		if(name_.toLowerCase().contains("thief".toLowerCase()))
 		{
-			print("I dont have enough money");
+			print(AlertTag.TANNER_RESTAURANT, "I dont have enough money");
 			cashier.msgIDontHaveEnoughMoney(billAmount, myMoney, this);
 		}
 		else
 		{
-			print("Paying");
+			print(AlertTag.TANNER_RESTAURANT, "Paying");
 			cashier.msgHereIsMyPayment(billAmount, myMoney, this);
 		}
 	}
 	
 	private void Leave()
 	{
-		print("Leaving");
+		print(AlertTag.TANNER_RESTAURANT, "Leaving");
 		myState = State.Leaving;
 		try {
 			waiter.msgGoodBye(this);

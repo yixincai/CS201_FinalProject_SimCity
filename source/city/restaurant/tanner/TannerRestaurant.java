@@ -167,4 +167,10 @@ public class TannerRestaurant extends Restaurant
 		this.animationPanel.addGui(tannerHostGui);		
 	}
 
+	@Override
+	public void clearInventory() 
+	{
+		cook.clearInventory();
+	}
+
 }
