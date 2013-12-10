@@ -348,18 +348,19 @@ public class PersonAgent extends Agent implements Person
 	public CommuterRole commuterRole() { return _commuterRole; }
 	// Actions to do:
 	/** Adds an action to do to the back of the list of actions to do */
-	public void addActionToDo(String actionToDo) { _actionsToDo.add(actionToDo); }
+	public void addActionToDo(String actionToDo) { _actionsToDo.add(actionToDo); stateChanged(); }
 	/** Adds a list of actions to do to the back of the list of actions to do */
-	public void addActionsToDo(List<String> actionsToDo) { _actionsToDo.addAll(actionsToDo); }
+	public void addActionsToDo(List<String> actionsToDo) { _actionsToDo.addAll(actionsToDo); stateChanged(); }
 	/** Inserts an action to do at the beginning of the list */
-	public void insertFirstActionToDo(String actionToDo) { _actionsToDo.add(0, actionToDo); }
-	public boolean removeActionToDo(String actionToDo) { return _actionsToDo.remove(actionToDo); }
+	public void insertFirstActionToDo(String actionToDo) { _actionsToDo.add(0, actionToDo); stateChanged(); }
+	public boolean removeActionToDo(String actionToDo) {  stateChanged(); return _actionsToDo.remove(actionToDo); }
 	/** Removes and returns the first action in the list */
-	private String popFirstActionToDo() { return _actionsToDo.remove(0); }
+	private String popFirstActionToDo() { stateChanged(); return _actionsToDo.remove(0); }
 	/** Returns the current _actionsToDo list and resets it to a new, empty list. */
 	public List<String> clearActionsToDo() {
 		List<String> oldActionsToDo = _actionsToDo;
 		_actionsToDo = new ArrayList<String>();
+		stateChanged();
 		return oldActionsToDo;
 	}
 	
