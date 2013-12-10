@@ -98,7 +98,7 @@ public class PersonAgent extends Agent implements Person
 			}
 		}
 		
-		// Current Money
+		// Pocket Money
 		boolean haveLotsOfMoney() {
 			return _money > MONEY_HIGH_LEVEL;
 		}
@@ -272,6 +272,8 @@ public class PersonAgent extends Agent implements Person
 				if(chosenRestaurants.size() != 0)
 				{
 					int index = new Random().nextInt(chosenRestaurants.size());
+					// Hack for testing:
+					index = 0;
 					_occupation = chosenRestaurants.get(index).generateWaiterRole(this, occupationType.contains("SharedData"));
 					return;
 				}
@@ -558,14 +560,34 @@ public class PersonAgent extends Agent implements Person
 					if(actEatAtHome()) return true;
 				}
 			}
+			
+			// Bank stuff
+			// If I have lots of money and I owe money, repay it; if I have lots of money and don't owe money, deposit.
 			if(_state.haveLotsOfMoney())
 			{
-				actGoToBank("Deposit", _state.amountToWithdrawOrDeposit());
+				if(_bankCustomerRole != null && _bankCustomerRole.amountOwed() > 0)
+				{
+					if(actGoToBank("Pay Loan", _bankCustomerRole.amountOwed() > _money ? _money : _bankCustomerRole.amountOwed())) return true;
+				}
+				else
+				{
+					if(actGoToBank("Deposit", _state.amountToWithdrawOrDeposit())) return true;
+				}
 			}
+			// If I have low money and I have funds, withdraw
 			else if(_state.haveLowMoney() && _bankCustomerRole != null)
 			{
-				actGoToBank("Withdraw", _state.amountToWithdrawOrDeposit());
+				if(_bankCustomerRole.accountFunds() > 0) actGoToBank("Withdraw", _state.amountToWithdrawOrDeposit());
+				else actGoToBank("Withdraw Loan", _state.amountToWithdrawOrDeposit());
 			}
+			else if(totalMoney() == 0)
+			{
+				if(_bankCustomerRole != null && _bankCustomerRole.accountFunds() <= 5 && _bankCustomerRole.amountOwed() > 0)
+				{
+					if(actGoToBank("Robber", 1000)) return true;
+				}
+			}
+			
 			if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime() - .5) //could replace with variables for sleepTime and wakeTime
 			{
 				_homeOccupantRole.cmdGoToBed();
