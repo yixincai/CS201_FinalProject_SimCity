@@ -28,41 +28,36 @@ public class Directory {
 	//Bus Fare (initialize in constructor?)
 	private static double _busFare = 2;
 	
-	private static double _openingTime = 0; // These are set to 0 and 24 for testing
-	private static double _closingTime = 24;
+	private static double _openingTime = 10;
+	private static double _closingTime = 16;
 
 	// ------------------------------------ PROPERTIES ---------------------------------------
 	public static double openingTime() { return _openingTime; }
 	public static double closingTime() { return _closingTime; }
+	public static boolean cityAtCapacity() { return _personAgents.size() >= houses().size() + apartmentBuildings().size() * 4; } // if city is running slow, change this because houses() and apartmentBuildings() both iterate through _places every time they're called. Use a home counter that's incremented whenever a house or apartment building is created
 	
+	// WorldView stuff, like lanes and sidewalks and intersections
 	public static ArrayList<Lane> lanes(){
 		return lanes;
 	}
-	
 	public static ArrayList<Lane> sidewalks(){
 		return sidewalks;
 	}
-
 	public static ArrayList<Lane> busSidewalks(){
 		return busSidewalks;
 	}
-	
 	public static ArrayList<Semaphore> intersections(){
 		return intersections;
 	}
-	
 	public static void addLanes(Lane lane){
 		lanes.add(lane);
 	}
-
 	public static void addSidewalk(Lane lane){
 		sidewalks.add(lane);
 	}
-	
 	public static void addBusSidewalk(Lane lane){
 		busSidewalks.add(lane);
 	}
-	
 	public static void addIntersections(Semaphore sem){
 		intersections.add(sem);
 	}

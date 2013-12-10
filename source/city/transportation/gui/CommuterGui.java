@@ -18,9 +18,10 @@ public class CommuterGui implements Gui {
 	private static final int NULL_POSITION_X = 300;
 	private static final int NULL_POSITION_Y = 300;
 
-
+	boolean started = false;
 	int _xPos, _yPos;
-	int _currentBlockX = 0, _currentBlockY = 0;//TODO set the block positions used by cars
+	boolean _selected = false;
+	int _currentBlockX = 0, _currentBlockY = 0;
 	int _destinationBlockX, _destinationBlockY; 
 	List<Integer> route = new ArrayList<Integer>();
 	List<Integer> intersections = new ArrayList<Integer>();
@@ -30,7 +31,7 @@ public class CommuterGui implements Gui {
 	Command _transportationMethod = Command.none;
 	enum PedestrianState { none, waitForAnimation}
 	PedestrianState _showPedestrian = PedestrianState.none;	
-	boolean isPresent = true;
+	boolean isPresent = false;
 	private Semaphore _reachedDestination = new Semaphore(0, true);
 	private Semaphore _delayForMoving = new Semaphore(0, true);
 	private Timer _lookUpDelay = new Timer();
@@ -49,8 +50,10 @@ public class CommuterGui implements Gui {
 	//----------------------------------Constructor & Setters & Getters----------------------------------
 	public CommuterGui(CommuterRole commuter, Place initialPlace) {
 		// Note: placeX and placeY can safely receive values of null
+		_currentBlockX = getBlockX(placeX(initialPlace));
+		_currentBlockY = getBlockY(placeY(initialPlace));		
 		Lane lane;
-		if (commuter.hasCar())
+		if (commuter._person.money()>=200)
 			lane = Directory.lanes().get(_currentBlockX + 3 * _currentBlockY);
 		else
 			lane = Directory.sidewalks().get(_currentBlockX + 3 * _currentBlockY);
@@ -77,6 +80,7 @@ public class CommuterGui implements Gui {
 		_xPos = _xDestination;
 		_yPos = _yDestination;
 		_commuter = commuter;
+		setPresent(false);
 		//currentPosition = new Position(_xPos, _yPos);
 	}
 
@@ -118,6 +122,15 @@ public class CommuterGui implements Gui {
 		setPresent(true);
 		_destinationBlockX = getBlockX(placeX(destination));
 		_destinationBlockY = getBlockY(placeY(destination));
+		if (_destinationBlockY == 1)
+			landingSpot = getSpotX(placeX(destination)) + 1;
+		else
+			if (_destinationBlockX == 1)
+				landingSpot = 10 - getSpotX(placeX(destination));
+			else if (_destinationBlockX == 0)
+				landingSpot = 7 - getSpotX(placeX(destination));
+			else
+				landingSpot = 6 - getSpotX(placeX(destination));
 		if (_destinationBlockX == _currentBlockX && _destinationBlockY == _currentBlockY){
 			setPresent(false);
 			return;
@@ -181,8 +194,6 @@ public class CommuterGui implements Gui {
 				}
 			}	
 		}
-
-		//TODO determine landing spot
 		for (int i=0; i< route.size();i++){
 			Lane lane = Directory.sidewalks().get(route.get(i));
 			int starting_position = 0;
@@ -190,7 +201,7 @@ public class CommuterGui implements Gui {
 				if (startingSpot > 0)
 					starting_position = startingSpot;
 			}
-			for (int j=starting_position; j< lane.permits.size();j++){//TODO change size to the ending position and starting position
+			for (int j=starting_position; j< lane.permits.size();j++){
 				while(!lane.permits.get(j).tryAcquire()){
 					_lookUpDelay.schedule(new TimerTask(){
 						@Override
@@ -327,12 +338,12 @@ public class CommuterGui implements Gui {
 		// set visible to true
 		route.clear();
 		intersections.clear();
-		setPresent(true);
 		_destinationBlockX = getBlockX(placeX(destination));
 		_destinationBlockY = getBlockY(placeY(destination));
 		if (_destinationBlockX == _currentBlockX && _destinationBlockY == _currentBlockY){
 			return;
 		}
+		setPresent(true);
 		route.add(_currentBlockX + 3 * _currentBlockY);
 		if (_currentBlockY == 0){
 			if ( _destinationBlockX > _currentBlockX){ //going right
@@ -406,7 +417,7 @@ public class CommuterGui implements Gui {
 				if (parkingSpot > 0)
 					starting_position = parkingSpot;
 			}
-			for (int j=starting_position; j< lane.permits.size();j++){//TODO change starting position
+			for (int j=starting_position; j< lane.permits.size();j++){
 				while(!lane.permits.get(j).tryAcquire()){
 					_lookUpDelay.schedule(new TimerTask(){
 						@Override
@@ -446,7 +457,11 @@ public class CommuterGui implements Gui {
 				waitForLaneToFinish();
 				//free parking spaces
 				if (i == 0 && j == starting_position){
-					lane.parking_spaces.get(j).release();
+					if (started){
+						lane.parking_spaces.get(j).release();
+					}
+					else
+						started = true;
 				}
 				if (i != 0 && j == starting_position){
 					Directory.intersections().get(intersections.get(i-1)).release();
@@ -567,7 +582,6 @@ public class CommuterGui implements Gui {
 				lane.permits.get(lane.permits.size()-1).release();
 			}
 		}
-		//TODO if we have parking area do not set present to false but show in parking lot
 		//setPresent(false);
 		//set automatically
 		_currentBlockX = _destinationBlockX;
@@ -578,7 +592,6 @@ public class CommuterGui implements Gui {
 	public void goToBusStop(BusStopObject busstop){
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
-		//TODO set position and destination
 		route.clear();
 		if (_currentBlockX == 0 && _currentBlockY == 0){
 			_xPos = 41 + 15 * 10;
@@ -950,6 +963,11 @@ public class CommuterGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		if(isPresent){
+			if(_selected){
+				g.setColor(Color.RED);
+				g.fillRect(_xPos - 2, _yPos - 2, xGap + 4, yGap + 4);
+			}
+			
 			if (dead){
 				g.drawImage(skull,_xPos,_yPos, xGap, yGap, null);
 				return;
@@ -1004,6 +1022,16 @@ public class CommuterGui implements Gui {
 			return 2;
 		return -1;
 	}
+	
+	private int getSpotX(int xPos){
+		if (xPos >= 41 + 8 * 10 && xPos < 41 + 16 * 10)
+			return (xPos - 41 - 8 * 10)/10;
+		if (xPos >= 41 + 24 * 10 && xPos < 41 + 36 * 10)
+			return (xPos - 41 - 24 * 10)/10;
+		if (xPos >= 41 + 44 * 10 && xPos < 41 + 52 * 10)
+			return (xPos - 41 - 44 * 10)/10;
+		return -1;
+	}
 
 	private int getBlockY(int yPos){
 		if (yPos >= 30 + 5 * 10 && yPos < 30 + 9 * 10)
@@ -1020,5 +1048,9 @@ public class CommuterGui implements Gui {
 		catch(InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setSelected(boolean selected){
+		_selected = selected;
 	}
 }

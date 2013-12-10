@@ -13,7 +13,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import city.Directory;
+import city.PersonAgent;
 import city.Time;
+import city.transportation.CommuterRole;
 import city.transportation.gui.BusAgentGui;
 import city.transportation.gui.CommuterGui;
 import city.transportation.gui.TruckAgentGui;
@@ -35,12 +37,14 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 	private static int WINDOWY = 720 / 2;
 
     private List<Gui> guis = new ArrayList<Gui>();
+    private MainGui mainGui;
 	
 	ArrayList<WorldViewBuilding> buildings;
 	Image background;
 	
-	public WorldView()
+	public WorldView(MainGui mainGui)
 	{
+		this.mainGui = mainGui;
 		this.setPreferredSize(new Dimension(WINDOWX, WINDOWY));
 		this.setBorder(BorderFactory.createTitledBorder("World View"));
 		 buildings = new ArrayList<WorldViewBuilding>();
@@ -105,17 +109,18 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		
 		for ( int i=0; i<Directory.lanes().size(); i++ ) {
 			Lane l = Directory.lanes().get(i);
-//			l.draw( g2 );
+			//l.draw( g2 );
 		}
 		
 		for ( int i=0; i<Directory.sidewalks().size(); i++ ) {
 			Lane l = Directory.sidewalks().get(i);
-//			l.draw( g2 );
+			//l.draw( g2 );
 		}
 		
 		for ( int i=0; i<Directory.busSidewalks().size(); i++ ) {
 			Lane l = Directory.busSidewalks().get(i);
-//			l.draw( g2 );
+			//l.draw( g2 );
+>>>>>>> e4f05f96d2bfb04c58d824ac6589546fdf2f6817
 		}
 		
 		try
@@ -155,6 +160,19 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
                 	}
                 }
         }	
+        
+        List<PersonAgent> tempList = Directory.personAgents();
+        for(int i = 0; i < tempList.size(); i++){
+        	if(tempList.get(i).currentRole().typeToString().equalsIgnoreCase("CommuterRole")){
+        		if((e.getX() >= tempList.get(i).commuterRole().gui().getX() && e.getX() <
+        				tempList.get(i).commuterRole().gui().getX() + 10) && (e.getY() >= 
+        				tempList.get(i).commuterRole().gui().getY() && e.getY() <
+        				tempList.get(i).commuterRole().gui().getY() + 10)){
+        			mainGui.cPanel.currentPersonPanel.updatePerson(tempList.get(i));
+        			return;
+        		}
+        	}
+        }
 	}
 
 	@Override

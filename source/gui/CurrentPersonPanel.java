@@ -152,7 +152,11 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		{
 			if(tempPerson.name() == selected.getText())
 			{
+				if(_currentlySelectedPerson != null){
+					_currentlySelectedPerson.commuterRole().gui().setSelected(false);
+				}
 				_currentlySelectedPerson = tempPerson;
+				tempPerson.commuterRole().gui().setSelected(true);
 				nameField.setText("Person Name: " + tempPerson.name());
 				moneyField.setText("Person Money: " + tempPerson.money() + "0");
 				currentRoleField.setText("Current Role: " + tempPerson.currentRole().typeToString());
@@ -160,6 +164,19 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 				occupationField.setText("Occupation: " + tempPerson.occupationTypeToString());
 			}
 		}
+	}
+	
+	public void updatePerson(PersonAgent tempPerson){
+		if(_currentlySelectedPerson != null){
+			_currentlySelectedPerson.commuterRole().gui().setSelected(false);
+		}
+		_currentlySelectedPerson = tempPerson;
+		tempPerson.commuterRole().gui().setSelected(true);
+		nameField.setText("Person Name: " + tempPerson.name());
+		moneyField.setText("Person Money: " + tempPerson.money() + "0");
+		currentRoleField.setText("Current Role: " + tempPerson.currentRole().typeToString());
+		nextRoleField.setText("Next Role: " + tempPerson.nextRoleTypeToString());
+		occupationField.setText("Occupation: " + tempPerson.occupationTypeToString());
 	}
 	
 	@Override

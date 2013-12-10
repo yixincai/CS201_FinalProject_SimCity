@@ -23,13 +23,16 @@ public class PersonAgent extends Agent implements Person
 	// Constants:
 	public static final int RICH_LEVEL = 250;
 	public static final int POOR_LEVEL = 10;
+	public static final int MONEY_LOW_LEVEL = 20;
+	public static final int MONEY_MID_LEVEL = 50;
+	public static final int MONEY_HIGH_LEVEL = 80;
 	
 	// --------------------------------------- DATA -------------------------------------------
 	// Personal data:
 	private String _name;
 	
 	// Role data:
-	private List<Role> _roles; // these are roles that you have had do when you're at a place e.g. EricCustomerRole, MarketCustomerRole
+	private List<Role> _customerRoles = new ArrayList<Role>(); // these are the customer roles that are dormant e.g. EricCustomerRole, MarketCustomerRole
 	private Role _currentRole; // this should never be null
 	private boolean _sentCmdFinishAndLeave = false;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
@@ -45,8 +48,7 @@ public class PersonAgent extends Agent implements Person
 	
 	// State data:
 	public double _money; //TODO change to private and change appropriate other values
-	enum WealthState { RICH, NORMAL, BROKE, POOR } // the word "deadbeat" courtesy of Wilczynski lol
-	boolean _deadbeat = false; // if true, means this person doesn't pay loans
+	enum WealthState { RICH, NORMAL, BROKE, POOR }
 	enum NourishmentState { HUNGRY, NORMAL, FULL }
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
 	class State
@@ -96,6 +98,17 @@ public class PersonAgent extends Agent implements Person
 			}
 		}
 		
+		// Current Money
+		boolean haveLotsOfMoney() {
+			return _money > MONEY_HIGH_LEVEL;
+		}
+		boolean haveLowMoney() {
+			return _money < MONEY_LOW_LEVEL;
+		}
+		double amountToWithdrawOrDeposit() {
+			return Math.abs(_money - MONEY_MID_LEVEL);
+		}
+		
 		// Time
 		double time()
 		{
@@ -138,27 +151,13 @@ public class PersonAgent extends Agent implements Person
 		else { AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(),"Acquired null occupation."); }
 		acquireHome(housingType);
 		
-		// For testing purposes for V1, choose a random action to do at home.
-		switch((int)(Math.random()*3))
-		{
-		case 0:
-			_homeOccupantRole.cmdWatchTv();
-			break;
-		case 1:
-			_homeOccupantRole.cmdCookAndEatFood();
-			break;
-		case 2:
-			_homeOccupantRole.cmdGoToBed();
-			break;
-		}
-		
 		generateAndSetCommuterRole();
 		setNextRole(_homeOccupantRole);
 	}
 	/** Sets _commuterRole to a new CommuterRole */
 	public void generateAndSetCommuterRole()
 	{
-		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
+		_commuterRole = new CommuterRole(this, _homeOccupantRole.place()); // may replace null with _homeOccupantRole.place() to set the person's starting position
 	}
 	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
 	 * @param homeType Either "house" or "apartment" */
@@ -353,28 +352,28 @@ public class PersonAgent extends Agent implements Person
 	public double bankAmountOwed() { return _bankCustomerRole != null ? _bankCustomerRole.amountOwed() : 0.0; }
 	public double totalMoney() { return _money + bankAccountFunds() + bankAmountOwed(); }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
-	public void setWorkDays(boolean weekday_notWeekend) {
-		_weekday_notWeekend = weekday_notWeekend;
-	}
+	public void setWorkDays(boolean weekday_notWeekend) { _weekday_notWeekend = weekday_notWeekend; }
 	public Role currentRole() { return _currentRole; }
 	public String occupationTypeToString() { return (_occupation != null) ? _occupation.typeToString() : "None"; }
 	public String nextRoleTypeToString() { return (_nextRole != null && _nextRole != _currentRole) ? _nextRole.typeToString() : "None"; }
 	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
 	public CommuterRole commuterRole() { return _commuterRole; }
+	
 	// Actions to do:
 	/** Adds an action to do to the back of the list of actions to do */
-	public void addActionToDo(String actionToDo) { _actionsToDo.add(actionToDo); }
+	public void addActionToDo(String actionToDo) { _actionsToDo.add(actionToDo); stateChanged(); }
 	/** Adds a list of actions to do to the back of the list of actions to do */
-	public void addActionsToDo(List<String> actionsToDo) { _actionsToDo.addAll(actionsToDo); }
+	public void addActionsToDo(List<String> actionsToDo) { _actionsToDo.addAll(actionsToDo); stateChanged(); }
 	/** Inserts an action to do at the beginning of the list */
-	public void insertFirstActionToDo(String actionToDo) { _actionsToDo.add(0, actionToDo); }
-	public boolean removeActionToDo(String actionToDo) { return _actionsToDo.remove(actionToDo); }
+	public void insertFirstActionToDo(String actionToDo) { _actionsToDo.add(0, actionToDo); stateChanged(); }
+	public boolean removeActionToDo(String actionToDo) {  stateChanged(); return _actionsToDo.remove(actionToDo); }
 	/** Removes and returns the first action in the list */
-	private String popFirstActionToDo() { return _actionsToDo.remove(0); }
+	private String popFirstActionToDo() { stateChanged(); return _actionsToDo.remove(0); }
 	/** Returns the current _actionsToDo list and resets it to a new, empty list. */
 	public List<String> clearActionsToDo() {
 		List<String> oldActionsToDo = _actionsToDo;
 		_actionsToDo = new ArrayList<String>();
+		stateChanged();
 		return oldActionsToDo;
 	}
 	
@@ -401,7 +400,7 @@ public class PersonAgent extends Agent implements Person
 				if(!_actionsToDo.isEmpty())
 				{
 					if(_currentRole == _homeOccupantRole) {
-						_currentRole.cmdFinishAndLeave();
+						finishAndLeaveCurrentRole();
 					}
 				}
 				// Finish current role because you have to get to work:
@@ -544,35 +543,34 @@ public class PersonAgent extends Agent implements Person
 				setNextRole(_occupation);
 				return true;
 			}
-			if(_occupation == null)
-			{
-				setNextRole(_homeOccupantRole);
-				return true;
-			}
-			if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime()) //could replace with variables for sleepTime and wakeTime
-			{
-				_homeOccupantRole.cmdGoToBed();
-				setNextRole(_homeOccupantRole);
-				return true;
-			}
 			if(_state.nourishment() == NourishmentState.HUNGRY)
 			{
 				if(_state.wealth() == WealthState.RICH)
 				{
-					actGoToAnyRestaurant();
+					if(actGoToAnyRestaurant()) return true;
 				}
 				else
 				{
-					Random rand = new Random();
-					if(rand.nextInt(4) == 0)
+					if(new Random().nextInt(4) == 0)
 					{
-						if(actGoToAnyRestaurant())
-						{
-							return true;
-						}
+						if(actGoToAnyRestaurant()) return true;
 					}
 					if(actEatAtHome()) return true;
 				}
+			}
+			if(_state.haveLotsOfMoney())
+			{
+				actGoToBank("Deposit", _state.amountToWithdrawOrDeposit());
+			}
+			else if(_state.haveLowMoney() && _bankCustomerRole != null)
+			{
+				actGoToBank("Withdraw", _state.amountToWithdrawOrDeposit());
+			}
+			if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime() - .5) //could replace with variables for sleepTime and wakeTime
+			{
+				_homeOccupantRole.cmdGoToBed();
+				setNextRole(_homeOccupantRole);
+				return true;
 			}
 			_homeOccupantRole.cmdWatchTv();
 			setNextRole(_homeOccupantRole);
@@ -623,9 +621,9 @@ public class PersonAgent extends Agent implements Person
 	// ----------------- Market -----------------
 	private boolean actBuyMealsFromMarket(int meals)
 	{
-		// Search for a MarketCustomerRole in _roles, use that;
-		// if no MarketCustomerRole in _roles, choose a Market from the Directory, and get a new MarketCustomerRole from it
-		for(Role r : _roles)
+		// Search for a MarketCustomerRole in _customerRoles, use that;
+		// if no MarketCustomerRole in _customerRoles, choose a Market from the Directory, and get a new MarketCustomerRole from it
+		for(Role r : _customerRoles)
 		{
 			if(r instanceof MarketCustomerRole)
 			{
@@ -635,14 +633,14 @@ public class PersonAgent extends Agent implements Person
 				return true;
 			}
 		}
-		// note: we only get here if no MarketCustomerRole was found in _roles
+		// note: we only get here if no MarketCustomerRole was found in _customerRoles
 		List<Market> markets = Directory.markets();
 		for(Market m : markets)
 		{
 			MarketCustomerRole mcr = m.generateCustomerRole(this);
 			mcr.cmdBuyFood(meals);
 			setNextRole(mcr);
-			_roles.add(mcr);
+			_customerRoles.add(mcr);
 			return true;
 		}
 		return false;
@@ -681,7 +679,7 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	// ----------------- Restaurant -----------------
-	/** If a RestaurantCustomerRole exists in _roles, set that to the next role.  Else, get a new customer role from a randomly chosen restaurant */
+	/** If a RestaurantCustomerRole exists in _customerRoles, set that to the next role.  Else, get a new customer role from a randomly chosen restaurant */
 	private boolean actGoToAnyRestaurant()
 	{
 		RestaurantCustomerRole rcr = (RestaurantCustomerRole)getRoleOfType(RestaurantCustomerRole.class);
@@ -692,21 +690,21 @@ public class PersonAgent extends Agent implements Person
 			return true;
 		}
 		
-		// note: we only get here if no RestaurantCustomerRole was found in _roles
+		// note: we only get here if no RestaurantCustomerRole was found in _customerRoles
 		List<Restaurant> restaurants = Directory.restaurants();
 		if(restaurants.size() != 0)
 		{
 			rcr = restaurants.get(new Random().nextInt(restaurants.size())).generateCustomerRole(this);
 			rcr.cmdGotHungry();
 			setNextRole(rcr);
-			_roles.add(rcr);
+			_customerRoles.add(rcr);
 			return true;
 		}
 		
 		return false;
 	}
 	/**
-	 * Searches for a RestaurantCustomerRole of the correct type in _roles and then in Directory.restaurants() and calls setNextRole on it
+	 * Searches for a RestaurantCustomerRole of the correct type in _customerRoles and then in Directory.restaurants() and calls setNextRole on it
 	 * @param type "Eric", "Omar", "Ryan", or "Yixin".  Case-sensitive and must match exactly.
 	 * @return true if a restaurant of the passed-in type was chosen and setNextRole was called
 	 */
@@ -719,21 +717,21 @@ public class PersonAgent extends Agent implements Person
 			rcr = (RestaurantCustomerRole)getRoleOfType(EricCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(EricRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
+				if(rcr != null) _customerRoles.add(rcr);
 			}
 			break;
 		case "Omar":
 			rcr = (RestaurantCustomerRole)getRoleOfType(OmarCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(OmarRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
+				if(rcr != null) _customerRoles.add(rcr);
 			}
 			break;
 		case "Ryan":
 			rcr = (RestaurantCustomerRole)getRoleOfType(RyanCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(RyanRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
+				if(rcr != null) _customerRoles.add(rcr);
 			}
 			break;
 		//case "Tanner":
@@ -741,14 +739,14 @@ public class PersonAgent extends Agent implements Person
 		//	if(rcr == null)
 		//	{
 		//		rcr = getNewCustomerRoleFromRestaurantOfType(TannerRestaurant.class);
-		//		if(rcr != null) _roles.add(rcr);
+		//		if(rcr != null) _customerRoles.add(rcr);
 		//	}
 		//	break;
 		case "Yixin":
 			rcr = (RestaurantCustomerRole)getRoleOfType(YixinCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(YixinRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
+				if(rcr != null) _customerRoles.add(rcr);
 			}
 			break;
 		}
@@ -814,14 +812,14 @@ public class PersonAgent extends Agent implements Person
 	}
 	private Role getRoleOfType(Type type)
 	{
-		for(Role r : _roles)
+		for(Role r : _customerRoles)
 		{
 			if(r.getClass().equals(type)) return r;
 		}
 		return null;
 	}
 	/** This method returns a new customer role from the restaurant type specified.
-	 * It does not take into account whether or not the restaurant's customer role already exists in _roles.
+	 * It does not take into account whether or not the restaurant's customer role already exists in _customerRoles.
 	 */
 	private RestaurantCustomerRole getNewCustomerRoleFromRestaurantOfType(Type type)
 	{
