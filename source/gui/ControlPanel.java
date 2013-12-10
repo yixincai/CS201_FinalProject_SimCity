@@ -9,6 +9,8 @@ package gui;
  */
 
 import gui.astar.AStarTraversal;
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
 
 import java.awt.Dimension;
 
@@ -49,8 +51,14 @@ public class ControlPanel extends JTabbedPane {
 		this.setSelectedComponent(currentBuildingPanel);
 	}
 
-	public void addPerson(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) //TODO finish with new person instantiation stuff
+	/** @return false if the city is at capacity, true if a person was successfully added. */
+	public boolean addPerson(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType)
 	{
+		if(Directory.cityAtCapacity()) {
+			AlertLog.getInstance().logWarning(AlertTag.GENERAL_CITY, "Control Panel", "Failed to add person because city is at capacity");
+			return false;
+		}
+		
 		PersonAgent newPerson;
 		if(!(occupationType.contains("Customer"))){
 			newPerson = new PersonAgent(name, money, occupationType, weekday_notWeekend, housingType);
@@ -79,5 +87,6 @@ public class ControlPanel extends JTabbedPane {
 		mainGui.getWorldView().addGui(newPerson.commuterRole().gui());
 		this.setSelectedComponent(currentPersonPanel);
 		newPerson.startThread();
+		return true;
 	}
 }

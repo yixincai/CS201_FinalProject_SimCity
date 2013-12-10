@@ -42,6 +42,13 @@ public abstract class Restaurant extends Place {
 	public abstract Role getHost();
 	public RestaurantCashierRole getCashier(){ return cashier; }
 	public RestaurantCookRole getCook() { return cook; }
+	//for person agent and market
+	public boolean isOpen(){
+		if (getCashier().active && getHost().active && getCook().active)
+			return true;
+		else
+			return false;
+	}
 	
 	// ------------------------------------ FACTORIES & ROLE ACQUIRES ---------------------------------------------
 	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // make a new CustomerRole, which is initialized with a pointer to the HostRole and other appropriate initializations such as gui.
@@ -80,14 +87,6 @@ public abstract class Restaurant extends Place {
 			return getHost();
 		}
 		else return null;
-	}
-
-	//for person agent and market
-	public boolean isOpen(){
-		if (getCashier().active && getHost().active && getCook().active)
-			return true;
-		else
-			return false;
 	}
 
 }
