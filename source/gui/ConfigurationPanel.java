@@ -175,12 +175,12 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("MarketCashier1", 150, "Market Cashier", true, "apartment");
 			cPanel.addPerson("MarketEmployee1", 50, "Market Employee", true, "apartment");
 			cPanel.addPerson("MarketCashier2", 300, "Market Cashier", true, "apartment");
-			cPanel.addPerson("MarketEmployee2", 300, "Market Employee", true, "apartment");
+			cPanel.addPerson("MarketEmployee2", 50, "Market Employee", true, "apartment");
 			//banks
 			cPanel.addPerson("BankTeller1", 150, "Bank Teller", true, "house");
 			cPanel.addPerson("BankHost1", 50, "Bank Host", true, "apartment");
 			cPanel.addPerson("BankTeller2", 300, "Bank Teller", true, "house");
-			cPanel.addPerson("BankHost2", 300, "Bank Host", true, "apartment");
+			cPanel.addPerson("BankHost2", 50, "Bank Host", true, "apartment");
 			//yixin restaurant
 			cPanel.addPerson("YixinHost", 300, "YixinRestaurant Host", true, "house");
 			cPanel.addPerson("YixinCashier", 300, "YixinRestaurant Cashier", true, "apartment");
@@ -217,16 +217,16 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			
 			//add customers
 			cPanel.addPerson("YixinRestaurantCustomer1", 300, "YixinRestaurant Customer", true, "apartment");
-			cPanel.addPerson("OmarRestaurantCustomer", 150, "OmarRestaurant Customer", true, "apartment");
-			cPanel.addPerson("RyanRestaurantCustomer", 50, "RyanRestaurant Customer", true, "apartment");
+			cPanel.addPerson("OmarRestaurantCustomer1", 300, "OmarRestaurant Customer", true, "apartment");
+			cPanel.addPerson("RyanRestaurantCustomer1", 300, "RyanRestaurant Customer", true, "apartment");
 //			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
-			cPanel.addPerson("YixinRestaurantCustomer2", 300, "YixinRestaurant Customer", true, "apartment");
-			cPanel.addPerson("OmarRestaurantCustomer", 150, "OmarRestaurant Customer", true, "apartment");
-			cPanel.addPerson("RyanRestaurantCustomer", 50, "RyanRestaurant Customer", true, "apartment");
+			cPanel.addPerson("YixinRestaurantCustomer2", 150, "YixinRestaurant Customer", true, "apartment");
+			cPanel.addPerson("OmarRestaurantCustomer2", 150, "OmarRestaurant Customer", true, "apartment");
+			cPanel.addPerson("RyanRestaurantCustomer2", 150, "RyanRestaurant Customer", true, "apartment");
 //			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
-			cPanel.addPerson("YixinRestaurantCustomer3", 300, "YixinRestaurant Customer", true, "apartment");
-			cPanel.addPerson("OmarRestaurantCustomer", 150, "OmarRestaurant Customer", true, "apartment");
-			cPanel.addPerson("RyanRestaurantCustomer", 50, "RyanRestaurant Customer", true, "apartment");
+			cPanel.addPerson("YixinRestaurantCustomer3", 50, "YixinRestaurant Customer", true, "apartment");
+			cPanel.addPerson("OmarRestaurantCustomer3", 50, "OmarRestaurant Customer", true, "apartment");
+			cPanel.addPerson("RyanRestaurantCustomer3", 50, "RyanRestaurant Customer", true, "apartment");
 //			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
 
 			cPanel.addPerson("MarketCustomer1", 1000, "Market Customer", true, "apartment");
