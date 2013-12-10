@@ -42,8 +42,23 @@ public class CommuterGui implements Gui {
 	public boolean dead = false;
 	private Semaphore deathSem = new Semaphore(0, true);
 	
-	private ImageIcon b = new ImageIcon(this.getClass().getResource("/image/bank/Skull.png"));
-	private Image skull = b.getImage();
+	enum CarDirection{CarUp, CarDown, CarRight, CarLeft, CarNone};
+	CarDirection direction = CarDirection.CarNone;
+
+	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/transportation/CarUp.png"));
+    Image CarUp = a.getImage();
+    
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/transportation/CarDown.png"));
+    Image CarDown = b.getImage();
+    
+    ImageIcon c = new ImageIcon(this.getClass().getResource("/image/transportation/CarLeft.png"));
+    Image CarLeft = c.getImage();
+    
+    ImageIcon d = new ImageIcon(this.getClass().getResource("/image/transportation/CarRight.png"));
+    Image CarRight = d.getImage();
+    
+	private ImageIcon e = new ImageIcon(this.getClass().getResource("/image/bank/Skull.png"));
+	private Image skull = e.getImage();
 	int xGap = 10;
 	int yGap = 10;
 	
@@ -937,15 +952,23 @@ public class CommuterGui implements Gui {
 			_yPos--; 
 
 		if (_commuter.hasCar()){
-			if (_xPos < _xDestination)
+			if (_xPos < _xDestination){
 				_xPos++;
-			else if (_xPos > _xDestination)
+				direction = CarDirection.CarRight;
+			}
+			else if (_xPos > _xDestination){
 				_xPos--;
+				direction = CarDirection.CarLeft;
+			}
 
-			if (_yPos < _yDestination)
+			if (_yPos < _yDestination){
 				_yPos++;
-			else if (_yPos > _yDestination)
+				direction = CarDirection.CarDown;
+			}
+			else if (_yPos > _yDestination){
 				_yPos--;
+				direction = CarDirection.CarUp;
+			}
 		}
 
 		if(_xPos == _xDestination &&  _yPos == _yDestination &&
@@ -973,8 +996,21 @@ public class CommuterGui implements Gui {
 				return;
 			}
 			if(_commuter.hasCar()){
-				g.setColor(Color.ORANGE);
-				g.fillRect(_xPos, _yPos, 10, 10);
+				if(direction == CarDirection.CarDown){
+					g.drawImage(CarDown, _xPos, _yPos, 10, 10, null);
+				}
+				else if(direction == CarDirection.CarUp){
+					g.drawImage(CarUp, _xPos, _yPos, 10, 10, null);
+				}
+				else if(direction == CarDirection.CarRight){
+					g.drawImage(CarRight, _xPos, _yPos, 10, 10, null);
+				}
+				else if(direction == CarDirection.CarLeft){
+					g.drawImage(CarLeft, _xPos, _yPos, 10, 10, null);
+				}
+				else{
+					g.drawImage(CarDown, _xPos, _yPos, 10, 10, null);
+				}
 			}
 			else{
 				g.setColor(Color.magenta);
