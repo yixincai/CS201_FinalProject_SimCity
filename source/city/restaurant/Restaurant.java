@@ -42,9 +42,10 @@ public abstract class Restaurant extends Place {
 	public abstract Role getHost();
 	public RestaurantCashierRole getCashier(){ return cashier; }
 	public RestaurantCookRole getCook() { return cook; }
+	public abstract boolean existActiveWaiter();
 	//for person agent and market
 	public boolean isOpen(){
-		if (getCashier().active && getHost().active && getCook().active)
+		if (getCashier().active && getHost().active && getCook().active && existActiveWaiter())
 			return true;
 		else
 			return false;
