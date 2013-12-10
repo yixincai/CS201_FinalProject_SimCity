@@ -28,8 +28,8 @@ public class Directory {
 	//Bus Fare (initialize in constructor?)
 	private static double _busFare = 2;
 	
-	private static double _openingTime = 0; // These are set to 0 and 24 for testing
-	private static double _closingTime = 24;
+	private static double _openingTime = 10;
+	private static double _closingTime = 16;
 
 	// ------------------------------------ PROPERTIES ---------------------------------------
 	public static double openingTime() { return _openingTime; }

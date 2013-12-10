@@ -529,35 +529,26 @@ public class PersonAgent extends Agent implements Person
 				setNextRole(_occupation);
 				return true;
 			}
-			if(_occupation == null)
-			{
-				setNextRole(_homeOccupantRole);
-				return true;
-			}
-			if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime()) //could replace with variables for sleepTime and wakeTime
-			{
-				_homeOccupantRole.cmdGoToBed();
-				setNextRole(_homeOccupantRole);
-				return true;
-			}
 			if(_state.nourishment() == NourishmentState.HUNGRY)
 			{
 				if(_state.wealth() == WealthState.RICH)
 				{
-					actGoToAnyRestaurant();
+					if(actGoToAnyRestaurant()) return true;
 				}
 				else
 				{
-					Random rand = new Random();
-					if(rand.nextInt(4) == 0)
+					if(new Random().nextInt(4) == 0)
 					{
-						if(actGoToAnyRestaurant())
-						{
-							return true;
-						}
+						if(actGoToAnyRestaurant()) return true;
 					}
 					if(actEatAtHome()) return true;
 				}
+			}
+			if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime() - .5) //could replace with variables for sleepTime and wakeTime
+			{
+				_homeOccupantRole.cmdGoToBed();
+				setNextRole(_homeOccupantRole);
+				return true;
 			}
 			_homeOccupantRole.cmdWatchTv();
 			setNextRole(_homeOccupantRole);
