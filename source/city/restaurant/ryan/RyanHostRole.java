@@ -118,7 +118,9 @@ public class RyanHostRole extends Role {
 	}
 	
 	public void msgGone(RyanCustomerRole customer){
-		waitingCustomers.remove(customer);
+		synchronized(waitingCustomers){
+			waitingCustomers.remove(customer);
+		}
 	}
 
 	/**
@@ -151,6 +153,7 @@ public class RyanHostRole extends Role {
 						for(MyCustomer customer: waitingCustomers){
 							if(customer.cState == customerState.here){
 								ShowWaitArea(customer, seat);
+								return true;
 							}
 						}
 					}
@@ -163,8 +166,7 @@ public class RyanHostRole extends Role {
 				if (!table.isOccupied()) {
 					if(!waiters.isEmpty()){
 						if(!waitingCustomers.isEmpty()){
-							for(int i=0; i<waitingCustomers.size(); i++){
-								MyCustomer customer = waitingCustomers.get(i);
+							for(MyCustomer customer:waitingCustomers){
 								if(customer.cState == customerState.seated){
 									getWaiter(customer, table);//the action
 									return true;//return true to the abstract agent to reinvoke the scheduler.
