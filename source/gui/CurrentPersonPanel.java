@@ -162,6 +162,15 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		}
 	}
 	
+	public void updatePerson(PersonAgent tempPerson){
+		_currentlySelectedPerson = tempPerson;
+		nameField.setText("Person Name: " + tempPerson.name());
+		moneyField.setText("Person Money: " + tempPerson.money() + "0");
+		currentRoleField.setText("Current Role: " + tempPerson.currentRole().typeToString());
+		nextRoleField.setText("Next Role: " + tempPerson.nextRoleTypeToString());
+		occupationField.setText("Occupation: " + tempPerson.occupationTypeToString());
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{

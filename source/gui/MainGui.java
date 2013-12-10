@@ -70,7 +70,7 @@ public class MainGui extends JFrame
 		_buildingCardLayoutPanel = new BuildingCardLayoutPanel();
 		
 		//World View
-		_worldView = new WorldView();
+		_worldView = new WorldView(this);
 		
 		//Control Panel
 		tPanel = new TracePanel();
