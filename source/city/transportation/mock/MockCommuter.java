@@ -43,4 +43,10 @@ public class MockCommuter extends Mock implements Commuter{
 		
 	}
 
+	@Override
+	public void msgYouAreAllowedToDie() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

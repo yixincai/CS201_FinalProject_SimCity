@@ -85,10 +85,10 @@ public class PersonAgent extends Agent implements Person
 		/** Get the current wealth state, based on money and occupation status. */
 		WealthState wealth()
 		{
-			if(_money < POOR_LEVEL) {
+			if(totalMoney() < POOR_LEVEL) {
 				return (_occupation != null) ? WealthState.BROKE : WealthState.POOR;
 			}
-			else if(_money < RICH_LEVEL) {
+			else if(totalMoney() < RICH_LEVEL) {
 				return WealthState.NORMAL;
 			}
 			else {
@@ -108,6 +108,9 @@ public class PersonAgent extends Agent implements Person
 	}
 	State _state = new State();
 	
+	// Utility data:
+	Timer schedulerTimer = new Timer();
+	
 	
 	
 	// ------------------------------------------- CONSTRUCTORS & SETUP --------------------------------------------
@@ -125,7 +128,7 @@ public class PersonAgent extends Agent implements Person
 	 * @param occupationType I.e. Restaurant Cashier or Restaurant Host or Bank Teller etc.
 	 * @param housingType House or Apartment
 	 */
-	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) 
+	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType)
 	{
 		_name = name; 
 		_money = money;
@@ -346,6 +349,9 @@ public class PersonAgent extends Agent implements Person
 	// ------------------------------------------- PROPERTIES --------------------------------------------------
 	public String name() { return _name; }
 	public double money() { return _money; }
+	public double bankAccountFunds() { return _bankCustomerRole != null ? _bankCustomerRole.accountFunds() : 0.0; }
+	public double bankAmountOwed() { return _bankCustomerRole != null ? _bankCustomerRole.amountOwed() : 0.0; }
+	public double totalMoney() { return _money + bankAccountFunds() + bankAmountOwed(); }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
 	public void setWorkDays(boolean weekday_notWeekend) {
 		_weekday_notWeekend = weekday_notWeekend;
@@ -439,7 +445,7 @@ public class PersonAgent extends Agent implements Person
 			}
 			*/
 			
-			// ================================================== Call current role's scheduler =============================================
+			// ---------------------------------------------- Call current role's scheduler -------------------------------------------
 			// print("About to call _currentRole (" + _currentRole.toString() + ") scheduler.");
 			if(_currentRole.pickAndExecuteAnAction())
 			{ 
@@ -495,6 +501,9 @@ public class PersonAgent extends Agent implements Person
 					}
 					else if(nextAction.contains("Deposit")) {
 						if(actGoToBank("Deposit", 20)) return true;
+					}
+					else if(nextAction.contains("Robber")) {
+						if(actGoToBank("Robber", 500)) return true;
 					}
 				}
 				else if(nextAction.contains("Market"))
@@ -568,6 +577,9 @@ public class PersonAgent extends Agent implements Person
 		// (Peanut gallery)
 		if(_name.contains("Wilczynski")) { actTellLongStory(); }
 		else if(_name.contains("iWhale")) { actIWhale(); }
+		
+		// Set a timer so that the scheduler will get called again.
+		schedulerTimer.schedule(new TimerTask() { public void run() { stateChanged(); } }, Time.getRealTime(0.3));
 		return false;
 	}
 	
