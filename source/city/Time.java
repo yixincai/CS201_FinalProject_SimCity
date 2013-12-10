@@ -43,7 +43,7 @@ public class Time {
 	
 	private static double _currentTime = 8.0; //0.0;
 	private static double _counter = 0.25;
-	private static double _timeFactor = 4.0; // this is in units of .25-hour-per-second??
+	private static double _timeFactor = 16.0; // this is in units of .25-hour-per-second??
 	
 	private static Timer _timer;
 	
