@@ -20,6 +20,7 @@ public class CommuterGui implements Gui {
 
 
 	int _xPos, _yPos;
+	boolean _selected = false;
 	int _currentBlockX = 0, _currentBlockY = 0;//TODO set the block positions used by cars
 	int _destinationBlockX, _destinationBlockY; 
 	List<Integer> route = new ArrayList<Integer>();
@@ -950,6 +951,11 @@ public class CommuterGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		if(isPresent){
+			if(_selected){
+				g.setColor(Color.RED);
+				g.fillRect(_xPos - 2, _yPos - 2, xGap + 4, yGap + 4);
+			}
+			
 			if (dead){
 				g.drawImage(skull,_xPos,_yPos, xGap, yGap, null);
 				return;
@@ -1020,5 +1026,9 @@ public class CommuterGui implements Gui {
 		catch(InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setSelected(boolean selected){
+		_selected = selected;
 	}
 }
