@@ -82,4 +82,12 @@ public abstract class Restaurant extends Place {
 		else return null;
 	}
 
+	//for person agent and market
+	public boolean isOpen(){
+		if (getCashier().active && getHost().active && getCook().active)
+			return true;
+		else
+			return false;
+	}
+
 }
