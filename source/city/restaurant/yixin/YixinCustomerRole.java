@@ -76,16 +76,16 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 
 	public void cmdGotHungry() {//from PersonAgent
 		print(AlertTag.YIXIN_RESTAURANT,"I'm hungry");
-		if (name.equals("5"))
-			money = 5;
-		else if (name.equals("7"))
-			money = 7;
-		else if (name.equals("10"))
-			money = 10;
-		else if (name.equals("20"))
-			money = 20;
-		else
-			money += r.nextInt(20);
+//		if (name.equals("5"))
+//			money = 5;
+//		else if (name.equals("7"))
+//			money = 7;
+//		else if (name.equals("10"))
+//			money = 10;
+//		else if (name.equals("20"))
+//			money = 20;
+//		else
+		money = _person.money();
 		print(AlertTag.YIXIN_RESTAURANT,"I have " + this.money + " dollars.");
 		event = AgentEvent.gotHungry;
 		stateChanged();
