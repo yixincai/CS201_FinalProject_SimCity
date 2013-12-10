@@ -378,26 +378,26 @@ public class MainGui extends JFrame
 		Directory.addSidewalk(sw13);
 		
 		//bus pedestrian lanes
-		Lane bl0 = new Lane( 15*10+41, 2*10+30, 10, 30, 0, -1, false, Color.blue, Color.black );
-		Lane bl1 = new Lane( 3*10+41, 2*10+30, 120, 10, -1, 0, true, Color.yellow, Color.black );
-		Lane bl2 = new Lane( 2*10+41, 3*10+30, 10, 20, 0, 1, false, Color.gray, Color.black );
-		Lane bl3 = new Lane( 3*10+41, 4*10+30, 60, 10, 1, 0, true, Color.green, Color.black );
-		Lane bl4 = new Lane( 29*10+41, 2*10+30, 10, 30, 0, 1, false, Color.gray, Color.black );
-		Lane bl5 = new Lane( 30*10+41, 2*10+30, 10, 30, 0, -1, false, Color.blue, Color.black );
-		Lane bl6 = new Lane( 44*10+41, 2*10+30, 10, 30, 0, -1, false, Color.blue, Color.black );
-		Lane bl7 = new Lane( 45*10+41, 2*10+30, 120, 10, 1, 0, true, Color.green, Color.black );
-		Lane bl8 = new Lane( 57*10+41, 3*10+30, 10, 20, 0, 1, false, Color.gray, Color.black );
-		Lane bl9 = new Lane( 51*10+41, 4*10+30, 60, 10, -1, 0, true, Color.yellow, Color.black );
-		Lane bl10 = new Lane( 44*10+41, 25*10+30, 10, 30, 0, 1, false, Color.gray, Color.black );
-		Lane bl11 = new Lane( 45*10+41, 27*10+30, 120, 10, 1, 0, true, Color.green, Color.black );
-		Lane bl12 = new Lane( 57*10+41, 25*10+30, 10, 20, 0, -1, false, Color.blue, Color.black );
-		Lane bl13 = new Lane( 51*10+41, 25*10+30, 60, 10, -1, 0, true, Color.yellow, Color.black );
-		Lane bl14 = new Lane( 30*10+41, 25*10+30, 10, 30, 0, -1, false, Color.blue, Color.black );
-		Lane bl15 = new Lane( 29*10+41, 25*10+30, 10, 30, 0, 1, false, Color.gray, Color.black );
-		Lane bl16 = new Lane( 15*10+41, 25*10+30, 10, 30, 0, 1, false, Color.gray, Color.black );
-		Lane bl17 = new Lane( 3*10+41, 27*10+30, 120, 10, -1, 0, true, Color.yellow, Color.black );
-		Lane bl18 = new Lane( 2*10+41, 25*10+30, 10, 20, 0, -1, false, Color.blue, Color.black );
-		Lane bl19 = new Lane( 3*10+41, 25*10+30, 60, 10, 1, 0, true, Color.green, Color.black );
+		Lane bl0 = new Lane( 15*10+41, 2*10+30, 10, 30, 0, -1, false, Color.lightGray, Color.lightGray );
+		Lane bl1 = new Lane( 3*10+41, 2*10+30, 120, 10, -1, 0, true, Color.lightGray, Color.lightGray );
+		Lane bl2 = new Lane( 2*10+41, 3*10+30, 10, 20, 0, 1, false, Color.lightGray, Color.lightGray );
+		Lane bl3 = new Lane( 3*10+41, 4*10+30, 60, 10, 1, 0, true, Color.lightGray, Color.lightGray );
+		Lane bl4 = new Lane( 29*10+41, 2*10+30, 10, 30, 0, 1, false, Color.lightGray, Color.lightGray );
+		Lane bl5 = new Lane( 30*10+41, 2*10+30, 10, 30, 0, -1, false, Color.lightGray, Color.lightGray );
+		Lane bl6 = new Lane( 44*10+41, 2*10+30, 10, 30, 0, -1, false, Color.lightGray, Color.lightGray );
+		Lane bl7 = new Lane( 45*10+41, 2*10+30, 120, 10, 1, 0, true, Color.lightGray, Color.lightGray );
+		Lane bl8 = new Lane( 57*10+41, 3*10+30, 10, 20, 0, 1, false, Color.lightGray, Color.lightGray );
+		Lane bl9 = new Lane( 51*10+41, 4*10+30, 60, 10, -1, 0, true, Color.lightGray, Color.lightGray );
+		Lane bl10 = new Lane( 44*10+41, 25*10+30, 10, 30, 0, 1, false, Color.lightGray, Color.lightGray );
+		Lane bl11 = new Lane( 45*10+41, 27*10+30, 120, 10, 1, 0, true, Color.lightGray, Color.lightGray );
+		Lane bl12 = new Lane( 57*10+41, 25*10+30, 10, 20, 0, -1, false, Color.lightGray, Color.lightGray );
+		Lane bl13 = new Lane( 51*10+41, 25*10+30, 60, 10, -1, 0, true, Color.lightGray, Color.lightGray );
+		Lane bl14 = new Lane( 30*10+41, 25*10+30, 10, 30, 0, -1, false, Color.lightGray, Color.lightGray );
+		Lane bl15 = new Lane( 29*10+41, 25*10+30, 10, 30, 0, 1, false, Color.lightGray, Color.lightGray );
+		Lane bl16 = new Lane( 15*10+41, 25*10+30, 10, 30, 0, 1, false, Color.lightGray, Color.lightGray );
+		Lane bl17 = new Lane( 3*10+41, 27*10+30, 120, 10, -1, 0, true, Color.lightGray, Color.lightGray );
+		Lane bl18 = new Lane( 2*10+41, 25*10+30, 10, 20, 0, -1, false, Color.lightGray, Color.lightGray );
+		Lane bl19 = new Lane( 3*10+41, 25*10+30, 60, 10, 1, 0, true, Color.lightGray, Color.lightGray );
 		
 		Directory.addBusSidewalk(bl0);
 		Directory.addBusSidewalk(bl1);
