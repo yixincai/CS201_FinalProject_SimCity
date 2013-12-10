@@ -169,36 +169,41 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			//markets
 			cPanel.addPerson("MarketCashier1", 300, "Market Cashier", true, "apartment");
 			cPanel.addPerson("MarketEmployee1", 300, "Market Employee", true, "apartment");
-			cPanel.addPerson("MarketCashier2", 300, "Market Cashier", true, "apartment");
-			cPanel.addPerson("MarketEmployee2", 300, "Market Employee", true, "apartment");
+			cPanel.addPerson("MarketCashier2", 50, "Market Cashier", true, "apartment");
+			cPanel.addPerson("MarketEmployee2", 150, "Market Employee", true, "apartment");
 			//banks
 			cPanel.addPerson("BankTeller1", 300, "Bank Teller", true, "apartment");
 			cPanel.addPerson("BankHost1", 300, "Bank Host", true, "apartment");
-			cPanel.addPerson("BankTeller2", 300, "Bank Teller", true, "apartment");
-			cPanel.addPerson("BankHost2", 300, "Bank Host", true, "apartment");
+			cPanel.addPerson("BankTeller2", 50, "Bank Teller", true, "apartment");
+			cPanel.addPerson("BankHost2", 150, "Bank Host", true, "apartment");
 			//yixin restaurant
 			cPanel.addPerson("YixinHost", 300, "YixinRestaurant Host", true, "apartment");
 			cPanel.addPerson("YixinCashier", 300, "YixinRestaurant Cashier", true, "apartment");
-			cPanel.addPerson("YixinCook", 300, "YixinRestaurant Cook", true, "apartment");
-			cPanel.addPerson("YixinSharedDataWaiter", 300, "YixinRestaurant SharedDataWaiter", true, "apartment");
-			cPanel.addPerson("YixinNormalWaiter", 300, "YixinRestaurant NormalWaiter", true, "apartment");
+			cPanel.addPerson("YixinCook", 50, "YixinRestaurant Cook", true, "apartment");
+			cPanel.addPerson("YixinSharedDataWaiter", 150, "YixinRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("YixinNormalWaiter", 150, "YixinRestaurant NormalWaiter", true, "apartment");
 			
 			//omar restaurant
 			cPanel.addPerson("OmarHost", 300, "OmarRestaurant Host", true, "apartment");
 			cPanel.addPerson("OmarCashier", 300, "OmarRestaurant Cashier", true, "apartment");
-			cPanel.addPerson("OmarCook", 300, "OmarRestaurant Cook", true, "apartment");
-			cPanel.addPerson("OmarSharedDataWaiter", 300, "OmarRestaurant SharedDataWaiter", true, "apartment");
-			cPanel.addPerson("OmarNormalWaiter", 300, "OmarRestaurant NormalWaiter", true, "apartment");
+			cPanel.addPerson("OmarCook", 50, "OmarRestaurant Cook", true, "apartment");
+			cPanel.addPerson("OmarSharedDataWaiter", 150, "OmarRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("OmarNormalWaiter", 150, "OmarRestaurant NormalWaiter", true, "apartment");
 
 			//ryan restaurant
 			cPanel.addPerson("RyanHost", 300, "RyanRestaurant Host", true, "apartment");
 			cPanel.addPerson("RyanCashier", 300, "RyanRestaurant Cashier", true, "apartment");
-			cPanel.addPerson("RyanCook", 300, "RyanRestaurant Cook", true, "apartment");
-			cPanel.addPerson("RyanSharedDataWaiter", 300, "RyanRestaurant SharedDataWaiter", true, "apartment");
-			cPanel.addPerson("RyanNormalWaiter", 300, "RyanRestaurant NormalWaiter", true, "apartment");
+			cPanel.addPerson("RyanCook", 50, "RyanRestaurant Cook", true, "apartment");
+			cPanel.addPerson("RyanSharedDataWaiter", 150, "RyanRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("RyanNormalWaiter", 150, "RyanRestaurant NormalWaiter", true, "apartment");
 			
 			//eric restaurant
 			
+			//add customers
+			cPanel.addPerson("YixinRestaurantCustomer", 300, "YixinRestaurant Customer", true, "apartment");
+			cPanel.addPerson("OmarRestaurantCustomer", 150, "OmarRestaurant Customer", true, "apartment");
+			cPanel.addPerson("RyanRestaurantCustomer", 50, "RyanRestaurant Customer", true, "apartment");
+
 		}
 			else if(configBox.getSelectedIndex() == 2){
 			cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
