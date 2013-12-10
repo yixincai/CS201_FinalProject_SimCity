@@ -37,6 +37,8 @@ public class GuardDog extends Agent {
 	
 	enum Command{None, Kill};
 	
+	public String toString() { return "Riley the Guard Dog"; }
+	
 	//Messages
 	public void sicEm(List<BankCustomerRole> robbers){
 		AlertLog.getInstance().logMessage(AlertTag.BANK, "Riley The Guard Dog", "Woof");
