@@ -8,6 +8,8 @@ import java.util.concurrent.Semaphore;
 import city.PersonAgent;
 import city.Place;
 import city.bank.gui.BankAnimationPanel;
+import city.bank.gui.BankHostRoleGui;
+import city.bank.gui.BankTellerRoleGui;
 import city.bank.interfaces.*;
 import city.interfaces.PlaceWithAnimation;
 
@@ -61,6 +63,10 @@ public class Bank extends Place implements PlaceWithAnimation {
 		return _tellers;
 	}
 	
+	public GuardDog getGuardDog(){
+		return guardDog;
+	}
+	
 	
 	
 	// ----------------------------------------- UTILITIES --------------------------------------------
@@ -83,17 +89,29 @@ public class Bank extends Place implements PlaceWithAnimation {
 		_bankHostRole.cmdFinishAndLeave();
 	}
 	
-	public BankTellerRole tryAcquireTeller(PersonAgent person){
+	public BankTellerRole tryAcquireTellerRole(PersonAgent person){
 		if (_tellerSemaphore.tryAcquire()){
 			_tellers.get(0).setPerson(person);
+			
+			// Gui:
+			BankTellerRoleGui bankTellerRoleGui = new BankTellerRoleGui(_tellers.get(0));
+			_tellers.get(0).setGui(bankTellerRoleGui);
+			_animationPanel.addGui(bankTellerRoleGui);
+			
 			return _tellers.get(0);
 		}
 		return null;
 	}
 
-	public BankHostRole tryAcquireHost(PersonAgent person){
+	public BankHostRole tryAcquireHostRole(PersonAgent person){
 		if (_hostSemaphore.tryAcquire()){
-			_bankHostRole.setPerson(person);;
+			_bankHostRole.setPerson(person);
+			
+			// Gui:
+			BankHostRoleGui bankHostRoleGui = new BankHostRoleGui(_bankHostRole);
+			_bankHostRole.setGui(bankHostRoleGui);
+			_animationPanel.addGui(bankHostRoleGui);
+			
 			return _bankHostRole;
 		}
 		return null;
@@ -101,9 +119,5 @@ public class Bank extends Place implements PlaceWithAnimation {
 	
 	public BankCustomerRole generateCustomerRole(PersonAgent person){
 		return new BankCustomerRole(person, this);
-	}
-	
-	public GuardDog getGuardDog(){
-		return guardDog;
 	}
 }

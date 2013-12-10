@@ -45,13 +45,6 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		((YixinCashierRole)cashier).cook = (YixinCookRole)cook;
 	}
 
-	public boolean isOpen(){
-		if (cashier.active && host.active && cook.active && Waiters.size()!=0)
-			return true;
-		else
-			return false;
-	}
-
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
 		//TODO make a new customer that is initialized with a PersonAgent of person

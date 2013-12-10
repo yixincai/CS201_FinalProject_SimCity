@@ -55,7 +55,7 @@ public abstract class Restaurant extends Place {
 	/** Generate an appropriate HostGui and set the Host's gui to it. */
 	public abstract void generateHostGui();
 	
-	public RestaurantCookRole tryAcquireCook(PersonAgent person) {
+	public RestaurantCookRole tryAcquireCookRole(PersonAgent person) {
 		if(_cookSemaphore.tryAcquire()) {
 			cook.setPerson(person);
 			generateCookGui();
@@ -64,7 +64,7 @@ public abstract class Restaurant extends Place {
 		else return null;
 	}
 	
-	public RestaurantCashierRole tryAcquireCashier(PersonAgent person) {
+	public RestaurantCashierRole tryAcquireCashierRole(PersonAgent person) {
 		if(_cashierSemaphore.tryAcquire()) {
 			cashier.setPerson(person);
 			generateCashierGui();
@@ -73,13 +73,21 @@ public abstract class Restaurant extends Place {
 		else return null;
 	}
 	
-	public Role tryAcquireHost(PersonAgent person) {
+	public Role tryAcquireHostRole(PersonAgent person) {
 		if(_hostSemaphore.tryAcquire()) {
 			getHost().setPerson(person);
 			generateHostGui();
 			return getHost();
 		}
 		else return null;
+	}
+
+	//for person agent and market
+	public boolean isOpen(){
+		if (getCashier().active && getHost().active && getCook().active)
+			return true;
+		else
+			return false;
 	}
 
 }

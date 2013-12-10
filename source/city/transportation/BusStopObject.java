@@ -11,6 +11,7 @@ import city.transportation.interfaces.Commuter;
 public class BusStopObject extends Place {
 	List<Commuter> _waitList = new ArrayList<Commuter>();
 	List<Commuter> _suicideList = new ArrayList<Commuter>();
+	List<Commuter> _carCrashList = new ArrayList<Commuter>();
 	
 	public BusStopObject(String name, WorldViewBuilding worldViewBuilding) {
 		super(name, worldViewBuilding);
@@ -23,9 +24,15 @@ public class BusStopObject extends Place {
 	}
 	
 	public synchronized int addMyselfToDeathList(Commuter person){
-		System.out.println("Someone want to commit suicide pretty soon" + _suicideList.size());
+		System.out.println("Someone want to commit suicide pretty soon " + _suicideList.size());
 		_suicideList.add(person);
 		return _suicideList.size();
+	}
+
+	public synchronized int addMyselfToCrashList(Commuter person){
+		System.out.println("Someone want to hit bus pretty soon " + _carCrashList.size());
+		_carCrashList.add(person);
+		return _carCrashList.size();
 	}
 	
 	public synchronized void removeCommuterRole(Commuter person){
@@ -42,5 +49,9 @@ public class BusStopObject extends Place {
 	
 	public List<Commuter> getSuicideList(){
 		return _suicideList;
+	}
+	
+	public List<Commuter> getCarCrashList(){
+		return _carCrashList;
 	}
 }
