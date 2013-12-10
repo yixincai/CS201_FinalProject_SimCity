@@ -18,49 +18,49 @@ import javax.swing.Timer;
 
 @SuppressWarnings("serial")
 public class HouseAnimationPanel extends JPanel implements ActionListener {
-	
-	// Note: I changed these to public so that they can be accessed by HouseOccupantGui and ApartmentOccupantGui --Eric
-	
-	public static final int STOVEX = 500;
-	public static final int STOVEY = 20;
-	public static final int STOVEDIM = 20;
-	
-	public static final int FRIDGEX = 530;
-	public static final int FRIDGEY = 12;
-	public static final int FRIDGEDIM = 20;
-	
-	public static final int TABLEX = 600;
-	public static final int TABLEY = 80;
-	
-	public static final int CHAIRX = 580;
-	public static final int CHAIRY = 87;
-	
-	public static final int BEDX = 570;
-	public static final int BEDY = 210;
-	public static final int BEDWIDTH = 30;
-	public static final int BEDHEIGHT = 30;
-	
-	public static final int BEDWALLX = 400;
-	public static final int BEDWALLY = 0;
-	public static final int BEDWALLWIDTH = 10;
-	public static final int BEDWALLHEIGHT = 160;
-	
-	public static final int BEDWALLX2 = 400;
-	public static final int BEDWALLY2 = 200;
-	
-	public static final int TVX = 250;
-	public static final int TVY = 170;
-	public static final int TVDIM = 10;
+        
+        // Note: I changed these to public so that they can be accessed by HouseOccupantGui and ApartmentOccupantGui --Eric
+        
+        public static final int STOVEX = 500;
+        public static final int STOVEY = 20;
+        public static final int STOVEDIM = 20;
+        
+        public static final int FRIDGEX = 530;
+        public static final int FRIDGEY = 12;
+        public static final int FRIDGEDIM = 20;
+        
+        public static final int TABLEX = 600;
+        public static final int TABLEY = 80;
+        
+        public static final int CHAIRX = 580;
+        public static final int CHAIRY = 87;
+        
+        public static final int BEDX = 570;
+        public static final int BEDY = 210;
+        public static final int BEDWIDTH = 30;
+        public static final int BEDHEIGHT = 30;
+        
+        public static final int BEDWALLX = 400;
+        public static final int BEDWALLY = 0;
+        public static final int BEDWALLWIDTH = 10;
+        public static final int BEDWALLHEIGHT = 160;
+        
+        public static final int BEDWALLX2 = 400;
+        public static final int BEDWALLY2 = 200;
+        
+        public static final int TVX = 250;
+        public static final int TVY = 170;
+        public static final int TVDIM = 10;
 
-	public static final int FRONTDOORX = 100;
-	public static final int FRONTDOORY = 340;
-	
-	public static final int WINDOWX = 682;
-	public static final int WINDOWY = 360;
-	
-	private List<Gui> _guis = new ArrayList<Gui>();
-	
-	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Fridge.png"));
+        public static final int FRONTDOORX = 100;
+        public static final int FRONTDOORY = 340;
+        
+        public static final int WINDOWX = 682;
+        public static final int WINDOWY = 360;
+        
+        private List<Gui> _guis = new ArrayList<Gui>();
+        
+        ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Fridge.png"));
     Image fridge = a.getImage();
     int xFGap = 25;
     int yFGap = 48;
@@ -132,59 +132,59 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     int yBFlGap = 160;
     
     
-	
-	public HouseAnimationPanel()
-	{
-		setSize(WINDOWX, WINDOWY);
-		setVisible(true);
+        
+        public HouseAnimationPanel()
+        {
+                setSize(WINDOWX, WINDOWY);
+                setVisible(true);
  
-		Timer timer = new Timer(10, this );
-		timer.start();
-	}
+                Timer timer = new Timer(10, this );
+                timer.start();
+        }
 
-	public void actionPerformed(ActionEvent e) {
-		
-		for(Gui gui : _guis) {
-			gui.updatePosition();
-		}
-		
-		repaint();  //Will have paintComponent called
-	}
-	
-	public void paintComponent(Graphics g) {
-		Graphics2D g2 = (Graphics2D)g;
+        public void actionPerformed(ActionEvent e) {
+                
+                for(Gui gui : _guis) {
+                        gui.updatePosition();
+                }
+                
+                repaint();  //Will have paintComponent called
+        }
+        
+        public void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D)g;
 
-		//Clear the screen by painting a rectangle the size of the frame
-		g2.setColor(getBackground());
-		g2.fillRect(0, 0, WINDOWX, WINDOWY );
-		g2.drawImage(floor, 0, 0, xFlGap, yFlGap, this);
-		g2.drawImage(kfloor, kitchenPlace.width, kitchenPlace.height, xKFlGap, yKFlGap, this);
-		g2.drawImage(bfloor, bedroomPlace.width, bedroomPlace.height, xBFlGap, yBFlGap, this);
+                //Clear the screen by painting a rectangle the size of the frame
+                g2.setColor(getBackground());
+                g2.fillRect(0, 0, WINDOWX, WINDOWY );
+                g2.drawImage(floor, 0, 0, xFlGap, yFlGap, this);
+                g2.drawImage(kfloor, kitchenPlace.width, kitchenPlace.height, xKFlGap, yKFlGap, this);
+                g2.drawImage(bfloor, bedroomPlace.width, bedroomPlace.height, xBFlGap, yBFlGap, this);
 
-		//Here is the table
+                //Here is the table
 
-		g2.drawImage(bed, BEDX, BEDY, xBGap, yBGap, this);
-		
-		g2.drawImage(grill, STOVEX, STOVEY, xGGap, yGGap, this);
-		
-		g2.drawImage(fridge, FRIDGEX, FRIDGEY, xFGap, yFGap, this);
-		
-		g2.drawImage(table, TABLEX, TABLEY, xTGap, yTGap, this);
-		
-		g2.drawImage(chair, CHAIRX, CHAIRY, xCGap, yCGap, this);
-		
-		g2.drawImage(TV, TVPlace.width, TVPlace.height, xTVGap, yTVGap, this);
-		
-		g2.drawImage(dcabinet, DCPlace.width, DCPlace.height, xDGap, yDGap, this);
-		
-		g2.drawImage(mat, FRONTDOORX, FRONTDOORY-40, xMGap, yMGap, this);
+                g2.drawImage(bed, BEDX, BEDY, xBGap, yBGap, this);
+                
+                g2.drawImage(grill, STOVEX, STOVEY, xGGap, yGGap, this);
+                
+                g2.drawImage(fridge, FRIDGEX, FRIDGEY, xFGap, yFGap, this);
+                
+                g2.drawImage(table, TABLEX, TABLEY, xTGap, yTGap, this);
+                
+                g2.drawImage(chair, CHAIRX, CHAIRY, xCGap, yCGap, this);
+                
+                g2.drawImage(TV, TVPlace.width, TVPlace.height, xTVGap, yTVGap, this);
+                
+                g2.drawImage(dcabinet, DCPlace.width, DCPlace.height, xDGap, yDGap, this);
+                
+                g2.drawImage(mat, FRONTDOORX, FRONTDOORY-40, xMGap, yMGap, this);
 
-		for(Gui gui : _guis) {
-			gui.draw(g2);
-		}
-	}
-	
-	public void addGui(HomeOccupantGui gui) {
-		_guis.add(gui);
-	}
+                for(Gui gui : _guis) {
+                        gui.draw(g2);
+                }
+        }
+        
+        public void addGui(HomeOccupantGui gui) {
+                _guis.add(gui);
+        }
 }
