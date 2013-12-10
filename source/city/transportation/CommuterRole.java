@@ -59,7 +59,7 @@ public class CommuterRole extends Role implements Commuter{
 			_person = person;
 			_currentPlace = initialPlace;
 			_destination = null;
-			if (_person._money >= 200)
+			if (_person.money() >= 200)
 				hasCar = true;
 			else
 				hasCar = false;
@@ -175,11 +175,11 @@ public class CommuterRole extends Role implements Commuter{
 					actGoToBusStop();
 					return true;
 				}
-				if(_tState == TravelState.busIsHere && _bus != null && _person._money >= _fare){
+				if(_tState == TravelState.busIsHere && _bus != null && _person.money() >= _fare){
 					actGetOnBus();
 					return true;
 				}
-				if(_tState == TravelState.busIsHere && _bus != null && _person._money <= _fare){
+				if(_tState == TravelState.busIsHere && _bus != null && _person.money() <= _fare){
 					//actWalking();
 					return false;//true;
 				}
@@ -207,7 +207,7 @@ public class CommuterRole extends Role implements Commuter{
 				print(AlertTag.WORLDVIEW,"Choosing car");
 			}
 			else{
-				if (_person._money >= 100){
+				if (_person.money() >= 100){
 					_tState = TravelState.choseBus;
 					print(AlertTag.WORLDVIEW,"Choosing bus");
 				}
@@ -272,7 +272,7 @@ public class CommuterRole extends Role implements Commuter{
 		}
 		public void actGetOnBus(){
 			_tState = TravelState.ridingBus;
-			_person._money -= _fare;
+			_person.cmdChangeMoney(-_fare);
 			_gui.getOnBus();
 			_bus.msgGettingOnBoard(this, _busStop, _fare);
 		}
