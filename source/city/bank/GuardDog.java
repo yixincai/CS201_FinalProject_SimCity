@@ -37,6 +37,7 @@ public class GuardDog extends Agent {
 	
 	enum Command{None, Kill};
 	
+	//Properties
 	public String toString() { return "Riley the Guard Dog"; }
 	
 	//Messages
