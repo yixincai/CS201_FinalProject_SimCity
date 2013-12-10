@@ -524,7 +524,7 @@ public class CommuterGui implements Gui {
 					waitForLaneToFinish();
 					lane.permits.get(lane.permits.size()-1).release();
 					Directory.intersections().get(intersections.get(i)).release();
-					Directory.busStops().get(5).addMyselfToDeathList(_commuter);
+					Directory.busStops().get(5).addMyselfToCrashList(_commuter);
 					try{
 						deathSem.acquire();
 					}
@@ -715,7 +715,7 @@ public class CommuterGui implements Gui {
 			_yDestination -= _commuter.deadListNumber * 10;
 		}
 		else if (_currentBlockX == 1 && _currentBlockY == 1){
-			_xDestination -= 20;
+			_xDestination -= 10;
 			_yDestination += 10;
 			_transportationMethod = Command.waitForAnimation;
 			waitForLaneToFinish();
