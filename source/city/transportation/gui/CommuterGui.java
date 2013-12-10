@@ -50,7 +50,7 @@ public class CommuterGui implements Gui {
 	public CommuterGui(CommuterRole commuter, Place initialPlace) {
 		// Note: placeX and placeY can safely receive values of null
 		Lane lane;
-		if (commuter.hasCar())
+		if (commuter._person.money()>=200)
 			lane = Directory.lanes().get(_currentBlockX + 3 * _currentBlockY);
 		else
 			lane = Directory.sidewalks().get(_currentBlockX + 3 * _currentBlockY);

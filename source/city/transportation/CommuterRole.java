@@ -59,10 +59,10 @@ public class CommuterRole extends Role implements Commuter{
 			_person = person;
 			_currentPlace = initialPlace;
 			_destination = null;
-//			if ((new Random()).nextInt(2) == 0)
+			if (_person._money >= 200)
 				hasCar = true;
-//			else 
-//				hasCar = false;
+			else
+				hasCar = false;
 			_gui = new CommuterGui(this, initialPlace);
 		}
 
@@ -202,19 +202,18 @@ public class CommuterRole extends Role implements Commuter{
 				wantToDie = true;
 			else
 				wantToDie = false;
-			if (_person._money >= 200)
-				hasCar = true;
-			else
-				hasCar = false;
 			if (hasCar){
 				_tState = TravelState.choseCar;
+				print(AlertTag.WORLDVIEW,"Choosing car");
 			}
 			else{
 				if (_person._money >= 100){
 					_tState = TravelState.choseBus;
+					print(AlertTag.WORLDVIEW,"Choosing bus");
 				}
 				else
 					_tState = TravelState.choseWalking;
+					print(AlertTag.WORLDVIEW,"Choosing walking");
 			}
 
 			// note: when testing, you can force one of these (default value is TravelState.none)
@@ -260,6 +259,7 @@ public class CommuterRole extends Role implements Commuter{
 			else{
 				if (_nextStop == _busStop){
 					_tState = TravelState.done;
+					_gui.setPresent(false);
 					active = false;
 				}
 				else{

@@ -215,7 +215,7 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("YixinRestaurantCustomer", 300, "YixinRestaurant Customer", true, "apartment");
 			cPanel.addPerson("OmarRestaurantCustomer", 150, "OmarRestaurant Customer", true, "apartment");
 			cPanel.addPerson("RyanRestaurantCustomer", 50, "RyanRestaurant Customer", true, "apartment");
-//			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
+			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
 			cPanel.addPerson("YixinRestaurantCustomer", 300, "YixinRestaurant Customer", true, "apartment");
 			cPanel.addPerson("OmarRestaurantCustomer", 150, "OmarRestaurant Customer", true, "apartment");
 			cPanel.addPerson("RyanRestaurantCustomer", 50, "RyanRestaurant Customer", true, "apartment");
