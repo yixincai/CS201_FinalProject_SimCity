@@ -1,6 +1,7 @@
 package city.transportation;
 
 import gui.WorldView;
+import gui.trace.AlertTag;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -18,14 +19,15 @@ public class TruckAgent extends Agent implements Truck{
 	List<Package> packages = new ArrayList<Package>();
 	List<Package> delayedPackages = new ArrayList<Package>();
 	String _name;
-	Semaphore isMoving = new Semaphore(0, true);;
+	Semaphore isMoving = new Semaphore(0, true);
 	Market _market;
 	TruckAgentGui _gui;
 	Boolean out = false;
 	private Timer _loadingDelay = new Timer();
 	public enum truckState{parkingLot, docking, drivingtoRestaurant, atRestaurant, drivingtoMarket};
 	public truckState trState = truckState.parkingLot;
-
+	boolean timerSet = false;
+	Timer deliverTimer = new Timer();
 	enum packageState{atMarket, inTruck, delivering, unloaded, done};
 
 	class Package{
@@ -79,6 +81,11 @@ public class TruckAgent extends Agent implements Truck{
 	public void msgAtMarket(){
 		isMoving.release();
 	}
+	
+	public void notifyTruck(){
+		stateChanged();
+		timerSet = false;
+	}
 
 	//----------------------------------------------Scheduler------------------------------------------
 	public boolean pickAndExecuteAnAction(){
@@ -89,7 +96,7 @@ public class TruckAgent extends Agent implements Truck{
 		}
 		for(Package temp: delayedPackages){
 			if(temp._restaurant.isOpen()) {
-				DeliverToDestination(temp);
+				ReDeliverToDestination(temp);
 				GoBackToMarket();
 				return true;
 			}
@@ -113,6 +120,14 @@ public class TruckAgent extends Agent implements Truck{
 		//			GoBackToMarket();
 		//			return true;
 		//		}
+		if (!timerSet){
+			deliverTimer.schedule(new TimerTask() {
+				public void run() {
+					notifyTruck();
+				}
+			}, 10000);
+			timerSet = true;
+		}
 		return false;
 	}
 
@@ -169,6 +184,35 @@ public class TruckAgent extends Agent implements Truck{
 			print("Restaurant is closed. Failed to deliver to " + aPackage._restaurant.name());
 			packages.remove(aPackage);
 			delayedPackages.add(aPackage);
+		}
+
+		_loadingDelay.schedule(new TimerTask(){
+			@Override
+			public void run() {
+				isMoving.release();
+			}
+		}, 5000);
+		try{
+			isMoving.acquire();
+		}
+		catch(InterruptedException e){
+			e.printStackTrace();
+		}
+	}
+
+	public void ReDeliverToDestination(Package aPackage){
+		_gui.goToDestination(aPackage._restaurant);
+		if (aPackage._restaurant.isOpen()){
+			if(aPackage._restaurant instanceof OmarRestaurant) { 
+				aPackage._restaurant.getCook().msgOrderFulfillment(_market, aPackage._items); }
+			else if (aPackage._restaurant instanceof YixinRestaurant)
+				aPackage._restaurant.getCook().msgOrderFulfillment(_market, aPackage._items); 
+			else if (aPackage._restaurant instanceof RyanRestaurant)
+				aPackage._restaurant.getCook().msgOrderFulfillment(_market, aPackage._items);
+			//TODO add more restaurants
+			print("ReDelivered to restaurant " + aPackage._restaurant.name());
+			//trState = truckState.atRestaurant;
+			delayedPackages.remove(aPackage);
 		}
 
 		_loadingDelay.schedule(new TimerTask(){

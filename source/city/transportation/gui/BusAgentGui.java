@@ -72,7 +72,6 @@ public class BusAgentGui extends JPanel implements Gui {
 		}
 		else
 			deathList = _bus._busStops.get(_bus._busStopNum - 1).getSuicideList();
-		System.out.println(_xPos + "  " + _yPos);
 		_xStarting = _xPos;
 		_yStarting = _yPos;
 		_busStop = busstop;
