@@ -21,8 +21,7 @@ public class CommuterGui implements Gui {
 	boolean started = false;
 	int _xPos, _yPos;
 	boolean _selected = false;
-	int _currentBlockX = 0, _currentBlockY = 0;//TODO set the block positions used by cars
-
+	int _currentBlockX = 0, _currentBlockY = 0;
 	int _destinationBlockX, _destinationBlockY; 
 	List<Integer> route = new ArrayList<Integer>();
 	List<Integer> intersections = new ArrayList<Integer>();
@@ -126,7 +125,12 @@ public class CommuterGui implements Gui {
 		if (_destinationBlockY == 1)
 			landingSpot = getSpotX(placeX(destination)) + 1;
 		else
-			landingSpot = 9 - getSpotX(placeX(destination));			
+			if (_destinationBlockX == 1)
+				landingSpot = 10 - getSpotX(placeX(destination));
+			else if (_destinationBlockX == 0)
+				landingSpot = 7 - getSpotX(placeX(destination));
+			else
+				landingSpot = 6 - getSpotX(placeX(destination));
 		if (_destinationBlockX == _currentBlockX && _destinationBlockY == _currentBlockY){
 			setPresent(false);
 			return;
@@ -190,8 +194,6 @@ public class CommuterGui implements Gui {
 				}
 			}	
 		}
-
-		//TODO determine landing spot
 		for (int i=0; i< route.size();i++){
 			Lane lane = Directory.sidewalks().get(route.get(i));
 			int starting_position = 0;
@@ -199,7 +201,7 @@ public class CommuterGui implements Gui {
 				if (startingSpot > 0)
 					starting_position = startingSpot;
 			}
-			for (int j=starting_position; j< lane.permits.size();j++){//TODO change size to the ending position and starting position
+			for (int j=starting_position; j< lane.permits.size();j++){
 				while(!lane.permits.get(j).tryAcquire()){
 					_lookUpDelay.schedule(new TimerTask(){
 						@Override
@@ -415,7 +417,7 @@ public class CommuterGui implements Gui {
 				if (parkingSpot > 0)
 					starting_position = parkingSpot;
 			}
-			for (int j=starting_position; j< lane.permits.size();j++){//TODO change starting position
+			for (int j=starting_position; j< lane.permits.size();j++){
 				while(!lane.permits.get(j).tryAcquire()){
 					_lookUpDelay.schedule(new TimerTask(){
 						@Override
@@ -580,7 +582,6 @@ public class CommuterGui implements Gui {
 				lane.permits.get(lane.permits.size()-1).release();
 			}
 		}
-		//TODO if we have parking area do not set present to false but show in parking lot
 		//setPresent(false);
 		//set automatically
 		_currentBlockX = _destinationBlockX;
@@ -591,7 +592,6 @@ public class CommuterGui implements Gui {
 	public void goToBusStop(BusStopObject busstop){
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
-		//TODO set position and destination
 		route.clear();
 		if (_currentBlockX == 0 && _currentBlockY == 0){
 			_xPos = 41 + 15 * 10;
