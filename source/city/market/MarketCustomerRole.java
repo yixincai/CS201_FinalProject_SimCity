@@ -28,6 +28,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		super(person);
 		this.market = m;
 		cmdBuyFood(3);
+		money = _person.money();
 	}
 
 	public void setGui(MarketCustomerGui g) {
@@ -62,6 +63,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		this.price_list = price_list;
 		this.orderFulfillment = orderFulfillment;
 		state = CustomerState.needPay;
+		_person.cmdChangeMoney(-payment);
 		stateChanged();
 	}
 	
