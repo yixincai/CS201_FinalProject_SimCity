@@ -20,8 +20,8 @@ public class ImageAtlas {
 		mapAtlas.put("YixinRestaurant", ImageIO.read(new File("wvimage/YixinRestaurant.png")));
 		mapAtlas.put("RyanRestaurant", ImageIO.read(new File("wvimage/RyanRestaurant.png")));
 		mapAtlas.put("EricRestaurant", ImageIO.read(new File("wvimage/EricRestaurant.png")));
-		mapAtlas.put("House", ImageIO.read(new File("wvimage/House1.png")));
-		mapAtlas.put("Apartment", ImageIO.read(new File("wvimage/Apartment1.png")));
+		mapAtlas.put("House", ImageIO.read(new File("wvimage/House.png")));
+		mapAtlas.put("Apartment", ImageIO.read(new File("wvimage/Apartment.png")));
 		mapAtlas.put("Bus Stop", ImageIO.read(new File("wvimage/BusStop.png")));
 	/*	mapAtlas.put(key, value);
 		mapAtlas.put(key, value);
