@@ -41,6 +41,7 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 	TannerRestaurant restaurant;
 	Market markets;
 	boolean canOrder = true;
+	boolean checked_stand = false;
 	
 	
 //----------------------------------------Constructors-----------------------------------------------------------------	
@@ -78,6 +79,12 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 
 //------------------------------------------Messages------------------------------------------------------------------
 	
+	
+	public void checkStand()
+	{
+		checked_stand = false;
+		stateChanged();
+	}
 	
 	@Override
 	public void msgHereIsANewOrder(int choice, int tableNumber, TannerRestaurantWaiter w) 
@@ -201,9 +208,15 @@ public class TannerRestaurantCookRole extends RestaurantCookRole implements Tann
 				orders.add(order);
 				return true;
 			}
-			else
+			if(checked_stand == false)
 			{
-				
+				cookTimer.schedule(new TimerTask() {
+					public void run() {
+						print(AlertTag.TANNER_RESTAURANT, "Check revolving stand");
+						checkStand();
+					}
+				}, 10000);
+				checked_stand = true;
 			}
 			
 		} catch (ConcurrentModificationException e) {
