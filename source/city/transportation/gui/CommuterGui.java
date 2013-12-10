@@ -57,8 +57,23 @@ public class CommuterGui implements Gui {
     ImageIcon d = new ImageIcon(this.getClass().getResource("/image/transportation/CarRight.png"));
     Image CarRight = d.getImage();
     
-	private ImageIcon e = new ImageIcon(this.getClass().getResource("/image/bank/Skull.png"));
-	private Image skull = e.getImage();
+    enum PersonDirection{PersonUp, PersonDown, PersonRight, PersonLeft, PersonNone};
+	PersonDirection Pdirection = PersonDirection.PersonNone;
+
+	ImageIcon e = new ImageIcon(this.getClass().getResource("/image/worldview/PersonUp.png"));
+    Image PersonUp = e.getImage();
+    
+    ImageIcon f = new ImageIcon(this.getClass().getResource("/image/worldview/PersonDown.png"));
+    Image PersonDown = f.getImage();
+    
+    ImageIcon g = new ImageIcon(this.getClass().getResource("/image/worldview/PersonLeft.png"));
+    Image PersonLeft = g.getImage();
+    
+    ImageIcon h = new ImageIcon(this.getClass().getResource("/image/worldview/PersonRight.png"));
+    Image PersonRight = h.getImage();
+    
+	private ImageIcon i = new ImageIcon(this.getClass().getResource("/image/bank/Skull.png"));
+	private Image skull = i.getImage();
 	int xGap = 10;
 	int yGap = 10;
 	
@@ -941,15 +956,23 @@ public class CommuterGui implements Gui {
 	//------------------------------------------Animation---------------------------------------
 	@Override
 	public void updatePosition() {
-		if (_xPos < _xDestination)
-			_xPos++;
-		else if (_xPos > _xDestination)
-			_xPos--;
+	if (_xPos < _xDestination){
+		_xPos++;
+		Pdirection = PersonDirection.PersonRight;
+	}
+	else if (_xPos > _xDestination){
+		_xPos--;
+		Pdirection = PersonDirection.PersonLeft;
+	}
 
-		if (_yPos < _yDestination)
-			_yPos++;
-		else if (_yPos > _yDestination)
-			_yPos--; 
+	if (_yPos < _yDestination){
+		_yPos++;
+		Pdirection = PersonDirection.PersonDown;
+	}
+	else if (_yPos > _yDestination){
+		_yPos--;
+		Pdirection = PersonDirection.PersonUp;
+	}
 
 		if (_commuter.hasCar()){
 			if (_xPos < _xDestination){
@@ -1013,8 +1036,21 @@ public class CommuterGui implements Gui {
 				}
 			}
 			else{
-				g.setColor(Color.magenta);
-				g.fillRect(_xPos, _yPos, 10, 10);
+				if(Pdirection == PersonDirection.PersonDown){
+					g.drawImage(PersonDown, _xPos, _yPos, 10, 10, null);
+				}
+				else if(Pdirection == PersonDirection.PersonUp){
+					g.drawImage(PersonUp, _xPos, _yPos, 10, 10, null);
+				}
+				else if(Pdirection == PersonDirection.PersonRight){
+					g.drawImage(PersonRight, _xPos, _yPos, 10, 10, null);
+				}
+				else if(Pdirection == PersonDirection.PersonLeft){
+					g.drawImage(PersonLeft, _xPos, _yPos, 10, 10, null);
+				}
+				else{
+					g.drawImage(PersonDown, _xPos, _yPos, 10, 10, null);
+				}
 			}
 		}
 	}
