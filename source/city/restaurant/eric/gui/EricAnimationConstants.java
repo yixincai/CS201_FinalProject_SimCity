@@ -47,9 +47,11 @@ public class EricAnimationConstants
     	NEXT_CUSTOMER_Y += PERSON_HEIGHT + 5;
     }
     
-    // Constant for cook position
+    // Constants for cook and revolving stand positions
     public static final int COOK_POSX = 100;
     public static final int COOK_POSY = 300;
+	public static final int REVOLVING_STAND_POSX = 0; //TODO
+	public static final int REVOLVING_STAND_POSY = 0; //TODO
     
     // Constant for cashier position
     public static final int CASHIER_POSX = 70;

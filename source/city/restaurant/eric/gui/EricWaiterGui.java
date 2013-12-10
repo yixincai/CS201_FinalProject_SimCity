@@ -17,11 +17,12 @@ public class EricWaiterGui implements Gui
 	private RestDim OUTSIDE;
 	private RestDim IDLE_LOCATION;
 	private RestDim COOK;
+	private RestDim REVOLVING_STAND;
 	private RestDim CASHIER;
 	// RestDims used for positions of stuff (variable):
 	private RestDim _position;
 	private RestDim _destination;
-	private Boolean _goingSomewhere = false; // Put _goingSomewhere = true; at the beginning of each do...() function. Implies that _agent will be expecting the msgReachedDestination() message.
+	private Boolean _goingSomewhere = false; // Put _goingSomewhere = true; at the beginning of each do...() function. Implies that _agent will be expecting the msgReachedDestination() message and that the food being carried needs to be reset to none.
 	
 	// String for what food item to display.
 	private String _carrying = null;
@@ -45,6 +46,7 @@ public class EricWaiterGui implements Gui
         IDLE_LOCATION = new RestDim(EricAnimationConstants.NEXT_WAITER_X, EricAnimationConstants.NEXT_WAITER_Y);
         EricAnimationConstants.updateNextWaiter();
         COOK = new RestDim(EricAnimationConstants.COOK_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.COOK_POSY - EricAnimationConstants.PERSON_HEIGHT);
+        REVOLVING_STAND = new RestDim(EricAnimationConstants.REVOLVING_STAND_POSX, EricAnimationConstants.REVOLVING_STAND_POSY);
         CASHIER = new RestDim(EricAnimationConstants.CASHIER_POSX, EricAnimationConstants.CASHIER_POSY - EricAnimationConstants.PERSON_HEIGHT);
         // Variable:
         _position = new RestDim(OUTSIDE);
@@ -109,13 +111,26 @@ public class EricWaiterGui implements Gui
     	_goingSomewhere = true;
     }
     
+    public void doGoToRevolvingStand()
+    {
+    	_destination.set(REVOLVING_STAND);
+    	_goingSomewhere = true;
+    }
+    
     public void doTakeOrderToCook(String choice)
     {
     	if(choice != null) {
     		_carrying = choice.substring(0, ((choice.length() > 1) ? 2 : 1) ) + "?";
     	}
-    	
     	doGoToCook();
+    }
+    
+    public void doTakeOrderToRevolvingStand(String choice)
+    {
+    	if(choice != null) {
+    		_carrying = choice.substring(0, ((choice.length() > 1) ? 2 : 1) ) + "?";
+    	}
+    	doGoToRevolvingStand();
     }
     
     public void doDeliverFood(int tableNumber, String choice)

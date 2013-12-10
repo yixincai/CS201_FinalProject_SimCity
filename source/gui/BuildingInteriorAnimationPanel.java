@@ -12,8 +12,8 @@ import javax.swing.Timer;
 public class BuildingInteriorAnimationPanel extends JPanel implements ActionListener
 {
 	
-	private static final int PANELX = 1024 * 2 /3;
-	private static final int PANELY = 720 / 2;
+	public static final int WIDTH = 1024 * 2 /3;
+	public static final int HEIGHT = 720 / 2;
 	MainGui gui;
 	JPanel _buildingAnimation;
 	//Timer animationTime;
@@ -27,7 +27,7 @@ public class BuildingInteriorAnimationPanel extends JPanel implements ActionList
 		this.gui = mainGui;
 		this._buildingAnimation = buildingAnimation;
 		this.myName = name;
-		this.setPreferredSize(new Dimension(PANELX, PANELY));
+		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.setLayout(new BorderLayout());
 		
 		

@@ -21,6 +21,9 @@ public class EricHostRole extends Role implements EricHost
 	private EricCashier _cashier;
 	private EricRestaurant _restaurant;
 	
+	// Personal state:
+	private boolean _wantToLeave = false;
+	
 	// Agent data:
 	// Customer:
 	private class MyCustomer
@@ -75,6 +78,7 @@ public class EricHostRole extends Role implements EricHost
 	public String name() { return _person.name(); }
 	public void setCashier(EricCashier cashier) { _cashier = cashier; }
 	public Place place() { return _restaurant; }
+	public boolean restaurantIsOpen() { return !_wantToLeave; }
 	
 	
 	

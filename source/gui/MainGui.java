@@ -25,6 +25,7 @@ import city.Time;
 import city.bank.Bank;
 import city.home.*;
 import city.market.Market;
+import city.restaurant.eric.EricRestaurant;
 import city.restaurant.omar.OmarRestaurant;
 import city.restaurant.ryan.RyanRestaurant;
 import city.restaurant.yixin.YixinRestaurant;
@@ -169,15 +170,15 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(rr.name());
 		_buildingInteriorAnimationPanels.add(bpR);
 
-		//TODO change to Eric's restaurant
-		WorldViewBuilding restaurantBuilding4 = _worldView.addBuilding(32, 19, 40, ImageAtlas.mapAtlas.get("EricRestaurant"));
-		BuildingInteriorAnimationPanel restaurantBuildingPanel4 = new BuildingInteriorAnimationPanel(this, "Eric's Restaurant", new city.restaurant.yixin.gui.YixinAnimationPanel());
-		restaurantBuilding4.setBuildingPanel(restaurantBuildingPanel4);
-		YixinRestaurant er = new YixinRestaurant("Eric's Restaurant", restaurantBuilding4, restaurantBuildingPanel4);
-		Directory.addPlace(er);
-		_buildingCardLayoutPanel.add( restaurantBuildingPanel4, restaurantBuildingPanel4.getName() );
-		cPanel.currentBuildingPanel.addBuilding(er.name());
-		_buildingInteriorAnimationPanels.add(restaurantBuildingPanel4);
+		// Eric's restaurant
+		WorldViewBuilding ericRestaurantWorldViewBuilding = _worldView.addBuilding(32, 19, 40, ImageAtlas.mapAtlas.get("EricRestaurant"));
+		BuildingInteriorAnimationPanel ericRestaurantInteriorAnimationPanel = new BuildingInteriorAnimationPanel(this, "Eric's Restaurant", new city.restaurant.eric.gui.EricAnimationPanel(BuildingInteriorAnimationPanel.WIDTH, BuildingInteriorAnimationPanel.HEIGHT));
+		ericRestaurantWorldViewBuilding.setBuildingPanel(ericRestaurantInteriorAnimationPanel);
+		EricRestaurant ericRestaurant = new EricRestaurant("Eric's Restaurant", ericRestaurantWorldViewBuilding, ericRestaurantInteriorAnimationPanel);
+		Directory.addPlace(ericRestaurant);
+		_buildingCardLayoutPanel.add( ericRestaurantInteriorAnimationPanel, ericRestaurantInteriorAnimationPanel.getName() );
+		cPanel.currentBuildingPanel.addBuilding(ericRestaurant.name());
+		_buildingInteriorAnimationPanels.add(ericRestaurantInteriorAnimationPanel);
 
 		//another market
 		WorldViewBuilding marketBuilding2 = _worldView.addBuilding(44, 5, 40, ImageAtlas.mapAtlas.get("Market"));
@@ -199,15 +200,17 @@ public class MainGui extends JFrame
 		cPanel.currentBuildingPanel.addBuilding(bank2.name());
 		_buildingInteriorAnimationPanels.add(bankBuildingPanel2);
 		
+		/*
 		//TODO change to Tanner's restaurant
 		WorldViewBuilding restaurantBuilding5 = _worldView.addBuilding(44, 19, 40, ImageAtlas.mapAtlas.get("YixinRestaurant"));
-		BuildingInteriorAnimationPanel restaurantBuildingPanel5 = new BuildingInteriorAnimationPanel(this, "Tanner's Restaurant", new city.restaurant.yixin.gui.YixinAnimationPanel());
+		BuildingInteriorAnimationPanel restaurantBuildingPanel5 = new BuildingInteriorAnimationPanel(this, "Yixin's Restaurant 2", new city.restaurant.yixin.gui.YixinAnimationPanel());
 		restaurantBuilding5.setBuildingPanel(restaurantBuildingPanel5);
-		YixinRestaurant tr = new YixinRestaurant("Tanner's Restaurant", restaurantBuilding5, restaurantBuildingPanel5);
+		YixinRestaurant tr = new YixinRestaurant("Yixin's Restaurant 2", restaurantBuilding5, restaurantBuildingPanel5);
 		Directory.addPlace(tr);
 		_buildingCardLayoutPanel.add( restaurantBuildingPanel5, restaurantBuildingPanel5.getName() );
 		cPanel.currentBuildingPanel.addBuilding(tr.name());
 		_buildingInteriorAnimationPanels.add(restaurantBuildingPanel5);
+		*/
 		
 		//Initializing houses
 		for(int i = 1; i < 3; i++){

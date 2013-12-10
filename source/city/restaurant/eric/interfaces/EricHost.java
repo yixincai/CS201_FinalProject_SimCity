@@ -1,9 +1,12 @@
 package city.restaurant.eric.interfaces;
 
+import city.restaurant.eric.EricCashierRole;
+
 public interface EricHost
 {
 	// Properties
 	public String name();
+	public void setCashier(EricCashier cashier);
 	// Messages
 	public void msgImOnDuty(EricWaiter sender);
 	public void msgIWantFood(EricCustomer sender);

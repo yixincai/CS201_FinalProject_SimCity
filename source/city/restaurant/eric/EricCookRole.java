@@ -16,6 +16,7 @@ import city.market.Item;
 import city.market.Market;
 import city.restaurant.RestaurantCookRole;
 import city.restaurant.eric.interfaces.*;
+import city.restaurant.omar.RevolvingStand;
 
 public class EricCookRole extends RestaurantCookRole implements EricCook
 {
@@ -95,6 +96,7 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	public void addMarket(OLD_EricMarket m) { _markets.add(new MyMarket(m)); }
 	public void setCashier(EricCashier c) { _cashier = c; }
 	public Place place() { return _restaurant; }
+	private EricRevolvingStand revolvingStand() { return _restaurant.revolvingStand(); }
 	
 	
 	
@@ -174,6 +176,7 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	// ----------------------------------------- SCHEDULER -------------------------------------------------
 	public boolean pickAndExecuteAnAction()
 	{
+		if(RevolvingStand().)
 		synchronized(_orders) {
 			for(Order o : _orders) {
 				if(o.state == OrderState.PENDING) {
