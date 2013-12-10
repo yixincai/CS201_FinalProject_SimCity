@@ -1,5 +1,7 @@
 package city.restaurant.tanner;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Timer;
@@ -393,7 +395,7 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 
 	private void SeatNewCustomer(MyCustomer c)
 	{
-		print("Seating new customer");
+		print(AlertTag.TANNER_RESTAURANT, "Seating new customer");
 		myGUI.DoGoToFront();
 		try {
 			doingAction.acquire();
@@ -416,7 +418,7 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 	
 	private void GetCustomerOrder(MyCustomer c)
 	{
-		print("Getting customers order");
+		print(AlertTag.TANNER_RESTAURANT, "Getting customers order");
 		myGUI.DoGoToTable(c.tableNumber);
 		try {
 			doingAction.acquire();
@@ -429,7 +431,7 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 	
 	private void GetCustomerReorder(MyCustomer c)
 	{
-		print("Get customers reorder");
+		print(AlertTag.TANNER_RESTAURANT, "Get customers reorder");
 		myGUI.DoGoToTable(c.tableNumber);
 		try {
 			doingAction.acquire();
@@ -455,14 +457,14 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 	
 	private void GiveOrderToCook(MyCustomer c)
 	{
-		print("Give order to cook");
+		print(AlertTag.TANNER_RESTAURANT, "Give order to cook");
 		cook.msgHereIsANewOrder(c.order, c.tableNumber, this);
 		c.currentState = customerState.eating;
 	}
 	
 	private void BringFood(MyCustomer c)
 	{
-		print("Bring food to Customers");
+		print(AlertTag.TANNER_RESTAURANT, "Bring food to Customers");
 		myGUI.DoGoToCook(cook.getPosition());
 		try {
 			doingAction.acquire();
@@ -488,7 +490,7 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 	
 	private void GoGetCheck(MyCustomer c)
 	{
-		print("Going to answer call for check");
+		print(AlertTag.TANNER_RESTAURANT, "Going to answer call for check");
 		myGUI.DoGoToTable(c.tableNumber);
 		try {
 			doingAction.acquire();
@@ -496,7 +498,7 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		print("Going to get check from front");
+		print(AlertTag.TANNER_RESTAURANT, "Going to get check from front");
 		myGUI.DoGoToFront();
 		try {
 			doingAction.acquire();
@@ -510,7 +512,7 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 	
 	private void BringCheckToCustomer(MyCustomer c)
 	{
-		print("Bringing check to customer");
+		print(AlertTag.TANNER_RESTAURANT, "Bringing check to customer");
 		myGUI.DoGoToTable(c.tableNumber);
 		try {
 			doingAction.acquire();
@@ -524,7 +526,7 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 	
 	private void ClearTable(MyCustomer c)
 	{
-		print("Clearing table");
+		print(AlertTag.TANNER_RESTAURANT, "Clearing table");
 		myGUI.DoGoToTable(c.tableNumber);
 		try {
 			doingAction.acquire();
@@ -545,7 +547,7 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		print("Ask For break");
+		print(AlertTag.TANNER_RESTAURANT, "Ask For break");
 		//((TannerRestaurantHost) host).msgIWantToGoOnBreak(this);
 		wantBreak = false;
 	}
@@ -571,7 +573,7 @@ public abstract class TannerRestaurantBaseWaiterRole extends Role implements Tan
 	
 	private void GoBackOnDuty()
 	{
-		print("Back on Duty");
+		print(AlertTag.TANNER_RESTAURANT, "Back on Duty");
 		onBreak = false;
 		wantBreak = false;
 		//((TannerRestaurantHost) host).msgBackOnDuty(this);

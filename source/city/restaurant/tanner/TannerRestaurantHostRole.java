@@ -1,5 +1,7 @@
 package city.restaurant.tanner;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -155,14 +157,14 @@ public class TannerRestaurantHostRole extends Role implements TannerRestaurantHo
 	
 	private void AnswerRequestForWaitTime(TannerRestaurantCustomer c)
 	{
-		print("Tell potential customer legth of line");
+		print(AlertTag.TANNER_RESTAURANT, "Tell potential customer legth of line");
 		c.msgHereIsTheWaitingList(waitingCustomers.size());
 	}
 	
 	private void SeatCustomer(TannerRestaurantCustomer c, int tableNumber, MyWaiter w)
 	{
 		System.out.println(waitingCustomers.size());
-		print("Seat new customer");
+		print(AlertTag.TANNER_RESTAURANT, "Seat new customer");
 		restaurant.tableMap.get(tableNumber).occupant = c;
 		w.numCustomers++;
 		w.waiter.msgHereIsANewCustomer(c, tableNumber, this, cook_);
