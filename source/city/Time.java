@@ -75,6 +75,13 @@ public class Time {
 		return (int)((12000/_timeFactor)*4*hours);
 	}
 	
+	/** returns the number of real-life milliseconds that will pass until the simulation time reaches the passed-in time */
+	public static int getRealTimeUntil(double time) {
+		double hours = time - _currentTime;
+		if(hours < 0) hours += 24;
+		return getRealTime(time);
+	}
+	
 	
 	
 	// --------------------------------------- METHODS -----------------------------------------
