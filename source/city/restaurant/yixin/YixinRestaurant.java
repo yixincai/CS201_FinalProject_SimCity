@@ -8,6 +8,7 @@ import agent.Role;
 import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
 import city.restaurant.*;
+import city.restaurant.omar.OmarWaiterRole;
 import city.restaurant.yixin.gui.*;
 
 public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
@@ -15,10 +16,9 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	//count stands for the number of waiting list
 	int count = -1;
 	int waiter_count = -1;
-	boolean open;
 	public YixinHostRole host;
 	private int businessAccountNumber = -1;
-	public List<YixinWaiterRole> Waiters = new ArrayList<YixinWaiterRole>();
+	public List<YixinWaiterRole> waiters = new ArrayList<YixinWaiterRole>();
 	private YixinAnimationPanel _animationPanel;
 	
 	// ------------- CONSTRUCTOR & PROPERTIES
@@ -69,7 +69,7 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		newWaiter.setCashier((YixinCashierRole)cashier);
 		newWaiter.setCook((YixinCookRole)cook);
 		newWaiter.setHost(host);
-		Waiters.add(newWaiter);
+		waiters.add(newWaiter);
 		waiter_count++;
 		YixinWaiterGui yixinWaiterGui = new YixinWaiterGui(newWaiter, waiter_count);
 		newWaiter.setGui(yixinWaiterGui);
@@ -125,11 +125,10 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 		cook.clearInventory();
 	}
 	
-	public boolean isOpen(){
-		if (getCashier().active && getHost().active && getCook().active && Waiters.size()!=0)
-			return true;
-		else
-			return false;
+	public boolean existActiveWaiter() {
+		for (YixinWaiterRole waiter : waiters)
+			if (waiter.active)
+				return true;
+		return false;
 	}
-
 }

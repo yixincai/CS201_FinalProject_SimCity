@@ -15,11 +15,10 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	public RevolvingStand revolving_stand = new RevolvingStand();
 	//count stands for the number of waiting list
 	int count = -1;
-	boolean open = true;
 	public OmarHostRole host;
 	private List<Table> tables;
 	private int businessAccountNumber = -1;
-	public List<OmarWaiterRole> Waiters = new ArrayList<OmarWaiterRole>();
+	public List<OmarWaiterRole> waiters = new ArrayList<OmarWaiterRole>();
 	private OmarRestaurantAnimationPanel _animationPanel;
 	
 	// ------------- CONSTRUCTOR & PROPERTIES
@@ -47,13 +46,6 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		((OmarCookRole)cook).cashier = (OmarCashierRole)cashier;
 	}
 
-	public boolean isOpen(){
-		if (cashier.active && host.active && cook.active && Waiters.size()!=0)
-			return true;
-		else
-			return false;
-	}
-
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
 		OmarCustomerRole customer = new OmarCustomerRole(person, this, person.name());
@@ -73,9 +65,9 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 		newWaiter.setCashier((OmarCashierRole)cashier);
 		OmarWaiterGui waiterGui = new OmarWaiterGui(newWaiter, _animationPanel);
 		newWaiter.setGui(waiterGui);
-		waiterGui.setHomePosition(Waiters.size() * 50, 70);
+		waiterGui.setHomePosition(waiters.size() * 50, 70);
 		animationPanel().addGui(waiterGui);
-		Waiters.add(newWaiter);
+		waiters.add(newWaiter);
 		host.waiters.add(newWaiter);
 		return newWaiter;
 	}
@@ -117,5 +109,13 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	@Override
 	public void clearInventory() {
 		cook.clearInventory();
+	}
+
+	@Override
+	public boolean existActiveWaiter() {
+		for (OmarWaiterRole waiter : waiters)
+			if (waiter.active)
+				return true;
+		return false;
 	}
 }

@@ -53,4 +53,10 @@ public class EricRestaurant extends Restaurant {
 		cook.clearInventory();
 	}
 
+	@Override
+	public boolean existActiveWaiter() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

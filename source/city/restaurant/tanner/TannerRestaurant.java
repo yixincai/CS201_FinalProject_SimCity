@@ -12,6 +12,7 @@ import agent.Role;
 import city.PersonAgent;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.omar.OmarWaiterRole;
 import city.restaurant.tanner.gui.TannerRestaurantAnimationPanel;
 import city.restaurant.tanner.gui.TannerRestaurantCashierRoleGui;
 import city.restaurant.tanner.gui.TannerRestaurantCookRoleGui;
@@ -172,5 +173,8 @@ public class TannerRestaurant extends Restaurant
 	{
 		cook.clearInventory();
 	}
-
+	
+	public boolean existActiveWaiter() {
+		return false;
+	}
 }
