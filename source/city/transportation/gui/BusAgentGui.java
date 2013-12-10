@@ -157,16 +157,16 @@ public class BusAgentGui extends JPanel implements Gui {
 		if(isPresent){
 			g.setColor(Color.BLUE);
 			if(direction == BusDirection.BusDown){
-				g.drawImage(busDown, _xPos, _yPos, 16, 37, this);
+				g.drawImage(busDown, _xPos+2, _yPos, 16, 37, this);
 			}
 			else if(direction == BusDirection.BusUp){
-				g.drawImage(busUp, _xPos, _yPos, 16, 37, this);
+				g.drawImage(busUp, _xPos+2, _yPos, 16, 37, this);
 			}
 			else if(direction == BusDirection.BusRight){
-				g.drawImage(busRight, _xPos, _yPos, 36, 23, this);
+				g.drawImage(busRight, _xPos, _yPos-4, 36, 23, this);
 			}
 			else if(direction == BusDirection.BusLeft){
-				g.drawImage(busLeft, _xPos, _yPos, 37, 23, this);
+				g.drawImage(busLeft, _xPos, _yPos-4, 37, 23, this);
 			}
 			
 			if(_xPos == 20){

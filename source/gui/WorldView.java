@@ -97,11 +97,6 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		g2.setColor( Color.black );
 		
 		g2.drawImage(background, null,  null);
-		g2.drawRect(10, 20, 10, 10);
-		g.drawString("Bus Stop", 60, 40);
-		g.drawString("Bus Stop", 560, 40);
-		g.drawString("Bus Stop", 560, 340);
-		g.drawString("Bus Stop", 60, 340);
 		
 		for ( int i=0; i<buildings.size(); i++ ) {
 			WorldViewBuilding b = buildings.get(i);
@@ -110,17 +105,17 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		
 		for ( int i=0; i<Directory.lanes().size(); i++ ) {
 			Lane l = Directory.lanes().get(i);
-			l.draw( g2 );
+//			l.draw( g2 );
 		}
 		
 		for ( int i=0; i<Directory.sidewalks().size(); i++ ) {
 			Lane l = Directory.sidewalks().get(i);
-			l.draw( g2 );
+//			l.draw( g2 );
 		}
 		
 		for ( int i=0; i<Directory.busSidewalks().size(); i++ ) {
 			Lane l = Directory.busSidewalks().get(i);
-			l.draw( g2 );
+//			l.draw( g2 );
 		}
 		
 		try
