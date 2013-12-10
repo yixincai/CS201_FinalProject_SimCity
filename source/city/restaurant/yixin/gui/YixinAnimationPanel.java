@@ -15,8 +15,8 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     private final int TABLEY1 = 40;
     private final int TABLEY2 = 110;
     private final int TABLEY3 = 180;
-    private final int GAPX = 30;
-    private final int GAPY = 30;
+    private final int GAPX = 20;
+    private final int GAPY = 20;
     private final int ICON_X = 32;
     private final int ICON_Y = 32;    
     private final int WINDOWX = 682;
@@ -41,6 +41,16 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
     Image counter = b.getImage();
     int xKCGap = 682;
     int yKCGap = 30;
+    
+    ImageIcon c = new ImageIcon(this.getClass().getResource("/image/restaurant/BanquetTable.png"));
+    Image table = c.getImage();
+    int xBTGap = 40;
+    int yBTGap = 200;
+    
+    ImageIcon d = new ImageIcon(this.getClass().getResource("/image/restaurant/WaitChair.png"));
+    Image chair = d.getImage();
+    int xCGap = 20;
+    int yCGap = 20;
     
     public YixinAnimationPanel()
     {
@@ -73,11 +83,11 @@ public class YixinAnimationPanel extends JPanel implements ActionListener {
         g.drawImage(counter, 0, 248, xKCGap, yKCGap, this);
 
         //Here is the table
-
-        g2.setColor(Color.red);
-        g2.fillRect(TABLEX, TABLEY1, GAPX, GAPY);//200 and 250 need to be table params
-        g2.fillRect(TABLEX, TABLEY2, GAPX, GAPY);
-        g2.fillRect(TABLEX, TABLEY3, GAPX, GAPY);
+        g.drawImage(table, TABLEX+25, TABLEY1-10, xBTGap, yBTGap, this);
+        //Chairs
+        g.drawImage(chair, TABLEX, TABLEY1, xCGap, yCGap, this);
+        g.drawImage(chair, TABLEX, TABLEY2, xCGap, yCGap, this);
+        g.drawImage(chair, TABLEX, TABLEY3, xCGap, yCGap, this);
     	g.drawString(WA, 30, 10);
 
         //here is the cooking area 
