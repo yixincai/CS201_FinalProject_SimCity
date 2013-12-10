@@ -1,6 +1,7 @@
 package city.restaurant.ryan;
 
 import agent.Agent;
+import gui.trace.AlertTag;
 
 import java.awt.Dimension;
 import java.util.List;
@@ -110,13 +111,13 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	@Override
 	public void cmdGotHungry() {
 		// TODO Auto-generated method stub
-		print("I'm hungry");
+		print(AlertTag.RYAN_RESTAURANT,"I'm hungry");
 		event = AgentEvent.gotHungry;
 		stateChanged();
 	}
 	
 	public void msgTablesAreFull(){
-		print("Leaving");
+		print(AlertTag.RYAN_RESTAURANT,"Leaving");
 		event = AgentEvent.tableFull;
 	}
 	
@@ -142,13 +143,13 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	
 	public void msgAnimationFinishedGoToSeat() {
 		//from animation
-		print("At table " + tableNumber);
+		print(AlertTag.RYAN_RESTAURANT,"At table " + tableNumber);
 		event = AgentEvent.seated;
 		stateChanged();
 	}
 	
 	public void msgWhatsYourOrder(){
-		print("I am ordering");
+		print(AlertTag.RYAN_RESTAURANT,"I am ordering");
 		event = AgentEvent.order;
 		stateChanged();
 	}
@@ -162,26 +163,26 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	}
 	
 	public void msgHeresYourFood(){
-		print("Got food from " + waiter.getName());
+		print(AlertTag.RYAN_RESTAURANT,"Got food from " + waiter.getName());
 		event = AgentEvent.served;
 		stateChanged();
 	}
 	
 	public void msgHeresYourCheck(double payment){
-		print("Thank you, " + waiter.getName());
+		print(AlertTag.RYAN_RESTAURANT,"Thank you, " + waiter.getName());
 		this.payment = payment;
 		event = AgentEvent.gotCheck;
 		stateChanged();
 	}
 	
 	public void msgAnimationFinishedGoToCashier(){
-		print("At cashier");
+		print(AlertTag.RYAN_RESTAURANT,"At cashier");
 		event = AgentEvent.atCashier;
 		stateChanged();
 	}
 	
 	public void msgPaymentDone(double payment){
-		print("Done paying and leaving");
+		print(AlertTag.RYAN_RESTAURANT,"Done paying and leaving");
 		event = AgentEvent.doneLeaving;
 		stateChanged();
 	}
@@ -265,7 +266,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	// Actions
 	private void goToRestaurant() {
 		host = _restaurant.host;
-		print("Going to restaurant");
+		print(AlertTag.RYAN_RESTAURANT,"Going to restaurant");
 		host.msgIWantFood(this);//send our instance, so he can respond to us
 	}
 	
@@ -285,18 +286,18 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 
 	private void SitDown() {
 		customerGui.DoGoToSeat(tableNumber);
-		print("Following Waiter " + waiter.getName() + " to table " + tableNumber);
+		print(AlertTag.RYAN_RESTAURANT,"Following Waiter " + waiter.getName() + " to table " + tableNumber);
 		//choice = Choose();
 		//customerGui.DoGoToSeat(xTable, yTable);//hack; only one table
 	}
 	
 	private void Choose(){
 		//add timer;
-		print("Choosing");
+		print(AlertTag.RYAN_RESTAURANT,"Choosing");
 		customerGui.setState(6);
 		timer.schedule(new TimerTask() {
 			public void run() {
-				print("Ready to order, " + waiter.getName());
+				print(AlertTag.RYAN_RESTAURANT,"Ready to order, " + waiter.getName());
 				Chosen();
 			}
 		},
@@ -313,7 +314,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 		if(bad) money = 1000;
 		while(!chosen){
 			if(cMenu.isEmpty()){
-				print("Too poor");
+				print(AlertTag.RYAN_RESTAURANT,"Too poor");
 				leaveTable();
 				chosen = true;
 			}
@@ -336,21 +337,21 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	}
 	
 	private void Order(){
-		print("I'll order " + choice);
+		print(AlertTag.RYAN_RESTAURANT,"I'll order " + choice);
 		customerGui.setChoice(choice);
 		customerGui.setState(2);
 		waiter.msgMyOrder(choice, this);
 	}
 
 	private void EatFood() {
-		print("Eating Food " + choice);
+		print(AlertTag.RYAN_RESTAURANT,"Eating Food " + choice);
 		customerGui.setState(3);
 		timer.schedule(new TimerTask() {
 			Object cookie = 1;
 			public void run() {
-				//print("Done eating, cookie=" + cookie);
+				//print(AlertTag.RYAN_RESTAURANT,"Done eating, cookie=" + cookie);
 				event = AgentEvent.doneEating;
-				print("Finshed Eating");
+				print(AlertTag.RYAN_RESTAURANT,"Finshed Eating");
 				sendDoneEatingMessage();
 				//isHungry = false;
 			}
@@ -366,20 +367,21 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 	
 	private void PayOrRun(){ // Add run function here
 		if(money > payment){
-			print("Going to cashier");
+			print(AlertTag.RYAN_RESTAURANT,"Going to cashier");
 			customerGui.setState(4);
 			customerGui.DoGoToCashier();
 		}
 		else if(money < payment){
-			print("Running Away");
+			print(AlertTag.RYAN_RESTAURANT,"Running Away");
 			leaveTable();
 		}
 	}
 	
 	private void PayCashier(){
-		print("Paying Cashier");
+		print(AlertTag.RYAN_RESTAURANT,"Paying Cashier");
 		cashier = (RyanCashierRole)_restaurant.getCashier();
 		money -= payment;
+		_person.cmdChangeMoney(-payment);
 		cashier.msgHeresMoney(this, payment);
 		payment = 0;
 	}
@@ -390,7 +392,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 			waiter.msgLeaving(this);
 		}
 		else if(!bad){
-			print("Leaving.");
+			print(AlertTag.RYAN_RESTAURANT,"Leaving.");
 			waiter.msgLeaving(this);
 			customerGui.setState(5);	
 		}

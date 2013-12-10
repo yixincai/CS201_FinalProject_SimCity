@@ -1,5 +1,7 @@
 package city.restaurant.ryan;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -56,13 +58,14 @@ public class RyanCookRole extends RestaurantCookRole{
 		super(p);
 		this.name = name;
 		_restaurant = r;
+		currentMarket = Directory.markets().get(market_count);
 		
 		cookTimes.put("Steak", 2500);
 		cookTimes.put("Chicken", 1000);
 		cookTimes.put("Salad", 500);
 		cookTimes.put("Pizza", 750);
 		
-		foods.add(new Food("Steak", 20, 5, 2000));
+		foods.add(new Food("Steak", 0, 5, 2000));
 		foods.add(new Food("Chicken", 20, 5, 1000));
 		foods.add(new Food("Pizza", 20, 5, 1000));
 		foods.add(new Food("Salad", 20, 5, 500));
@@ -80,13 +83,14 @@ public class RyanCookRole extends RestaurantCookRole{
 		super(p);
 		this.name = "TestCook";
 		_restaurant = r;
+		currentMarket = Directory.markets().get(market_count);
 		
 		cookTimes.put("Steak", 2500);
 		cookTimes.put("Chicken", 1000);
 		cookTimes.put("Salad", 500);
 		cookTimes.put("Pizza", 750);
 		
-		foods.add(new Food("Steak", 20, 5, 2000));
+		foods.add(new Food("Steak", 0, 5, 2000));
 		foods.add(new Food("Chicken", 20, 5, 1000));
 		foods.add(new Food("Pizza", 20, 5, 1000));
 		foods.add(new Food("Salad", 20, 5, 500));
@@ -108,7 +112,7 @@ public class RyanCookRole extends RestaurantCookRole{
 	
 	public void msgOrderFulfillment(Market m, List<Item> order) {
 		// TODO Auto-generated method stub
-		print("Market response received");
+		print(AlertTag.RYAN_RESTAURANT,"Market response received");
 		orderState = OrderState.OrderReceived;
 		currentMarket = m;
 		invoice = order;
@@ -137,12 +141,16 @@ public class RyanCookRole extends RestaurantCookRole{
 	
 	public void msgTryToCookOrder(RyanWaiterRole waiter, RyanCustomerRole customer, String choice){
 		orders.add(new RyanOrder(waiter, customer, choice));
-		print("Adding order for " + customer.getName());
+		print(AlertTag.RYAN_RESTAURANT,"Adding order for " + customer.getName());
 		stateChanged();
 	}
 	
 	public void msgCanCookOrder(){
 		stateChanged();
+	}
+	
+	public void msgAtStand(){
+		isCMoving.release();
 	}
 	
 	public void msgFoodPutOnGrill(){
@@ -161,7 +169,7 @@ public class RyanCookRole extends RestaurantCookRole{
 	public void msgGrabbedDish(RyanWaiterRole waiter, RyanCustomerRole customer){
 		for(RyanOrder order: orders){
 			if(order.customer == customer){
-				print("Clearing dish for " + customer.getCustomerName() + " at " + order.pNumber);
+				print(AlertTag.RYAN_RESTAURANT,"Clearing dish for " + customer.getCustomerName() + " at " + order.pNumber);
 				gui.ClearPlate(order.pNumber);
 				order.dishState = DishState.taken;
 				stateChanged();
@@ -211,7 +219,7 @@ public class RyanCookRole extends RestaurantCookRole{
 		}
 		RyanOrder order = _restaurant.revolvingStand.remove();
 		if (order!=null){
-			//DoGoToRevolvingStand(); add animation and gui
+			DoGoToRevolvingStand(); 
 			orders.add(order);
 			return true;
 		}
@@ -219,7 +227,7 @@ public class RyanCookRole extends RestaurantCookRole{
 		if(checkState == CheckState.notChecked){
 			timer1.schedule(new TimerTask() {
 				public void run() {
-					print("Notify the cook to check revolving stand");
+					print(AlertTag.RYAN_RESTAURANT,"Notify the cook to check revolving stand");
 					notifyCook();
 				}
 			}, 10000);
@@ -245,6 +253,16 @@ public class RyanCookRole extends RestaurantCookRole{
 	
 	//Actions*******************************************************************************************************************************************************************************
 	//Cooking Actions
+	private void DoGoToRevolvingStand() {
+		print(AlertTag.RYAN_RESTAURANT,"Going to revolving stand");
+		gui.goToRevolvingStand();
+		try{
+			isCMoving.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void CheckInventory(RyanOrder currentOrder){
 		for(int i = 0; i < foods.size(); i++){
 			Food temp = foods.get(i);
@@ -263,7 +281,7 @@ public class RyanCookRole extends RestaurantCookRole{
 	
 	public void GrabSupplies(RyanOrder order, Grill grill){
 		try{
-			print("Going to fridge to get supplies for " + order.choice + " by " + order.customer.getName());
+			print(AlertTag.RYAN_RESTAURANT,"Going to fridge to get supplies for " + order.choice + " by " + order.customer.getName());
 			order.dishState = DishState.gotofridge;
 			grill.occupied = true;
 			order.gNumber = grill.number;
@@ -273,12 +291,12 @@ public class RyanCookRole extends RestaurantCookRole{
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-    		print("Unexpected exception caught in Agent thread:", a);
+    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
     	}
 	}
 	
 	public void CookFood(final RyanOrder currentOrder){
-		print("Cooking food " + currentOrder.choice + " for " + currentOrder.customer.getName());
+		print(AlertTag.RYAN_RESTAURANT,"Cooking food " + currentOrder.choice + " for " + currentOrder.customer.getName());
 		currentOrder.dishState = DishState.cooking;
 		//currentOrder.cookTimer(cookTimes.get(currentOrder.choice));
 		
@@ -294,14 +312,14 @@ public class RyanCookRole extends RestaurantCookRole{
 		for(Food temp: foods){
 			if(currentOrder.choice.equals(temp.type)){
 				temp.amount--;
-				print("Stock of " + temp.type + " at: " + temp.amount);
+				print(AlertTag.RYAN_RESTAURANT,"Stock of " + temp.type + " at: " + temp.amount);
 			}
 		}
 	}
 	
 	public void PlateFood(RyanOrder order, Plate plate){
 		try{
-			print("Plating " + order.choice + " for " + order.customer.getName());
+			print(AlertTag.RYAN_RESTAURANT,"Plating " + order.choice + " for " + order.customer.getName());
 			order.dishState = DishState.plating;
 			order.pNumber = plate.number;
 			plate.occupied = true;
@@ -310,17 +328,17 @@ public class RyanCookRole extends RestaurantCookRole{
 			gui.Plating(order.gNumber, order.pNumber);
 			isCMoving.acquire();
 			order.dishState = DishState.waiting;
-			print(order.choice + " for " + order.customer.getName() + " is done");
+			print(AlertTag.RYAN_RESTAURANT,order.choice + " for " + order.customer.getName() + " is done");
 			order.waiter.msgOrderDone(order.choice, order.customer);
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-    		print("Unexpected exception caught in Agent thread:", a);
+    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
     	}
 	}
 	
 	public void ClearPlate(RyanOrder order){
-		print("Clearing");
+		print(AlertTag.RYAN_RESTAURANT,"Clearing");
 		Plate plate = getPlate(order.pNumber);
 		plate.occupied = false;
 		orders.remove(order);
@@ -328,10 +346,11 @@ public class RyanCookRole extends RestaurantCookRole{
 	
 	//Resupply Actions	
 	public void Restock(){
+		print(AlertTag.RYAN_RESTAURANT,"Restocking on Food");
 		List<Item> order = new ArrayList<Item>();
 		for(Food temp: foods){
 			if(temp.amount <= temp.lowLevel){
-				print("Restocking " + temp.type);
+				print(AlertTag.RYAN_RESTAURANT,"Restocking " + temp.type);
 				order.add(new Item(temp.type, (int) (temp.capacity - temp.amount)));
 			}
 		}
@@ -342,7 +361,7 @@ public class RyanCookRole extends RestaurantCookRole{
 	public void giveInvoice(){
 		orderState =  OrderState.waitingToCheckout;
 		cashier.msgHereIsTheInvoice(currentMarket, invoice);
-		print("Giving invoice to cashier");
+		print(AlertTag.RYAN_RESTAURANT,"Giving invoice to cashier");
 	}
 	
 	//Utilities*******************************************************************************************************************************************************************************
@@ -452,5 +471,13 @@ public class RyanCookRole extends RestaurantCookRole{
 		roleState = RoleState.WantToLeave;
 		stateChanged();		
 	}
+
+	@Override
+	public void clearInventory() {
+		for(Food f: foods){
+			f.amount = 0;
+		}
+	}
+	
 	
 }

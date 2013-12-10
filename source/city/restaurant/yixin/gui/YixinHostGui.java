@@ -12,12 +12,12 @@ public class YixinHostGui extends JPanel implements Gui {
 
 	private YixinHostRole agent = null;
 
-	private int xPos = 120, yPos = 20;//default waiter position
-	public static int xGap = 40;
-	public static int yGap = 40;
+	private int xPos = 120, yPos = 0;//default waiter position
+	public static int xGap = 21;
+	public static int yGap = 30;
 
-	//private ImageIcon i = new ImageIcon(this.getClass().getResource("image/host.png"));
-	//private Image image = i.getImage();
+	private ImageIcon i = new ImageIcon(this.getClass().getResource("/image/restaurant/Host.png"));
+	private Image image = i.getImage();
 	public YixinHostGui(YixinHostRole agent) {
 		this.agent = agent;
 	}
@@ -31,10 +31,7 @@ public class YixinHostGui extends JPanel implements Gui {
 
 	public void draw(Graphics2D g) {
 		if(agent.active){
-			g.setColor(Color.BLUE);
-			g.fillRect(xPos, yPos, xGap, yGap);
-			g.drawString("Host", xPos, yPos - 10);
-			//g.drawImage(image, xPos, yPos, xGap, yGap, this);
+			g.drawImage(image, xPos, yPos, xGap, yGap, this);
 		}
 	}
 

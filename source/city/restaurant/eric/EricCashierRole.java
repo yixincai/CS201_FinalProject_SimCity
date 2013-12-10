@@ -1,5 +1,7 @@
 package city.restaurant.eric;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -88,7 +90,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 		{
 			if(b.check == c) // may want to change this to .equals(c) later, if passing copies around rather than references.
 			{
-				print("Received $" + money + " from " + sender.name());
+				print(AlertTag.ERIC_RESTAURANT, "Received $" + money + " from " + sender.name());
 				b.customer = sender;
 				b.paidAmount = money;
 				b.state = BillState.PAID_NEEDS_CHANGE;
@@ -125,7 +127,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 		{
 			if(b.customer == sender)
 			{
-				print("Received " + money + " from " + sender.name());
+				print(AlertTag.ERIC_RESTAURANT,"Received " + money + " from " + sender.name());
 				b.paidAmount = money;
 				b.state = BillState.PAY_DEBT_NEEDS_CHANGE;
 				stateChanged();
@@ -220,7 +222,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 	{
 		logThis("actGiveWaiterCheck");
 		
-		print("Giving check to " + b.waiter.name());
+		print(AlertTag.ERIC_RESTAURANT,"Giving check to " + b.waiter.name());
 		b.state = BillState.WAITING_FOR_PAYMENT;
 		b.waiter.msgHereIsCheck(b.check);
 	}
@@ -236,12 +238,12 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 		_money += b.paidAmount - change;
 		b.paidAmount = 0;
 		
-		print("Giving $" + change + " in change to customer " + b.customer.name());
+		print(AlertTag.ERIC_RESTAURANT,"Giving $" + change + " in change to customer " + b.customer.name());
 		b.customer.msgHereIsChange(change);
 		
 		if(b.owedAmount > 0)
 		{
-			print(b.customer.name() + " still owes " + b.owedAmount);
+			print(AlertTag.ERIC_RESTAURANT, b.customer.name() + " still owes " + b.owedAmount);
 			b.state = BillState.OWED;
 			b.waiter = null; // because the customer is leaving and will no longer be assigned to a waiter
 			b.check = null; // because the customer is leaving and all we care about now is his debt
@@ -258,12 +260,12 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 		
 		if(b.owedAmount == 0)
 		{
-			print("Notifying " + _host.name() + " that " + b.customer.name() + " does not owe anything.");
+			print(AlertTag.ERIC_RESTAURANT, "Notifying " + _host.name() + " that " + b.customer.name() + " does not owe anything.");
 			_bills.remove(b);
 		}
 		else
 		{
-			print("Notifying " + _host.name() + " that " + b.customer.name() + " owes $" + b.owedAmount);
+			print(AlertTag.ERIC_RESTAURANT,"Notifying " + _host.name() + " that " + b.customer.name() + " owes $" + b.owedAmount);
 			b.state = BillState.OWED;
 		}
 		_host.msgCustomerOwes(b.customer, b.owedAmount);
@@ -280,7 +282,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 		_money += b.paidAmount - change;
 		b.paidAmount = 0;
 		
-		print("Giving $" + change + " in change to customer " + b.customer.name());
+		print(AlertTag.ERIC_RESTAURANT,"Giving $" + change + " in change to customer " + b.customer.name());
 		b.customer.msgHereIsChange(change);
 		
 		if(b.owedAmount > 0)
@@ -304,7 +306,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 			amountToPay = _money;
 		}
 
-		print("Paying $" + amountToPay + " to " + b.market.getName() + ".");
+		print(AlertTag.ERIC_RESTAURANT,"Paying $" + amountToPay + " to " + b.market.getName() + ".");
 		
 		// Send the payment
 		b.amountOwed -= amountToPay;

@@ -1,5 +1,6 @@
 package city.restaurant.ryan;
 
+import gui.trace.AlertTag;
 import city.PersonAgent;
 
 public class RyanNormalWaiterRole extends RyanWaiterRole {
@@ -15,12 +16,12 @@ public class RyanNormalWaiterRole extends RyanWaiterRole {
 			isMoving.acquire();
 			wPlace = waiterPlace.inRestaurant;
 			customer.state = customerState.WaitingForFood;
-			print("Chef, Customer " + customer.customer.getName() + " wants " + customer.choice);
+			print(AlertTag.RYAN_RESTAURANT, "Chef, Customer " + customer.customer.getName() + " wants " + customer.choice);
 			cook.msgTryToCookOrder(this, (RyanCustomerRole) customer.customer, customer.choice);
 		}catch(InterruptedException a){
     		
     	} catch(Exception a){
-    		print("Unexpected exception caught in Agent thread:", a);
+    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
     	}
 	}
 

@@ -49,5 +49,15 @@ public class HouseOccupantGui extends HomeOccupantGui {
 	protected int frontDoorY() {
 		return HouseAnimationPanel.FRONTDOORY;
 	}
+	
+	@Override
+	protected int chairX() {
+		return HouseAnimationPanel.CHAIRX;
+	}
+	
+	@Override
+	protected int chairY() {
+		return HouseAnimationPanel.CHAIRY;
+	}
 
 }

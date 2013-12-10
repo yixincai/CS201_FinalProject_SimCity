@@ -110,12 +110,65 @@ public class ApartmentOccupantGui extends HomeOccupantGui {
 
 	@Override
 	protected int frontDoorX() {
-		return ApartmentAnimationPanel.FRONTDOORX;
+		switch(apartmentOccupantRole().apartmentNumber())
+		{
+		case 0:
+			return ApartmentAnimationPanel.FRONTDOORX;
+		case 1:
+			return ApartmentAnimationPanel.FRONTDOORX2;
+		case 2:
+			return ApartmentAnimationPanel.FRONTDOORX3;
+		case 3:
+			return ApartmentAnimationPanel.FRONTDOORX4;
+		}
+		return 0;
 	}
 
 	@Override
 	protected int frontDoorY() {
-		return ApartmentAnimationPanel.FRONTDOORY;
+		switch(apartmentOccupantRole().apartmentNumber())
+		{
+		case 0:
+			return ApartmentAnimationPanel.FRONTDOORY;
+		case 1:
+			return ApartmentAnimationPanel.FRONTDOORY2;
+		case 2:
+			return ApartmentAnimationPanel.FRONTDOORY3;
+		case 3:
+			return ApartmentAnimationPanel.FRONTDOORY4;
+		}
+		return 0;
+	}
+	@Override
+	protected int chairX() {
+		switch(apartmentOccupantRole().apartmentNumber())
+		{
+		case 0:
+			return ApartmentAnimationPanel.TVX;
+		case 1:
+			return ApartmentAnimationPanel.TVX2;
+		case 2:
+			return ApartmentAnimationPanel.TVX3;
+		case 3:
+			return ApartmentAnimationPanel.TVX4;
+		}
+		return 0;
+	}
+	
+	@Override
+	protected int chairY() {
+		switch(apartmentOccupantRole().apartmentNumber())
+		{
+		case 0:
+			return ApartmentAnimationPanel.TVY;
+		case 1:
+			return ApartmentAnimationPanel.TVY2;
+		case 2:
+			return ApartmentAnimationPanel.TVY3;
+		case 3:
+			return ApartmentAnimationPanel.TVY4;
+		}
+		return 0;
 	}
 
 }

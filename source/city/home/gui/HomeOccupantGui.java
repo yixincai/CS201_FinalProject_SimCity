@@ -41,6 +41,8 @@ public abstract class HomeOccupantGui implements Gui {
 	protected abstract int idleY();
 	protected abstract int frontDoorX();
 	protected abstract int frontDoorY();
+	protected abstract int chairX();
+	protected abstract int chairY();
 
 	@Override
 	public boolean isPresent() {
@@ -68,14 +70,18 @@ public abstract class HomeOccupantGui implements Gui {
 	}
 	public void doCookAndEatFood() {
 		_doingAction = true;
-		_destinationX = kitchenX();
-		_destinationY = kitchenY();
-		waitForActionToFinish();
-		_doingAction = true;
-		_destinationX = kitchenX() - 20;
+		_destinationX = kitchenX() + 40;
+		_destinationY = kitchenY() + 30;
 		waitForActionToFinish();
 		_doingAction = true;
 		_destinationX = kitchenX();
+		waitForActionToFinish();
+		_doingAction = true;
+		_destinationX = kitchenX();
+		waitForActionToFinish();
+		_doingAction = true;
+		_destinationX = chairX();
+		_destinationY = chairY();
 		waitForActionToFinish();
 		// TODO add a kitchen table, possibly add a string for which food he has
 		_role.msgReachedDestination();

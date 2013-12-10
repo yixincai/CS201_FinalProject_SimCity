@@ -25,12 +25,15 @@ import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import city.Constants;
+import city.PersonAgent;
 
+@SuppressWarnings("serial")
 public class CreatePersonPanel extends JPanel implements ActionListener, ChangeListener
 {
 	String[] occupations = {"None", "Waiter", "Restaurant Cashier", "Cook", "Restaurant Host", 
-								"Bank Teller", "Bank Host", "Market Cashier", "Market Employee"};
+								"Bank Teller", "Bank Host", "Market Cashier", "Market Employee", 
+								"OmarRestaurant Customer", "YixinRestaurantCustomer", "EricRestaurantCustomer",
+								"RyanRestaurant Customer"};
 	JComboBox occupationBox = new JComboBox(occupations);
 	JLabel moneyField = new JLabel("$0.00");
 	JTextField nameField = new JTextField(15);
@@ -66,8 +69,8 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 		moneySlider.setMajorTickSpacing(25);
 		moneySlider.setPaintTicks(true);
 		Hashtable<Integer, JLabel> sliderLabels = new Hashtable<Integer, JLabel>();
-		sliderLabels.put(city.Constants.POOR_LEVEL, new JLabel("Poor"));
-		sliderLabels.put(city.Constants.RICH_LEVEL, new JLabel("Rich"));
+		sliderLabels.put(PersonAgent.POOR_LEVEL, new JLabel("Poor"));
+		sliderLabels.put(PersonAgent.RICH_LEVEL, new JLabel("Rich"));
 		moneySlider.setPaintLabels(true);
 		moneySlider.setLabelTable(sliderLabels);
 		moneySlider.addChangeListener(this);

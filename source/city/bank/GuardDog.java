@@ -37,6 +37,9 @@ public class GuardDog extends Agent {
 	
 	enum Command{None, Kill};
 	
+	//Properties
+	public String toString() { return "Riley the Guard Dog"; }
+	
 	//Messages
 	public void sicEm(List<BankCustomerRole> robbers){
 		AlertLog.getInstance().logMessage(AlertTag.BANK, "Riley The Guard Dog", "Woof");
@@ -66,9 +69,9 @@ public class GuardDog extends Agent {
 			guardDogSem.acquire();
 		} catch (Exception e){
 			e.printStackTrace();
-		}
-		command = Command.None;
+		} 
 		hitList.remove(0);
+		if(hitList.size() == 0) { command = Command.None; }
 	}
 	
 	//---------- Commands --------

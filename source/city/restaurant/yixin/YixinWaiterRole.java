@@ -1,5 +1,7 @@
 package city.restaurant.yixin;
 
+import gui.trace.AlertTag;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -111,7 +113,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	public void msgFoodRunsOut(String choice, int tableNumber) {
 		for (MyCustomer c: customers) {
 			if (c.tableNumber == tableNumber) {
-				print("Got msg " + choice + " is running out.");
+				print(AlertTag.YIXIN_RESTAURANT,"Got msg " + choice + " is running out.");
 				c.state = MyCustomer.CustomerState.noFood;
 				stateChanged();
 			}
@@ -155,7 +157,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 
 	public void msgBreakGranted(){
 		breakEnabled = true;//for gui purpose
-		print("Break request granted.");
+		print(AlertTag.YIXIN_RESTAURANT,"Break request granted.");
 		stateChanged();
 	}
 
@@ -171,13 +173,13 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	public boolean pickAndExecuteAnAction() {
 		try{
 			if (breakRequest){
-				print("Tell host to break");
+				print(AlertTag.YIXIN_RESTAURANT,"Tell host to break");
 				host.msgWantToBreak(this);
 				breakRequest = false;
 				return true;
 			}
 			if (backRequest){
-				print("Tell host I'm coming back");
+				print(AlertTag.YIXIN_RESTAURANT,"Tell host I'm coming back");
 				host.msgWantToComeBack(this);
 				backRequest = false;
 				return true;
@@ -237,7 +239,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 				}
 			}
 			if (customers.size() == 0 && role_state == RoleState.WantToLeave){
-				LeaveRestaurant();
+				//LeaveRestaurant();
 				role_state = RoleState.none;
 				active = false;
 				return true;
@@ -279,7 +281,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	}
 
 	private void giveNewMenu(MyCustomer customer){
-		print("give new menu");
+		print(AlertTag.YIXIN_RESTAURANT,"give new menu");
 		DoGoToCustomer(customer.c, customer.tableNumber);
 		customer.state = MyCustomer.CustomerState.none;
 		Menu m = new Menu();
@@ -291,32 +293,32 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 
 	private void giveOrderToCustomer(MyCustomer customer){
 		DoFetchPlate();
-		print("Give order to customer");
+		print(AlertTag.YIXIN_RESTAURANT,"Give order to customer");
 		customer.state = MyCustomer.CustomerState.none;
 		DoGiveFoodToCustomer(customer.c, customer.tableNumber, customer.choice);
 		customer.c.msgHereIsYourFood(customer.choice);
 	}
 
 	private void computeBill(MyCustomer customer){
-		print("Ask Cashier to compute bill");
+		print(AlertTag.YIXIN_RESTAURANT,"Ask Cashier to compute bill");
 		cashier.msgComputeBill(this, customer.c, customer.choice);
 		customer.state = MyCustomer.CustomerState.none;
 	}
 
 	private void giveCheck(MyCustomer customer){
-		print("Give Customer the bill");
+		print(AlertTag.YIXIN_RESTAURANT,"Give Customer the bill");
 		customer.c.msgHereIsTheCheck(customer.check, cashier);
 		customer.state = MyCustomer.CustomerState.none;
 	}
 
 	private void clearCustomer(MyCustomer customer){
-		print("Clear customer");
+		print(AlertTag.YIXIN_RESTAURANT,"Clear customer");
 		host.msgTableIsFree(customer.c, customer.tableNumber);
 		customers.remove(customer);
 	}
 
 	private void DoSeatCustomer(YixinCustomerRole customer, int table){
-		print("Seating " + customer + " at " + table);
+		print(AlertTag.YIXIN_RESTAURANT,"Seating " + customer + " at " + table);
 		waiterGui.DoGoToTable(table);
 		try {
 			atTable.acquire();
@@ -326,7 +328,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	}
 
 	private void DoGoToCustomer(YixinCustomerRole customer, int table){
-		print("Going to " + customer + " at " + table);
+		print(AlertTag.YIXIN_RESTAURANT,"Going to " + customer + " at " + table);
 		waiterGui.DoGoToTable(table);
 		try {
 			atTable.acquire();
@@ -340,7 +342,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	}
 
 	protected void DoGoToCook(){
-		print("Going to cook");
+		print(AlertTag.YIXIN_RESTAURANT,"Going to cook");
 		waiterGui.DoGoToCook();
 		try {
 			atTable.acquire();
@@ -350,7 +352,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	}
 
 	protected void DoFetchPlate(){
-		print("Fetching the food.");
+		print(AlertTag.YIXIN_RESTAURANT,"Fetching the food.");
 		waiterGui.DoFetchDish();
 		try {
 			atTable.acquire();
@@ -360,7 +362,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	}
 
 	protected void DoGoToRevolvingStand(){
-		print("Putting on the revolving stand.");
+		print(AlertTag.YIXIN_RESTAURANT,"Putting on the revolving stand.");
 		waiterGui.DoGoToRevolvingStand();
 		try {
 			atTable.acquire();
@@ -370,7 +372,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 	}
 
 	private void DoGiveFoodToCustomer(YixinCustomerRole customer, int table, String food){
-		print("Giving food to " + customer + " at " + table);
+		print(AlertTag.YIXIN_RESTAURANT,"Giving food to " + customer + " at " + table);
 		waiterGui.DoBringFood(table, food);
 		try {
 			atTable.acquire();

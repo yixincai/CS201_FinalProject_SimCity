@@ -1,11 +1,15 @@
 package city.transportation;
 
+import java.awt.Dimension;
+
 import gui.trace.AlertLog;
 import gui.trace.AlertTag;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import agent.Agent;
@@ -23,17 +27,16 @@ public class BusAgent extends Agent implements Bus{
 	List<MyCommuter> _passengers = new ArrayList<MyCommuter>();
 	BusAgentGui _gui;
 	
-	List<BusStopObject> _busStops = new ArrayList<BusStopObject>();
+	public List<BusStopObject> _busStops = new ArrayList<BusStopObject>();
 	
 	
-	BusStopObject currentDestination;
-	int _busStopNum;
+	public BusStopObject currentDestination;
+	public int _busStopNum;
 	public List<Commuter> currentBusStopList = new ArrayList<Commuter>();
 	Semaphore busSem = new Semaphore(0, true);
 	
 	static double _fare;
 	double _register;
-
 	static int capacity = 20;
 	private int numPeople = 0;
 	private int expectedPeople = 0;
@@ -153,11 +156,16 @@ public class BusAgent extends Agent implements Bus{
 		AlertLog.getInstance().logMessage(AlertTag.BUS, this.name() ,"Picking up from " + currentDestination.name());
 		currentBusStopList = currentDestination.getList();
 		bState = BusState.pickingup;
-    	for(Commuter comm: currentBusStopList){
+		setExpectedPeople(getExpectedPeople() + currentBusStopList.size());
+		ArrayList<Commuter> waitingList = new ArrayList<Commuter>();
+		for(Commuter comm: currentBusStopList){
+	    	waitingList.add(comm);
+        }
+		//doing this because currentBusStopList is modified at the same time
+		for(Commuter comm: waitingList){
     		if(getExpectedPeople() < capacity){
     			AlertLog.getInstance().logMessage(AlertTag.BUS, this.name() ,"Picked up");
-	    		comm.msgGetOnBus(_fare, this);
-	            setExpectedPeople(getExpectedPeople() + 1);
+    			comm.msgGetOnBus(_fare, this);
     		}
         }
     	AlertLog.getInstance().logMessage(AlertTag.BUS, this.name() ,"Finished Picking up " + getExpectedPeople() + " passengers");
@@ -165,6 +173,8 @@ public class BusAgent extends Agent implements Bus{
 	}
 
 	public void Leave(){
+		//TODO change this to be better
+
 	    bState = BusState.moving;
 	    _busStopNum++;
 		

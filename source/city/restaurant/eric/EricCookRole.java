@@ -1,5 +1,7 @@
 package city.restaurant.eric;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -93,6 +95,7 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	public void addMarket(OLD_EricMarket m) { _markets.add(new MyMarket(m)); }
 	public void setCashier(EricCashier c) { _cashier = c; }
 	public Place place() { return _restaurant; }
+	private EricRevolvingStand revolvingStand() { return _restaurant.revolvingStand(); }
 	
 	
 	
@@ -129,7 +132,7 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 		
 		for(Food f : _foods)
 		{
-			print("Will receive " + foodsComing.get(f.name) + " " + f.name + " from " + sender.getName());
+			print(AlertTag.ERIC_RESTAURANT,"Will receive " + foodsComing.get(f.name) + " " + f.name + " from " + sender.getName());
 			f.amountComing += foodsComing.get(f.name);
 			
 			f.updateAmountNeededToFulfillOrder();
@@ -146,10 +149,10 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	 */
 	public void msgDelivery(OLD_EricMarket sender, Map<String,Integer> foods) // from Market
 	{
-		print("Received a delivery from " + sender.getName());
+		print(AlertTag.ERIC_RESTAURANT,"Received a delivery from " + sender.getName());
 		for(Food f : _foods)
 		{
-			print("Received " + foods.get(f.name) + "  " + f.name);
+			print(AlertTag.ERIC_RESTAURANT,"Received " + foods.get(f.name) + "  " + f.name);
 			f.amountComing -= foods.get(f.name);
 			f.inventory += foods.get(f.name);
 		}
@@ -172,6 +175,7 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	// ----------------------------------------- SCHEDULER -------------------------------------------------
 	public boolean pickAndExecuteAnAction()
 	{
+		//if(RevolvingStand().) //TODO implement revolving stand
 		synchronized(_orders) {
 			for(Order o : _orders) {
 				if(o.state == OrderState.PENDING) {
@@ -216,7 +220,7 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 		{
 			o.food.inventory--;
 			
-			print("Order for " + o.waiter.name() + " is cooking.");
+			print(AlertTag.ERIC_RESTAURANT,"Order for " + o.waiter.name() + " is cooking.");
 			
 			cookingTimer.schedule(
 					new TimerTask() {
@@ -231,7 +235,7 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	
 	void actGiveToWaiter(Order o)
 	{
-		print("Order for " + o.waiter.name() + " is ready.");
+		print(AlertTag.ERIC_RESTAURANT,"Order for " + o.waiter.name() + " is ready.");
 		
 		o.waiter.msgOrderReady(o.food.name, o.table);
 		_orders.remove(o);
@@ -239,14 +243,14 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	
 	void actRestock()
 	{
-		print("Ordering needed food.");
+		print(AlertTag.ERIC_RESTAURANT,"Ordering needed food.");
 		printInventory();
 		
 		// Fill up neededFoods:
 		Map<String,Integer> neededFoods = new HashMap<String,Integer>();
 		for(Food f : _foods) {
 			int neededAmount = f.stockLevel - (f.inventory + f.amountComing);
-			print("Ordering " + neededAmount + " " + f.name);
+			print(AlertTag.ERIC_RESTAURANT,"Ordering " + neededAmount + " " + f.name);
 			neededFoods.put(f.name, neededAmount);
 		}
 		
@@ -269,13 +273,20 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	
 	void printInventory()
 	{
-		print("Inventory:");
+		print(AlertTag.ERIC_RESTAURANT,"Inventory:");
 		for(Food f : _foods)
 		{
-			print("    " + f.name + ":");
-			print("      inventory:     " + f.inventory + "/" + f.stockLevel);
-			print("      low level:     " + f.lowLevel);
-			print("      amount coming: " + f.amountComing);
+			print(AlertTag.ERIC_RESTAURANT,"    " + f.name + ":");
+			print(AlertTag.ERIC_RESTAURANT,"      inventory:     " + f.inventory + "/" + f.stockLevel);
+			print(AlertTag.ERIC_RESTAURANT,"      low level:     " + f.lowLevel);
+			print(AlertTag.ERIC_RESTAURANT,"      amount coming: " + f.amountComing);
+		}
+	}
+	
+	public void clearInventory(){
+		for(Food f : _foods)
+		{
+			f.inventory = 0;
 		}
 	}
 }

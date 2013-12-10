@@ -2,6 +2,7 @@ package city.restaurant.ryan;
 
 import agent.Agent;
 import agent.Role;
+import gui.trace.AlertTag;
 
 import java.awt.Dimension;
 import java.util.*;
@@ -79,23 +80,26 @@ public class RyanHostRole extends Role {
 	}
 	
 	public void msgIWantFood(RyanCustomerRole cust) {
-		waitingCustomers.add(new MyCustomer(cust));
-		stateChanged();
+		synchronized(waitingCustomers){
+			waitingCustomers.add(new MyCustomer(cust));
+			stateChanged();
+		}
 	}
 	
 	public void msgImHere(RyanCustomerRole cust){
-		for(MyCustomer customer: waitingCustomers){
-			if(customer.customer == cust){
-				customer.cState = customerState.seated;
+		synchronized(waitingCustomers){
+			for(MyCustomer customer: waitingCustomers){
+				if(customer.customer == cust){
+					customer.cState = customerState.seated;
+				}	
 			}
-			
 		}
 	}
 
 	public void msgFreeTable(RyanCustomerRole cust) {
 		for (Table table : tables) {
 			if (table.getOccupant() == cust) {
-				print(cust + " leaving " + table);
+				print(AlertTag.RYAN_RESTAURANT, cust + " leaving " + table);
 				table.setUnoccupied();
 				stateChanged();
 			}
@@ -111,13 +115,15 @@ public class RyanHostRole extends Role {
 	}
 
 	public void msgAtTable() {//from animation
-		//print("msgAtTable() called");
+		//print(AlertTag.RYAN_RESTAURANT,"msgAtTable() called");
 		atTable.release();// = true;
 		stateChanged();
 	}
 	
 	public void msgGone(RyanCustomerRole customer){
-		waitingCustomers.remove(customer);
+		synchronized(waitingCustomers){
+			waitingCustomers.remove(customer);
+		}
 	}
 
 	/**
@@ -150,6 +156,7 @@ public class RyanHostRole extends Role {
 						for(MyCustomer customer: waitingCustomers){
 							if(customer.cState == customerState.here){
 								ShowWaitArea(customer, seat);
+								return true;
 							}
 						}
 					}
@@ -162,8 +169,7 @@ public class RyanHostRole extends Role {
 				if (!table.isOccupied()) {
 					if(!waiters.isEmpty()){
 						if(!waitingCustomers.isEmpty()){
-							for(int i=0; i<waitingCustomers.size(); i++){
-								MyCustomer customer = waitingCustomers.get(i);
+							for(MyCustomer customer:waitingCustomers){
 								if(customer.cState == customerState.seated){
 									getWaiter(customer, table);//the action
 									return true;//return true to the abstract agent to reinvoke the scheduler.
@@ -236,7 +242,7 @@ public class RyanHostRole extends Role {
 		}
 		for(Seat seat: seats){
 			if(customer.sNumber == seat.seatNumber){
-				print("Waiter " + chooseWaiter.getName() + " please seat customer " + customer.customer.getCustomerName() + 
+				print(AlertTag.RYAN_RESTAURANT,"Waiter " + chooseWaiter.getName() + " please seat customer " + customer.customer.getCustomerName() + 
 						" at table " + table.getTableNumber());
 				table.setOccupant(customer.customer);
 				chooseWaiter.msgSeatCustomer(customer.customer, table.getTableNumber(), seat.seatNumber);
@@ -247,7 +253,7 @@ public class RyanHostRole extends Role {
 	}
 	
 	public void TablesAreFull(RyanCustomerRole customer){
-		print(customer.getName() + ", the tables are full.");
+		print(AlertTag.RYAN_RESTAURANT,customer.getName() + ", the tables are full.");
 		customer.patient = true;
 		customer.msgTablesAreFull();
 	}
@@ -256,7 +262,7 @@ public class RyanHostRole extends Role {
 	private void DoSeatCustomer(RyanCustomerRole customer, Table table) {
 		//TODO get rid of this function? since seating customers is done by the waiter.
 		//Same with "table"
-		print("Seating customer " + customer.getName() + " at " + table); //TODO note: I (Eric) changed this print statement a little in order to work with the new Role.toString() system. (delete this comment when you read)
+		print(AlertTag.RYAN_RESTAURANT,"Seating customer " + customer.getName() + " at " + table); //TODO note: I (Eric) changed this print statement a little in order to work with the new Role.toString() system. (delete this comment when you read)
 		hostGui.DoBringToTable(customer, table.x, table.y); 
 
 	}
@@ -265,14 +271,14 @@ public class RyanHostRole extends Role {
 		synchronized(waiters){
 			waiter.wState = waiterState.deciding;
 			if(CheckOnBreak(waiter)){
-				print("Yes, " + waiter.waiter.getName() + " can go on break.");
+				print(AlertTag.RYAN_RESTAURANT,"Yes, " + waiter.waiter.getName() + " can go on break.");
 				waiter.wState = waiterState.onbreak;
 				waiter.onBreak = true;
 				waiter.waiter.msgGoOnBreak();
 				breakWaiters.remove(waiter);
 			}
 			else if(!CheckOnBreak(waiter)){
-				print("No, " + waiter.waiter.getName() + " can't go on break.");
+				print(AlertTag.RYAN_RESTAURANT,"No, " + waiter.waiter.getName() + " can't go on break.");
 				waiter.wState = waiterState.working;
 				//waiter.waiter.msgNoBreak();
 				breakWaiters.remove(waiter);

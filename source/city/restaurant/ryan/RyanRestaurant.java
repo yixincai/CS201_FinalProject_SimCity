@@ -9,18 +9,17 @@ import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.omar.OmarWaiterRole;
 import city.restaurant.ryan.gui.*;
-import city.restaurant.ryan.gui.RyanWaiterGui;
 
 public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 	public RyanRevolvingStand revolvingStand = new RyanRevolvingStand(); //WHAT IS THIS?
 	//count stands for the number of waiting list
 	int count = -1;
 	int waiter_count = 0;
-	boolean open;
 	public RyanHostRole host;
 	private int businessAccountNumber = -1;
-	public List<RyanWaiterRole> Waiters = new ArrayList<RyanWaiterRole>();
+	public List<RyanWaiterRole> waiters = new ArrayList<RyanWaiterRole>();
 	private RyanAnimationPanel _animationPanel;
 	
 	// ------------- CONSTRUCTOR & PROPERTIES
@@ -47,13 +46,6 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		((RyanCashierRole)_cashier).cook = (RyanCookRole)_cook;
 	}
 
-	public boolean isOpen(){
-		if (_cashier.active && host.active && _cook.active && Waiters.size()!=0)
-			return true;
-		else
-			return false;
-	}
-
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
 		//TODO make a new customer that is initialized with a PersonAgent of person
@@ -75,6 +67,7 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		newWaiter.setCook((RyanCookRole)_cook);
 		newWaiter.setHost(host);
 		waiter_count++;
+		waiters.add(newWaiter);
 		RyanWaiterGui RyanWaiterGui = new RyanWaiterGui(newWaiter, waiter_count);
 		newWaiter.setGui(RyanWaiterGui);
 		animationPanel().addGui(RyanWaiterGui);
@@ -122,5 +115,17 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		host.setGui(hostGui);
 		animationPanel().addGui(hostGui);	
 		
+	}
+
+	@Override
+	public void clearInventory() {
+		_cook.clearInventory();
+	}
+	
+	public boolean existActiveWaiter() {
+		for (RyanWaiterRole waiter : waiters)
+			if (waiter.active)
+				return true;
+		return false;
 	}
 }

@@ -1,5 +1,7 @@
 package city.restaurant.yixin;
 
+import gui.trace.AlertTag;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -73,31 +75,31 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 	// Messages
 
 	public void cmdGotHungry() {//from PersonAgent
-		print("I'm hungry");
-		if (name.equals("5"))
-			money = 5;
-		else if (name.equals("7"))
-			money = 7;
-		else if (name.equals("10"))
-			money = 10;
-		else if (name.equals("20"))
-			money = 20;
-		else
-			money += r.nextInt(20);
-		print("I have " + this.money + " dollars.");
+		print(AlertTag.YIXIN_RESTAURANT,"I'm hungry");
+//		if (name.equals("5"))
+//			money = 5;
+//		else if (name.equals("7"))
+//			money = 7;
+//		else if (name.equals("10"))
+//			money = 10;
+//		else if (name.equals("20"))
+//			money = 20;
+//		else
+		money = _person.money();
+		print(AlertTag.YIXIN_RESTAURANT,"I have " + this.money + " dollars.");
 		event = AgentEvent.gotHungry;
 		stateChanged();
 	}
 	
 	public void msgNoSeat() {
-		print("Told by host no seat available.");
+		print(AlertTag.YIXIN_RESTAURANT,"Told by host no seat available.");
 		event = AgentEvent.noSeat;
 		stateChanged();
 	}
 
 	public void msgFollowMe(YixinWaiterRole w, int tablenumber, Menu menu) {
 		if (w instanceof YixinWaiterRole){
-			print("Received msgSitAtTable");
+			print(AlertTag.YIXIN_RESTAURANT,"Received msgSitAtTable");
 			this.waiter = (YixinWaiterRole)w;
 			this.menu = menu;
 			seatnumber = tablenumber;
@@ -108,35 +110,36 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 	
 	public void msgNoFood(Menu menu){
 		this.menu = menu;
-		print("Told by waiter to rethink");
+		print(AlertTag.YIXIN_RESTAURANT,"Told by waiter to rethink");
 		event = AgentEvent.noFood;
 		stateChanged();		
 	}
 
 	public void msgWhatWouldYouLike() {
-		print("Received msgWhatWouldYouLike");
+		print(AlertTag.YIXIN_RESTAURANT,"Received msgWhatWouldYouLike");
 		event = AgentEvent.orderFood;
 		stateChanged();
 	}
 	
 	public void msgHereIsYourFood(String choice) {
-		print("Received food " + choice);
+		print(AlertTag.YIXIN_RESTAURANT,"Received food " + choice);
 		event = AgentEvent.gotFood;
 		stateChanged();
 	}
 	
 	public void msgHereIsTheCheck(double money, YixinCashierRole cashier){
 		if (cashier instanceof YixinCashierRole){
-			print("Received check of " + money);
+			print(AlertTag.YIXIN_RESTAURANT,"Received check of " + money);
 			event = AgentEvent.billArrived;
 			this.cashier = (YixinCashierRole) cashier;
 			this.check = money;
+			_person.cmdChangeMoney(-money);
 			stateChanged();
 		}
 	}
 	
 	public void msgHereIsTheChange(double change){
-		print("Received change of " + change);
+		print(AlertTag.YIXIN_RESTAURANT,"Received change of " + change);
 		event = AgentEvent.changeArrived;
 		this.money = change;
 		stateChanged();
@@ -145,7 +148,7 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 	public void msgYouDoNotHaveEnoughMoney(double debt){
 		this.money = 0;
 		this.debt += debt;
-		print("My debt is " + this.debt);
+		print(AlertTag.YIXIN_RESTAURANT,"My debt is " + this.debt);
 		event = AgentEvent.badLuck;
 		stateChanged();
 	}
@@ -261,7 +264,7 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 	// Actions
 
 	private void goToRestaurant() {
-		print("Going to restaurant");
+		print(AlertTag.YIXIN_RESTAURANT,"Going to restaurant");
 		customerGui.DoGoWaiting();
 		try {
 			atTable.acquire();
@@ -272,36 +275,36 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 	}
 	
 	private void ThinkAboutLeaving(){
-		print("Think about whether to stay waiting or to leave.");
+		print(AlertTag.YIXIN_RESTAURANT,"Think about whether to stay waiting or to leave.");
 		int choice = r.nextInt(2);
-		print("The random number is " + choice);
+		print(AlertTag.YIXIN_RESTAURANT,"The random number is " + choice);
 		if (choice == 0){
 			host.msgIAmLeaving(this);
-			print("I want to leave the restaurant");
+			print(AlertTag.YIXIN_RESTAURANT,"I want to leave the restaurant");
 			state = AgentState.Leaving;
 			leaveRestaurant();
 		}
 		else{
 			host.msgIWantToStay(this);
-			print("I want to stay in the restaurant");
+			print(AlertTag.YIXIN_RESTAURANT,"I want to stay in the restaurant");
 			state = AgentState.StillWaitingInRestaurant;
 		}
 	}
 
 	private void AskWaiterToPickUpOrder() {
-		print("I'm ready to order");
+		print(AlertTag.YIXIN_RESTAURANT,"I'm ready to order");
 		waiter.msgReadyToOrder(this);//send our instance, so he can respond to us
 	}
 	
 	private void ThinkAboutMenu() {
-		print("Thinking about Food");
+		print(AlertTag.YIXIN_RESTAURANT,"Thinking about Food");
 		boolean hasAffordableFood = false;
 		for(int i=0; i<menu.menu.size(); i++){
 			if (menu.menu.get(i).price <= money)
 				hasAffordableFood = true;
 		}
 		int choice = r.nextInt(2);
-		print("The choice to stay/leave is " + choice);
+		print(AlertTag.YIXIN_RESTAURANT,"The choice to stay/leave is " + choice);
 		if(!hasAffordableFood && choice == 1){
 			waiter.msgNoMoneyAndLeaving(this);
 			event = AgentEvent.noMoney;
@@ -327,10 +330,10 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 	}
 	
 	private void RethinkAboutMenu() {
-		print("Thinking about Food");
+		print(AlertTag.YIXIN_RESTAURANT,"Thinking about Food");
 		boolean hasAffordableFood = false;
 		for(int i=0; i<menu.menu.size(); i++){
-			print("The size of new menu is " + menu.menu.size());
+			print(AlertTag.YIXIN_RESTAURANT,"The size of new menu is " + menu.menu.size());
 			if (menu.menu.get(i).price <= money)
 				hasAffordableFood = true;
 		}
@@ -357,19 +360,19 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 	}
 	
 	private void GiveOrder() {
-		print("Here is my order");
+		print(AlertTag.YIXIN_RESTAURANT,"Here is my order");
 		customerGui.showOrderFood(this.choice);
 		waiter.msgHereIsTheChoice(this, this.choice);//send our instance, so he can respond to us
 	}
 	
 	private void SitDown() {
-		print("Being seated. Going to table");
+		print(AlertTag.YIXIN_RESTAURANT,"Being seated. Going to table");
 		customerGui.DoGoToSeat(seatnumber);//hack; only one table
 	}
 
 	private void EatFood() {
 		customerGui.eatFood(this.choice);
-		print("Eating Food");
+		print(AlertTag.YIXIN_RESTAURANT,"Eating Food");
 		//This next complicated line creates and starts a timer thread.
 		//We schedule a deadline of getHungerLevel()*1000 milliseconds.
 		//When that time elapses, it will call back to the run routine
@@ -381,7 +384,7 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 		timer.schedule(new TimerTask() {
 			Object cookie = 1;
 			public void run() {
-				print("Done eating, cookie=" + cookie);
+				print(AlertTag.YIXIN_RESTAURANT,"Done eating, cookie=" + cookie);
 				event = AgentEvent.doneEating;
 				//isHungry = false;
 				stateChanged();
@@ -391,12 +394,12 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 	}
 
 	private void askForBill() {
-		print("Asking for bill");
+		print(AlertTag.YIXIN_RESTAURANT,"Asking for bill");
 		waiter.msgDoneEating(this);
 	}
 	
 	private void askForChange() {
-		print("Leaving and Asking for change with money " + money);
+		print(AlertTag.YIXIN_RESTAURANT,"Leaving and Asking for change with money " + money);
 		waiter.msgLeavingRestaurant(this);
 		customerGui.DoGoToCashier();
 		try {
@@ -408,7 +411,7 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 	}
 	
 	private void leaveRestaurant() {
-		print("Leaving restaurant");
+		print(AlertTag.YIXIN_RESTAURANT,"Leaving restaurant");
 		customerGui.DoExitRestaurant();
 	}
 

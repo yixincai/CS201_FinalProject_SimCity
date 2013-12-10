@@ -1,6 +1,9 @@
 package city.restaurant.ryan;
 
+import gui.trace.AlertTag;
 import city.PersonAgent;
+import city.restaurant.ryan.RyanWaiterRole.customerState;
+import city.restaurant.ryan.RyanWaiterRole.waiterPlace;
 
 public class RyanSharedDataWaiterRole extends RyanWaiterRole {
 
@@ -11,7 +14,18 @@ public class RyanSharedDataWaiterRole extends RyanWaiterRole {
 
 	@Override
 	public void GoToChef(MyCustomer customer) {
-		// TODO Auto-generated method stub
+		try{
+			gui.DoGoToRevolvingStand();
+			isMoving.acquire();
+			wPlace = waiterPlace.inRestaurant;
+			customer.state = customerState.WaitingForFood;
+			print(AlertTag.RYAN_RESTAURANT, "Putting on Revolving that Customer " + customer.customer.getName() + " wants " + customer.choice);
+			_restaurant.revolvingStand.insert(new RyanOrder(this, (RyanCustomerRole) customer.customer, customer.choice));
+		}catch(InterruptedException a){
+    		
+    	} catch(Exception a){
+    		print(AlertTag.RYAN_RESTAURANT, "Unexpected exception caught in Agent thread:", a);
+    	}
 		
 	}
 

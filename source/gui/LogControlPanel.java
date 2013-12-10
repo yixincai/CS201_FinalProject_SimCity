@@ -24,6 +24,13 @@ class LogControlPanel extends JPanel {
     
     JButton enableBusButton;
     
+    JButton enableBankButton;
+    JButton enableMarketButton;
+    JButton enableOmarRestaurantButton;
+    JButton enableYixinRestaurantButton;
+    JButton enableEricRestaurantButton;
+    JButton enableRyanRestaurantButton;
+    
     private final int WIDTH = 1024/3;
 	private final int HEIGHT = 720;
 	
@@ -32,7 +39,7 @@ class LogControlPanel extends JPanel {
     public LogControlPanel(final TracePanel tracePanel) {
             this.tp = tracePanel;
             
-/*            enableAllLevelsButton = new JButton("Show All Levels");
+/*          enableAllLevelsButton = new JButton("Show All Levels");
             enableAllLevelsButton.setMinimumSize(buttonDimension);
             enableAllLevelsButton.setMaximumSize(buttonDimension);
             
@@ -60,6 +67,31 @@ class LogControlPanel extends JPanel {
             enableBusButton = new JButton("Show Tag: BUS");
             enableBusButton.setMinimumSize(buttonDimension);
             enableBusButton.setMaximumSize(buttonDimension);
+            
+            enableBankButton = new JButton("Hide Tag: BANK");
+            enableBankButton.setMinimumSize(buttonDimension);
+            enableBankButton.setMaximumSize(buttonDimension);
+            
+            enableMarketButton  = new JButton("Hide Tag: MARKET");
+            enableMarketButton.setMinimumSize(buttonDimension);
+            enableMarketButton.setMaximumSize(buttonDimension);
+            
+            enableOmarRestaurantButton  = new JButton("Hide Tag: OMAR_RESTAURANT");
+            enableOmarRestaurantButton.setMinimumSize(buttonDimension);
+            enableOmarRestaurantButton.setMaximumSize(buttonDimension);
+            
+            enableYixinRestaurantButton  = new JButton("Hide Tag: YIXIN_RESTAURANT");
+            enableYixinRestaurantButton.setMinimumSize(buttonDimension);
+            enableYixinRestaurantButton.setMaximumSize(buttonDimension);
+            
+            enableEricRestaurantButton  = new JButton("Hide Tag: ERIC_RESTAURANT");
+            enableEricRestaurantButton.setMinimumSize(buttonDimension);
+            enableEricRestaurantButton.setMaximumSize(buttonDimension);
+            
+            enableRyanRestaurantButton  = new JButton("Hide Tag: RYAN_RESTAURANT");
+            enableRyanRestaurantButton.setMinimumSize(buttonDimension);
+            enableRyanRestaurantButton.setMaximumSize(buttonDimension);
+            
             
           /*  enableAllLevelsButton.addActionListener(new ActionListener() {
                 @Override
@@ -134,12 +166,92 @@ class LogControlPanel extends JPanel {
                 }
             });
             
+            //places
+            enableBankButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(enableBankButton.getText().equalsIgnoreCase("Hide Tag: BANK")){
+                    	tracePanel.hideAlertsWithTag(AlertTag.BANK);
+            			enableBankButton.setText("Show Tag: BANK");
+            		} else {
+            			tracePanel.showAlertsWithTag(AlertTag.BANK);
+            			enableBankButton.setText("Hide Tag: BANK");
+            		}
+                }
+            });
+            enableMarketButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(enableMarketButton.getText().equalsIgnoreCase("Hide Tag: MARKET")){
+                    	tracePanel.hideAlertsWithTag(AlertTag.TIME);
+            			enableMarketButton.setText("Show Tag: MARKET");
+            		} else {
+            			tracePanel.showAlertsWithTag(AlertTag.TIME);
+            			enableMarketButton.setText("Hide Tag: MARKET");
+            		}
+                }
+            });
+            enableOmarRestaurantButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(enableOmarRestaurantButton.getText().equalsIgnoreCase("Hide Tag: OMAR_RESTAURANT")){
+                    	tracePanel.hideAlertsWithTag(AlertTag.OMAR_RESTAURANT);
+            			enableOmarRestaurantButton.setText("Show Tag: OMAR_RESTAURANT");
+            		} else {
+            			tracePanel.showAlertsWithTag(AlertTag.OMAR_RESTAURANT);
+            			enableOmarRestaurantButton.setText("Hide Tag: OMAR_RESTAURANT");
+            		}
+                }
+            });
+            enableYixinRestaurantButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(enableYixinRestaurantButton.getText().equalsIgnoreCase("Hide Tag: YIXIN_RESTAURANT")){
+                    	tracePanel.hideAlertsWithTag(AlertTag.YIXIN_RESTAURANT);
+            			enableYixinRestaurantButton.setText("Show Tag: YIXIN_RESTAURANT");
+            		} else {
+            			tracePanel.showAlertsWithTag(AlertTag.YIXIN_RESTAURANT);
+            			enableYixinRestaurantButton.setText("Hide Tag: YIXIN_RESTAURANT");
+            		}
+                }
+            });
+            enableEricRestaurantButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(enableEricRestaurantButton.getText().equalsIgnoreCase("Hide Tag: ERIC_RESTAURANT")){
+                    	tracePanel.hideAlertsWithTag(AlertTag.ERIC_RESTAURANT);
+            			enableEricRestaurantButton.setText("Show Tag: ERIC_RESTAURANT");
+            		} else {
+            			tracePanel.showAlertsWithTag(AlertTag.ERIC_RESTAURANT);
+            			enableEricRestaurantButton.setText("Hide Tag: ERIC_RESTAURANT");
+            		}
+                }
+            });
+            enableRyanRestaurantButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(enableRyanRestaurantButton.getText().equalsIgnoreCase("Hide Tag: RYAN_RESTAURANT")){
+                    	tracePanel.hideAlertsWithTag(AlertTag.TIME);
+            			enableRyanRestaurantButton.setText("Show Tag: RYAN_RESTAURANT");
+            		} else {
+            			tracePanel.showAlertsWithTag(AlertTag.TIME);
+            			enableRyanRestaurantButton.setText("Hide Tag: RYAN_RESTAURANT");
+            		}
+                }
+            });
+            
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             this.add(enableTimeButton);
             this.add(enableMessagesButton);
             this.add(enableInfoButton);
             this.add(enableErrorButton);
             this.add(enableBusButton);
+            this.add(enableBankButton);
+            this.add(enableMarketButton);
+            this.add(enableOmarRestaurantButton);
+            this.add(enableYixinRestaurantButton);
+            this.add(enableEricRestaurantButton);
+            this.add(enableRyanRestaurantButton);
             this.setMinimumSize(new Dimension(WIDTH, HEIGHT)); //dimensions should be fine
     }
 }

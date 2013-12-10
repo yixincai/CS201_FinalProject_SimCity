@@ -9,6 +9,8 @@ package gui;
  */
 
 import gui.astar.AStarTraversal;
+import gui.trace.AlertLog;
+import gui.trace.AlertTag;
 
 import java.awt.Dimension;
 
@@ -49,14 +51,42 @@ public class ControlPanel extends JTabbedPane {
 		this.setSelectedComponent(currentBuildingPanel);
 	}
 
-	public void addPerson(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) //TODO finish with new person instantiation stuff
+	/** @return false if the city is at capacity, true if a person was successfully added. */
+	public boolean addPerson(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType)
 	{
+		if(Directory.cityAtCapacity()) {
+			AlertLog.getInstance().logWarning(AlertTag.GENERAL_CITY, "Control Panel", "Failed to add person because city is at capacity");
+			return false;
+		}
+		
+		PersonAgent newPerson;
+		if(!(occupationType.contains("Customer"))){
+			newPerson = new PersonAgent(name, money, occupationType, weekday_notWeekend, housingType, currentPersonPanel);
+		} else{
+			newPerson = new PersonAgent(name,money,"None",weekday_notWeekend,housingType, currentPersonPanel);
+			if(occupationType.contains("Omar")){
+				newPerson.addActionToDo("OmarRestaurant");
+			} if(occupationType.contains("Yixin")){
+				newPerson.addActionToDo("YixinRestaurant");
+			} if(occupationType.contains("Eric")){
+				newPerson.addActionToDo("EricRestaurant");
+			} if(occupationType.contains("Ryan")){
+				newPerson.addActionToDo("RyanRestaurant");
+			} if(occupationType.contains("Bank")){
+				if (occupationType.contains("Robber")){
+					newPerson.addActionToDo("BankRobber");
+				} else{
+					newPerson.addActionToDo("BankCustomer");
+				}
+			} if(occupationType.contains("Market")){
+				newPerson.addActionToDo("MarketCustomer");
+			}   
+		}
 		currentPersonPanel.addPerson(name);
-		AStarTraversal aStarTraversal = new AStarTraversal(mainGui.grid);
-		PersonAgent newPerson = new PersonAgent(name, money, occupationType, weekday_notWeekend, housingType, aStarTraversal);
 		Directory.addPerson(newPerson);
 		mainGui.getWorldView().addGui(newPerson.commuterRole().gui());
 		this.setSelectedComponent(currentPersonPanel);
 		newPerson.startThread();
+		return true;
 	}
 }

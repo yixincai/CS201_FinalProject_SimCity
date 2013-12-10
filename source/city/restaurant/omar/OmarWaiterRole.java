@@ -16,7 +16,7 @@ import city.PersonAgent;
 import city.Place;
 import city.restaurant.omar.gui.OmarWaiterGui;
 
-public class OmarWaiterRole extends Role {
+public abstract class OmarWaiterRole extends Role {
 
 	//Data
 	OmarCookRole cook;
@@ -66,7 +66,7 @@ public class OmarWaiterRole extends Role {
 	
 	public boolean pickAndExecuteAnAction() {
 		
-		if(wantBreak){
+		/*if(wantBreak){
 			host.wantBreak(this);
 			return true;
 		}
@@ -74,7 +74,7 @@ public class OmarWaiterRole extends Role {
 		if(myCustomers.isEmpty() && onBreak){
 			goOnBreak();
 			return true;
-		}
+		} */
 		
 	synchronized(myCustomers){
 		for(MyCustomer m: myCustomers){
@@ -138,7 +138,6 @@ public class OmarWaiterRole extends Role {
 			}
 		}
 	}
-		waiterGui.DoGoIdle();
 		return false;
 	}
 	//
@@ -171,6 +170,8 @@ public class OmarWaiterRole extends Role {
 	
 	public void seatCustomer(MyCustomer m){
 		waiterGui.setCurrentStatus("Seating");
+		//System.out.println(waiterSem.availablePermits());
+		//waiterSem.drainPermits();
 		waiterGui.DoGetCustomer(m.customer, m.table);
 		try {
 			waiterSem.acquire();

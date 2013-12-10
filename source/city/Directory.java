@@ -22,29 +22,42 @@ public class Directory {
 	private static List<Place> _places = Collections.synchronizedList(new ArrayList<Place>());
 	private static List<PersonAgent> _personAgents = Collections.synchronizedList(new ArrayList<PersonAgent>());
 	private static ArrayList<Lane> lanes = new ArrayList<Lane>();
+	private static ArrayList<Lane> sidewalks = new ArrayList<Lane>();
+	private static ArrayList<Lane> busSidewalks = new ArrayList<Lane>();	
 	private static ArrayList<Semaphore> intersections = new ArrayList<Semaphore>();
 	//Bus Fare (initialize in constructor?)
 	private static double _busFare = 2;
 	
-	private static double _openingTime = 0; // These are set to 0 and 24 for testing
-	private static double _closingTime = 24;
+	public static final double OPENING_TIME = 8;
+	public static final double CLOSING_TIME = 16;
+	public static final double RESTAURANT_OPENING_TIME = 12;
+	public static final double RESTAURANT_CLOSING_TIME = 23;
 
 	// ------------------------------------ PROPERTIES ---------------------------------------
-	public static double openingTime() { return _openingTime; }
-	public static double closingTime() { return _closingTime; }
+	public static boolean cityAtCapacity() { return _personAgents.size() >= houses().size() + apartmentBuildings().size() * 4; } // if city is running slow, change this because houses() and apartmentBuildings() both iterate through _places every time they're called. Use a home counter that's incremented whenever a house or apartment building is created
 	
+	// WorldView stuff, like lanes and sidewalks and intersections
 	public static ArrayList<Lane> lanes(){
 		return lanes;
 	}
-	
+	public static ArrayList<Lane> sidewalks(){
+		return sidewalks;
+	}
+	public static ArrayList<Lane> busSidewalks(){
+		return busSidewalks;
+	}
 	public static ArrayList<Semaphore> intersections(){
 		return intersections;
 	}
-	
 	public static void addLanes(Lane lane){
 		lanes.add(lane);
 	}
-
+	public static void addSidewalk(Lane lane){
+		sidewalks.add(lane);
+	}
+	public static void addBusSidewalk(Lane lane){
+		busSidewalks.add(lane);
+	}
 	public static void addIntersections(Semaphore sem){
 		intersections.add(sem);
 	}
@@ -177,49 +190,90 @@ public class Directory {
 	
 	public static BusStopObject getNearestBusStop(int xStart, int yStart)
 	{
-		BusStopObject temp = null;
-		int Distance1 = -1;
-		int Distance2;
-		
-		for(Place p : _places)
-		{
-			if(p instanceof BusStopObject)
-			{
-				Distance2 = Math.abs(xStart - p.positionX()) + Math.abs(yStart - p.positionY());	
-				if(Distance1 < 0){
-					Distance1 = Distance2;
-					temp = (BusStopObject)p;
-				}
-				else if(Distance2 < Distance1){
-					Distance1 = Distance2;
-					temp = (BusStopObject)p;
-				}
-			}
+		List<BusStopObject> busStops = busStops();
+
+		if (xStart < 41 + 20 * 10 && yStart < 30 + 14 * 10){
+			return busStops.get(0);
 		}
-		return temp;
+		if (xStart > 41 + 20 * 10 && xStart < 41 + 40 * 10 && yStart < 30 + 14 * 10){
+			return busStops.get(1);
+		}
+		if (xStart > 41 + 40 * 10 && yStart < 30 + 14 * 10){
+			return busStops.get(2);
+		}
+		if (xStart < 41 + 20 * 10 && yStart > 30 + 14 * 10){
+			return busStops.get(5);
+		}
+		if (xStart > 41 + 20 * 10 && xStart < 41 + 40 * 10 && yStart > 30 + 14 * 10){
+			return busStops.get(4);
+		}
+		if (xStart > 41 + 40 * 10 && yStart > 30 + 14 * 10){
+			return busStops.get(3);
+		}
+		return busStops.get(0);
+//		BusStopObject temp = null;
+//		int Distance1 = -1;
+//		int Distance2;
+//		for(Place p : _places)
+//		{
+//			if(p instanceof BusStopObject)
+//			{
+//				Distance2 = Math.abs(xStart - p.positionX()) + Math.abs(yStart - p.positionY());	
+//				if(Distance1 < 0){
+//					Distance1 = Distance2;
+//					temp = (BusStopObject)p;
+//				}
+//				else if(Distance2 < Distance1){
+//					Distance1 = Distance2;
+//					temp = (BusStopObject)p;
+//				}
+//			}
+//		}
+//		return temp;
 	}
 	
 	public static BusStopObject getNearestBusStopToDestination(Place destination)
 	{
-		BusStopObject temp = null;
-		int Distance1 = -1;
-		int Distance2;
-		
-		for(Place p : _places)
-		{
-			if(p instanceof BusStopObject)
-			{
-				Distance2 = Math.abs(destination.positionX() - p.positionX()) + Math.abs(destination.positionY() - p.positionY());	
-				if(Distance1 < 0){
-					Distance1 = Distance2;
-					temp = (BusStopObject)p;
-				}
-				else if(Distance2 < Distance1){
-					Distance1 = Distance2;
-					temp = (BusStopObject)p;
-				}
-			}
+		List<BusStopObject> busStops = busStops();
+
+		if (destination.positionX() < 41 + 20 * 10 && destination.positionY() < 30 + 14 * 10){
+			return busStops.get(0);
 		}
-		return temp;
+		if (destination.positionX() > 41 + 20 * 10 && destination.positionX() < 41 + 40 * 10 && destination.positionY() < 30 + 14 * 10){
+			return busStops.get(1);
+		}
+		if (destination.positionX() > 41 + 40 * 10 && destination.positionY() < 30 + 14 * 10){
+			return busStops.get(2);
+		}
+		if (destination.positionX() < 41 + 20 * 10 && destination.positionY() > 30 + 14 * 10){
+			return busStops.get(5);
+		}
+		if (destination.positionX() > 41 + 20 * 10 && destination.positionX() < 41 + 40 * 10 && destination.positionY() > 30 + 14 * 10){
+			return busStops.get(4);
+		}
+		if (destination.positionX() > 41 + 40 * 10 && destination.positionY() > 30 + 14 * 10){
+			return busStops.get(3);
+		}
+		return busStops.get(0);
+//		BusStopObject temp = null;
+//		int Distance1 = -1;
+//		int Distance2;
+//		
+//		for(Place p : _places)
+//		{
+//			if(p instanceof BusStopObject)
+//			{
+//				Distance2 = Math.abs(destination.positionX() - p.positionX()) + Math.abs(destination.positionY() - p.positionY());	
+//				if(Distance1 < 0){
+//					Distance1 = Distance2;
+//					temp = (BusStopObject)p;
+//				}
+//				else if(Distance2 < Distance1){
+//					Distance1 = Distance2;
+//					temp = (BusStopObject)p;
+//				}
+//			}
+//		}
+//		return temp;
 	}
 }

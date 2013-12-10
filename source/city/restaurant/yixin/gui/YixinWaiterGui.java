@@ -13,18 +13,21 @@ public class YixinWaiterGui extends JPanel implements Gui {
 	private YixinWaiterRole agent = null;
 	private boolean show_choice = false;
 	private String food;
-	public static final int xTable1 = 450, xTable2 = 300, xTable3 = 150;
+	public static final int TableX = 450;
+	public static final int TableY1 = 60, TableY2 = 130, TableY3 = 200;
+	
 	public static final int xPlate=200, xCook = 300, yCook = 250;
 	private static int xPlace, yPlace = 90;//default waiter position
 	private int xPos, yPos = 90;//waiter current position
 	private int xDestination, yDestination = 90;//destination
-	public static int xTable = 200;
+	public static int xTable = 500;
 	public static int yTable = 150;
-	public static int xGap = 30;
-	public static int yGap = 30;
 	int count;
-	private ImageIcon i = new ImageIcon(this.getClass().getResource("/image/waiter.png"));
-	private Image image = i.getImage();
+	
+	ImageIcon b = new ImageIcon(this.getClass().getResource("/image/restaurant/NormalWaiter.png"));
+    Image waiter = b.getImage();
+    int xGap = 17;
+    int yGap = 27;
 
 	private enum Command {noCommand, GoToSeat};
 	private Command command=Command.noCommand;
@@ -57,7 +60,7 @@ public class YixinWaiterGui extends JPanel implements Gui {
 		if(agent.active){
 			g.setColor(Color.RED);
 			//g.fillRect(xPos, yPos, xGap, yGap);    	
-			g.drawImage(image, xPos, yPos, xGap, yGap, this);
+			g.drawImage(waiter, xPos, yPos, xGap, yGap, this);
 			if (show_choice)
 				g.drawString(food, xPos, yPos - 10);
 		}
@@ -69,15 +72,15 @@ public class YixinWaiterGui extends JPanel implements Gui {
 
 	public void DoGoToTable(int table_number) {
 		if (table_number == 1){
-			xTable = xTable1;
+			yTable = TableY1;
 		}
 		else if(table_number == 2){
-			xTable = xTable2;
+			yTable = TableY2;
 		}
 		else if (table_number == 3){
-			xTable = xTable3;
+			yTable = TableY3;
 		}
-		xDestination = xTable + xGap;
+		xDestination = xTable - xGap;
 		yDestination = yTable - yGap;
 		command = Command.GoToSeat;
 	}
@@ -85,17 +88,17 @@ public class YixinWaiterGui extends JPanel implements Gui {
 	public void DoBringFood(int table_number, String food) {
 
 		if (table_number == 1){
-			xTable = xTable1;
+			yTable = TableY1;
 		}
 		else if(table_number == 2){
-			xTable = xTable2;
+			yTable = TableY2;
 		}
 		else if (table_number == 3){
-			xTable = xTable3;
+			yTable = TableY3;
 		}
 		this.food = food;
 		show_choice = true;
-		xDestination = xTable + xGap;
+		xDestination = xTable - xGap;
 		yDestination = yTable - yGap;
 		command = Command.GoToSeat;
 	}

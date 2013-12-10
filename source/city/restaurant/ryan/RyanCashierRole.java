@@ -1,5 +1,7 @@
 package city.restaurant.ryan;
 
+import gui.trace.AlertTag;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
@@ -47,7 +49,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 		menu = new Menu();
 		
 		_restaurant = r;
-		register = 130.0;
+		register = 500.0;
 		bankBalance = 0;
 		bankDebt = 0;
 	}
@@ -68,7 +70,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	}
 	
 	public void msgHeresMoney(RyanCustomerRole customer, double payment){
-		print("Receiving Payment");
+		print(AlertTag.RYAN_RESTAURANT,"Receiving Payment");
 		for(Receipt temp: receipts){
 			if(temp.customer == customer){
 				temp.payment = payment;
@@ -80,14 +82,14 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	
 	@Override
 	public void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list){
-		print("Market bill received with amount of " + bill);
+		print(AlertTag.RYAN_RESTAURANT,"Market bill received with amount of " + bill);
 		log.add(new LoggedEvent("Received HereIsTheBill from market. Bill = "+ bill));
 		bills.add(new Bill(m, bill, price_list));
 		stateChanged();
 	}
 
 	public void msgHereIsTheChange(Market m, double change){
-		print("Market change received with amount of " + change);
+		print(AlertTag.RYAN_RESTAURANT,"Market change received with amount of " + change);
 		register += change;
 		for (Bill bill : bills){
 			if (bill.market == m)
@@ -115,13 +117,13 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	}
 	
 //	public void msgHeresBill(Market market, String choice, double price){
-//		print("Received bill for " + choice + " of amount " + price + " from " + market.getName());
+//		print(AlertTag.RYAN_RESTAURANT,"Received bill for " + choice + " of amount " + price + " from " + market.getName());
 //		bills.add(new Bill(market, choice, price));
 //		stateChanged();
 //	}
 //	
 //	public void msgHereIsLoan(double amount){
-//		print("Received loan of " + amount + " from the bank");
+//		print(AlertTag.RYAN_RESTAURANT,"Received loan of " + amount + " from the bank");
 //		register += amount;
 //		loans += amount;
 //		Bill bill = searchLoan(amount);
@@ -155,7 +157,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 			}
 			for (Bill bill : bills){
 				if (bill.state == Bill.BillState.changeReceived){
-					cook.msgOrderFinished();
+					((RyanCookRole)_restaurant.getCook()).msgOrderFinished();
 					bills.remove(bill);
 					return true;
 				}
@@ -166,7 +168,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 					PayLoan();
 					return true;
 				}
-				else if (register > 200){
+				else if (register > 400){
 					Deposit();
 					return true;
 				}
@@ -196,7 +198,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	
 	//Actions*********************************************************************************************************************************************************************************************
 	public void calculatePayment(Receipt receipt){
-		print("Calculating receipt for " + receipt.customer.getName());
+		print(AlertTag.RYAN_RESTAURANT,"Calculating receipt for " + receipt.customer.getName());
 		receipt.state = ReceiptState.Ready;
 		receipt.amount = menu.getPrice(receipt.choice);
 		receipt.waiter.msgHeresReceipt(receipt.customer, receipt.amount);
@@ -205,8 +207,8 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	public void receivePayment(Receipt receipt){
 		if(receipt.amount == receipt.payment){
 			register += receipt.amount;
-			print("Payment for " + receipt.customer.getName() + " is completed");
-			print("Register is at " + register);
+			print(AlertTag.RYAN_RESTAURANT,"Payment for " + receipt.customer.getName() + " is completed");
+			print(AlertTag.RYAN_RESTAURANT,"Register is at " + register);
 			receipt.customer.msgPaymentDone(receipt.amount);
 			receipts.remove(receipt);
 		}
@@ -218,12 +220,12 @@ public class RyanCashierRole extends RestaurantCashierRole {
 		for (Item item : bill.invoice)
 			amount += (item.amount * bill.priceList.get(item.name));
 		if (Math.abs(bill.cost - amount) > 0.02)
-			print("Incorrect bill calculation by market");
+			print(AlertTag.RYAN_RESTAURANT,"Incorrect bill calculation by market");
 		else 
-			print("Correct bill calculation by market. Paying Market Bill");
+			print(AlertTag.RYAN_RESTAURANT,"Correct bill calculation by market. Paying Market Bill");
 		if (register >= bill.cost){
 			register -= bill.cost;
-			print("Remaining money is " + register);
+			print(AlertTag.RYAN_RESTAURANT,"Remaining money is " + register);
 			bill.market.MarketCashier.msgHereIsPayment(_restaurant, bill.cost);
 			bill.state = Bill.BillState.none;
 		}
@@ -231,7 +233,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 			bills.get(0).cost -= register;
 			bill.market.MarketCashier.msgHereIsPayment(_restaurant, register);
 			register = 0;
-			print("Do not have enough money with " + bill.cost +" debt");
+			print(AlertTag.RYAN_RESTAURANT,"Do not have enough money with " + bill.cost +" debt");
 		}
 	}
 	
@@ -254,7 +256,8 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	}
 	
 	private void Deposit(){
-		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), register/2, "Deposit");
+		print(AlertTag.RYAN_RESTAURANT,"Deposited " + register/2 + " to the bank");
+		Directory.banks().get(0).tellers().get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), register/2, "Deposit");
 		moneyState = MoneyState.OrderedFromBank;
 	}
 	
@@ -265,17 +268,17 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	
 //	public void startPaying(Bill bill){
 //		synchronized(bills){
-//			print("register has " + register);
+//			print(AlertTag.RYAN_RESTAURANT,"register has " + register);
 //			bill.bState = BillState.Paying;
 //			if(bill.cost <= register){
 //				bill.bState = BillState.Paid;
 //				register -= bill.cost;
-//				print("Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName());
+//				print(AlertTag.RYAN_RESTAURANT,"Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName());
 //				bill.market.msgHeresPayment(bill.choice, bill.cost);
 //				bills.remove(bill);
 //			}
 //			else if(bill.cost > register){
-//				print("Not enough money to pay for " + bill.choice + " asking for loan");
+//				print(AlertTag.RYAN_RESTAURANT,"Not enough money to pay for " + bill.choice + " asking for loan");
 //				bill.bState = BillState.AskforLoan;
 //				bank.msgAskForLoan(this, bill.cost);
 //			}
@@ -284,12 +287,12 @@ public class RyanCashierRole extends RestaurantCashierRole {
 //	
 //	public void payWithLoan(Bill bill){
 //		synchronized(bills){
-//			print("register has " + register);
+//			print(AlertTag.RYAN_RESTAURANT,"register has " + register);
 //			bill.bState = BillState.Paying;
 //			if(bill.cost <= register){
 //				bill.bState = BillState.Paid;
 //				register -= bill.cost;
-//				print("Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName() + " with loan from Bank");
+//				print(AlertTag.RYAN_RESTAURANT,"Paying bill for " + bill.choice + " of amount " + bill.cost + " to " + bill.market.getName() + " with loan from Bank");
 //				bill.market.msgHeresPayment(bill.choice, bill.cost);
 //				bills.remove(bill);
 //			}
@@ -298,7 +301,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 //	
 //	public void PayBackLoans(){
 //		register -= loans;
-//		print("Register now has " + register);
+//		print(AlertTag.RYAN_RESTAURANT,"Register now has " + register);
 //		bank.msgPayBackForLoan(this, loans);
 //		loans = 0;
 //	}
@@ -310,7 +313,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	
 	public void addCash(double money){
 		register += money;
-		print("Register now at " + register);
+		print(AlertTag.RYAN_RESTAURANT,"Register now at " + register);
 		stateChanged();
 	}
 	
@@ -326,7 +329,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 				}
 			}
 		}
-		print("Bill search returned null");
+		print(AlertTag.RYAN_RESTAURANT,"Bill search returned null");
 		return null;
 	}
 

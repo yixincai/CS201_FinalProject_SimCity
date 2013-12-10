@@ -15,7 +15,7 @@ import city.restaurant.yixin.YixinCookRole;
 public class YixinCookGui extends JPanel implements Gui{
 
 	private YixinCookRole agent;
-	private ImageIcon i = new ImageIcon(this.getClass().getResource("/image/cook.jpg"));
+	private ImageIcon i = new ImageIcon(this.getClass().getResource("/image/restaurant/Chef.png"));
 	private Image image = i.getImage();
 	private String food = "";
 	private boolean show_food = false;
@@ -26,10 +26,13 @@ public class YixinCookGui extends JPanel implements Gui{
 
 	private int xPos = 300, yPos = 290, xPlate = 200, xCooking = 300, xFridge = 400;//default cook position
 	private int xDestination = 300, yDestination = 290;
-	public static int xGap = 30;
-	public static int yGap = 30;
 	private enum Command {noCommand, GoToSeat};
 	private Command command=Command.noCommand;
+	
+	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/Chef.png"));
+    Image cook = a.getImage();
+    int xGap = 18;
+    int yGap = 32;
 
 	public void DoGoCookFood(){
 		xDestination = xCooking;

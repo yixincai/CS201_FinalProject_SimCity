@@ -32,10 +32,6 @@ public class Time {
 			return;
 		case FRIDAY:
 			_today = Day.SATURDAY;
-			for(int i = 0; i < Directory.banks().size(); i++){
-				Directory.banks().get(i).setClosed();
-			}
-			return;
 		case SATURDAY:
 			_today = Day.SUNDAY;
 			return;
@@ -47,7 +43,7 @@ public class Time {
 	
 	private static double _currentTime = 8.0; //0.0;
 	private static double _counter = 0.25;
-	private static double _timeFactor = 4.0; // this is in units of .25-hour-per-second??
+	private static double _timeFactor = 4.0; // this is in units of .25-hour-per-second
 	
 	private static Timer _timer;
 	
@@ -77,6 +73,13 @@ public class Time {
 	/** returns the number of real-life milliseconds that will cause the passed-in number of hours to pass in the simulation */
 	public static int getRealTime(double hours) {
 		return (int)((12000/_timeFactor)*4*hours);
+	}
+	
+	/** returns the number of real-life milliseconds that will pass until the simulation time reaches the passed-in time */
+	public static int getRealTimeUntil(double time) {
+		double hours = time - _currentTime;
+		if(hours < 0) hours += 24;
+		return getRealTime(time);
 	}
 	
 	

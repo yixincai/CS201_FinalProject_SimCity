@@ -12,6 +12,7 @@ import agent.Role;
 import city.PersonAgent;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.omar.OmarWaiterRole;
 import city.restaurant.tanner.gui.TannerRestaurantAnimationPanel;
 import city.restaurant.tanner.gui.TannerRestaurantCashierRoleGui;
 import city.restaurant.tanner.gui.TannerRestaurantCookRoleGui;
@@ -167,4 +168,13 @@ public class TannerRestaurant extends Restaurant
 		this.animationPanel.addGui(tannerHostGui);		
 	}
 
+	@Override
+	public void clearInventory() 
+	{
+		cook.clearInventory();
+	}
+	
+	public boolean existActiveWaiter() {
+		return false;
+	}
 }

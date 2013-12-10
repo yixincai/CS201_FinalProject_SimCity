@@ -1,5 +1,6 @@
 package city.restaurant.yixin;
 
+import gui.trace.AlertTag;
 import city.PersonAgent;
 import city.Place;
 
@@ -11,7 +12,7 @@ public class YixinNormalWaiterRole extends YixinWaiterRole{
 
 	@Override
 	protected void processOrder(MyCustomer customer) {
-		print("Process order");
+		print(AlertTag.YIXIN_RESTAURANT, "Process order");
 		customer.state = MyCustomer.CustomerState.none;
 		DoGoToCook();
 		cook.msgHereIsTheOrder(this, customer.choice, customer.tableNumber);

@@ -35,9 +35,18 @@ public abstract class Restaurant extends Place {
 	private Semaphore _cashierSemaphore = new Semaphore(1, true);
 	
 	// --------------------------------- PROPERTIES -----------------------------
+	public abstract void clearInventory();
 	public abstract Role getHost();
 	public RestaurantCashierRole getCashier(){ return _cashier; }
 	public RestaurantCookRole getCook() { return _cook; }
+	public abstract boolean existActiveWaiter();
+	//for person agent and market
+	public boolean isOpen(){
+		if (getCashier().active && getHost().active && getCook().active && existActiveWaiter())
+			return true;
+		else
+			return false;
+	}
 	
 	// ------------------------------------ FACTORIES & ROLE ACQUIRES ---------------------------------------------
 	public abstract RestaurantCustomerRole generateCustomerRole(PersonAgent person); // make a new CustomerRole, which is initialized with a pointer to the HostRole and other appropriate initializations such as gui.
@@ -51,7 +60,7 @@ public abstract class Restaurant extends Place {
 	/** Generate an appropriate HostGui and set the Host's gui to it. */
 	public abstract void generateHostGui();
 	
-	public RestaurantCookRole tryAcquireCook(PersonAgent person) {
+	public RestaurantCookRole tryAcquireCookRole(PersonAgent person) {
 		if(_cookSemaphore.tryAcquire()) {
 			_cook.setPerson(person);
 			generateCookGui();
@@ -60,7 +69,7 @@ public abstract class Restaurant extends Place {
 		else return null;
 	}
 	
-	public RestaurantCashierRole tryAcquireCashier(PersonAgent person) {
+	public RestaurantCashierRole tryAcquireCashierRole(PersonAgent person) {
 		if(_cashierSemaphore.tryAcquire()) {
 			_cashier.setPerson(person);
 			generateCashierGui();
@@ -69,7 +78,7 @@ public abstract class Restaurant extends Place {
 		else return null;
 	}
 	
-	public Role tryAcquireHost(PersonAgent person) {
+	public Role tryAcquireHostRole(PersonAgent person) {
 		if(_hostSemaphore.tryAcquire()) {
 			getHost().setPerson(person);
 			generateHostGui();

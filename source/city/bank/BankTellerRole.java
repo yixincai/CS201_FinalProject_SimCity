@@ -103,7 +103,7 @@ public class BankTellerRole extends Role implements BankTeller {
 		  stateChanged();
 	}
 	public void msgHereIsMyRequest(BankCustomer c, String request, double amount){
-		   print("Customer " + c.toString() + " requested: " + request);
+		   print(AlertTag.BANK, "Customer " + c.toString() + " requested: " + request);
 		  for(MyCustomer m: myCustomers){
 			if(m.customer == c){
 		  	m.customerState = CustomerState.GivenRequest;
@@ -136,7 +136,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	//FOR CASHIERS OF RESTAURANTS AND CASHIERS OF MARKETS
 	public void msgWiredTransaction(Place place, int accountNumber, double amount, String request){
 		int newAccntNum;
-		System.out.println("Wired Transaction Requested.  Fulfilling Now");
+		print(AlertTag.BANK, "Wired Transaction Requested.  Fulfilling Now");
 		if(accountNumber == -1){  //means it doesn't exist yet
 			   newAccntNum = (int)(Math.random()*20000) + 10000; //open account from 20k to 10k for businesses
 			   while(database.funds.containsKey(newAccntNum)){
@@ -175,7 +175,7 @@ public class BankTellerRole extends Role implements BankTeller {
 			}
 		}
 		
-		if(myCustomers.isEmpty() && command == Command.Leave && host.isWaitingCustomersEmpty()){
+		if(myCustomers.isEmpty() && command == Command.Leave && bank.host().isWaitingCustomersEmpty()){
 			actLeaveBank();
 		}
 		return false;
@@ -196,7 +196,7 @@ public class BankTellerRole extends Role implements BankTeller {
 		   while(database.funds.containsKey(newAccntNum)){
 			   newAccntNum = (int)(Math.random()*10000);
 		   }
-		   print("Creating account " + newAccntNum + " for customer " + m.customer.toString());
+		   print(AlertTag.BANK, "Creating account " + newAccntNum + " for customer " + m.customer.toString());
 		   m.accountNumber = newAccntNum;
 		   database.funds.put(newAccntNum, 0.0);
 		   database.amountOwed.put(newAccntNum, 0.0);
@@ -282,7 +282,7 @@ public class BankTellerRole extends Role implements BankTeller {
 				((Restaurant)(m.place)).getCashier().msgTransactionComplete(-m.amount, database.funds.get(m.accountNumber), database.amountOwed.get(m.accountNumber), m.accountNumber);
 			} 
 		}
-		print("Transaction complete for wired customer with account number " + m.accountNumber);
+		print(AlertTag.BANK, "Transaction complete for wired customer with account number " + m.accountNumber);
 		myBusinessCustomers.remove(m);
 		stateChanged();
 	}

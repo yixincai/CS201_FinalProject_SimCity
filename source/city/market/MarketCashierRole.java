@@ -37,13 +37,13 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public MarketCashierRole(PersonAgent person, Market m){
 		super(person);
 		this.market = m;
-		inventory.put("Steak", new Good("Steak", 10, 1000));
-		inventory.put("Chicken", new Good("Chicken", 7, 1000));		
-		inventory.put("Salad", new Good("Salad", 3, 1000));
-		inventory.put("Pizza", new Good("Pizza", 4, 1000));
-		inventory.put("Hot Dog", new Good("Pizza", 4, 1000)); // for omar's restaurant
-		inventory.put("Burger", new Good("Pizza", 4, 1000));
-		inventory.put("Filet Mignon", new Good("Pizza", 4, 1000));
+		inventory.put("Steak", new Good("Steak", 20, 1000));
+		inventory.put("Chicken", new Good("Chicken", 20, 1000));		
+		inventory.put("Salad", new Good("Salad", 20, 1000));
+		inventory.put("Pizza", new Good("Pizza", 20, 1000));
+		inventory.put("Hot Dog", new Good("Hot Dog", 4, 1000)); // for omar's restaurant
+		inventory.put("Burger", new Good("Burger", 4, 1000));
+		inventory.put("Filet Mignon", new Good("Filet Mignon", 4, 1000));
 		inventory.put("Car", new Good("Car", 200, 100));
 		inventory.put("Meal", new Good("Meal", 5, 1000));
 		moneyInHand = 50;
