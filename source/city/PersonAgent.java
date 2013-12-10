@@ -821,6 +821,7 @@ public class PersonAgent extends Agent implements Person
 	}
 	private boolean timeToBeAtWork()
 	{
+		//TODO choose between restaurant opening/closing time and regular opening/closing time etc
 		return _state.time() > Directory.OPENING_TIME - .5 && // .5 is half an hour
 				_state.time() < Directory.CLOSING_TIME + .5;
 	}
