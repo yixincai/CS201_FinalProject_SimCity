@@ -393,7 +393,12 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	// ------------------------------------------------ COMMANDS -----------------------------------------------------------
-	public void cmdChangeMoney(double delta) { _money += delta; _personInfoPanel.refreshInfo(this); }
+	public void cmdChangeMoney(double delta) { 
+		_money += delta;
+		if(_personInfoPanel != null){
+			_personInfoPanel.refreshInfo(this); 
+		}
+	}
 	public void cmdNoLongerHungry() { _state.nourishmentLevel += NOURISHMENT_PER_MEAL; }
 	
 	
