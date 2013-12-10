@@ -127,8 +127,6 @@ public class OmarRestaurantAnimationPanel extends JPanel implements ActionListen
         g2.setColor(Color.PINK);
         g2.fillRect(550, 180, 150, 20);
         g2.fillRect(530, 180, 20, 170);
-        g2.setColor(Color.BLACK);
-        g2.drawString("Plating Area", 560, 170);
         
         //RevolvingStand
         g2.drawImage(revolvingStand, StandPlace.width, StandPlace.height, xRGap, yRGap, this);
@@ -175,6 +173,10 @@ public class OmarRestaurantAnimationPanel extends JPanel implements ActionListen
     }
     
     public void addGui(OmarCookGui gui) {
+    	guis.add(gui);
+    }
+    
+    public void addGui(OmarCashierGui gui) {
     	guis.add(gui);
     }
     

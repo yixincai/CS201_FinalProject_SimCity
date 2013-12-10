@@ -13,6 +13,7 @@ import city.Place;
 import city.market.Item;
 import city.market.Market;
 import city.restaurant.RestaurantCashierRole;
+import city.restaurant.omar.gui.OmarCashierGui;
 import city.restaurant.yixin.YixinRestaurant;
 
 public class OmarCashierRole extends RestaurantCashierRole {
@@ -20,22 +21,24 @@ public class OmarCashierRole extends RestaurantCashierRole {
 	/**
 	 * Restaurant Cashier Agent
 	 */
-	//Data
-	public double cashierFunds;
-	private OmarRestaurant restaurant;
-	public class MyCustomer { //similar to mycustomer in waiter
-		OmarWaiterRole waiter;
-		OmarCustomerRole customer;
-		String choice;
-		public CustomerState state;
-		double money;
-
-		MyCustomer(OmarCustomerRole c, OmarWaiterRole w, String choice){
-			waiter = w;
-
-			this.customer = c;
-			this.choice = choice;
-			money = 0;
+		//Data
+		public double cashierFunds;
+		private OmarRestaurant restaurant;
+		private OmarCashierGui gui;
+		public class MyCustomer { //similar to mycustomer in waiter
+			OmarWaiterRole waiter;
+			OmarCustomerRole customer;
+			String choice;
+			public CustomerState state;
+			double money;
+			
+			MyCustomer(OmarCustomerRole c, OmarWaiterRole w, String choice){
+				waiter = w;
+				
+				this.customer = c;
+				this.choice = choice;
+				money = 0;
+			}
 		}
 	}
 
@@ -70,33 +73,34 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			this.price_list = price_list;
 			this.cost = bill;
 		}
+		
+		public List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
+		public List<MyCustomer> myCustomers = Collections.synchronizedList(new ArrayList<MyCustomer>());
+		public Hashtable<String, Double> foodPrices;
+		public Menu menu;
+		private String name;
+//
+		public OmarCashierRole(PersonAgent p, OmarRestaurant r) {
+			super(p);
+			this.restaurant = r;
+			gui = new OmarCashierGui(this);
+			restaurant.animationPanel().addGui(gui);
+			command = Command.None;
+			cashierFunds = 10000;
+			menu = new Menu();
+			foodPrices = new Hashtable<String, Double>();
+		
+			name = "Cashier David";
+			
+			foodPrices.put("Pizza", 12.0);
+			foodPrices.put("Hot Dog", 15.0);
+			foodPrices.put("Burger", 20.0);
+			foodPrices.put("Filet Mignon", 35.0);
+		}
 
 		public void setOrderItems(List<Item> orderItems){
 			this.orderItems = orderItems;
 		}
-	}
-
-	public List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
-	public List<MyCustomer> myCustomers = Collections.synchronizedList(new ArrayList<MyCustomer>());
-	public Hashtable<String, Double> foodPrices;
-	public Menu menu;
-	private String name;
-	//
-	public OmarCashierRole(PersonAgent p, OmarRestaurant r) {
-		super(p);
-		command = Command.None;
-		this.restaurant = r;
-		cashierFunds = 10000;
-		menu = new Menu();
-		foodPrices = new Hashtable<String, Double>();
-
-		name = "Cashier David";
-
-		foodPrices.put("Pizza", 12.0);
-		foodPrices.put("Hot Dog", 15.0);
-		foodPrices.put("Burger", 20.0);
-		foodPrices.put("Filet Mignon", 35.0);
-	}
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
