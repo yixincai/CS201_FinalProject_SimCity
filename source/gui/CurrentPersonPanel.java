@@ -1,28 +1,22 @@
 package gui;
 
-import gui.trace.AlertTag;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import city.Directory;
 import city.PersonAgent;
 
-public class CurrentPersonPanel extends JPanel implements ActionListener
+public class CurrentPersonPanel extends JPanel implements ActionListener, PersonInfoRefreshable
 {
 	JPanel view;
 	JPanel buttonPanel;
@@ -157,13 +151,24 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 				}
 				_currentlySelectedPerson = tempPerson;
 				tempPerson.commuterRole().gui().setSelected(true);
-				nameField.setText("Person Name: " + tempPerson.name());
-				moneyField.setText("Person Money: " + tempPerson.money() + "0");
-				currentRoleField.setText("Current Role: " + tempPerson.currentRole().typeToString());
-				nextRoleField.setText("Next Role: " + tempPerson.nextRoleTypeToString());
-				occupationField.setText("Occupation: " + tempPerson.occupationTypeToString());
+				refreshCurrentPersonInfo();
 			}
 		}
+	}
+	
+	/** Only refreshes if the passed-in person is currently selected */
+	public void refreshInfo(PersonAgent person)
+	{
+		if(_currentlySelectedPerson == person) refreshCurrentPersonInfo();
+	}
+	
+	public void refreshCurrentPersonInfo()
+	{
+		nameField.setText("Person Name: " + _currentlySelectedPerson.name());
+		moneyField.setText("Person Money: " + _currentlySelectedPerson.money() + "0");
+		currentRoleField.setText("Current Role: " + _currentlySelectedPerson.currentRole().typeToString());
+		nextRoleField.setText("Next Role: " + _currentlySelectedPerson.nextRoleTypeToString());
+		occupationField.setText("Occupation: " + _currentlySelectedPerson.occupationTypeToString());
 	}
 	
 	public void updatePerson(PersonAgent tempPerson){
@@ -172,11 +177,7 @@ public class CurrentPersonPanel extends JPanel implements ActionListener
 		}
 		_currentlySelectedPerson = tempPerson;
 		tempPerson.commuterRole().gui().setSelected(true);
-		nameField.setText("Person Name: " + tempPerson.name());
-		moneyField.setText("Person Money: " + tempPerson.money() + "0");
-		currentRoleField.setText("Current Role: " + tempPerson.currentRole().typeToString());
-		nextRoleField.setText("Next Role: " + tempPerson.nextRoleTypeToString());
-		occupationField.setText("Occupation: " + tempPerson.occupationTypeToString());
+		refreshCurrentPersonInfo();
 	}
 	
 	@Override
