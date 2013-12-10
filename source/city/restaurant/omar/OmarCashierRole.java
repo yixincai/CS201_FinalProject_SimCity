@@ -78,12 +78,12 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		}
 	}
 
-		public List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
-		public List<MyCustomer> myCustomers = Collections.synchronizedList(new ArrayList<MyCustomer>());
-		public Hashtable<String, Double> foodPrices;
-		public Menu menu;
-		private String name;
-	
+	public List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
+	public List<MyCustomer> myCustomers = Collections.synchronizedList(new ArrayList<MyCustomer>());
+	public Hashtable<String, Double> foodPrices;
+	public Menu menu;
+	private String name;
+
 	public OmarCashierRole(PersonAgent p, OmarRestaurant r) {
 		super(p);
 		this.restaurant = r;
@@ -114,7 +114,6 @@ public class OmarCashierRole extends RestaurantCashierRole {
 				}
 			}
 		}
-
 		synchronized(myCustomers){
 			for(MyCustomer m: myCustomers){
 				if(m.state == CustomerState.paying){
@@ -140,7 +139,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			}
 		}
 
-		if(command == Command.Leave && orders.isEmpty() && myCustomers.isEmpty()){
+		if(!restaurant.open && orders.isEmpty() && myCustomers.isEmpty()){
 			leave();
 			return true;
 		}
