@@ -43,17 +43,29 @@ public class Market extends Place implements PlaceWithAnimation {
 		truck = new TruckAgent(this);
 	}
 	
-	public MarketCashierRole tryAcquireCashier(PersonAgent person){
+	public MarketCashierRole tryAcquireCashierRole(PersonAgent person){
 		if (_cashierSemaphore.tryAcquire()){
 			MarketCashier.setPerson(person);
+			
+			// Gui:
+			MarketCashierGui marketCashierGui = new MarketCashierGui(MarketCashier);
+			MarketCashier.setGui(marketCashierGui);
+			animationPanel.addGui(marketCashierGui);
+			
 			return MarketCashier;
 		}
 		return null;
 	}
 
-	public MarketEmployeeRole tryAcquireEmployee(PersonAgent person){
+	public MarketEmployeeRole tryAcquireEmployeeRole(PersonAgent person){
 		if (_employeeSemaphore.tryAcquire()){
 			MarketEmployee.setPerson(person);
+			
+			// Gui:
+			MarketEmployeeGui marketEmployeeGui = new MarketEmployeeGui(MarketEmployee);
+			MarketEmployee.setGui(marketEmployeeGui);
+			animationPanel.addGui(marketEmployeeGui);
+			
 			return MarketEmployee;
 		}
 		return null;
