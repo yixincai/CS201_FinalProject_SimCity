@@ -120,7 +120,6 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 		for ( int i=0; i<Directory.busSidewalks().size(); i++ ) {
 			Lane l = Directory.busSidewalks().get(i);
 			//l.draw( g2 );
->>>>>>> e4f05f96d2bfb04c58d824ac6589546fdf2f6817
 		}
 		
 		try
