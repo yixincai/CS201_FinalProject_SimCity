@@ -74,8 +74,7 @@ public class OmarCustomerGui extends JPanel implements Gui {
 	}
 
 	public void draw(Graphics2D g) {
-		g.setColor(myColor);
-		g.fillRect(xPos, yPos, 20, 20);
+		g.drawImage(agent.getImage(), xPos, yPos, 20, 27, null);
 		
 		g.drawString(currentStatus, xPos + 5, yPos - 5);
 	}

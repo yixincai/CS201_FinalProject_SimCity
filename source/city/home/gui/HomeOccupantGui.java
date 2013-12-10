@@ -2,6 +2,7 @@ package city.home.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.concurrent.Semaphore;
 
 import city.home.HomeOccupantRole;
@@ -17,6 +18,7 @@ public abstract class HomeOccupantGui implements Gui {
 	protected HomeOccupantRole _role;
 	protected boolean _goingSomewhere = false;
 	protected boolean _isPresent = false;
+	protected Image _picture = null;
 	
 	protected Semaphore _finishedAction = new Semaphore(0, true);
 	protected boolean _doingAction = false;
@@ -43,7 +45,11 @@ public abstract class HomeOccupantGui implements Gui {
 	protected abstract int frontDoorY();
 	protected abstract int chairX();
 	protected abstract int chairY();
-
+	
+	protected Image getImage(){
+		return _role.getImage();
+	}
+	
 	@Override
 	public boolean isPresent() {
 		return _isPresent;
@@ -141,8 +147,9 @@ public abstract class HomeOccupantGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		if(_isPresent){
-			g.setColor(Color.GREEN);
-			g.fillRect(_positionX, _positionY, 20, 20);
+			_picture = _role.getImage();
+			g.drawImage(_picture, _positionX, _positionY, 20, 27, null);
+			
 		}
 	}
 	

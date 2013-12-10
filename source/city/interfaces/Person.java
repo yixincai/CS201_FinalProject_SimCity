@@ -1,5 +1,7 @@
 package city.interfaces;
 
+import java.awt.Image;
+
 import city.home.HomeOccupantRole;
 
 public interface Person {
@@ -14,5 +16,7 @@ public interface Person {
 	public void cmdChangeMoney(double amountChanged);
 
 	public void stateChanged();
+	
+	public Image getImage();
 	
 }

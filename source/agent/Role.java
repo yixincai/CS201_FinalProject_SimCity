@@ -1,5 +1,7 @@
 package agent;
 
+import java.awt.Image;
+
 import gui.trace.AlertLog;
 import gui.trace.AlertTag;
 import utilities.EventLog;
@@ -15,8 +17,12 @@ public abstract class Role
 	public EventLog log = new EventLog(); // unit testing
 	
 	// ----------------------------- CONSTRUCTOR & PROPERTIES ------------------------------------
-	public Role(Person person) { _person = person; }
+	public Role(Person person) { 
+		_person = person; 
+	}
+	
 	public void setPerson(Person person) { _person = person; }
+	public Image getImage(){ return _person.getImage();}
 	public abstract Place place();
 	public final String typeToString() { return StringUtil.shortName(getClass()); }
 	public final String toString() { return _person.name() + " as " + typeToString();}

@@ -44,8 +44,7 @@ public class MarketCustomerGui extends JPanel implements Gui {
 
     public void draw(Graphics2D g) {
 		if(role.active){
-			g.setColor(Color.GRAY);
-			g.fillRect(xPos, yPos, xGap, yGap);
+			g.drawImage(role.getImage(), xPos, yPos, 20, 27, null);
 			//g.drawImage(image, xPos, yPos, xGap, yGap, this);
 		}
     }
