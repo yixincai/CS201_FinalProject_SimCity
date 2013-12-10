@@ -108,6 +108,9 @@ public class PersonAgent extends Agent implements Person
 	}
 	State _state = new State();
 	
+	// Utility data:
+	Timer schedulerTimer = new Timer();
+	
 	
 	
 	// ------------------------------------------- CONSTRUCTORS & SETUP --------------------------------------------
@@ -125,7 +128,7 @@ public class PersonAgent extends Agent implements Person
 	 * @param occupationType I.e. Restaurant Cashier or Restaurant Host or Bank Teller etc.
 	 * @param housingType House or Apartment
 	 */
-	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType) 
+	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType)
 	{
 		_name = name; 
 		_money = money;
@@ -442,7 +445,7 @@ public class PersonAgent extends Agent implements Person
 			}
 			*/
 			
-			// ================================================== Call current role's scheduler =============================================
+			// ---------------------------------------------- Call current role's scheduler -------------------------------------------
 			// print("About to call _currentRole (" + _currentRole.toString() + ") scheduler.");
 			if(_currentRole.pickAndExecuteAnAction())
 			{ 
@@ -498,6 +501,9 @@ public class PersonAgent extends Agent implements Person
 					}
 					else if(nextAction.contains("Deposit")) {
 						if(actGoToBank("Deposit", 20)) return true;
+					}
+					else if(nextAction.contains("Robber")) {
+						if(actGoToBank("Robber", 500)) return true;
 					}
 				}
 				else if(nextAction.contains("Market"))
@@ -571,6 +577,9 @@ public class PersonAgent extends Agent implements Person
 		// (Peanut gallery)
 		if(_name.contains("Wilczynski")) { actTellLongStory(); }
 		else if(_name.contains("iWhale")) { actIWhale(); }
+		
+		// Set a timer so that the scheduler will get called again.
+		schedulerTimer.schedule(new TimerTask() { public void run() { stateChanged(); } }, Time.getRealTime(0.3));
 		return false;
 	}
 	
