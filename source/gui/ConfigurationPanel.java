@@ -12,11 +12,14 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
 public class ConfigurationPanel extends JPanel implements ActionListener {
-	
+
 	ControlPanel cPanel;
-	String[] configOptions = {"Robber", "Configuration 2", "Scenario C", 
+	String[] configOptions = {"Scenario: Robber", "Scenario: Vehicle Accident", 
+			"Scenario: Vehicle Hits Pedestrian", "Scenario: Weekend", "Scenario: Job Change", //end NN
+			"Normative Scenario",
+			"Configuration 2", "Scenario C", 
 			"Configuration 4", "Configuration 5", "Scenario A", "Scenario B",
-					"Scenario E", "Scenario F", "Scenario G", "Scenario J", "Ryan Restaurant"};
+			"Scenario E", "Scenario F", "Scenario G", "Scenario J", "Ryan Restaurant"};
 	JLabel configLabel;
 	JComboBox configBox;
 	JButton startButton;
@@ -30,7 +33,7 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 	SpringLayout layout;
 	private final int WIDTH = 1024/3;
 	private final int HEIGHT = 720;
-	
+
 	public ConfigurationPanel(ControlPanel cp)
 	{
 		//Initialization
@@ -47,7 +50,7 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 		SpringLayout descriptionLayout = new SpringLayout();
 		description.setLayout(descriptionLayout);
 		startButton = new JButton("Start");
-		
+
 		config1Description = "<html><br>Scenario 1: Initialize a bank interaction.</br><br>Three bank customers,"
 				+ " one bank host, and one bank teller are put into the world.</br><br>  They will go home and"
 				+ " then head over to the bank and proceed to make deposits (since it's their first time"
@@ -80,7 +83,7 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 		this.add(configBox);
 		this.add(description);
 		this.add(startButton);
-		
+
 		//Now fix the layout
 		//Configuration label
 		layout.putConstraint(SpringLayout.WEST, configLabel, 5, SpringLayout.WEST, this);
@@ -101,9 +104,9 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 		//Description Label
 		descriptionLayout.putConstraint(SpringLayout.WEST, descriptionText, 10, SpringLayout.WEST, description);
 		descriptionLayout.putConstraint(SpringLayout.EAST, descriptionText, -10, SpringLayout.EAST, description);
-		
+
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -129,25 +132,81 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			{
 				descriptionText.setText(config5Description);
 			}
-			
+
 		}
-		
+
 		if(e.getSource() == startButton)
 		{
 			this.startConfiguration();
 		}
 
 	}
-	
+
 	public void startConfiguration()
 	{
 		if(configBox.getSelectedIndex() == 0){
 			cPanel.addPerson("Teller", 300, "Bank Teller", true, "house");
 			cPanel.addPerson("Host", 300, "Bank Host", true, "house");
-			cPanel.addPerson("Omar", 300, "Bank Customer", true, "house");
-			cPanel.addPerson("Omar2", 300, "Bank Customer", true, "house");
-			cPanel.addPerson("Omar3", 300, "Bank Customer", true, "apartment");
-		} else if(configBox.getSelectedIndex() == 1){
+			cPanel.addPerson("Omar", 300, "Bank Customer Robber", true, "house"); //TODO
+			cPanel.addPerson("Omar2", 300, "Bank Customer Robber", true, "house");
+			cPanel.addPerson("Omar3", 300, "Bank Customer Robber", true, "apartment");
+		}  else if(configBox.getSelectedIndex() == 1){
+			cPanel.addPerson("CS201 Student 1", 300, "Restaurant Host", true, "house");
+		}   else if(configBox.getSelectedIndex() == 2){
+			cPanel.addPerson("CS201 Student 2", 150, "Restaurant Cashier", true, "house");
+			cPanel.addPerson("CS201 Student 3", 150, "Cook", true, "house");
+			cPanel.addPerson("CS201 Student 4", 150, "Waiter", true, "house");
+			cPanel.addPerson("CS201 Student 5", 150, "Yixin Customer", true, "apartment");
+			cPanel.addPerson("CS201 Student 6", 150, "Market Cashier", true, "apartment");
+			cPanel.addPerson("CS201 Student 7", 150, "Market Employee", true, "apartment");
+			cPanel.addPerson("CS201 Student 8", 150, "Restaurant Host", true, "house");
+			cPanel.addPerson("CS201 Student 9", 150, "Restaurant Cashier", true, "house");
+		} else if(configBox.getSelectedIndex() == 3){
+			//TODO Weekend Behavior
+		} else if(configBox.getSelectedIndex() == 4){
+			//TODO Job Changing
+		} else if(configBox.getSelectedIndex() == 5){
+			//markets
+			cPanel.addPerson("MarketCashier1", 300, "Market Cashier", true, "apartment");
+			cPanel.addPerson("MarketEmployee1", 300, "Market Employee", true, "apartment");
+			cPanel.addPerson("MarketCashier2", 50, "Market Cashier", true, "apartment");
+			cPanel.addPerson("MarketEmployee2", 150, "Market Employee", true, "apartment");
+			//banks
+			cPanel.addPerson("BankTeller1", 300, "Bank Teller", true, "apartment");
+			cPanel.addPerson("BankHost1", 300, "Bank Host", true, "apartment");
+			cPanel.addPerson("BankTeller2", 50, "Bank Teller", true, "apartment");
+			cPanel.addPerson("BankHost2", 150, "Bank Host", true, "apartment");
+			//yixin restaurant
+			cPanel.addPerson("YixinHost", 300, "YixinRestaurant Host", true, "apartment");
+			//TODO market fail to deliver to restaurant comment the next line and add cashier later
+			cPanel.addPerson("YixinCashier", 300, "YixinRestaurant Cashier", true, "apartment");
+			cPanel.addPerson("YixinCook", 50, "YixinRestaurant Cook", true, "apartment");
+			cPanel.addPerson("YixinSharedDataWaiter", 150, "YixinRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("YixinNormalWaiter", 150, "YixinRestaurant NormalWaiter", true, "apartment");
+			
+			//omar restaurant
+			cPanel.addPerson("OmarHost", 300, "OmarRestaurant Host", true, "apartment");
+			cPanel.addPerson("OmarCashier", 300, "OmarRestaurant Cashier", true, "apartment");
+			cPanel.addPerson("OmarCook", 50, "OmarRestaurant Cook", true, "apartment");
+			cPanel.addPerson("OmarSharedDataWaiter", 150, "OmarRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("OmarNormalWaiter", 150, "OmarRestaurant NormalWaiter", true, "apartment");
+
+			//ryan restaurant
+			cPanel.addPerson("RyanHost", 300, "RyanRestaurant Host", true, "apartment");
+			cPanel.addPerson("RyanCashier", 300, "RyanRestaurant Cashier", true, "apartment");
+			cPanel.addPerson("RyanCook", 50, "RyanRestaurant Cook", true, "apartment");
+			cPanel.addPerson("RyanSharedDataWaiter", 150, "RyanRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("RyanNormalWaiter", 150, "RyanRestaurant NormalWaiter", true, "apartment");
+			
+			//eric restaurant
+			
+			//add customers
+			cPanel.addPerson("YixinRestaurantCustomer", 300, "YixinRestaurant Customer", true, "apartment");
+			cPanel.addPerson("OmarRestaurantCustomer", 150, "OmarRestaurant Customer", true, "apartment");
+			cPanel.addPerson("RyanRestaurantCustomer", 50, "RyanRestaurant Customer", true, "apartment");
+
+		}
+			else if(configBox.getSelectedIndex() == 2){
 			cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
 			cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
 			cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
@@ -157,19 +216,19 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("RestaurantCashier", 300, "Restaurant Cashier", true, "apartment");
 			cPanel.addPerson("Cook", 300, "Cook", true, "apartment");
 			cPanel.addPerson("OmarWaiter", 300, "Omar Waiter", true, "apartment");
-		/*	cPanel.addPerson("OmarCustomer", 300, "Omar Customer", true, "apartment");
+			/*	cPanel.addPerson("OmarCustomer", 300, "Omar Customer", true, "apartment");
 			cPanel.addPerson("OmarCustomer2", 300, "Omar Customer", true, "apartment");
 			cPanel.addPerson("OmarCustomer3", 300, "Omar Customer", true, "apartment");
 			cPanel.addPerson("OmarCustomer4", 300, "Omar Customer", true, "apartment"); */
 		}
-		else if (configBox.getSelectedIndex() == 2){
+		else if (configBox.getSelectedIndex() == 3){
 			cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
 			cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
 			cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
 			cPanel.addPerson("Yixin Cashier", 300, "Market Cashier", true, "apartment");
 			cPanel.addPerson("Yixin Employee", 300, "Market Employee", true, "apartment");
 			cPanel.addPerson("Yixin Customer", 300, "Market Customer", true, "apartment");
-		} else if (configBox.getSelectedIndex() == 3){
+		} else if (configBox.getSelectedIndex() == 4){
 			cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
 			cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
 			cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
@@ -177,16 +236,16 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("Yixin4", 50, "Yixin Customer", true, "apartment");
 			cPanel.addPerson("Yixin7", 50, "Market Cashier", true, "apartment");
 			cPanel.addPerson("Yixin8", 50, "Market Employee", true, "apartment");
-		} else if (configBox.getSelectedIndex() == 4){
+		} else if (configBox.getSelectedIndex() == 5){
 			cPanel.addPerson("Eric", 300, "None", true, "house");
 			cPanel.addPerson("Omar", 300, "None", true, "house");
 			cPanel.addPerson("Yixin", 300, "None", true, "house");
 			cPanel.addPerson("Ryan", 300, "None", true, "apartment");
 			cPanel.addPerson("Tanner", 300, "None", true, "apartment");
-		} else if(configBox.getSelectedIndex() == 5){
+		} else if(configBox.getSelectedIndex() == 6){
 			cPanel.addPerson("Teller", 300, "Bank Teller", true, "house");
 			cPanel.addPerson("Host", 300, "Bank Host", true, "house");
-			
+
 			cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
 			cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
 			cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
@@ -196,12 +255,12 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("RestaurantCashier", 300, "Restaurant Cashier", true, "apartment");
 			cPanel.addPerson("Cook", 300, "Cook", true, "apartment");
 			cPanel.addPerson("OmarWaiter", 300, "Omar Waiter", true, "apartment"); // add other restaurants
-			
+
 			cPanel.addPerson("Eric", 300, "None", true, "house");
-		} else if(configBox.getSelectedIndex() == 6){
+		} else if(configBox.getSelectedIndex() == 7){
 			cPanel.addPerson("Teller", 300, "Bank Teller", true, "house");
 			cPanel.addPerson("Host", 300, "Bank Host", true, "house");
-			
+
 			cPanel.addPerson("Yixin", 300, "Restaurant Host", true, "house");
 			cPanel.addPerson("Yixin1", 300, "Restaurant Cashier", true, "house");
 			cPanel.addPerson("Yixin2", 300, "Cook", true, "house");
@@ -211,23 +270,23 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("RestaurantCashier", 300, "Restaurant Cashier", true, "apartment");
 			cPanel.addPerson("Cook", 300, "Cook", true, "apartment");
 			cPanel.addPerson("OmarWaiter", 300, "Omar Waiter", true, "apartment");
-			
-			cPanel.addPerson("Eric", 300, "None", true, "house"); //need to have each one take different transportation
-			cPanel.addPerson("Eric", 300, "None", true, "house");
-			cPanel.addPerson("Eric", 300, "None", true, "house");
-		} else if(configBox.getSelectedIndex() == 7){
-			//Three people need to take bus
+
 			cPanel.addPerson("Eric", 300, "None", true, "house"); //need to have each one take different transportation
 			cPanel.addPerson("Eric", 300, "None", true, "house");
 			cPanel.addPerson("Eric", 300, "None", true, "house");
 		} else if(configBox.getSelectedIndex() == 8){
-			//TODO somehow close places
+			//Three people need to take bus
+			cPanel.addPerson("Eric", 300, "None", true, "house"); //need to have each one take different transportation
+			cPanel.addPerson("Eric", 300, "None", true, "house");
 			cPanel.addPerson("Eric", 300, "None", true, "house");
 		} else if(configBox.getSelectedIndex() == 9){
-			//TODO Scenario G
+			//TODO somehow close places
+			cPanel.addPerson("Eric", 300, "None", true, "house");
 		} else if(configBox.getSelectedIndex() == 10){
-			
+			//TODO Scenario G
 		} else if(configBox.getSelectedIndex() == 11){
+
+		} else if(configBox.getSelectedIndex() == 12){
 			cPanel.addPerson("Ryan", 300, "Restaurant Host", true, "apartment");
 			cPanel.addPerson("Ryan1", 300, "Restaurant Cashier", true, "apartment");
 			cPanel.addPerson("Ryan2", 300, "Cook", true, "apartment");
@@ -241,8 +300,12 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("Ryan10", 300, "Ryan Customer", true, "apartment");
 			cPanel.addPerson("Ryan11", 300, "Market Cashier", true, "apartment");
 			cPanel.addPerson("Ryan12", 300, "Market Employee", true, "apartment");
-		}  
-		
+		}  else if (configBox.getSelectedIndex() == 13){
+			//pedestrian death scenario in bus stops
+			cPanel.addPerson("CS201 Student 1", 300, "Restaurant Host", true, "house");
+
+		}
+
 	}
 
 }

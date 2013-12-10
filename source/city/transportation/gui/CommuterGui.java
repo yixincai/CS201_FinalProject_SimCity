@@ -2,8 +2,11 @@ package city.transportation.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import javax.swing.ImageIcon;
 
 import gui.*;
 import gui.astar.*;
@@ -36,13 +39,15 @@ public class CommuterGui implements Gui {
 	private int landingSpot = 0;	
 	CommuterRole _commuter;
 	public boolean dead = false;
-	//AStarTraversal _aStarTraversal;
-
-	//Position currentPosition;
-
+	private Semaphore deathSem = new Semaphore(0, true);
+	
+	private ImageIcon b = new ImageIcon(this.getClass().getResource("/image/bank/Skull.png"));
+	private Image skull = b.getImage();
+	int xGap = 10;
+	int yGap = 10;
+	
 	//----------------------------------Constructor & Setters & Getters----------------------------------
 	public CommuterGui(CommuterRole commuter, Place initialPlace) {
-		//System.out.println("Created CommuterGui");
 		// Note: placeX and placeY can safely receive values of null
 		Lane lane;
 		if (commuter.hasCar())
@@ -520,6 +525,22 @@ public class CommuterGui implements Gui {
 						e.printStackTrace();
 					}
 				};
+				if (_commuter.wantToDie && intersections.get(i) == 0){
+					_xDestination = 1 * 10 + 41;
+					_yDestination = 12 * 10 + 30;
+					_transportationMethod = Command.waitForAnimation;
+					waitForLaneToFinish();
+					lane.permits.get(lane.permits.size()-1).release();
+					Directory.intersections().get(intersections.get(i)).release();
+					Directory.busStops().get(5).addMyselfToCrashList(_commuter);
+					try{
+						deathSem.acquire();
+					}
+					catch(InterruptedException e){
+						e.printStackTrace();
+					}
+					return;
+				}
 				if (next_lane.isHorizontal){
 					if (next_lane.xVelocity>0){
 						_xDestination = next_lane.xOrigin - 10;
@@ -558,7 +579,6 @@ public class CommuterGui implements Gui {
 		// set current x & y to _commuter.currrentPlace()
 		// set visible to true
 		//TODO set position and destination
-		System.out.println(busstop.positionX() + "  " +busstop.positionY());
 		route.clear();
 		if (_currentBlockX == 0 && _currentBlockY == 0){
 			_xPos = 41 + 15 * 10;
@@ -703,7 +723,7 @@ public class CommuterGui implements Gui {
 			_yDestination -= _commuter.deadListNumber * 10;
 		}
 		else if (_currentBlockX == 1 && _currentBlockY == 1){
-			_xDestination -= 20;
+			_xDestination -= 10;
 			_yDestination += 10;
 			_transportationMethod = Command.waitForAnimation;
 			waitForLaneToFinish();
@@ -931,8 +951,7 @@ public class CommuterGui implements Gui {
 	public void draw(Graphics2D g) {
 		if(isPresent){
 			if (dead){
-				g.setColor(Color.red);
-				g.fillRect(_xPos, _yPos, 10, 10);
+				g.drawImage(skull,_xPos,_yPos, xGap, yGap, null);
 				return;
 			}
 			if(_commuter.hasCar()){

@@ -36,7 +36,7 @@ public class CommuterRole extends Role implements Commuter{
 	public int deadListNumber = 0;
 	//TODO	if someone want to die, change money > 100, hasCar = false (he will take bus), wantToDie = true;
 	public enum TravelState{choosing, choseCar, goToCar, atCar, choseWalking, walking, 
-		choseBus, goingToBusStop, atBusStop, waitingAtBusStop, busIsHere, ridingBus, busIsAtDestination, gettingOffBus,
+		choseBus, goingToBusStop, atBusStop, waitingAtBusStop, busIsHere, ridingBus, busIsAtDestination, 
 		atDestination, done, none};
 
 		public TravelState _tState = TravelState.none;
@@ -59,10 +59,10 @@ public class CommuterRole extends Role implements Commuter{
 			_person = person;
 			_currentPlace = initialPlace;
 			_destination = null;
-			if ((new Random()).nextInt(2) == 0)
+//			if ((new Random()).nextInt(2) == 0)
 				hasCar = true;
-			else 
-				hasCar = false;
+//			else 
+//				hasCar = false;
 			_gui = new CommuterGui(this, initialPlace);
 		}
 
@@ -198,15 +198,19 @@ public class CommuterRole extends Role implements Commuter{
 		//Choosing
 		public void actChooseTransportation(){
 			print(AlertTag.WORLDVIEW,"Choosing mode of transport");
+			if (_person.name().contains("CS201"))
+				wantToDie = true;
+			else
+				wantToDie = false;
+			if (_person._money >= 200)
+				hasCar = true;
+			else
+				hasCar = false;
 			if (hasCar){
 				_tState = TravelState.choseCar;
 			}
 			else{
 				if (_person._money >= 100){
-					if ((new Random()).nextInt(2) == 0)
-						wantToDie = true;
-					else 
-						wantToDie = false;
 					_tState = TravelState.choseBus;
 				}
 				else
@@ -246,16 +250,24 @@ public class CommuterRole extends Role implements Commuter{
 		//Bus
 		public void actGoToBusStop(){
 			_busStop = Directory.getNearestBusStop(_gui.getX(), _gui.getY()); //Unit Testing will skip this for now
-			_gui.goToBusStop(_busStop);
+			BusStopObject _nextStop = Directory.getNearestBusStopToDestination(_destination);
 			if (wantToDie){
+				_gui.goToBusStop(_busStop);
 				deadListNumber = _busStop.addMyselfToDeathList(this);
 				_gui.goDie();
 				_tState = TravelState.waitingAtBusStop;
 			}
 			else{
+				if (_nextStop == _busStop){
+					_tState = TravelState.done;
+					active = false;
+				}
+				else{
+				_gui.goToBusStop(_busStop);
 				_busStop.addCommuterRole(this);
 				_busStop = Directory.getNearestBusStopToDestination(_destination);
 				_tState = TravelState.waitingAtBusStop;
+				}
 			}
 		}
 		public void actGetOnBus(){
@@ -263,14 +275,13 @@ public class CommuterRole extends Role implements Commuter{
 			_person._money -= _fare;
 			_gui.getOnBus();
 			_bus.msgGettingOnBoard(this, _busStop, _fare);
-			stateChanged();
 		}
 		public void actGetOffBus(){
-			_tState = TravelState.gettingOffBus;
 			_gui.getOffBus(_busStop);
 			_bus.msgGotOff(this);
 			_bus = null;
-			actWalking(); //Calls this function here because after you get off of the bus stop you walk to the destination
+			_tState = TravelState.done;
+			active = false;
 		}
 
 
