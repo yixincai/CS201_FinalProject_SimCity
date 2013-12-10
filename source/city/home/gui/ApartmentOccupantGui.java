@@ -144,13 +144,13 @@ public class ApartmentOccupantGui extends HomeOccupantGui {
 		switch(apartmentOccupantRole().apartmentNumber())
 		{
 		case 0:
-			return ApartmentAnimationPanel.TVY;
+			return ApartmentAnimationPanel.TVX;
 		case 1:
-			return ApartmentAnimationPanel.TVY2;
+			return ApartmentAnimationPanel.TVX2;
 		case 2:
-			return ApartmentAnimationPanel.TVY3;
+			return ApartmentAnimationPanel.TVX3;
 		case 3:
-			return ApartmentAnimationPanel.TVY4;
+			return ApartmentAnimationPanel.TVX4;
 		}
 		return 0;
 	}
@@ -160,13 +160,13 @@ public class ApartmentOccupantGui extends HomeOccupantGui {
 		switch(apartmentOccupantRole().apartmentNumber())
 		{
 		case 0:
-			return ApartmentAnimationPanel.FRONTDOORX;
+			return ApartmentAnimationPanel.TVY;
 		case 1:
-			return ApartmentAnimationPanel.FRONTDOORX2;
+			return ApartmentAnimationPanel.TVY2;
 		case 2:
-			return ApartmentAnimationPanel.FRONTDOORX3;
+			return ApartmentAnimationPanel.TVY3;
 		case 3:
-			return ApartmentAnimationPanel.FRONTDOORX4;
+			return ApartmentAnimationPanel.TVY4;
 		}
 		return 0;
 	}
