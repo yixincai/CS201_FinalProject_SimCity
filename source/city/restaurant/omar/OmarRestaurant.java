@@ -59,7 +59,7 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 	public Role generateWaiterRole(PersonAgent person, boolean shared) {
 		OmarWaiterRole newWaiter;
 		if (!shared)
-			newWaiter = new OmarWaiterRole(person, this,(OmarCookRole)cook, host, null);
+			newWaiter = new OmarNormalWaiterRole(person, this,(OmarCookRole)cook, host, null);
 		else
 			newWaiter = new OmarSharedDataWaiterRole(person, this, (OmarCookRole)cook, host, null);
 		newWaiter.setCashier((OmarCashierRole)cashier);

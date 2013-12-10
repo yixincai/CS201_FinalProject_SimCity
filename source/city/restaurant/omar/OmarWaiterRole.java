@@ -16,7 +16,7 @@ import city.PersonAgent;
 import city.Place;
 import city.restaurant.omar.gui.OmarWaiterGui;
 
-public class OmarWaiterRole extends Role {
+public abstract class OmarWaiterRole extends Role {
 
 	//Data
 	OmarCookRole cook;
