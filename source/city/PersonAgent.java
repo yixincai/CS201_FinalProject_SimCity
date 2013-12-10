@@ -45,8 +45,7 @@ public class PersonAgent extends Agent implements Person
 	
 	// State data:
 	public double _money; //TODO change to private and change appropriate other values
-	enum WealthState { RICH, NORMAL, BROKE, POOR } // the word "deadbeat" courtesy of Wilczynski lol
-	boolean _deadbeat = false; // if true, means this person doesn't pay loans
+	enum WealthState { RICH, NORMAL, BROKE, POOR }
 	enum NourishmentState { HUNGRY, NORMAL, FULL }
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
 	class State
@@ -138,27 +137,13 @@ public class PersonAgent extends Agent implements Person
 		else { AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(),"Acquired null occupation."); }
 		acquireHome(housingType);
 		
-		// For testing purposes for V1, choose a random action to do at home.
-		switch((int)(Math.random()*3))
-		{
-		case 0:
-			_homeOccupantRole.cmdWatchTv();
-			break;
-		case 1:
-			_homeOccupantRole.cmdCookAndEatFood();
-			break;
-		case 2:
-			_homeOccupantRole.cmdGoToBed();
-			break;
-		}
-		
 		generateAndSetCommuterRole();
 		setNextRole(_homeOccupantRole);
 	}
 	/** Sets _commuterRole to a new CommuterRole */
 	public void generateAndSetCommuterRole()
 	{
-		_commuterRole = new CommuterRole(this, null); // may replace null with _homeOccupantRole.place() to set the person's starting position
+		_commuterRole = new CommuterRole(this, _homeOccupantRole.place()); // may replace null with _homeOccupantRole.place() to set the person's starting position
 	}
 	/** Acquires an available house or apartment and sets the _homeOccupantRole and _homeBuyingRole appropriately.
 	 * @param homeType Either "house" or "apartment" */
