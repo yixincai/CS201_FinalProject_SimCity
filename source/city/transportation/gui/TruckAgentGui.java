@@ -6,8 +6,11 @@ import gui.Lane;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import javax.swing.ImageIcon;
 
 import city.*;
 import city.market.Market;
@@ -38,9 +41,24 @@ public class TruckAgentGui implements Gui{
 	List<Restaurant> restaurants;
 	private int parkingSpot = 3;
 	
-	enum TruckDirection{BusUp, BusDown, BusRight, BusLeft, BusNone};
-	TruckDirection direction = TruckDirection.BusNone;
+	enum TruckDirection{TruckUp, TruckDown, TruckRight, TruckLeft, TruckNone};
+	TruckDirection direction = TruckDirection.TruckNone;
 
+	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/transportation/TruckUp.png"));
+    Image truckUp = a.getImage();
+    
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/transportation/TruckDown.png"));
+    Image truckDown = b.getImage();
+    
+    ImageIcon c = new ImageIcon(this.getClass().getResource("/image/transportation/TruckLeft.png"));
+    Image truckLeft = c.getImage();
+    
+    ImageIcon d = new ImageIcon(this.getClass().getResource("/image/transportation/TruckRight.png"));
+    Image truckRight = d.getImage();
+    
+    int xBGap = 25;
+    int yBGap = 48;
+	
 	public TruckAgentGui(TruckAgent truck, Market market){
 		_market = market;
 		_xPos = _market.positionX() - 30;
@@ -491,15 +509,23 @@ public class TruckAgentGui implements Gui{
 
 	//Animation
 	public void updatePosition() {
-		if (_xPos < _xDestination)
+		if (_xPos < _xDestination){
 			_xPos++;
-		else if (_xPos > _xDestination)
+			direction = TruckDirection.TruckRight;
+		}
+		else if (_xPos > _xDestination){
 			_xPos--;
+			direction = TruckDirection.TruckLeft;
+		}
 
-		if (_yPos < _yDestination)
+		if (_yPos < _yDestination){
 			_yPos++;
-		else if (_yPos > _yDestination)
+			direction = TruckDirection.TruckDown;
+		}
+		else if (_yPos > _yDestination){
 			_yPos--;
+			direction = TruckDirection.TruckUp;
+		}
 		if(_xPos == _xDestination &&  _yPos == _yDestination &&
 				_point == Point.moving){
 			_point = Point.none;
@@ -518,8 +544,21 @@ public class TruckAgentGui implements Gui{
 		//		g.drawString("Truck", _market.positionX() - 12, _market.positionY()-5);
 		//		
 		if(isPresent){
-			g.setColor(Color.cyan);
-			g.fillRect(_xPos, _yPos, 10, 10);
+			if(direction == TruckDirection.TruckDown){
+				g.drawImage(truckDown, _xPos, _yPos, 10, 10, null);
+			}
+			else if(direction == TruckDirection.TruckUp){
+				g.drawImage(truckUp, _xPos, _yPos, 10, 10, null);
+			}
+			else if(direction == TruckDirection.TruckRight){
+				g.drawImage(truckRight, _xPos, _yPos, 10, 10, null);
+			}
+			else if(direction == TruckDirection.TruckLeft){
+				g.drawImage(truckLeft, _xPos, _yPos, 10, 10, null);
+			}
+			else{
+				g.drawImage(truckDown, _xPos, _yPos, 10, 10, null);
+			}
 		}
 	}
 

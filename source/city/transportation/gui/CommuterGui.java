@@ -42,8 +42,38 @@ public class CommuterGui implements Gui {
 	public boolean dead = false;
 	private Semaphore deathSem = new Semaphore(0, true);
 	
-	private ImageIcon b = new ImageIcon(this.getClass().getResource("/image/bank/Skull.png"));
-	private Image skull = b.getImage();
+	enum CarDirection{CarUp, CarDown, CarRight, CarLeft, CarNone};
+	CarDirection direction = CarDirection.CarNone;
+
+	ImageIcon a = new ImageIcon(this.getClass().getResource("/image/transportation/CarUp.png"));
+    Image CarUp = a.getImage();
+    
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/transportation/CarDown.png"));
+    Image CarDown = b.getImage();
+    
+    ImageIcon c = new ImageIcon(this.getClass().getResource("/image/transportation/CarLeft.png"));
+    Image CarLeft = c.getImage();
+    
+    ImageIcon d = new ImageIcon(this.getClass().getResource("/image/transportation/CarRight.png"));
+    Image CarRight = d.getImage();
+    
+    enum PersonDirection{PersonUp, PersonDown, PersonRight, PersonLeft, PersonNone};
+	PersonDirection Pdirection = PersonDirection.PersonNone;
+
+	ImageIcon e = new ImageIcon(this.getClass().getResource("/image/worldview/PersonUp.png"));
+    Image PersonUp = e.getImage();
+    
+    ImageIcon f = new ImageIcon(this.getClass().getResource("/image/worldview/PersonDown.png"));
+    Image PersonDown = f.getImage();
+    
+    ImageIcon g = new ImageIcon(this.getClass().getResource("/image/worldview/PersonLeft.png"));
+    Image PersonLeft = g.getImage();
+    
+    ImageIcon h = new ImageIcon(this.getClass().getResource("/image/worldview/PersonRight.png"));
+    Image PersonRight = h.getImage();
+    
+	private ImageIcon i = new ImageIcon(this.getClass().getResource("/image/bank/Skull.png"));
+	private Image skull = i.getImage();
 	int xGap = 10;
 	int yGap = 10;
 	
@@ -926,26 +956,42 @@ public class CommuterGui implements Gui {
 	//------------------------------------------Animation---------------------------------------
 	@Override
 	public void updatePosition() {
-		if (_xPos < _xDestination)
-			_xPos++;
-		else if (_xPos > _xDestination)
-			_xPos--;
+	if (_xPos < _xDestination){
+		_xPos++;
+		Pdirection = PersonDirection.PersonRight;
+	}
+	else if (_xPos > _xDestination){
+		_xPos--;
+		Pdirection = PersonDirection.PersonLeft;
+	}
 
-		if (_yPos < _yDestination)
-			_yPos++;
-		else if (_yPos > _yDestination)
-			_yPos--; 
+	if (_yPos < _yDestination){
+		_yPos++;
+		Pdirection = PersonDirection.PersonDown;
+	}
+	else if (_yPos > _yDestination){
+		_yPos--;
+		Pdirection = PersonDirection.PersonUp;
+	}
 
 		if (_commuter.hasCar()){
-			if (_xPos < _xDestination)
+			if (_xPos < _xDestination){
 				_xPos++;
-			else if (_xPos > _xDestination)
+				direction = CarDirection.CarRight;
+			}
+			else if (_xPos > _xDestination){
 				_xPos--;
+				direction = CarDirection.CarLeft;
+			}
 
-			if (_yPos < _yDestination)
+			if (_yPos < _yDestination){
 				_yPos++;
-			else if (_yPos > _yDestination)
+				direction = CarDirection.CarDown;
+			}
+			else if (_yPos > _yDestination){
 				_yPos--;
+				direction = CarDirection.CarUp;
+			}
 		}
 
 		if(_xPos == _xDestination &&  _yPos == _yDestination &&
@@ -973,12 +1019,38 @@ public class CommuterGui implements Gui {
 				return;
 			}
 			if(_commuter.hasCar()){
-				g.setColor(Color.ORANGE);
-				g.fillRect(_xPos, _yPos, 10, 10);
+				if(direction == CarDirection.CarDown){
+					g.drawImage(CarDown, _xPos, _yPos, 10, 10, null);
+				}
+				else if(direction == CarDirection.CarUp){
+					g.drawImage(CarUp, _xPos, _yPos, 10, 10, null);
+				}
+				else if(direction == CarDirection.CarRight){
+					g.drawImage(CarRight, _xPos, _yPos, 10, 10, null);
+				}
+				else if(direction == CarDirection.CarLeft){
+					g.drawImage(CarLeft, _xPos, _yPos, 10, 10, null);
+				}
+				else{
+					g.drawImage(CarDown, _xPos, _yPos, 10, 10, null);
+				}
 			}
 			else{
-				g.setColor(Color.magenta);
-				g.fillRect(_xPos, _yPos, 10, 10);
+				if(Pdirection == PersonDirection.PersonDown){
+					g.drawImage(PersonDown, _xPos, _yPos, 10, 10, null);
+				}
+				else if(Pdirection == PersonDirection.PersonUp){
+					g.drawImage(PersonUp, _xPos, _yPos, 10, 10, null);
+				}
+				else if(Pdirection == PersonDirection.PersonRight){
+					g.drawImage(PersonRight, _xPos, _yPos, 10, 10, null);
+				}
+				else if(Pdirection == PersonDirection.PersonLeft){
+					g.drawImage(PersonLeft, _xPos, _yPos, 10, 10, null);
+				}
+				else{
+					g.drawImage(PersonDown, _xPos, _yPos, 10, 10, null);
+				}
 			}
 		}
 	}
