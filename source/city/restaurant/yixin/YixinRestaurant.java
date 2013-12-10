@@ -46,7 +46,7 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	}
 
 	@Override
-	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
+	synchronized public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
 		//TODO make a new customer that is initialized with a PersonAgent of person
 		count++;
 		if (count > 10){

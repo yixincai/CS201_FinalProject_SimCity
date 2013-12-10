@@ -23,6 +23,9 @@ public class PersonAgent extends Agent implements Person
 	// Constants:
 	public static final int RICH_LEVEL = 250;
 	public static final int POOR_LEVEL = 10;
+	public static final int MONEY_LOW_LEVEL = 20;
+	public static final int MONEY_MID_LEVEL = 50;
+	public static final int MONEY_HIGH_LEVEL = 80;
 	
 	// --------------------------------------- DATA -------------------------------------------
 	// Personal data:
@@ -93,6 +96,17 @@ public class PersonAgent extends Agent implements Person
 			else {
 				return WealthState.RICH;
 			}
+		}
+		
+		// Current Money
+		boolean haveLotsOfMoney() {
+			return _money > MONEY_HIGH_LEVEL;
+		}
+		boolean haveLowMoney() {
+			return _money < MONEY_LOW_LEVEL;
+		}
+		double amountToWithdrawOrDeposit() {
+			return Math.abs(_money - MONEY_MID_LEVEL);
 		}
 		
 		// Time
@@ -543,6 +557,14 @@ public class PersonAgent extends Agent implements Person
 					}
 					if(actEatAtHome()) return true;
 				}
+			}
+			if(_state.haveLotsOfMoney())
+			{
+				actGoToBank("Deposit", _state.amountToWithdrawOrDeposit());
+			}
+			else if(_state.haveLowMoney() && _bankCustomerRole != null)
+			{
+				actGoToBank("Withdraw", _state.amountToWithdrawOrDeposit());
 			}
 			if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime() - .5) //could replace with variables for sleepTime and wakeTime
 			{
