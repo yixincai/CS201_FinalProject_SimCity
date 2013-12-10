@@ -139,7 +139,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			}
 		}
 
-		if(!restaurant.open && orders.isEmpty() && myCustomers.isEmpty()){
+		if(command == Command.Leave && orders.isEmpty() && myCustomers.isEmpty()){
 			leave();
 			return true;
 		}
