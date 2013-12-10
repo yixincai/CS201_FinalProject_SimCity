@@ -278,6 +278,8 @@ public class MainGui extends JFrame
 			_buildingInteriorAnimationPanels.add(bp4);
 		}
 		
+		WorldViewBuilding b10 = _worldView.addBuilding(-10, -10, 20, ImageAtlas.mapAtlas.get("Apartment"));
+		
 		//Initializing more apartments
 		for(int i = 1; i < 3; i++){
 			WorldViewBuilding b4 = _worldView.addBuilding(14, 3 + 2*i, 20, ImageAtlas.mapAtlas.get("Apartment"));
