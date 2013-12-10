@@ -156,6 +156,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 		state = AgentState.Paid;
 		System.out.println(this.name + " paid");
 		this.change = change;
+		_person.cmdChangeMoney(change);
 		stateChanged();
 	}
 	
@@ -326,6 +327,7 @@ public class OmarCustomerRole extends RestaurantCustomerRole {
 	}
 	private void payCheck(){
 		money -= check;
+		_person.cmdChangeMoney(-check);
 		event = AgentEvent.AwaitingDecision;
 		
 		customerGui.DoGoToCashier();
