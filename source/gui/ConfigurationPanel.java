@@ -178,6 +178,7 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("BankHost2", 150, "Bank Host", true, "apartment");
 			//yixin restaurant
 			cPanel.addPerson("YixinHost", 300, "YixinRestaurant Host", true, "apartment");
+			//TODO market fail to deliver to restaurant comment the next line and add cashier later
 			cPanel.addPerson("YixinCashier", 300, "YixinRestaurant Cashier", true, "apartment");
 			cPanel.addPerson("YixinCook", 50, "YixinRestaurant Cook", true, "apartment");
 			cPanel.addPerson("YixinSharedDataWaiter", 150, "YixinRestaurant SharedDataWaiter", true, "apartment");

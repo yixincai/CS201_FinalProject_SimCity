@@ -38,6 +38,7 @@ public class PersonAgent extends Agent implements Person
 	private boolean _weekday_notWeekend;
 	private HomeOccupantRole _homeOccupantRole;
 	private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house (now, just pays rent on apartment)
+	private BankCustomerRole _bankCustomerRole = null;
 	
 	// Commands for scenarios
 	private List<String> _actionsToDo = new ArrayList<String>();
@@ -84,10 +85,10 @@ public class PersonAgent extends Agent implements Person
 		/** Get the current wealth state, based on money and occupation status. */
 		WealthState wealth()
 		{
-			if(_money < POOR_LEVEL) {
+			if(totalMoney() < POOR_LEVEL) {
 				return (_occupation != null) ? WealthState.BROKE : WealthState.POOR;
 			}
-			else if(_money < RICH_LEVEL) {
+			else if(totalMoney() < RICH_LEVEL) {
 				return WealthState.NORMAL;
 			}
 			else {
@@ -345,6 +346,9 @@ public class PersonAgent extends Agent implements Person
 	// ------------------------------------------- PROPERTIES --------------------------------------------------
 	public String name() { return _name; }
 	public double money() { return _money; }
+	public double bankAccountFunds() { return _bankCustomerRole != null ? _bankCustomerRole.accountFunds() : 0.0; }
+	public double bankAmountOwed() { return _bankCustomerRole != null ? _bankCustomerRole.amountOwed() : 0.0; }
+	public double totalMoney() { return _money + bankAccountFunds() + bankAmountOwed(); }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
 	public void setWorkDays(boolean weekday_notWeekend) {
 		_weekday_notWeekend = weekday_notWeekend;
@@ -490,7 +494,10 @@ public class PersonAgent extends Agent implements Person
 				else if(nextAction.contains("Bank"))
 				{
 					if(nextAction.contains("Withdraw")) {
-						//TODO
+						if(actGoToBank("Withdraw", 20)) return true;
+					}
+					else if(nextAction.contains("Deposit")) {
+						if(actGoToBank("Deposit", 20)) return true;
 					}
 				}
 				else if(nextAction.contains("Market"))
@@ -621,6 +628,36 @@ public class PersonAgent extends Agent implements Person
 			return true;
 		}
 		return false;
+	}
+	
+	
+	
+	// ------------------- Bank ---------------------
+	private boolean actGoToBank(String request, double amount)
+	{
+		// If _bankCustomerRole is nonexistant, try to generate a new role.
+		if(_bankCustomerRole == null)
+		{
+			if(!getNewBankCustomerRole()) {
+				return false;
+			}
+		}
+		// note: _bankCustomerRole will not be null here.
+		
+		_bankCustomerRole.cmdRequest(request, amount);
+		setNextRole(_bankCustomerRole);
+		return true;
+	}
+	private boolean getNewBankCustomerRole()
+	{
+		List<Bank> banks = Directory.banks();
+		if(!banks.isEmpty()) {
+			_bankCustomerRole = banks.get(new Random().nextInt(banks.size())).generateCustomerRole(this);
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	
