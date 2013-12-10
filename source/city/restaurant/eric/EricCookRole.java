@@ -21,6 +21,10 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 {
 	// --------------------------------------- DATA ------------------------------------------------
 	
+	// Constants:
+	/** Number of seconds to wait before checking revolving stand. */
+	private static final int CHECK_REVOLVING_STAND_INTERVAL = 5;
+	
 	// Correspondence:
 	// use Order.waiter for waiter correspondence.
 	private EricCashier _cashier;
@@ -76,6 +80,9 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	private List<MyMarket> _markets = Collections.synchronizedList(new ArrayList<MyMarket>());
 	private int _lastMarketUsed = -1; // starts at -1 so that when we increment it before first using, it will be zero
 	private boolean _awaitingMarketResponse = false; // indicates whether an order to a market is pending the market's response (to say what's coming and what's not coming in the order)
+	
+	// Utility:
+	private Timer _schedulerTimer = new Timer();
 	
 	
 	
@@ -175,7 +182,8 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	// ----------------------------------------- SCHEDULER -------------------------------------------------
 	public boolean pickAndExecuteAnAction()
 	{
-		//if(RevolvingStand().) //TODO implement revolving stand
+		if(actCheckRevolvingStand()) return true;
+		
 		synchronized(_orders) {
 			for(Order o : _orders) {
 				if(o.state == OrderState.PENDING) {
@@ -202,12 +210,29 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 				}
 			}
 		}
+		
+		// Set timer to call stateChanged and check revolving stand again, every CHECK_REVOLVING_STAND_INTERVAL number of seconds.
+		_schedulerTimer.schedule(new TimerTask() { public void run() { stateChanged(); } }, CHECK_REVOLVING_STAND_INTERVAL * 1000);
+		
 		return false;
 	}
 	
 	
 	
 	// ------------------------------------------ ACTIONS --------------------------------------------------
+	
+	private boolean actCheckRevolvingStand()
+	{
+		//_gui.doGoToRevolvingStand();
+		//waitForGuiToReachDestination();
+		
+		EricRevolvingStand.Order o = revolvingStand().remove();
+		if(o != null) {
+			this.msgHereIsOrder(o.waiter, o.choice, o.table);
+			return true;
+		}
+		return false;
+	}
 	
 	void actCookIfAvailable(final Order o)
 	{
