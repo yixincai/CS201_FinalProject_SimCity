@@ -20,7 +20,7 @@ public class CommuterGui implements Gui {
 
 
 	int _xPos, _yPos;
-	int _currentBlockX = 0, _currentBlockY = 0;//TODO set the block positions used by cars
+	int _currentBlockX = 0, _currentBlockY = 0;
 	int _destinationBlockX, _destinationBlockY; 
 	List<Integer> route = new ArrayList<Integer>();
 	List<Integer> intersections = new ArrayList<Integer>();
@@ -49,6 +49,8 @@ public class CommuterGui implements Gui {
 	//----------------------------------Constructor & Setters & Getters----------------------------------
 	public CommuterGui(CommuterRole commuter, Place initialPlace) {
 		// Note: placeX and placeY can safely receive values of null
+		_currentBlockX = getBlockX(placeX(initialPlace));
+		_currentBlockY = getBlockY(placeY(initialPlace));		
 		Lane lane;
 		if (commuter._person.money()>=200)
 			lane = Directory.lanes().get(_currentBlockX + 3 * _currentBlockY);
