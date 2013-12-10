@@ -13,6 +13,7 @@ import city.Place;
 import city.market.Item;
 import city.market.Market;
 import city.restaurant.RestaurantCashierRole;
+import city.restaurant.omar.gui.OmarCashierGui;
 import city.restaurant.yixin.YixinRestaurant;
 
 public class OmarCashierRole extends RestaurantCashierRole {
@@ -23,6 +24,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 		//Data
 		public double cashierFunds;
 		private OmarRestaurant restaurant;
+		private OmarCashierGui gui;
 		public class MyCustomer { //similar to mycustomer in waiter
 			OmarWaiterRole waiter;
 			OmarCustomerRole customer;
@@ -84,8 +86,10 @@ public class OmarCashierRole extends RestaurantCashierRole {
 //
 		public OmarCashierRole(PersonAgent p, OmarRestaurant r) {
 			super(p);
-			command = Command.None;
 			this.restaurant = r;
+			gui = new OmarCashierGui(this);
+			restaurant.animationPanel().addGui(gui);
+			command = Command.None;
 			cashierFunds = 10000;
 			menu = new Menu();
 			foodPrices = new Hashtable<String, Double>();
