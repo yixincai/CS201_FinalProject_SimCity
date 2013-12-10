@@ -338,14 +338,13 @@ public class PersonAgent extends Agent implements Person
 	public double bankAmountOwed() { return _bankCustomerRole != null ? _bankCustomerRole.amountOwed() : 0.0; }
 	public double totalMoney() { return _money + bankAccountFunds() + bankAmountOwed(); }
 	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
-	public void setWorkDays(boolean weekday_notWeekend) {
-		_weekday_notWeekend = weekday_notWeekend;
-	}
+	public void setWorkDays(boolean weekday_notWeekend) { _weekday_notWeekend = weekday_notWeekend; }
 	public Role currentRole() { return _currentRole; }
 	public String occupationTypeToString() { return (_occupation != null) ? _occupation.typeToString() : "None"; }
 	public String nextRoleTypeToString() { return (_nextRole != null && _nextRole != _currentRole) ? _nextRole.typeToString() : "None"; }
 	public HomeOccupantRole homeOccupantRole() { return _homeOccupantRole; }
 	public CommuterRole commuterRole() { return _commuterRole; }
+	
 	// Actions to do:
 	/** Adds an action to do to the back of the list of actions to do */
 	public void addActionToDo(String actionToDo) { _actionsToDo.add(actionToDo); stateChanged(); }
@@ -387,7 +386,7 @@ public class PersonAgent extends Agent implements Person
 				if(!_actionsToDo.isEmpty())
 				{
 					if(_currentRole == _homeOccupantRole) {
-						_currentRole.cmdFinishAndLeave();
+						finishAndLeaveCurrentRole();
 					}
 				}
 				// Finish current role because you have to get to work:
