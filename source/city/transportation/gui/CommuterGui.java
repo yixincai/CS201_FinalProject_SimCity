@@ -2,8 +2,11 @@ package city.transportation.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import javax.swing.ImageIcon;
 
 import gui.*;
 import gui.astar.*;
@@ -37,6 +40,11 @@ public class CommuterGui implements Gui {
 	CommuterRole _commuter;
 	public boolean dead = false;
 	private Semaphore deathSem = new Semaphore(0, true);
+	
+	private ImageIcon b = new ImageIcon(this.getClass().getResource("/image/bank/Skull.png"));
+	private Image skull = b.getImage();
+	int xGap = 10;
+	int yGap = 10;
 	
 	//----------------------------------Constructor & Setters & Getters----------------------------------
 	public CommuterGui(CommuterRole commuter, Place initialPlace) {
@@ -943,8 +951,7 @@ public class CommuterGui implements Gui {
 	public void draw(Graphics2D g) {
 		if(isPresent){
 			if (dead){
-				g.setColor(Color.red);
-				g.fillRect(_xPos, _yPos, 10, 10);
+				g.drawImage(skull,_xPos,_yPos, xGap, yGap, null);
 				return;
 			}
 			if(_commuter.hasCar()){
