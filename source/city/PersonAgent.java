@@ -29,7 +29,7 @@ public class PersonAgent extends Agent implements Person
 	private String _name;
 	
 	// Role data:
-	private List<Role> _roles = new ArrayList<Role>(); // these are roles that you have had do when you're at a place e.g. EricCustomerRole, MarketCustomerRole
+	private List<Role> _customerRoles = new ArrayList<Role>(); // these are the customer roles that are dormant e.g. EricCustomerRole, MarketCustomerRole
 	private Role _currentRole; // this should never be null
 	private boolean _sentCmdFinishAndLeave = false;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
@@ -623,9 +623,9 @@ public class PersonAgent extends Agent implements Person
 	// ----------------- Market -----------------
 	private boolean actBuyMealsFromMarket(int meals)
 	{
-		// Search for a MarketCustomerRole in _roles, use that;
-		// if no MarketCustomerRole in _roles, choose a Market from the Directory, and get a new MarketCustomerRole from it
-		for(Role r : _roles)
+		// Search for a MarketCustomerRole in _customerRoles, use that;
+		// if no MarketCustomerRole in _customerRoles, choose a Market from the Directory, and get a new MarketCustomerRole from it
+		for(Role r : _customerRoles)
 		{
 			if(r instanceof MarketCustomerRole)
 			{
@@ -635,14 +635,14 @@ public class PersonAgent extends Agent implements Person
 				return true;
 			}
 		}
-		// note: we only get here if no MarketCustomerRole was found in _roles
+		// note: we only get here if no MarketCustomerRole was found in _customerRoles
 		List<Market> markets = Directory.markets();
 		for(Market m : markets)
 		{
 			MarketCustomerRole mcr = m.generateCustomerRole(this);
 			mcr.cmdBuyFood(meals);
 			setNextRole(mcr);
-			_roles.add(mcr);
+			_customerRoles.add(mcr);
 			return true;
 		}
 		return false;
@@ -681,7 +681,7 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	// ----------------- Restaurant -----------------
-	/** If a RestaurantCustomerRole exists in _roles, set that to the next role.  Else, get a new customer role from a randomly chosen restaurant */
+	/** If a RestaurantCustomerRole exists in _customerRoles, set that to the next role.  Else, get a new customer role from a randomly chosen restaurant */
 	private boolean actGoToAnyRestaurant()
 	{
 		RestaurantCustomerRole rcr = (RestaurantCustomerRole)getRoleOfType(RestaurantCustomerRole.class);
@@ -692,21 +692,21 @@ public class PersonAgent extends Agent implements Person
 			return true;
 		}
 		
-		// note: we only get here if no RestaurantCustomerRole was found in _roles
+		// note: we only get here if no RestaurantCustomerRole was found in _customerRoles
 		List<Restaurant> restaurants = Directory.restaurants();
 		if(restaurants.size() != 0)
 		{
 			rcr = restaurants.get(new Random().nextInt(restaurants.size())).generateCustomerRole(this);
 			rcr.cmdGotHungry();
 			setNextRole(rcr);
-			_roles.add(rcr);
+			_customerRoles.add(rcr);
 			return true;
 		}
 		
 		return false;
 	}
 	/**
-	 * Searches for a RestaurantCustomerRole of the correct type in _roles and then in Directory.restaurants() and calls setNextRole on it
+	 * Searches for a RestaurantCustomerRole of the correct type in _customerRoles and then in Directory.restaurants() and calls setNextRole on it
 	 * @param type "Eric", "Omar", "Ryan", or "Yixin".  Case-sensitive and must match exactly.
 	 * @return true if a restaurant of the passed-in type was chosen and setNextRole was called
 	 */
@@ -719,21 +719,21 @@ public class PersonAgent extends Agent implements Person
 			rcr = (RestaurantCustomerRole)getRoleOfType(EricCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(EricRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
+				if(rcr != null) _customerRoles.add(rcr);
 			}
 			break;
 		case "Omar":
 			rcr = (RestaurantCustomerRole)getRoleOfType(OmarCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(OmarRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
+				if(rcr != null) _customerRoles.add(rcr);
 			}
 			break;
 		case "Ryan":
 			rcr = (RestaurantCustomerRole)getRoleOfType(RyanCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(RyanRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
+				if(rcr != null) _customerRoles.add(rcr);
 			}
 			break;
 		//case "Tanner":
@@ -741,14 +741,14 @@ public class PersonAgent extends Agent implements Person
 		//	if(rcr == null)
 		//	{
 		//		rcr = getNewCustomerRoleFromRestaurantOfType(TannerRestaurant.class);
-		//		if(rcr != null) _roles.add(rcr);
+		//		if(rcr != null) _customerRoles.add(rcr);
 		//	}
 		//	break;
 		case "Yixin":
 			rcr = (RestaurantCustomerRole)getRoleOfType(YixinCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(YixinRestaurant.class);
-				if(rcr != null) _roles.add(rcr);
+				if(rcr != null) _customerRoles.add(rcr);
 			}
 			break;
 		}
@@ -814,14 +814,14 @@ public class PersonAgent extends Agent implements Person
 	}
 	private Role getRoleOfType(Type type)
 	{
-		for(Role r : _roles)
+		for(Role r : _customerRoles)
 		{
 			if(r.getClass().equals(type)) return r;
 		}
 		return null;
 	}
 	/** This method returns a new customer role from the restaurant type specified.
-	 * It does not take into account whether or not the restaurant's customer role already exists in _roles.
+	 * It does not take into account whether or not the restaurant's customer role already exists in _customerRoles.
 	 */
 	private RestaurantCustomerRole getNewCustomerRoleFromRestaurantOfType(Type type)
 	{
