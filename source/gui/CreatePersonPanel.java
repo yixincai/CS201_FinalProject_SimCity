@@ -7,7 +7,6 @@ package gui;
  */
 
 import java.awt.Dimension;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
@@ -25,8 +24,10 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import city.PersonAgent;
 
+@SuppressWarnings("serial")
 public class CreatePersonPanel extends JPanel implements ActionListener, ChangeListener
 {
 	String[] occupations = {"None", "Waiter", "Restaurant Cashier", "Cook", "Restaurant Host", 

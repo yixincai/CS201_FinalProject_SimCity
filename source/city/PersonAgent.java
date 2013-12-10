@@ -53,7 +53,7 @@ public class PersonAgent extends Agent implements Person
 	private List<String> _actionsToDo = new ArrayList<String>();
 	
 	// State data:
-	private double _money; //TODO change to private and change appropriate other values
+	private double _money;
 	enum WealthState { RICH, NORMAL, BROKE, POOR }
 	enum NourishmentState { HUNGRY, NORMAL, FULL }
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
@@ -394,10 +394,7 @@ public class PersonAgent extends Agent implements Person
 	
 	// ------------------------------------------------ COMMANDS -----------------------------------------------------------
 	public void cmdChangeMoney(double delta) { _money += delta; _personInfoPanel.refreshInfo(this); }
-	public void cmdNoLongerHungry()
-	{
-		_state.nourishmentLevel += NOURISHMENT_PER_MEAL;
-	}
+	public void cmdNoLongerHungry() { _state.nourishmentLevel += NOURISHMENT_PER_MEAL; }
 	
 	
 	
