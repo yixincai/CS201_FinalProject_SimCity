@@ -80,16 +80,19 @@ public class RyanHostRole extends Role {
 	}
 	
 	public void msgIWantFood(RyanCustomerRole cust) {
-		waitingCustomers.add(new MyCustomer(cust));
-		stateChanged();
+		synchronized(waitingCustomers){
+			waitingCustomers.add(new MyCustomer(cust));
+			stateChanged();
+		}
 	}
 	
 	public void msgImHere(RyanCustomerRole cust){
-		for(MyCustomer customer: waitingCustomers){
-			if(customer.customer == cust){
-				customer.cState = customerState.seated;
+		synchronized(waitingCustomers){
+			for(MyCustomer customer: waitingCustomers){
+				if(customer.customer == cust){
+					customer.cState = customerState.seated;
+				}	
 			}
-			
 		}
 	}
 

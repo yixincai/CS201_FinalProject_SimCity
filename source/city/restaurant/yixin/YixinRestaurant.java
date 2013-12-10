@@ -124,5 +124,12 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 	public void clearInventory() {
 		cook.clearInventory();
 	}
+	
+	public boolean isOpen(){
+		if (getCashier().active && getHost().active && getCook().active && Waiters.size()!=0)
+			return true;
+		else
+			return false;
+	}
 
 }

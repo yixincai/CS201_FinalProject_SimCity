@@ -109,4 +109,11 @@ public class Market extends Place implements PlaceWithAnimation {
 	public void setTruck(TruckAgent truck){
 		this.truck = truck;
 	}
+	
+	public boolean isOpen(){
+		if (MarketCashier.active && MarketEmployee.active)
+			return true;
+		else
+			return false;
+	}
 }
