@@ -37,6 +37,9 @@ public class TruckAgentGui implements Gui{
 	private Semaphore _delayForMoving = new Semaphore(0, true);
 	List<Restaurant> restaurants;
 	private int parkingSpot = 3;
+	
+	enum TruckDirection{BusUp, BusDown, BusRight, BusLeft, BusNone};
+	TruckDirection direction = TruckDirection.BusNone;
 
 	public TruckAgentGui(TruckAgent truck, Market market){
 		_market = market;
