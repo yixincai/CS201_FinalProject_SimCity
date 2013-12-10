@@ -381,6 +381,7 @@ public class RyanCustomerRole extends RestaurantCustomerRole {
 		print(AlertTag.RYAN_RESTAURANT,"Paying Cashier");
 		cashier = (RyanCashierRole)_restaurant.getCashier();
 		money -= payment;
+		_person.cmdChangeMoney(-payment);
 		cashier.msgHeresMoney(this, payment);
 		payment = 0;
 	}
