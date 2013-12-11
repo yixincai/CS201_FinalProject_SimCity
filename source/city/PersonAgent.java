@@ -47,7 +47,7 @@ public class PersonAgent extends Agent implements Person
 	private boolean _sentCmdFinishAndLeave = false;
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
 	private CommuterRole _commuterRole;
-	private Role _occupation = null;
+	public Role _occupation = null;
 	private boolean _weekday_notWeekend;
 	private HomeOccupantRole _homeOccupantRole;
 	// private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house (now, just pays rent on apartment)
