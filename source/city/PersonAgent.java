@@ -171,6 +171,8 @@ public class PersonAgent extends Agent implements Person
 	{
 		_name = name; 
 		_money = money;
+		a = new ImageIcon(ImageAtlas.mapAtlas.get("MPerson"));
+		b = new ImageIcon(ImageAtlas.mapAtlas.get("FPerson"));
 		_personInfoPanel = personInfoPanel;
 		setWorkDays(weekday_notWeekend);
 		acquireOccupation(occupationType);
