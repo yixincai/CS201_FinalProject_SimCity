@@ -40,7 +40,7 @@ public class CashierTest extends TestCase
 		price_list.put("Salad", 3.0);
 		price_list.put("Pizza", 4.0);
 		Bank b = new Bank();
-		Directory.addPlace(b);
+		Directory.addBank(b);
 	}
 	/**
 	 * This tests the cashier under very simple terms: one customer is ready to pay the exact bill.

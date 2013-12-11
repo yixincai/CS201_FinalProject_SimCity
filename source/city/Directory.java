@@ -27,6 +27,12 @@ public class Directory {
 	private static ArrayList<Semaphore> intersections = new ArrayList<Semaphore>();
 	//Bus Fare (initialize in constructor?)
 	private static double _busFare = 2;
+	private static List<BusStopObject> _busStops = new ArrayList<BusStopObject>();
+	private static List<Market> _markets = new ArrayList<Market>();
+	private static List<Bank> _banks = new ArrayList<Bank>();
+	private static List<Restaurant> _restaurants = new ArrayList<Restaurant>();
+	private static List<House> _houses = new ArrayList<House>();
+	private static List<ApartmentBuilding> _apartmentBuildings = new ArrayList<ApartmentBuilding>();
 	
 	public static final double OPENING_TIME = 8;
 	public static final double CLOSING_TIME = 16;
@@ -65,112 +71,104 @@ public class Directory {
 	/** Returns a new list of all places */
 	public static List<Place> places()
 	{
-		List<Place> newList = new ArrayList<Place>();
 		synchronized(_places)
 		{
-			for(Place p : _places)
-			{
-				newList.add(p);
-			}
+			return new ArrayList<Place>(_places);
 		}
-		return newList;
 	}
 	/** Returns a new list of places that are markets */
 	public static List<Market> markets()
 	{
-		List<Market> newList = new ArrayList<Market>();
-		synchronized(_places)
+		synchronized(_markets)
 		{
-			for(Place p : _places)
-			{
-				if(p instanceof Market) newList.add((Market)p);
-			}
+			return new ArrayList<Market>(_markets);
 		}
-		return newList;
 	}
 	/** Returns a new list of places that are restaurants */
 	public static List<Restaurant> restaurants()
 	{
-		List<Restaurant> newList = new ArrayList<Restaurant>();
-		synchronized(_places)
+		synchronized(_restaurants)
 		{
-			for(Place p : _places)
-			{
-				if(p instanceof Restaurant) newList.add((Restaurant)p);
-			}
+			return new ArrayList<Restaurant>(_restaurants);
 		}
-		return newList;
 	}
 	/** Returns a new list of places that are banks */
 	public static List<Bank> banks()
 	{
-		List<Bank> newList = new ArrayList<Bank>();
-		synchronized(_places)
+		synchronized(_banks)
 		{
-			for(Place p : _places)
-			{
-				if(p instanceof Bank) newList.add((Bank)p);
-			}
+			return new ArrayList<Bank>(_banks);
 		}
-		return newList;
 	}
 	/** Returns a new list of places that are apartment buildings */
 	public static List<ApartmentBuilding> apartmentBuildings()
 	{
-		List<ApartmentBuilding> newList = new ArrayList<ApartmentBuilding>();
-		synchronized(_places)
+		synchronized(_apartmentBuildings)
 		{
-			for(Place p : _places)
-			{
-				if(p instanceof ApartmentBuilding) newList.add((ApartmentBuilding)p);
-			}
+			return new ArrayList<ApartmentBuilding>(_apartmentBuildings);
 		}
-		return newList;
 	}
 	/** Returns a new list of places that are houses */
 	public static List<House> houses()
 	{
-		List<House> newList = new ArrayList<House>();
-		synchronized(_places)
+		synchronized(_houses)
 		{
-			for(Place p : _places)
-			{
-				if(p instanceof House) newList.add((House)p);
-			}
+			return new ArrayList<House>(_houses);
 		}
-		return newList;
 	}
 	public static List<BusStopObject> busStops()
 	{
-		List<BusStopObject> busstoplist = new ArrayList<BusStopObject>();
-		synchronized(_places)
+		synchronized(_busStops)
 		{
-			for(Place p : _places)
-			{
-				if(p instanceof BusStopObject) busstoplist.add((BusStopObject)p);
-			}
+			return new ArrayList<BusStopObject>(_busStops);
 		}
-		return busstoplist;
 	}
 	/** Returns a new list of every person */
 	public static List<PersonAgent> personAgents()
 	{
-		List<PersonAgent> newList = new ArrayList<PersonAgent>();
 		synchronized(_personAgents)
 		{
-			for(PersonAgent p : _personAgents)
-			{
-				newList.add(p);
-			}
+			return new ArrayList<PersonAgent>(_personAgents);
 		}
-		return newList;
 	}
 	
 	
 	
-	public static void addPlace(Place place)
+	// This is how we used to do it.
+	//	public static void addPlace(Place place)
+	//	{
+	//		_places.add(place);
+	//	}
+	
+	public static void addBusStop(BusStopObject busStop)
 	{
-		_places.add(place);
+		_busStops.add(busStop);
+		_places.add(busStop);
+	}
+	public static void addMarket(Market market)
+	{
+		_markets.add(market);
+		_places.add(market);
+	}
+	public static void addBank(Bank bank)
+	{
+		_banks.add(bank);
+		_places.add(bank);
+	}
+	public static void addRestaurant(Restaurant restaurant)
+	{
+		_restaurants.add(restaurant);
+		_places.add(restaurant);
+	}
+	public static void addHouse(House house)
+	{
+		_houses.add(house);
+		_places.add(house);
+	}
+	public static void addApartmentBuilding(ApartmentBuilding apartmentBuilding)
+	{
+		_apartmentBuildings.add(apartmentBuilding);
+		_places.add(apartmentBuilding);
 	}
 	
 	public static void addPerson(PersonAgent personAgent)
