@@ -152,7 +152,38 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			{
 				descriptionText.setText(config5Description);
 			}
-
+			else if(configBox.getSelectedIndex() == 5)
+			{
+				descriptionText.setText(config6Description);
+			}
+			else if(configBox.getSelectedIndex() == 5)
+			{
+				descriptionText.setText(config6Description);
+			}
+			else if(configBox.getSelectedIndex() == 6)
+			{
+				descriptionText.setText(config7Description);
+			}
+			else if(configBox.getSelectedIndex() == 7)
+			{
+				descriptionText.setText(config8Description);
+			}
+			else if(configBox.getSelectedIndex() == 8)
+			{
+				descriptionText.setText(config9Description);
+			}
+			else if(configBox.getSelectedIndex() == 9)
+			{
+				descriptionText.setText(config10Description);
+			}
+			else if(configBox.getSelectedIndex() == 10)
+			{
+				descriptionText.setText(config11Description);
+			}
+			else if(configBox.getSelectedIndex() == 11)
+			{
+				descriptionText.setText(config12Description);
+			}
 		}
 
 		if(e.getSource() == startButton)
