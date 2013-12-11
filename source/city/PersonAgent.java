@@ -90,6 +90,7 @@ public class PersonAgent extends Agent implements Person
 			else {
 				nourishmentLevel = 0;
 			}
+			stateChanged();
 			nourishmentTimer.schedule(new TimerTask() { public void run() { hourlyHungerChange(); }}, Time.getRealTime(1));
 		}
 		
@@ -133,9 +134,6 @@ public class PersonAgent extends Agent implements Person
 	
 	// Notify when refreshing info:
 	private PersonInfoRefreshable _personInfoPanel;
-	
-	// Utility data:
-	Timer schedulerTimer = new Timer();
 	
 	//Images
     ImageIcon a = new ImageIcon(ImageAtlas.mapAtlas.get("MPerson"));
@@ -692,16 +690,11 @@ public class PersonAgent extends Agent implements Person
 			return true;
 		}
 		
-		// note: The thread will get to this point if a role is active and its scheduler returned false. If the current role is inactive, 
+		// note: The thread will get to this point if a role is active and its scheduler returned false.
+		// If the current role is inactive, we cannot get here.
 		
-		//check for and do non-important actions, like check your phone
+		// note: Here is where we would check for and do non-important actions, like check your phone, before returning false
 		
-		// (Peanut gallery)
-		if(_name.contains("Wilczynski")) { actTellLongStory(); }
-		else if(_name.contains("iWhale")) { actIWhale(); }
-		
-		// Set a timer so that the scheduler will get called again.
-		schedulerTimer.schedule(new TimerTask() { public void run() { stateChanged(); } }, Time.getRealTime(0.3));
 		return false;
 	}
 	
