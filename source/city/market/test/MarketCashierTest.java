@@ -128,7 +128,7 @@ public class MarketCashierTest  extends TestCase {
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 		assertEquals("Cashier should have 0 customer bill after the sceduler has been run. It doesn't.",cashier.customers.size(), 0);
 		
-		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
+		assertFalse("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 		
 		assertFalse("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 	}
