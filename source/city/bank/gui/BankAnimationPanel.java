@@ -57,6 +57,11 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 	    int yBDGap = 63;
 	    static int BDesk = 3;
 	    
+	    ImageIcon f = new ImageIcon(this.getClass().getResource("/image/bank/DogHouse.png"));
+	    Image DogHouse = f.getImage();
+	    int xDHouse = 25;
+	    int yDHouse = 25;
+	    
 	    
 	    
 	    public BankAnimationPanel()
@@ -93,6 +98,8 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 	        for(int i = 1; i <=BDesk; i++){
 	        	g2.drawImage(Bdesk, xDeskPlace+(150*i), 260, xBDGap, yBDGap, this);
 	        }
+	        
+	        g2.drawImage(DogHouse, 90, 10, xHDGap, yHDGap, this);
 
 	        //Here is the table
 
@@ -103,6 +110,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 	        }
 	        
 	        g2.drawImage(hdesk, HDeskPlace.width, HDeskPlace.height, xHDGap, yHDGap, this);
+	        
 	    }
 	    
 	    public void addGui(BankCustomerRoleGui gui) {

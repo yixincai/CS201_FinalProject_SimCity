@@ -20,7 +20,7 @@ import city.restaurant.eric.interfaces.EricWaiter;
 
 public class EricRestaurant extends Restaurant {
 	
-	private List<EricWaiter> _waiters = new ArrayList<EricWaiter>();
+	private List<EricWaiterRole> _waiters = new ArrayList<EricWaiterRole>();
 	private int _businessAccountNumber = -1;
 	private EricAnimationPanel _animationPanel;
 	private EricHostRole _host;
@@ -123,6 +123,14 @@ public class EricRestaurant extends Restaurant {
 		EricHostGui gui = new EricHostGui((EricHostRole)_host);
 		((EricHostRole)_host).setGui(gui);
 		animationPanel().addGui(gui);
+	}
+	@Override
+	protected void cmdTimeToClose() {
+		getHost().cmdFinishAndLeave();
+		getCook().cmdFinishAndLeave();
+		getCashier().cmdFinishAndLeave();
+		for(EricWaiterRole waiter : _waiters)
+			waiter.cmdFinishAndLeave();
 	}
 
 }

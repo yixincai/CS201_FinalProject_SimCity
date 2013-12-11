@@ -6,8 +6,9 @@ import gui.WorldViewBuilding;
 import agent.Role;
 import city.PersonAgent;
 import city.Place;
+import city.Workplace;
 
-public abstract class Restaurant extends Place {
+public abstract class Restaurant extends Workplace {
 
 	public Restaurant(String name) {
 		super(name, null);

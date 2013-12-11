@@ -1,5 +1,7 @@
 package city.home.test.mock;
 
+import java.awt.Image;
+
 import city.home.HomeOccupantRole;
 import city.interfaces.Person;
 
@@ -31,4 +33,9 @@ public class PersonMock implements Person {
 		
 	}
 	public void stateChanged() { stateChangedCalled = true; }
+	@Override
+	public Image getImage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -177,4 +177,10 @@ public class TannerRestaurant extends Restaurant
 	public boolean existActiveWaiter() {
 		return false;
 	}
+
+	@Override
+	protected void cmdTimeToClose() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -1,6 +1,10 @@
 package agent;
 
+import java.awt.Image;
+import java.util.Random;
 import java.util.concurrent.*;
+
+import javax.swing.ImageIcon;
 
 import utilities.EventLog;
 import utilities.LoggedEvent;
@@ -21,7 +25,7 @@ public abstract class Agent
     // TEST
     public EventLog log = new EventLog();
 
-    protected Agent() { }
+    protected Agent() {  }
 
     /**
      * Wakes up the scheduler.
@@ -178,4 +182,5 @@ public abstract class Agent
             this.interrupt();
         }
     }
+    
 }

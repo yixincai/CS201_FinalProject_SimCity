@@ -33,7 +33,7 @@ public class OmarCookRole extends RestaurantCookRole {
 	public Semaphore cookSem = new Semaphore(0, true);
 
 	enum Command {None, Leave};
-	Command command;
+	Command command = Command.None;
 	enum MarketStatus {available, ordering, waiting, paying, paid, gone};
 	enum CheckState{notChecked,Checked};
 	CheckState check_state = CheckState.notChecked;	
@@ -144,7 +144,7 @@ public class OmarCookRole extends RestaurantCookRole {
 				}
 			}
 		}	
-		if(orders.isEmpty() && command == Command.Leave){
+		if(orders.isEmpty() && command == Command.Leave && restaurant.getNumberOfCustomers() == 0){
 			leaveRestaurant();
 		}
 
@@ -313,6 +313,7 @@ public class OmarCookRole extends RestaurantCookRole {
 	}
 
 	private void leaveRestaurant(){
+		command = Command.None;
 		active = false;
 		stateChanged();
 	}

@@ -42,7 +42,7 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public static final int FRIDGEX2 = 370;
     public static final int FRIDGEY2 = 7;
     public static final int TVX2 = 500;
-    public static final int TVY2 = 90;
+    public static final int TVY2 = 80;
     public static final int FRONTDOORX2 = 500;
     public static final int FRONTDOORY2 = -20;
     public static final int ITEMX2 = 480;
@@ -70,7 +70,7 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public static final int FRIDGEX4 = 290;
     public static final int FRIDGEY4 = 7;
     public static final int TVX4 = 170;
-    public static final int TVY4 = 90;
+    public static final int TVY4 = 80;
     public static final int FRONTDOORX4 = 170;
     public static final int FRONTDOORY4 = -20;
     public static final int ITEMX4 = 150;

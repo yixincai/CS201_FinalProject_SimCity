@@ -10,6 +10,7 @@ import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
 import city.Place;
+import city.restaurant.ryan.RyanCookRole.RoleState;
 import city.restaurant.ryan.gui.RyanHostGui;
 import city.restaurant.yixin.YixinRestaurant;
 /**
@@ -32,6 +33,8 @@ public class RyanHostRole extends Role {
 	public List<MyWaiter> waiters = new ArrayList<MyWaiter>();
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
+	enum RoleState{WantToLeave,none}
+	RoleState roleState = RoleState.none;
 	
 	enum waiterState{working, askbreak, deciding, onbreak, offbreak};
 	enum customerState{here, sitting, seated, served};
@@ -91,6 +94,7 @@ public class RyanHostRole extends Role {
 			for(MyCustomer customer: waitingCustomers){
 				if(customer.customer == cust){
 					customer.cState = customerState.seated;
+					stateChanged();
 				}	
 			}
 		}
@@ -110,6 +114,7 @@ public class RyanHostRole extends Role {
 		for(Seat seat: seats){
 			if(seat.seatNumber == seatNumber){
 				seat.occupied = false;
+				stateChanged();
 			}
 		}
 	}
@@ -123,6 +128,7 @@ public class RyanHostRole extends Role {
 	public void msgGone(RyanCustomerRole customer){
 		synchronized(waitingCustomers){
 			waitingCustomers.remove(customer);
+			stateChanged();
 		}
 	}
 
@@ -193,7 +199,9 @@ public class RyanHostRole extends Role {
 			}
 		}
 		
-		if(!waitingCustomers.isEmpty()){ //continues running if there are customers still in the queue
+		if (waitingCustomers.isEmpty() && _restaurant.getNumberOfCustomers() == 0){
+			roleState = RoleState.none;
+			active = false;
 			return true;
 		}
 
@@ -477,8 +485,8 @@ public class RyanHostRole extends Role {
 	}
 	@Override
 	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-		
+		roleState = RoleState.WantToLeave;
+		stateChanged();
 	}
 	
 }

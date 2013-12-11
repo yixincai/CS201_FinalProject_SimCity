@@ -19,8 +19,8 @@ public class YixinCustomerGui extends JPanel implements Gui{
 	private Command command=Command.noCommand;
 	private int count = 0;
 
-	public static final int TableX = 500;
-	public static final int TableY1 = 60, TableY2 = 130, TableY3 = 200;
+	public static final int TableX = 450;
+	public static final int TableY1 = 40, TableY2 = 110, TableY3 = 180;
 	private final int GAPX = 30;
 	private final int GAPY = 30;
 	private final int OriginX = -60;
@@ -71,7 +71,7 @@ public class YixinCustomerGui extends JPanel implements Gui{
 		if(agent.active){
 			g.setColor(Color.BLUE);
 			//g.fillRect(xPos, yPos, GAPX, GAPY);    	
-			g.drawImage(image, xPos, yPos, GAPX, GAPY, this);
+			g.drawImage(agent.getImage(), xPos, yPos, 20, 27, this);
 			if (show_choice)
 				g.drawString(this.choice, xDestination, yDestination + 40);
 		}
