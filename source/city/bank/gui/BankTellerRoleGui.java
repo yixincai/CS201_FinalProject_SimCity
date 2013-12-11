@@ -38,7 +38,9 @@ public class BankTellerRoleGui extends JPanel implements Gui {
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.drawImage(teller, xCoord, yCoord, xGap, yGap, this);
+		if(isPresent()){
+			g.drawImage(teller, xCoord, yCoord, xGap, yGap, this);
+		}
 	}
 
 	@Override
