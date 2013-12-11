@@ -4,8 +4,11 @@ import gui.PersonInfoRefreshable;
 import gui.trace.AlertLog;
 import gui.trace.AlertTag;
 
+import java.awt.Image;
 import java.lang.reflect.Type;
 import java.util.*;
+
+import javax.swing.ImageIcon;
 
 import city.interfaces.Person;
 import city.home.*;
@@ -132,6 +135,10 @@ public class PersonAgent extends Agent implements Person
 	// Utility data:
 	Timer schedulerTimer = new Timer();
 	
+	//Images
+    ImageIcon a = new ImageIcon(this.getClass().getResource("/image/person/MPersonDown.png"));
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/person/FPersonDown.png"));
+    Image _picture;
 	
 	
 	// ------------------------------------------- CONSTRUCTORS & SETUP --------------------------------------------
@@ -139,6 +146,15 @@ public class PersonAgent extends Agent implements Person
 	{
 		this(name, money, occupationType, weekday_notWeekend, housingType, personInfoPanel);
 		_actionsToDo.addAll(actionsToDo);
+		
+    	Random generator = new Random();
+    	int i = generator.nextInt(2);
+    	if(i == 1){
+    		_picture = a.getImage();
+    	}
+    	else{
+    		_picture = b.getImage();
+    	}
 	}
 	// This constructor is for unit testing
 	public PersonAgent(String name) { _name = name; }
@@ -163,6 +179,15 @@ public class PersonAgent extends Agent implements Person
 		generateAndSetCommuterRole();
 		setNextRole(_homeOccupantRole);
 		
+		Random generator = new Random();
+    	int i = generator.nextInt(2);
+    	if(i == 1){
+    		_picture = a.getImage();
+    	}
+    	else{
+    		_picture = b.getImage();
+    	}
+
 		_personInfoPanel.refreshInfo(this);
 	}
 	/** Sets _commuterRole to a new CommuterRole */
@@ -866,4 +891,9 @@ public class PersonAgent extends Agent implements Person
 		}
 		return null;
 	}
+	
+	//Getter for images
+    public Image getImage(){
+    	return _picture;
+    }
 }

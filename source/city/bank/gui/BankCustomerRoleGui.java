@@ -78,8 +78,7 @@ public class BankCustomerRoleGui extends JPanel implements Gui {
 				g.drawImage(robber, xPos, yPos, xRGap, yRGap, this);
 			}
 			else{
-				g.setColor(myColor);
-				g.fillRect(xPos, yPos, 20, 20);
+				g.drawImage(agent.getImage(), xPos, yPos, 20, 27, null);
 			}
 		}
 	}
