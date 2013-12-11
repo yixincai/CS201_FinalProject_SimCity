@@ -136,7 +136,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	//FOR CASHIERS OF RESTAURANTS AND CASHIERS OF MARKETS
 	public void msgWiredTransaction(Place place, int accountNumber, double amount, String request){
 		int newAccntNum;
-		print(AlertTag.BANK, "Wired Transaction Requested.  Fulfilling Now" + place);
+		print(AlertTag.BANK, "Wired Transaction Requested.  Fulfilling Now");
 		if(accountNumber == -1){  //means it doesn't exist yet
 			   newAccntNum = (int)(Math.random()*20000) + 10000; //open account from 20k to 10k for businesses
 			   while(database.funds.containsKey(newAccntNum)){
