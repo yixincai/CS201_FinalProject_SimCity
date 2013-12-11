@@ -122,9 +122,9 @@ public class MainGui extends JFrame
 		// Hard-coded instantiation of all the buildings in the city:
 		//Market
 		WorldViewBuilding b3 = _worldView.addBuilding(24, 5, 40, ImageAtlas.mapAtlas.get("Market"));
-		BuildingInteriorAnimationPanel bp3 = new BuildingInteriorAnimationPanel(this, "Market 1", new city.market.gui.MarketAnimationPanel());
+		BuildingInteriorAnimationPanel bp3 = new BuildingInteriorAnimationPanel(this, "First Market", new city.market.gui.MarketAnimationPanel());
 		b3.setBuildingPanel(bp3);
-		Market market = new Market("Market 1", b3, bp3, _worldView);
+		Market market = new Market("First Market", b3, bp3, _worldView);
 		Directory.addMarket(market);
 		_buildingCardLayoutPanel.add( bp3, bp3.getName() );
 		cPanel.currentBuildingPanel.addBuilding(market.name());
@@ -132,9 +132,9 @@ public class MainGui extends JFrame
 		
 		//Bank
 		WorldViewBuilding b2 = _worldView.addBuilding(28, 5, 40, ImageAtlas.mapAtlas.get("Bank"));
-		BuildingInteriorAnimationPanel bp2 = new BuildingInteriorAnimationPanel(this, "Bank", new city.bank.gui.BankAnimationPanel());
+		BuildingInteriorAnimationPanel bp2 = new BuildingInteriorAnimationPanel(this, "First Bank", new city.bank.gui.BankAnimationPanel());
 		b2.setBuildingPanel(bp2);
-		Bank bank = new Bank("Bank", b2, bp2);
+		Bank bank = new Bank("First Bank", b2, bp2);
 		Directory.addBank(bank);
 		_buildingCardLayoutPanel.add( bp2, bp2.getName() );
 		cPanel.currentBuildingPanel.addBuilding(bank.name());
@@ -182,9 +182,9 @@ public class MainGui extends JFrame
 
 		//another market
 		WorldViewBuilding marketBuilding2 = _worldView.addBuilding(44, 5, 40, ImageAtlas.mapAtlas.get("Market"));
-		BuildingInteriorAnimationPanel marketBuildingPanel2 = new BuildingInteriorAnimationPanel(this, "Market 2", new city.market.gui.MarketAnimationPanel());
+		BuildingInteriorAnimationPanel marketBuildingPanel2 = new BuildingInteriorAnimationPanel(this, "Second Market", new city.market.gui.MarketAnimationPanel());
 		marketBuilding2.setBuildingPanel(marketBuildingPanel2);
-		Market market2 = new Market("Market 2", marketBuilding2, marketBuildingPanel2, _worldView);
+		Market market2 = new Market("Second Market", marketBuilding2, marketBuildingPanel2, _worldView);
 		Directory.addMarket(market2);
 		_buildingCardLayoutPanel.add( marketBuildingPanel2, marketBuildingPanel2.getName() );
 		cPanel.currentBuildingPanel.addBuilding(market2.name());
@@ -192,9 +192,9 @@ public class MainGui extends JFrame
 
 		//another bank
 		WorldViewBuilding bankBuilding2 = _worldView.addBuilding(48, 5, 40, ImageAtlas.mapAtlas.get("Bank"));
-		BuildingInteriorAnimationPanel bankBuildingPanel2 = new BuildingInteriorAnimationPanel(this, "Bank 2", new city.bank.gui.BankAnimationPanel());
+		BuildingInteriorAnimationPanel bankBuildingPanel2 = new BuildingInteriorAnimationPanel(this, "Second Bank", new city.bank.gui.BankAnimationPanel());
 		bankBuilding2.setBuildingPanel(bankBuildingPanel2);
-		Bank bank2 = new Bank("Bank 2", bankBuilding2, bankBuildingPanel2);
+		Bank bank2 = new Bank("Second Bank", bankBuilding2, bankBuildingPanel2);
 		Directory.addBank(bank2);
 		_buildingCardLayoutPanel.add( bankBuildingPanel2, bankBuildingPanel2.getName() );
 		cPanel.currentBuildingPanel.addBuilding(bank2.name());
