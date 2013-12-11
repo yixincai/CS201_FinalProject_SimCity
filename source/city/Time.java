@@ -82,8 +82,8 @@ public class Time {
 		return getRealTime(time);
 	}
 	
-	public static void setToFriday(){
-		_today = Day.FRIDAY;
+	public static void setToSaturday(){
+		_today = Day.SATURDAY;
 	}
 	
 	
