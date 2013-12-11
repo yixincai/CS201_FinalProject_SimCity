@@ -36,6 +36,7 @@ public class PersonAgent extends Agent implements Person
 	private static final double INITIAL_NOURISHMENT = 5;
 	private static final double NOURISHMENT_HUNGRY_MAX = 2;
 	private static final double NOURISHMENT_FULL_MIN = 6;
+	private static final double WEEKLY_RENT = 10;
 	
 	// --------------------------------------- DATA -------------------------------------------
 	// Personal data:
@@ -59,6 +60,7 @@ public class PersonAgent extends Agent implements Person
 	
 	// State data:
 	private double _money;
+	private boolean _paidRentThisWeek = false;
 	enum WealthState { RICH, NORMAL, BROKE, POOR }
 	enum NourishmentState { HUNGRY, NORMAL, FULL }
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
@@ -191,7 +193,7 @@ public class PersonAgent extends Agent implements Person
     		_picture = b.getImage();
     	}
 
-		_personInfoPanel.refreshInfo(this);
+		if(_personInfoPanel != null) _personInfoPanel.refreshInfo(this);
 	}
 	/** Sets _commuterRole to a new CommuterRole */
 	public void generateAndSetCommuterRole()
@@ -428,14 +430,16 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	
-	// ------------------------------------------------ COMMANDS -----------------------------------------------------------
+	// ------------------------------------------------ COMMANDS & MESSAGES -----------------------------------------------------------
 	public void cmdChangeMoney(double delta) { 
 		_money += delta;
 		if(_personInfoPanel != null){
 			_personInfoPanel.refreshInfo(this); 
 		}
+		stateChanged();
 	}
-	public void cmdNoLongerHungry() { _state.nourishmentLevel += NOURISHMENT_PER_MEAL; }
+	public void cmdNoLongerHungry() { _state.nourishmentLevel += NOURISHMENT_PER_MEAL; stateChanged(); }
+	public void msgWeekStarted() { _paidRentThisWeek = false; stateChanged(); }
 	
 	
 	
@@ -700,6 +704,19 @@ public class PersonAgent extends Agent implements Person
 				_homeOccupantRole.cmdGoToBed();
 				setNextRole(_homeOccupantRole);
 				return true;
+			}
+			if(!_paidRentThisWeek && _money != 0)
+			{
+				AlertLog.getInstance().logMessage(AlertTag.PERSON, name(), "Paying " + WEEKLY_RENT + " in rent.");
+				if(money() >= WEEKLY_RENT)
+				{
+					cmdChangeMoney(-WEEKLY_RENT);
+				}
+				else
+				{
+					cmdChangeMoney(-money());
+				}
+				stateChanged();
 			}
 			_homeOccupantRole.cmdWatchTv();
 			setNextRole(_homeOccupantRole);

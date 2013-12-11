@@ -3,6 +3,7 @@ package city;
 import gui.trace.AlertLog;
 import gui.trace.AlertTag;
 
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -36,6 +37,10 @@ public class Time {
 			_today = Day.SUNDAY;
 			return;
 		case SUNDAY:
+			List<PersonAgent> allPersons = Directory.personAgents();
+			for(PersonAgent p : allPersons) {
+				p.msgWeekStarted();
+			}
 			_today = Day.MONDAY;
 			return;
 		}
