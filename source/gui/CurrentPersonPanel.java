@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -12,6 +13,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import city.Directory;
 import city.PersonAgent;
@@ -22,11 +24,11 @@ public class CurrentPersonPanel extends JPanel implements ActionListener, Person
 	JPanel buttonPanel;
 	
 	JPanel infoPanel;
-	JCheckBox action;
-	JCheckBox action2;
-	JCheckBox action3;
-	JCheckBox action4;
+	
+	JLabel actionLabel;
+	JTextField action;
 	JButton addSelectedActions;
+	
 	PersonAgent _currentlySelectedPerson;
 	
 	JLabel nameField;
@@ -39,6 +41,7 @@ public class CurrentPersonPanel extends JPanel implements ActionListener, Person
 	private final int WIDTH = 1024/3;
 	private final int HEIGHT = 720;
 	private final Dimension buttonDimension = new Dimension(340, 30);
+	private final Dimension textDimension = new Dimension(400, 30);
 	
 	public CurrentPersonPanel(ControlPanel cp)
 	{
@@ -65,21 +68,10 @@ public class CurrentPersonPanel extends JPanel implements ActionListener, Person
 		infoPanel.add(nextRoleField);
 		infoPanel.add(occupationField);
 		
-		 action = new JCheckBox("Go To OmarRestaurant");
-		 action.setMinimumSize(buttonDimension);
-		 action.setMaximumSize(buttonDimension);
-         
-		 action2 = new JCheckBox("Go To YixinRestaurant");
-		 action2.setMinimumSize(buttonDimension);
-		 action2.setMaximumSize(buttonDimension);
-         
-		 action3 = new JCheckBox("Go To EricRestaurant");
-		 action3.setMinimumSize(buttonDimension);
-		 action3.setMaximumSize(buttonDimension);
-         
-		 action4 = new JCheckBox("Go To RyanRestaurant");
-		 action4.setMinimumSize(buttonDimension);
-		 action4.setMaximumSize(buttonDimension);
+		actionLabel = new JLabel("Give Command Here:");
+		 action = new JTextField("");
+		 action.setPreferredSize(textDimension);
+        
          
 		 addSelectedActions = new JButton("Add Actions");
 		 addSelectedActions.setMinimumSize(buttonDimension);
@@ -89,26 +81,14 @@ public class CurrentPersonPanel extends JPanel implements ActionListener, Person
              @Override
              public void actionPerformed(ActionEvent e) {
             	 if(_currentlySelectedPerson != null){
-	                 if(action.isSelected()){
-	                	 _currentlySelectedPerson.addActionToDo("Go to Omar Restaurant");
-	                 }
-	                 if(action2.isSelected()){
-	                	 _currentlySelectedPerson.addActionToDo("Go to Yixin Restaurant");
-	                 }
-	                 if(action3.isSelected()){
-	                	 _currentlySelectedPerson.addActionToDo("Go to Eric Restaurant");
-	                 }
-	                 if(action4.isSelected()){
-	                	 _currentlySelectedPerson.addActionToDo("Go to Ryan Restaurant");
-	                 }
+	                 _currentlySelectedPerson.addActionToDo(action.getText());
+	                 action.setText("");
             	 }
              }
          });
 		 
+		 infoPanel.add(actionLabel);
 		 infoPanel.add(action);
-		 infoPanel.add(action2);
-		 infoPanel.add(action3);
-		 infoPanel.add(action4);
 		 infoPanel.add(addSelectedActions);
          
 		this.add(infoPanel, BorderLayout.NORTH);
