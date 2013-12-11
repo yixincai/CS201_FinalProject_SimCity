@@ -254,11 +254,11 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("RyanNormalWaiter", 150, "RyanRestaurant NormalWaiter", true, "apartment");
 			
 			//eric restaurant
-//			cPanel.addPerson("YixinHost", 300, "YixinRestaurant Host", true, "house");
-//			cPanel.addPerson("YixinCashier", 300, "YixinRestaurant Cashier", true, "apartment");
-//			cPanel.addPerson("YixinCook", 50, "YixinRestaurant Cook", true, "apartment");
-//			cPanel.addPerson("YixinSharedDataWaiter", 150, "YixinRestaurant SharedDataWaiter", true, "apartment");
-//			cPanel.addPerson("YixinNormalWaiter", 150, "YixinRestaurant NormalWaiter", true, "apartment");
+			cPanel.addPerson("EricHost", 300, "EricRestaurant Host", true, "house");
+			cPanel.addPerson("EricCashier", 300, "EricRestaurant Cashier", true, "apartment");
+			cPanel.addPerson("EricCook", 50, "EricRestaurant Cook", true, "apartment");
+			cPanel.addPerson("EricSharedDataWaiter", 150, "EricRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("EricNormalWaiter", 150, "EricRestaurant NormalWaiter", true, "apartment");
 				
 			//add home occupant role
 			cPanel.addPerson("HomeOccupant1", 300, "None", true, "apartment");
@@ -270,15 +270,15 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("YixinRestaurantCustomer1", 300, "YixinRestaurant Customer", true, "apartment");
 			cPanel.addPerson("OmarRestaurantCustomer1", 300, "OmarRestaurant Customer", true, "apartment");
 			cPanel.addPerson("RyanRestaurantCustomer1", 300, "RyanRestaurant Customer", true, "apartment");
-//			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
+			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
 			cPanel.addPerson("YixinRestaurantCustomer2", 150, "YixinRestaurant Customer", true, "apartment");
 			cPanel.addPerson("OmarRestaurantCustomer2", 150, "OmarRestaurant Customer", true, "apartment");
 			cPanel.addPerson("RyanRestaurantCustomer2", 150, "RyanRestaurant Customer", true, "apartment");
-//			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
+			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
 			cPanel.addPerson("YixinRestaurantCustomer3", 50, "YixinRestaurant Customer", true, "apartment");
 			cPanel.addPerson("OmarRestaurantCustomer3", 50, "OmarRestaurant Customer", true, "apartment");
 			cPanel.addPerson("RyanRestaurantCustomer3", 50, "RyanRestaurant Customer", true, "apartment");
-//			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
+			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
 
 			cPanel.addPerson("MarketCustomer1", 1000, "Market Customer", true, "apartment");
 			cPanel.addPerson("MarketCustomer2", 1000, "Market Customer", true, "apartment");
@@ -375,11 +375,11 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("RyanNormalWaiter", 150, "RyanRestaurant NormalWaiter", true, "apartment");
 			
 			//eric restaurant
-//			cPanel.addPerson("YixinHost", 300, "YixinRestaurant Host", true, "house");
-//			cPanel.addPerson("YixinCashier", 300, "YixinRestaurant Cashier", true, "apartment");
-//			cPanel.addPerson("YixinCook", 50, "YixinRestaurant Cook", true, "apartment");
-//			cPanel.addPerson("YixinSharedDataWaiter", 150, "YixinRestaurant SharedDataWaiter", true, "apartment");
-//			cPanel.addPerson("YixinNormalWaiter", 150, "YixinRestaurant NormalWaiter", true, "apartment");
+			cPanel.addPerson("EricHost", 300, "EricRestaurant Host", true, "house");
+			cPanel.addPerson("EricCashier", 300, "EricRestaurant Cashier", true, "apartment");
+			cPanel.addPerson("EricCook", 50, "EricRestaurant Cook", true, "apartment");
+			cPanel.addPerson("EricSharedDataWaiter", 150, "EricRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("EricNormalWaiter", 150, "EricRestaurant NormalWaiter", true, "apartment");
 			
 			//add customers
 			cPanel.addPerson("GeneralCustomer", 1000, "Market Customer", true, "apartment");

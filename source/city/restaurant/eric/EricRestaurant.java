@@ -35,10 +35,12 @@ public class EricRestaurant extends Restaurant {
 		_animationPanel = (EricAnimationPanel)animationPanel.getBuildingAnimation();
 		
 		_cashier = new EricCashierRole(null, this);
-		((EricCashierRole)_cashier).setHost(_host);
 		_host = new EricHostRole (null, this);
-		_host.setCashier((EricCashierRole)_cashier);
 		_cook = new EricCookRole(null, this);
+		
+		// Set correspondence
+		((EricCashierRole)_cashier).setHost(_host);
+		_host.setCashier((EricCashierRole)_cashier);
 		((EricCookRole)_cook).setCashier((EricCashierRole)_cashier);
 	}
 	public Role getHost() { return _host; }
@@ -61,6 +63,14 @@ public class EricRestaurant extends Restaurant {
 	public void clearInventory() {
 		_cook.clearInventory();
 	}
+	@Override
+	protected void cmdTimeToClose() {
+		getHost().cmdFinishAndLeave();
+		getCook().cmdFinishAndLeave();
+		getCashier().cmdFinishAndLeave();
+		for(EricWaiterRole waiter : _waiters)
+			waiter.cmdFinishAndLeave();
+	}
 
 	
 	
@@ -68,9 +78,14 @@ public class EricRestaurant extends Restaurant {
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
 		EricCustomerRole newCustomer = new EricCustomerRole(person, this, ""); // leaving hacks string blank for now
+		
+		newCustomer.setHost(_host);
+		
+		// Gui:
 		EricCustomerGui gui = new EricCustomerGui(newCustomer);
 		newCustomer.setGui(gui);
 		_animationPanel.addGui(gui);
+		
 		return newCustomer;
 	}
 
@@ -123,14 +138,6 @@ public class EricRestaurant extends Restaurant {
 		EricHostGui gui = new EricHostGui((EricHostRole)_host);
 		((EricHostRole)_host).setGui(gui);
 		animationPanel().addGui(gui);
-	}
-	@Override
-	protected void cmdTimeToClose() {
-		getHost().cmdFinishAndLeave();
-		getCook().cmdFinishAndLeave();
-		getCashier().cmdFinishAndLeave();
-		for(EricWaiterRole waiter : _waiters)
-			waiter.cmdFinishAndLeave();
 	}
 
 }
