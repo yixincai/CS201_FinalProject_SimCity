@@ -30,7 +30,6 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	JPanel buttonPanel;
 	JPanel infoPanel;
 	JLabel buildingName;
-	JLabel buildingMoney;
 	JScrollPane buildingButtons;
 	ControlPanel cPanel;
 	
@@ -71,9 +70,7 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	         });
 			 
 			buildingName = new JLabel("Building Name: ");
-			buildingMoney = new JLabel("Building Money: ");
 			infoPanel.add(buildingName); 
-			infoPanel.add(buildingMoney); 
 			infoPanel.add(clearInventoryButton);
 			this.add(infoPanel, BorderLayout.NORTH);
 			buttonPanel = new JPanel();

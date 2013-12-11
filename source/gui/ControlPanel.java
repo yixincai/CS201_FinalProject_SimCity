@@ -61,9 +61,9 @@ public class ControlPanel extends JTabbedPane {
 		
 		PersonAgent newPerson;
 		if(!(occupationType.contains("Customer"))){
-			newPerson = new PersonAgent(name, money, occupationType, weekday_notWeekend, housingType);
+			newPerson = new PersonAgent(name, money, occupationType, weekday_notWeekend, housingType, currentPersonPanel);
 		} else{
-			newPerson = new PersonAgent(name,money,"None",weekday_notWeekend,housingType);
+			newPerson = new PersonAgent(name,money,"None",weekday_notWeekend,housingType, currentPersonPanel);
 			if(occupationType.contains("Omar")){
 				newPerson.addActionToDo("OmarRestaurant");
 			} if(occupationType.contains("Yixin")){

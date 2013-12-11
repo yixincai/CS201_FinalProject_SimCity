@@ -28,12 +28,12 @@ public class Directory {
 	//Bus Fare (initialize in constructor?)
 	private static double _busFare = 2;
 	
-	private static double _openingTime = 10;
-	private static double _closingTime = 16;
+	public static final double OPENING_TIME = 8;
+	public static final double CLOSING_TIME = 16;
+	public static final double RESTAURANT_OPENING_TIME = 12;
+	public static final double RESTAURANT_CLOSING_TIME = 23;
 
 	// ------------------------------------ PROPERTIES ---------------------------------------
-	public static double openingTime() { return _openingTime; }
-	public static double closingTime() { return _closingTime; }
 	public static boolean cityAtCapacity() { return _personAgents.size() >= houses().size() + apartmentBuildings().size() * 4; } // if city is running slow, change this because houses() and apartmentBuildings() both iterate through _places every time they're called. Use a home counter that's incremented whenever a house or apartment building is created
 	
 	// WorldView stuff, like lanes and sidewalks and intersections

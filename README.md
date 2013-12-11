@@ -33,8 +33,10 @@ In "Bulid Path", choose "Use as a Source Folder"
   - Design of program's architecture (i.e. packages and class hierarchy)
   - General helping with questions
 - Omar Khulusi (Team Leader)
-  - Bank Scenarios
+  - Bank Scenarios (+ Robber/GuardDog)
+  - Console Log integration
   - Animation Panels (Building interior animation panels and worldview specifically)
+  - Configuration Panel v2 upgrades
   - Integration, major contributor (with Eric and Yixin)
   - Aided Eric with integration of Person Agent and Roles
   - Aided with Person Agent scheduler
@@ -51,7 +53,7 @@ In "Bulid Path", choose "Use as a Source Folder"
 - Tanner Zigrang
   - Gui Panels (more specifically, creation/configuration buttons/forms, organization of frames and panels)
   - Bank unit testing
-  - Attempted to integrate his restaurant, but ran out of time (partially complete)
+  - Attempted to integrate his restaurant, but ran out of time (incomplete)
 - Yixin Cai (Restaurant Integration Lead, Largest Code Contributor)
   - First to fully integrate his Restaurant, and assisted Omar/Ryan/Tanner in integrating restaurants
   - Market scenarios
@@ -60,9 +62,6 @@ In "Bulid Path", choose "Use as a Source Folder"
   - Integration, major contributor (with Eric and Omar)
 
 ####Known Issues
-  - Buses and Cars are not fully implemented. Bus travels around the city but commuter role does not take account of it
-  - Collision detection is not implemented (i.e. no AStar, people just go straight to their destinations)
-  - Not all five restaurants updated and integrated (2 fully integrated (Omar/Yixin), 1 semi-integrated (Ryan), 1 added but not integrated (Tanner), 1 not added (Eric))
+  - 1 restaurant not integrated (Tanner)
   - Apartments can be occupied but owners do not pay rent.
-  - City is set up to run specific scenarios, and therefore does not run well freely beyond these scenarios.  It is possible to continuously run it and add more people, but actions will be limited.
   - No parties and friend scenarios because we are a group of 5. 

@@ -3,6 +3,7 @@ package city.restaurant.eric.gui;
 
 import city.restaurant.eric.EricWaiterRole;
 import city.restaurant.eric.interfaces.EricCustomer;
+import gui.Gui;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,26 +18,27 @@ public class EricWaiterGui implements Gui
 	private RestDim OUTSIDE;
 	private RestDim IDLE_LOCATION;
 	private RestDim COOK;
+	private RestDim REVOLVING_STAND;
 	private RestDim CASHIER;
 	// RestDims used for positions of stuff (variable):
 	private RestDim _position;
 	private RestDim _destination;
-	private Boolean _goingSomewhere = false; // Put _goingSomewhere = true; at the beginning of each do...() function. Implies that _agent will be expecting the msgReachedDestination() message.
+	private boolean _goingSomewhere = false; // implies that _agent will be expecting the msgReachedDestination() message and that the food being carried needs to be reset to none.
 	
 	// String for what food item to display.
 	private String _carrying = null;
 	
 	// Correspondence:
-    private EricWaiterRole _agent = null;
+    private EricWaiterRole _role = null;
     // private RestaurantGui _restaurantGui; //TODO implement a system to appropriately replace this
     
     // -------------------------------- CONSTRUCTOR -----------------------------
-    public EricWaiterGui(EricWaiterRole agent)
+    public EricWaiterGui(EricWaiterRole role)
     {
-        _agent = agent;
+        _role = role;
         
         // Initialize values:
-        // Unchanged:
+        // Unchanging:
         TABLES.add(new RestDim(EricAnimationConstants.TABLE0_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE0_POSY - EricAnimationConstants.PERSON_HEIGHT));
         TABLES.add(new RestDim(EricAnimationConstants.TABLE1_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE1_POSY - EricAnimationConstants.PERSON_HEIGHT));
         TABLES.add(new RestDim(EricAnimationConstants.TABLE2_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE2_POSY - EricAnimationConstants.PERSON_HEIGHT));
@@ -45,6 +47,7 @@ public class EricWaiterGui implements Gui
         IDLE_LOCATION = new RestDim(EricAnimationConstants.NEXT_WAITER_X, EricAnimationConstants.NEXT_WAITER_Y);
         EricAnimationConstants.updateNextWaiter();
         COOK = new RestDim(EricAnimationConstants.COOK_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.COOK_POSY - EricAnimationConstants.PERSON_HEIGHT);
+        REVOLVING_STAND = new RestDim(EricAnimationConstants.REVOLVING_STAND_POSX, EricAnimationConstants.REVOLVING_STAND_POSY);
         CASHIER = new RestDim(EricAnimationConstants.CASHIER_POSX, EricAnimationConstants.CASHIER_POSY - EricAnimationConstants.PERSON_HEIGHT);
         // Variable:
         _position = new RestDim(OUTSIDE);
@@ -53,25 +56,25 @@ public class EricWaiterGui implements Gui
     
     // --------------------------------- PROPERTIES & MESSAGES ----------------------------------------
     // public void setRestGui(RestaurantGui rg) { _restaurantGui = rg; }
-    public EricWaiterRole agent() { return _agent; }
+    public EricWaiterRole agent() { return _role; }
     public int getXPosition() { return _position.x; }
     public int getYPosition() { return _position.y; }
     public boolean isPresent() { return true; }
     public boolean atDestination() { return _position.equals(_destination); }
-    public boolean wantsBreak() { return _agent.wantsBreak(); }
-    public boolean onBreak() { return _agent.onBreak(); }
+    public boolean wantsBreak() { return _role.wantsBreak(); }
+    public boolean onBreak() { return _role.onBreak(); }
     public void msgBreaksOver() // from RestaurantGui
     {
-    	_agent.msgBreaksOver();
+    	_role.msgBreaksOver();
     }
     public void msgWantsABreak() // from WaiterAgent
     {
-    	_agent.msgWantABreak();
+    	_role.msgWantABreak();
     }
     
     
     
-    // ---------------------------------- ACTIONS --------------------------------------------
+    // ---------------------------------- COMMANDS --------------------------------------------
 
     // Makes the waiter go to the front desk, but does not notify anyone when he gets there; i.e. this function assumes that no other code is waiting for him to get there, so this motion may be safely intercepted.
     public void doGoIdle()
@@ -109,13 +112,26 @@ public class EricWaiterGui implements Gui
     	_goingSomewhere = true;
     }
     
+    public void doGoToRevolvingStand()
+    {
+    	_destination.set(REVOLVING_STAND);
+    	_goingSomewhere = true;
+    }
+    
     public void doTakeOrderToCook(String choice)
     {
     	if(choice != null) {
     		_carrying = choice.substring(0, ((choice.length() > 1) ? 2 : 1) ) + "?";
     	}
-    	
     	doGoToCook();
+    }
+    
+    public void doTakeOrderToRevolvingStand(String choice)
+    {
+    	if(choice != null) {
+    		_carrying = choice.substring(0, ((choice.length() > 1) ? 2 : 1) ) + "?";
+    	}
+    	doGoToRevolvingStand();
     }
     
     public void doDeliverFood(int tableNumber, String choice)
@@ -140,7 +156,7 @@ public class EricWaiterGui implements Gui
     	// Hack (sorta) to pass the coordinates of the table to the CustomerGui (there might be a better way to do this)
     	customer.gui().cashierIsHere(
     			CASHIER.x ,
-    			CASHIER.y + EricAnimationConstants.PERSON_HEIGHT
+    			CASHIER.y - EricAnimationConstants.PERSON_HEIGHT
     			);
     }
     
@@ -153,7 +169,7 @@ public class EricWaiterGui implements Gui
     public void doNoBreak()
     {
     	// _restaurantGui.notGoingOnBreak(this);
-    	// don't need to go idle--continue with regular work.
+    	// don't need to go idle unless we replace the break location to be different from the idle location
     }
     
     public void doGoOnBreak()
@@ -183,7 +199,7 @@ public class EricWaiterGui implements Gui
         // Check to see of the position changed and the new position is equal to the destination.
         if (atDestination() && _goingSomewhere)
         {
-           _agent.msgReachedDestination();
+           _role.msgReachedDestination();
            _goingSomewhere = false;
            _carrying = null;
         }
@@ -196,7 +212,7 @@ public class EricWaiterGui implements Gui
         
         if(_carrying != null)
         {
-        	g.setFont(EricAnimationConstants.FOOD_FONT);
+        	g.setFont(EricAnimationConstants.FONT);
         	g.setColor(Color.BLACK);
         	g.drawString(_carrying,
         			_position.x + EricAnimationConstants.PERSON_WIDTH,
