@@ -199,7 +199,7 @@ public class RyanHostRole extends Role {
 			}
 		}
 		
-		if (waitingCustomers.isEmpty() && _restaurant.getNumberOfCustomers() == 0){
+		if (waitingCustomers.isEmpty() && roleState == RoleState.WantToLeave && _restaurant.getNumberOfCustomers() == 0){
 			roleState = RoleState.none;
 			active = false;
 			return true;
