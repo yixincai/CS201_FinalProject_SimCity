@@ -30,20 +30,20 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 		this._animationPanel = (RyanAnimationPanel)animationPanel.getBuildingAnimation();
 
 		// The animation object for these will be instantiated when a person enters the building and takes the role.
-		cashier = new RyanCashierRole(null,this);
+		_cashier = new RyanCashierRole(null,this);
 		host = new RyanHostRole(null,this,"Host");
-		cook = new RyanCookRole(null,this);
-		((RyanCookRole)cook).cashier = (RyanCashierRole)cashier;
+		_cook = new RyanCookRole(null,this);
+		((RyanCookRole)_cook).cashier = (RyanCashierRole)_cashier;
 	}
 
 	//default constructor for unit testing DO NOT DELETE
 	public RyanRestaurant(){
 		super("Ryan's Restaurant");    
-		cashier = new RyanCashierRole(null,this);
+		_cashier = new RyanCashierRole(null,this);
 		host = new RyanHostRole(null,this,"Host");
-		cook = new RyanCookRole(null,this);
-		((RyanCookRole)cook).cashier = (RyanCashierRole)cashier;
-		((RyanCashierRole)cashier).cook = (RyanCookRole)cook;
+		_cook = new RyanCookRole(null,this);
+		((RyanCookRole)_cook).cashier = (RyanCashierRole)_cashier;
+		((RyanCashierRole)_cashier).cook = (RyanCookRole)_cook;
 	}
 
 	@Override
@@ -63,8 +63,8 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 			newWaiter = new RyanNormalWaiterRole(person, this, person.name());
 		else
 			newWaiter = new RyanSharedDataWaiterRole(person, this, person.name());
-		newWaiter.setCashier((RyanCashierRole)cashier);
-		newWaiter.setCook((RyanCookRole)cook);
+		newWaiter.setCashier((RyanCashierRole)_cashier);
+		newWaiter.setCook((RyanCookRole)_cook);
 		newWaiter.setHost(host);
 		waiter_count++;
 		waiters.add(newWaiter);
@@ -97,15 +97,15 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 
 	@Override
 	public void generateCashierGui() {
-		RyanCashierGui RyanCashierGui = new RyanCashierGui((RyanCashierRole)cashier);
-		((RyanCashierRole)cashier).setGui(RyanCashierGui);
+		RyanCashierGui RyanCashierGui = new RyanCashierGui((RyanCashierRole)_cashier);
+		((RyanCashierRole)_cashier).setGui(RyanCashierGui);
 		animationPanel().addGui(RyanCashierGui);
 	}
 
 	@Override
 	public void generateCookGui() {
-		RyanCookGui RyanCookGui = new RyanCookGui((RyanCookRole)cook);
-		((RyanCookRole)cook).setGui(RyanCookGui);
+		RyanCookGui RyanCookGui = new RyanCookGui((RyanCookRole)_cook);
+		((RyanCookRole)_cook).setGui(RyanCookGui);
 		animationPanel().addGui(RyanCookGui);
 	}
 
@@ -119,7 +119,7 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 
 	@Override
 	public void clearInventory() {
-		cook.clearInventory();
+		_cook.clearInventory();
 	}
 	
 	public boolean existActiveWaiter() {

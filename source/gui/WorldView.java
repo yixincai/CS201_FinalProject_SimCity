@@ -149,12 +149,10 @@ public class WorldView extends JPanel implements MouseListener, ActionListener
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("Mouse Clicked in WorldView");
-
         for ( int i=0; i<buildings.size(); i++ ) {
                 WorldViewBuilding b = buildings.get(i);
                 if ( b.contains( e.getX(), e.getY() ) ) {
-                	if(b.myBuildingPanel != null){
+                	if(b.interiorAnimationPanel() != null){
                         b.displayBuilding();
                 	}
                 }

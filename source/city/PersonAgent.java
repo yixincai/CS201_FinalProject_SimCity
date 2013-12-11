@@ -1,5 +1,6 @@
 package city;
 
+import gui.PersonInfoRefreshable;
 import gui.trace.AlertLog;
 import gui.trace.AlertTag;
 
@@ -23,9 +24,14 @@ public class PersonAgent extends Agent implements Person
 	// Constants:
 	public static final int RICH_LEVEL = 250;
 	public static final int POOR_LEVEL = 10;
-	public static final int MONEY_LOW_LEVEL = 20;
-	public static final int MONEY_MID_LEVEL = 50;
-	public static final int MONEY_HIGH_LEVEL = 80;
+	private static final int MONEY_LOW_LEVEL = 20;
+	private static final int MONEY_MID_LEVEL = 50;
+	private static final int MONEY_HIGH_LEVEL = 80;
+	private static final double NOURISHMENT_PER_MEAL = 5;
+	private static final double HOURLY_NOURISHMENT_DECREASE = 0.5;
+	private static final double INITIAL_NOURISHMENT = 5;
+	private static final double NOURISHMENT_HUNGRY_MAX = 2;
+	private static final double NOURISHMENT_FULL_MIN = 6;
 	
 	// --------------------------------------- DATA -------------------------------------------
 	// Personal data:
@@ -47,7 +53,7 @@ public class PersonAgent extends Agent implements Person
 	private List<String> _actionsToDo = new ArrayList<String>();
 	
 	// State data:
-	private double _money; //TODO change to private and change appropriate other values
+	private double _money;
 	enum WealthState { RICH, NORMAL, BROKE, POOR }
 	enum NourishmentState { HUNGRY, NORMAL, FULL }
 	/** Contains state data about this person; this data can change (some parts, like wealth, don't change often). */
@@ -59,13 +65,13 @@ public class PersonAgent extends Agent implements Person
 		}
 		
 		// Nourishment/hunger
-		double nourishmentLevel = 5;
+		double nourishmentLevel = INITIAL_NOURISHMENT;
 		Timer nourishmentTimer = new Timer();
 		NourishmentState nourishment() {
-			if(nourishmentLevel < 2) {
+			if(nourishmentLevel < NOURISHMENT_HUNGRY_MAX) {
 				return NourishmentState.HUNGRY;
 			}
-			else if(nourishmentLevel < 6) {
+			else if(nourishmentLevel < NOURISHMENT_FULL_MIN) {
 				return NourishmentState.NORMAL;
 			}
 			else {
@@ -73,9 +79,8 @@ public class PersonAgent extends Agent implements Person
 			}
 		}
 		private void hourlyHungerChange() {
-			double hourlyNourishmentDecrease = 0.5;
-			if(nourishmentLevel >= hourlyNourishmentDecrease) {
-				nourishmentLevel -= hourlyNourishmentDecrease;
+			if(nourishmentLevel >= HOURLY_NOURISHMENT_DECREASE) {
+				nourishmentLevel -= HOURLY_NOURISHMENT_DECREASE;
 			}
 			else {
 				nourishmentLevel = 0;
@@ -121,15 +126,18 @@ public class PersonAgent extends Agent implements Person
 	}
 	State _state = new State();
 	
+	// Notify when refreshing info:
+	private PersonInfoRefreshable _personInfoPanel;
+	
 	// Utility data:
 	Timer schedulerTimer = new Timer();
 	
 	
 	
 	// ------------------------------------------- CONSTRUCTORS & SETUP --------------------------------------------
-	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType, List<String> actionsToDo)
+	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType, PersonInfoRefreshable personInfoPanel, List<String> actionsToDo)
 	{
-		this(name, money, occupationType, weekday_notWeekend, housingType);
+		this(name, money, occupationType, weekday_notWeekend, housingType, personInfoPanel);
 		_actionsToDo.addAll(actionsToDo);
 	}
 	// This constructor is for unit testing
@@ -141,10 +149,11 @@ public class PersonAgent extends Agent implements Person
 	 * @param occupationType I.e. Restaurant Cashier or Restaurant Host or Bank Teller etc.
 	 * @param housingType House or Apartment
 	 */
-	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType)
+	public PersonAgent(String name, double money, String occupationType, boolean weekday_notWeekend, String housingType, PersonInfoRefreshable personInfoPanel)
 	{
 		_name = name; 
 		_money = money;
+		_personInfoPanel = personInfoPanel;
 		setWorkDays(weekday_notWeekend);
 		acquireOccupation(occupationType);
 		if(_occupation != null) { AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(), "Acquired occupation " + _occupation.typeToString() + "."); }
@@ -153,6 +162,8 @@ public class PersonAgent extends Agent implements Person
 		
 		generateAndSetCommuterRole();
 		setNextRole(_homeOccupantRole);
+		
+		_personInfoPanel.refreshInfo(this);
 	}
 	/** Sets _commuterRole to a new CommuterRole */
 	public void generateAndSetCommuterRole()
@@ -382,11 +393,13 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	// ------------------------------------------------ COMMANDS -----------------------------------------------------------
-	public void cmdChangeMoney(double delta) { _money += delta; }
-	public void cmdNoLongerHungry()
-	{
-		//TODO change hunger state, set timer to change the state to hungry again
+	public void cmdChangeMoney(double delta) { 
+		_money += delta;
+		if(_personInfoPanel != null){
+			_personInfoPanel.refreshInfo(this); 
+		}
 	}
+	public void cmdNoLongerHungry() { _state.nourishmentLevel += NOURISHMENT_PER_MEAL; }
 	
 	
 	
@@ -588,7 +601,7 @@ public class PersonAgent extends Agent implements Person
 				}
 			}
 			
-			if(_state.time() > Directory.closingTime() || _state.time() < Directory.openingTime() - .5) //could replace with variables for sleepTime and wakeTime
+			if(_state.time() > Directory.CLOSING_TIME || _state.time() < Directory.OPENING_TIME - .5) //could replace with variables for sleepTime and wakeTime
 			{
 				_homeOccupantRole.cmdGoToBed();
 				setNextRole(_homeOccupantRole);
@@ -813,8 +826,9 @@ public class PersonAgent extends Agent implements Person
 	}
 	private boolean timeToBeAtWork()
 	{
-		return _state.time() > Directory.openingTime() - .5 && // .5 is half an hour
-				_state.time() < Directory.closingTime() + .5;
+		//TODO choose between restaurant opening/closing time and regular opening/closing time etc
+		return _state.time() > Directory.OPENING_TIME - .5 && // .5 is half an hour
+				_state.time() < Directory.CLOSING_TIME + .5;
 	}
 	private void finishAndLeaveCurrentRole()
 	{
@@ -825,11 +839,11 @@ public class PersonAgent extends Agent implements Person
 	}
 	private void setNextRole(Role nextRole)
 	{
-		//TODO call actionPerformed on the CurrentPersonPanel to notify of the change.
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
+		_personInfoPanel.refreshInfo(this);
 		stateChanged();
 	}
 	private Role getRoleOfType(Type type)

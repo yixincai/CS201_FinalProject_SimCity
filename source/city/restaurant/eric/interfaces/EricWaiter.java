@@ -6,6 +6,7 @@ public interface EricWaiter
 {
 	// Properties
 	public String name();
+	public boolean active();
 	
 	// Messages
 	public void msgReachedDestination(); //from WaiterGui

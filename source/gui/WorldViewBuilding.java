@@ -7,12 +7,13 @@ import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class WorldViewBuilding extends Rectangle2D.Double {
-	BuildingInteriorAnimationPanel myBuildingPanel;
+	private BuildingInteriorAnimationPanel _myInteriorAnimationPanel;
 	BufferedImage image;
 
 	// PROPERTIES
 	public int positionX() { return (int)x; }
 	public int positionY() { return (int)y; }
+	public BuildingInteriorAnimationPanel interiorAnimationPanel() { return _myInteriorAnimationPanel; }
 
 	public WorldViewBuilding( int x, int y, int width, int height ) {
 		super( x, y, width, height );
@@ -24,10 +25,10 @@ public class WorldViewBuilding extends Rectangle2D.Double {
 	}
 
 	public void displayBuilding() {
-		myBuildingPanel.displayBuildingPanel();
+		_myInteriorAnimationPanel.displayBuildingPanel();
 	}
 
 	public void setBuildingPanel( BuildingInteriorAnimationPanel bp ) {
-		myBuildingPanel = bp;
+		_myInteriorAnimationPanel = bp;
 	}
 }
