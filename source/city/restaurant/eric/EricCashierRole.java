@@ -109,13 +109,16 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 	
 	public void msgDoesCustomerOwe(EricCustomer customer) // from Host
 	{
-		for(Bill b : _bills)
-		{
-			if(b.customer == customer)
+		
+		synchronized(_bills) {
+			for(Bill b : _bills)
 			{
-				b.state = BillState.NOTIFY_HOST_OWED;
-				stateChanged();
-				return; // this is important because it skips 
+				if(b.customer == customer)
+				{
+					b.state = BillState.NOTIFY_HOST_OWED;
+					stateChanged();
+					return; // this is important because it skips 
+				}
 			}
 		}
 		
