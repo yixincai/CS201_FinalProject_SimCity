@@ -82,6 +82,10 @@ public class Time {
 		return getRealTime(time);
 	}
 	
+	public static void setToFriday(){
+		_today = Day.FRIDAY;
+	}
+	
 	
 	
 	// --------------------------------------- METHODS -----------------------------------------
