@@ -46,6 +46,15 @@ public class EricAnimationPanel extends JPanel implements ActionListener
 
 	public void actionPerformed(ActionEvent e)
 	{
+
+        for(Gui gui : guis)
+        {
+            if (gui.isPresent())
+            {
+                gui.updatePosition();
+            }
+        }
+        
 		repaint();  //Will have paintComponent called
 	}
 
@@ -62,16 +71,6 @@ public class EricAnimationPanel extends JPanel implements ActionListener
         for(TableDim t : tableDims)
         {
             graphicsDrawing.fillRect(t.posx, t.posy, t.width, t.height);
-        }
-        
-
-
-        for(Gui gui : guis)
-        {
-            if (gui.isPresent())
-            {
-                gui.updatePosition();
-            }
         }
 
         for(Gui gui : guis)
