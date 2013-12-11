@@ -168,7 +168,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			DepositMoney();
 			return true;
 		}
-		if (restaurantOrders.size() == 0 && customers.size() == 0 && role_state == RoleState.WantToLeave){
+		if (restaurantOrders.size() == 0 && customers.size() == 0 && role_state == RoleState.WantToLeave && market.getNumberOfCustomers() == 0){
 			LeaveMarket();
 			role_state = RoleState.none;
 			active = false;

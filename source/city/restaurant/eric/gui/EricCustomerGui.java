@@ -25,11 +25,10 @@ public class EricCustomerGui implements Gui
 	private RestDim _destination;
 
 	// Correspondence:
-	private EricCustomerRole _agent;
+	private EricCustomerRole _role;
 	// RestaurantGui _restaurantGui; //TODO implement a system to correctly replace this
 	
 	// Status data:
-	private boolean isPresent = false;
 	private boolean _isHungry = false;
 	private String _food = null;
 
@@ -45,9 +44,9 @@ public class EricCustomerGui implements Gui
 	Timer _timer = new Timer();
 
     // -------------------------------- CONSTRUCTOR -----------------------------
-	public EricCustomerGui(EricCustomerRole agent) // , RestaurantGui gui)
+	public EricCustomerGui(EricCustomerRole role) // , RestaurantGui gui)
 	{
-		_agent = agent;
+		_role = role;
 		// _restaurantGui = gui; // this is for re-enabling the hunger checkbox
 		
 		WAITING_LOCATION = new RestDim(EricAnimationConstants.NEXT_CUSTOMER_X, EricAnimationConstants.NEXT_CUSTOMER_Y);
@@ -73,11 +72,9 @@ public class EricCustomerGui implements Gui
 	public void setHungry()
 	{
 		_isHungry = true;
-		_agent.cmdGotHungry();
-		setPresent(true);
+		_role.cmdGotHungry();
 	}
-	public void setPresent(boolean p) { isPresent = p; }
-	public boolean isPresent() { return isPresent; }
+	public boolean isPresent() { return _role.active; }
 	public boolean isHungry() { return _isHungry; }
 	private void setFood(String food, boolean ordered)
 	{
@@ -142,7 +139,7 @@ public class EricCustomerGui implements Gui
 					public void run()
 					{
 						setFood(null, false);
-						_agent.msgFinishedEating();
+						_role.msgFinishedEating();
 					}
 				},
 				hungerLevel * 1000 // convert hungerLevel from s to ms
@@ -186,19 +183,19 @@ public class EricCustomerGui implements Gui
 		{
 			if (_command==Commands.GO_TO_FRONT_DESK)
 			{
-				_agent.msgReachedFrontDesk();
+				_role.msgReachedFrontDesk();
 			}
 			if (_command==Commands.GO_TO_TABLE)
 			{
-				_agent.msgReachedTable();
+				_role.msgReachedTable();
 			}
 			if (_command==Commands.GO_TO_CASHIER)
 			{
-				_agent.msgReachedCashier();
+				_role.msgReachedCashier();
 			}
 			if (_command==Commands.LEAVE_RESTAURANT)
 			{
-				_agent.msgFinishedLeavingRestaurant();
+				_role.msgFinishedLeavingRestaurant();
 				_isHungry = false;
 				// _restaurantGui.setHungerCBEnabled(_agent);
 			}

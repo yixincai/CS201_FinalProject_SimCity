@@ -10,14 +10,17 @@ import city.PersonAgent;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.eric.gui.EricAnimationPanel;
+import city.restaurant.eric.gui.EricCashierGui;
+import city.restaurant.eric.gui.EricCookGui;
 import city.restaurant.eric.gui.EricCustomerGui;
+import city.restaurant.eric.gui.EricHostGui;
 import city.restaurant.eric.gui.EricWaiterGui;
 import city.restaurant.eric.interfaces.EricCashier;
 import city.restaurant.eric.interfaces.EricWaiter;
 
 public class EricRestaurant extends Restaurant {
 	
-	private List<EricWaiter> _waiters = new ArrayList<EricWaiter>();
+	private List<EricWaiterRole> _waiters = new ArrayList<EricWaiterRole>();
 	private int _businessAccountNumber = -1;
 	private EricAnimationPanel _animationPanel;
 	private EricHostRole _host;
@@ -32,10 +35,12 @@ public class EricRestaurant extends Restaurant {
 		_animationPanel = (EricAnimationPanel)animationPanel.getBuildingAnimation();
 		
 		_cashier = new EricCashierRole(null, this);
-		((EricCashierRole)_cashier).setHost(_host);
 		_host = new EricHostRole (null, this);
-		_host.setCashier((EricCashierRole)_cashier);
 		_cook = new EricCookRole(null, this);
+		
+		// Set correspondence
+		((EricCashierRole)_cashier).setHost(_host);
+		_host.setCashier((EricCashierRole)_cashier);
 		((EricCookRole)_cook).setCashier((EricCashierRole)_cashier);
 	}
 	public Role getHost() { return _host; }
@@ -58,6 +63,14 @@ public class EricRestaurant extends Restaurant {
 	public void clearInventory() {
 		_cook.clearInventory();
 	}
+	@Override
+	protected void cmdTimeToClose() {
+		getHost().cmdFinishAndLeave();
+		getCook().cmdFinishAndLeave();
+		getCashier().cmdFinishAndLeave();
+		for(EricWaiterRole waiter : _waiters)
+			waiter.cmdFinishAndLeave();
+	}
 
 	
 	
@@ -65,9 +78,14 @@ public class EricRestaurant extends Restaurant {
 	@Override
 	public RestaurantCustomerRole generateCustomerRole(PersonAgent person) {
 		EricCustomerRole newCustomer = new EricCustomerRole(person, this, ""); // leaving hacks string blank for now
+		
+		newCustomer.setHost(_host);
+		
+		// Gui:
 		EricCustomerGui gui = new EricCustomerGui(newCustomer);
 		newCustomer.setGui(gui);
 		_animationPanel.addGui(gui);
+		
 		return newCustomer;
 	}
 
@@ -103,20 +121,23 @@ public class EricRestaurant extends Restaurant {
 
 	@Override
 	public void generateCashierGui() {
-		// TODO Auto-generated method stub
-		
+		EricCashierGui gui = new EricCashierGui((EricCashierRole)_cashier);
+		((EricCashierRole)_cashier).setGui(gui);
+		animationPanel().addGui(gui);
 	}
 
 	@Override
 	public void generateCookGui() {
-		// TODO Auto-generated method stub
-		
+		EricCookGui gui = new EricCookGui((EricCookRole)_cook);
+		((EricCookRole)_cook).setGui(gui);
+		animationPanel().addGui(gui);
 	}
 
 	@Override
 	public void generateHostGui() {
-		// TODO Auto-generated method stub
-		
+		EricHostGui gui = new EricHostGui((EricHostRole)_host);
+		((EricHostRole)_host).setGui(gui);
+		animationPanel().addGui(gui);
 	}
 
 }

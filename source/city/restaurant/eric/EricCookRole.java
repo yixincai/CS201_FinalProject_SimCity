@@ -10,11 +10,13 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import city.Directory;
 import city.Place;
 import city.interfaces.Person;
 import city.market.Item;
 import city.market.Market;
 import city.restaurant.RestaurantCookRole;
+import city.restaurant.eric.gui.EricCookGui;
 import city.restaurant.eric.interfaces.*;
 
 public class EricCookRole extends RestaurantCookRole implements EricCook
@@ -29,6 +31,7 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	// use Order.waiter for waiter correspondence.
 	private EricCashier _cashier;
 	private EricRestaurant _restaurant;
+	private EricCookGui _gui;
 	
 	// Agent data:
 	private class Order
@@ -50,8 +53,10 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 		public int inventory; // the current amount of the food
 		public int stockLevel; // the total amount for this food; the cook will order enough food to raise the inventory to this level
 		public int lowLevel; // the level at which the cook will start reordering the food
-		public int amountComing; // the amount that the market has confirmed to be coming
-		public int amountNeededToFulfillOrder; // the amount that is needed to fill the inventory back up to the stockLevel.  Only matters if one market cannot fulfill the whole order.
+		public int neededAmount() // the amount that is needed to fill the inventory back up to the stockLevel.
+		{
+			return stockLevel - inventory;
+		}
 		
 		public Food(String name, int cookingTime, int stockLevel, int inventory, int lowLevel)
 		{
@@ -60,26 +65,17 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 			this.stockLevel = stockLevel;
 			this.inventory = inventory;
 			this.lowLevel = lowLevel;
-			amountComing = 0;
-			amountNeededToFulfillOrder = 0;
-		}
-		
-		// Note that this value of amountNeededToFulfillOrder should be accurate even if more than one market is being ordered from, because amountComing is assigned using +=.
-		public void updateAmountNeededToFulfillOrder()
-		{
-			amountNeededToFulfillOrder = stockLevel - (inventory + amountComing);
 		}
 	}
 	private List<Food> _foods = Collections.synchronizedList(new ArrayList<Food>());
-	
-	private class MyMarket
-	{
-		OLD_EricMarket agent;
-		public MyMarket(OLD_EricMarket m) { agent = m; }
-	}
-	private List<MyMarket> _markets = Collections.synchronizedList(new ArrayList<MyMarket>());
 	private int _lastMarketUsed = -1; // starts at -1 so that when we increment it before first using, it will be zero
-	private boolean _awaitingMarketResponse = false; // indicates whether an order to a market is pending the market's response (to say what's coming and what's not coming in the order)
+	private boolean _awaitingMarketDelivery = false; // indicates whether an order to a market is pending the market's response (to say what's coming and what's not coming in the order)
+	private class Invoice
+	{
+		public Map<String, Integer> foodsReceived = new HashMap<String, Integer>();
+		public Market market;
+	}
+	private List<Invoice> _invoices = Collections.synchronizedList(new ArrayList<Invoice>());
 	
 	// Utility:
 	private Timer _schedulerTimer = new Timer();
@@ -99,10 +95,10 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 		_foods.add(new Food("Pizza",   15,     8,          5,         6       ));
 	}
 	public String name() { return _person.name(); }
-	public void addMarket(OLD_EricMarket m) { _markets.add(new MyMarket(m)); }
 	public void setCashier(EricCashier c) { _cashier = c; }
 	public Place place() { return _restaurant; }
 	private EricRevolvingStand revolvingStand() { return _restaurant.revolvingStand(); }
+	public void setGui(EricCookGui gui) { _gui = gui; }
 	
 	
 	
@@ -131,6 +127,7 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 		stateChanged();
 	}
 	
+	/*
 	public void msgOrderComing(OLD_EricMarket sender, Map<String,Integer> foodsComing) // from Market
 	{
 		// Set mySender to the correct MyMarket
@@ -145,32 +142,35 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 			f.updateAmountNeededToFulfillOrder();
 		}
 		
-		_awaitingMarketResponse = false;
+		_awaitingMarketDelivery = false;
 		
 		printInventory();
 		stateChanged();
 	}
-	
-	/**
-	 * @param foods Map of food names to the number of each food.
-	 */
-	public void msgDelivery(OLD_EricMarket sender, Map<String,Integer> foods) // from Market
-	{
-		print(AlertTag.ERIC_RESTAURANT,"Received a delivery from " + sender.getName());
-		for(Food f : _foods)
-		{
-			print(AlertTag.ERIC_RESTAURANT,"Received " + foods.get(f.name) + "  " + f.name);
-			f.amountComing -= foods.get(f.name);
-			f.inventory += foods.get(f.name);
-		}
-		
-		printInventory();
-		stateChanged();
-	}
+	*/
 	
 	@Override
 	public void msgOrderFulfillment(Market m, List<Item> order) {
-		// TODO Auto-generated method stub
+		print(AlertTag.ERIC_RESTAURANT,"Received a delivery from " + m.name());
+		Invoice newInvoice = new Invoice();
+		newInvoice.market = m;
+		for(Item i : order)
+		{
+			print(AlertTag.ERIC_RESTAURANT,"Received " + i.amount + "  " + i.name);
+			for(Food f : _foods)
+			{
+				if(f.name.equals(i.name))
+				{
+					f.inventory += i.amount;
+					break;
+				}
+			}
+			newInvoice.foodsReceived.put(i.name, i.amount);
+		}
+		_invoices.add(newInvoice);
+		
+		printInventory();
+		stateChanged();
 	}
 	@Override
 	public void cmdFinishAndLeave() {
@@ -200,10 +200,22 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 				}
 			}
 		}
-		if(!_awaitingMarketResponse) {
+		
+		Invoice invoice = null;
+		synchronized(_invoices) {
+			if(!_invoices.isEmpty()) {
+				invoice = _invoices.get(0);
+			}
+		}
+		if(invoice != null) {
+			actSendInvoice(invoice);
+			return true;
+		}
+		
+		if(!_awaitingMarketDelivery) {
 			synchronized(_foods) {
 				for(Food f : _foods) {
-					if((f.amountNeededToFulfillOrder > 0) || (f.inventory + f.amountComing <= f.lowLevel)) {
+					if((f.neededAmount() > 0) || (f.inventory <= f.lowLevel)) {
 						actRestock();
 						return true;
 					}
@@ -272,24 +284,33 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 		printInventory();
 		
 		// Fill up neededFoods:
-		Map<String,Integer> neededFoods = new HashMap<String,Integer>();
+		List<city.market.Item> neededFoods = new ArrayList<city.market.Item>();
 		for(Food f : _foods) {
-			int neededAmount = f.stockLevel - (f.inventory + f.amountComing);
-			print(AlertTag.ERIC_RESTAURANT,"Ordering " + neededAmount + " " + f.name);
-			neededFoods.put(f.name, neededAmount);
+			print(AlertTag.ERIC_RESTAURANT,"Ordering " + f.neededAmount() + " " + f.name);
+			neededFoods.add(new city.market.Item(f.name, f.neededAmount()));
 		}
+		
+		List<Market> markets = Directory.markets();
 		
 		// Update _lastMarketUsed:
 		_lastMarketUsed++;
-		if(_lastMarketUsed == _markets.size()) _lastMarketUsed = 0;
+		if(_lastMarketUsed == markets.size()) _lastMarketUsed = 0;
 		// note: from now until the end of the action, lastMarketUsed is the current market to be ordered from
 		
 		// Send the message:
 		// Note: the following boolean prevents the cook from sending more than one order at a time without first hearing back which items inside each order will be filled.
 		// Note: the following line is placed before the call to msgPlaceOrder to prevent the Market's thread from sending msgOrderComing before this thread sets _orderPending to true.
-		_awaitingMarketResponse = true;
+		_awaitingMarketDelivery = true;
 		// note: we don't need to make a copy of neededFoods because this thread forgets the reference to it right after sending msgPlaceOrder.
-		_markets.get(_lastMarketUsed).agent.msgPlaceOrder(this, neededFoods, _cashier);
+		markets.get(_lastMarketUsed).getCashier().msgPlaceOrder(_restaurant, neededFoods);
+	}
+	
+	private void actSendInvoice(Invoice invoice)
+	{
+		print(AlertTag.ERIC_RESTAURANT, "Sending invoice to the cashier.");
+		
+		_cashier.msgIReceivedTheseFoods(invoice.market, invoice.foodsReceived);
+		_invoices.remove(invoice);
 	}
 	
 	
@@ -304,7 +325,6 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 			print(AlertTag.ERIC_RESTAURANT,"    " + f.name + ":");
 			print(AlertTag.ERIC_RESTAURANT,"      inventory:     " + f.inventory + "/" + f.stockLevel);
 			print(AlertTag.ERIC_RESTAURANT,"      low level:     " + f.lowLevel);
-			print(AlertTag.ERIC_RESTAURANT,"      amount coming: " + f.amountComing);
 		}
 	}
 	

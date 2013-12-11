@@ -83,12 +83,7 @@ public class EricAnimationPanel extends JPanel implements ActionListener
         }
     }
 
-    public void addGui(EricCustomerGui gui)
-    {
-        guis.add(gui);
-    }
-
-    public void addGui(EricWaiterGui gui)
+    public void addGui(Gui gui)
     {
         guis.add(gui);
     }

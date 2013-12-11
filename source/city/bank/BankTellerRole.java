@@ -175,7 +175,7 @@ public class BankTellerRole extends Role implements BankTeller {
 			}
 		}
 		
-		if(myCustomers.isEmpty() && command == Command.Leave && bank.host().isWaitingCustomersEmpty()){
+		if(myCustomers.isEmpty() && command == Command.Leave && bank.getNumberOfCustomers() == 0){
 			actLeaveBank();
 		}
 		return false;
@@ -288,12 +288,13 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	
 	private void actLeaveBank(){
-		gui.DoLeaveBank();
-		try{
-			tellerSem.acquire();
-		} catch (Exception e){
-			e.printStackTrace();
-		}
+		command = Command.None;
+//		gui.DoLeaveBank();
+//		try{
+//			tellerSem.acquire();
+//		} catch (Exception e){
+//			e.printStackTrace();
+//		}
 		active = false;
 	}
 

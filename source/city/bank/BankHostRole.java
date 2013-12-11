@@ -56,7 +56,7 @@ public class BankHostRole extends Role implements BankHost {
 			}
 		}
 		
-		if(tellers.isEmpty()){  //host is last to leave bank
+		if(bank.getNumberOfCustomers() == 0 && waitingCustomers.isEmpty() && command == Command.Leave){  //host is last to leave bank
 			actLeaveBank();
 			return true;
 		}
@@ -77,6 +77,7 @@ public class BankHostRole extends Role implements BankHost {
 		} catch (Exception e){
 			e.printStackTrace();
 		} */
+		command = Command.None;
 		active = false;
 		stateChanged();
 	}

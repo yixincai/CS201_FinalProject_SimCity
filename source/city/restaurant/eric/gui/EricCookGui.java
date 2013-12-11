@@ -10,7 +10,6 @@ public class EricCookGui implements Gui {
 	
 	// ---------------------------------- DATA ----------------------------------
 	private RestDim _position = new RestDim(EricAnimationConstants.COOK_POSX, EricAnimationConstants.COOK_POSY);
-	private boolean _isPresent = false;
 	private EricCookRole _role;
 	
 	
@@ -21,7 +20,7 @@ public class EricCookGui implements Gui {
 	}
 	@Override
 	public boolean isPresent() {
-		return _isPresent;
+		return _role.active;
 	}
     
     

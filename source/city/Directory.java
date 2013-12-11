@@ -34,7 +34,7 @@ public class Directory {
 	public static final double RESTAURANT_CLOSING_TIME = 23;
 
 	// ------------------------------------ PROPERTIES ---------------------------------------
-	public static boolean cityAtCapacity() { return _personAgents.size() >= houses().size() + apartmentBuildings().size() * 4; } // if city is running slow, change this because houses() and apartmentBuildings() both iterate through _places every time they're called. Use a home counter that's incremented whenever a house or apartment building is created
+	public static boolean cityAtCapacity() { return _personAgents.size() >= ( houses().size() + (apartmentBuildings().size() * 4) ); } // if city is running slow, change this because houses() and apartmentBuildings() both iterate through _places every time they're called. Use a home counter that's incremented whenever a house or apartment building is created
 	
 	// WorldView stuff, like lanes and sidewalks and intersections
 	public static ArrayList<Lane> lanes(){
