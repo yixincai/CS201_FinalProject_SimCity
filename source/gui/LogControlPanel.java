@@ -31,6 +31,8 @@ class LogControlPanel extends JPanel {
     JButton enableEricRestaurantButton;
     JButton enableRyanRestaurantButton;
     
+    JButton filterClearButton;
+    
     private final int WIDTH = 1024/3;
 	private final int HEIGHT = 720;
 	
@@ -91,6 +93,10 @@ class LogControlPanel extends JPanel {
             enableRyanRestaurantButton  = new JButton("Hide Tag: RYAN_RESTAURANT");
             enableRyanRestaurantButton.setMinimumSize(buttonDimension);
             enableRyanRestaurantButton.setMaximumSize(buttonDimension);
+            
+            filterClearButton = new JButton("Clear Filter Periodically");
+            filterClearButton.setMinimumSize(buttonDimension);
+            filterClearButton.setMaximumSize(buttonDimension);
             
             
           /*  enableAllLevelsButton.addActionListener(new ActionListener() {
@@ -240,6 +246,19 @@ class LogControlPanel extends JPanel {
                 }
             });
             
+            filterClearButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(filterClearButton.getText().equalsIgnoreCase("Clear Filter Periodically")){
+                    	tracePanel.setFlag(true);
+            			filterClearButton.setText("Turn off Filter");
+            		} else {
+            			tracePanel.setFlag(false);
+            			filterClearButton.setText("Clear Filter Periodically");
+            		}
+                }
+            });
+            
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             this.add(enableTimeButton);
             this.add(enableMessagesButton);
@@ -252,6 +271,7 @@ class LogControlPanel extends JPanel {
             this.add(enableYixinRestaurantButton);
             this.add(enableEricRestaurantButton);
             this.add(enableRyanRestaurantButton);
+            this.add(filterClearButton);
             this.setMinimumSize(new Dimension(WIDTH, HEIGHT)); //dimensions should be fine
     }
 }
