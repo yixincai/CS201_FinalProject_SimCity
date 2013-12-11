@@ -161,4 +161,9 @@ public abstract class HomeOccupantGui implements Gui {
 		try { _finishedAction.acquire(); }
 		catch (InterruptedException e) { e.printStackTrace(); }
 	}
+	
+	//Release for testing
+	public void release(){
+		_finishedAction.release();
+	}
 }

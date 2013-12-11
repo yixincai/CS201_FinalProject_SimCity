@@ -21,7 +21,7 @@ public class Market extends Workplace implements PlaceWithAnimation {
 	private Semaphore _employeeSemaphore = new Semaphore(1, true);
 	
 	public Market(String s, WorldViewBuilding _worldViewBuilding, BuildingInteriorAnimationPanel map, WorldView worldView){
-		super("Market", _worldViewBuilding);
+		super(s, _worldViewBuilding);
 		this.animationPanel = (MarketAnimationPanel)map.getBuildingAnimation();
 		MarketCashier = new MarketCashierRole(null,this);
 		MarketEmployee = new MarketEmployeeRole(null,this);
