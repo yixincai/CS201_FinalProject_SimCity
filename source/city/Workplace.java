@@ -11,7 +11,7 @@ public abstract class Workplace extends Place{
 	}
 
 	protected abstract void cmdTimeToClose();
-	
+	public abstract boolean isOpen();
 	//form gui
 	public void msgTimeToClose(){
 		allowedToOpen = false;

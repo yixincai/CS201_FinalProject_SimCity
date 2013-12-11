@@ -128,4 +128,19 @@ public class Bank extends Workplace implements PlaceWithAnimation {
 		for (BankTellerRole teller : _tellers )
 			teller.cmdFinishAndLeave();
 	}
+
+	@Override
+	public boolean isOpen() {
+		boolean hasActiveTeller = false;
+		for (BankTellerRole teller : _tellers ){
+			if (teller.active){
+				hasActiveTeller = true;
+				break;
+			}
+		}
+		if (_bankHostRole.active && hasActiveTeller){
+			return true;
+		}
+		return false;
+	}
 }
