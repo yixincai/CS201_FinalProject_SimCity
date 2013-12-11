@@ -43,6 +43,7 @@ public class TracePanel extends JScrollPane implements AlertListener {
         private static final int LOGPANELX = 300;
         private static final int LOGPANELY = 100;
         private JTextPane traceTextPane;
+        private boolean flag = false;
 
         private List<Alert> newAlerts = Collections.synchronizedList(new ArrayList<Alert>());
         private Set<AlertLevel> visibleLevels = Collections.synchronizedSet(EnumSet.allOf(AlertLevel.class));
@@ -157,9 +158,12 @@ public class TracePanel extends JScrollPane implements AlertListener {
                                         int endPosition = traceTextPane.getDocument().getEndPosition().getOffset();
                                         traceTextPane.getStyledDocument().insertString(endPosition, alert.toString() + "\n", styleToPrint);
                                         count++;
-                                        if(count >= 100){
+                                        if(count >= 100 && getFlag()){
                                         	traceTextPane.setText("");
-                                        	System.out.println("REMOVED");
+                                        	//System.out.println("REMOVED");
+                                        	count = 0;
+                                        }
+                                        if(count >= 100 && !getFlag()){
                                         	count = 0;
                                         }
                                         
@@ -276,5 +280,15 @@ public class TracePanel extends JScrollPane implements AlertListener {
         public void alertOccurred(Alert alert) {
                 addNewAlert(alert);
         }
+
+
+		public boolean getFlag() {
+			return flag;
+		}
+
+
+		public void setFlag(boolean flag) {
+			this.flag = flag;
+		}
 
 }
