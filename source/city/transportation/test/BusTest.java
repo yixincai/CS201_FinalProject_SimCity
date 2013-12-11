@@ -33,8 +33,8 @@ public class BusTest extends TestCase {
 		busStop = new BusStopObject("bus stop", WV);
 		busStop1 = new BusStopObject("bus stop 1", WV1);
 		
-		Directory.addPlace(busStop);
-		Directory.addPlace(busStop1);
+		Directory.addBusStop(busStop);
+		Directory.addBusStop(busStop1);
 		
 		bus = new BusAgent("Real Bus");
 		gui = new BusAgentGui(bus, busStop);

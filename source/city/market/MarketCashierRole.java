@@ -26,7 +26,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public List<RestaurantOrder> restaurantOrders = new ArrayList<RestaurantOrder>();
 	
 	Market market;
-	double moneyInHand = 1000, moneyInBank;
+	double moneyInHand = 10000, moneyInBank;
 	enum RoleState{WantToLeave,none}
 	RoleState role_state = RoleState.none;
 	public enum MoneyState{OrderedFromBank, none}
@@ -164,15 +164,15 @@ public class MarketCashierRole extends Role implements MarketCashier{
 				return true;
 			}
 		}
-		if (moneyInHand > 200 && money_state == MoneyState.none){
+		if (moneyInHand > 5000 && money_state == MoneyState.none){
 			DepositMoney();
 			return true;
 		}
-		if (restaurantOrders.size() == 0 && customers.size() == 0 && role_state == RoleState.WantToLeave && market.getNumberOfCustomers() == 0){
-			LeaveMarket();
+		if (/*restaurantOrders.size() == 0 &&*/ customers.size() == 0 && role_state == RoleState.WantToLeave && market.getNumberOfCustomers() == 0){
+			//LeaveMarket();
 			role_state = RoleState.none;
 			active = false;
-			return true;
+			return false;
 		}
 		return false;
 	}
@@ -237,7 +237,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 	
 	public void DepositMoney(){
-		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(market, market.getAccountNumber(), moneyInHand / 2, "Desposit");
+		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(market, market.getAccountNumber(), moneyInHand - 1000, "Desposit");
 		money_state = MoneyState.OrderedFromBank;
 	}
 	

@@ -92,9 +92,9 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	public void msgTransactionComplete(double amount, Double balance, Double debt, int newAccountNumber){
 		restaurant.updateAccountNumber(newAccountNumber);
 		money_state = MoneyState.none;
-		money = amount;
-		bankBalance = balance;
-		bankDebt = debt;
+//		money -= amount;
+//		bankBalance = balance;
+//		bankDebt = debt;
 	}
 
 	/**
@@ -129,11 +129,11 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 					return true;
 				}
 			if (money_state == MoneyState.none){
-				if (money > 200 && bankDebt > 0){
+				if (money > 5000 && bankDebt > 0){
 					PayLoan();
 					return true;
 				}
-				else if (money > 200){
+				else if (money > 5000){
 					Deposit();
 					return true;
 				}
@@ -183,7 +183,8 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 	}
 	
 	private void Deposit(){
-		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(restaurant, restaurant.getAccountNumber(), money/2, "Deposit");
+		Directory.banks().get(0)._tellers.get(0).msgWiredTransaction(restaurant, restaurant.getAccountNumber(), money-3000, "Deposit");
+		money = 3000;
 		money_state = MoneyState.OrderedFromBank;
 	}
 	
