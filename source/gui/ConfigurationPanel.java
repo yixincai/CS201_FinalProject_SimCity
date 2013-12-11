@@ -65,7 +65,7 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 		cPanel = cp;
 		this.setLayout(layout);
 		configBox = new JComboBox(configOptions);
-		configLabel = new JLabel("Configurations:");
+		configLabel = new JLabel("Config:");
 		description = new JPanel();
 		description.setBorder(BorderFactory.createTitledBorder("Config Description"));
 		SpringLayout descriptionLayout = new SpringLayout();
