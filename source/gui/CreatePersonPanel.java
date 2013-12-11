@@ -32,7 +32,7 @@ public class CreatePersonPanel extends JPanel implements ActionListener, ChangeL
 {
 	String[] occupations = {"None", "Waiter", "Restaurant Cashier", "Cook", "Restaurant Host", 
 								"Bank Teller", "Bank Host", "Market Cashier", "Market Employee", 
-								"OmarRestaurant Customer", "YixinRestaurantCustomer", "EricRestaurantCustomer",
+								"OmarRestaurant Customer", "YixinRestaurant Customer", "EricRestaurant Customer",
 								"RyanRestaurant Customer"};
 	JComboBox occupationBox = new JComboBox(occupations);
 	JLabel moneyField = new JLabel("$0.00");

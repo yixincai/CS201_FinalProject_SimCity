@@ -53,6 +53,7 @@ public class TracePanel extends JScrollPane implements AlertListener {
         Style warningStyle;
         Style infoStyle;
         Style defaultStyle;
+        int count = 0;
 
         public TracePanel() {
                 super();
@@ -155,6 +156,12 @@ public class TracePanel extends JScrollPane implements AlertListener {
                                         //Insert the alert into the panel's document
                                         int endPosition = traceTextPane.getDocument().getEndPosition().getOffset();
                                         traceTextPane.getStyledDocument().insertString(endPosition, alert.toString() + "\n", styleToPrint);
+                                        count++;
+                                        if(count >= 100){
+                                        	traceTextPane.setText("");
+                                        	System.out.println("REMOVED");
+                                        	count = 0;
+                                        }
                                         
                                 } catch (BadLocationException e) {
                                         e.printStackTrace();
