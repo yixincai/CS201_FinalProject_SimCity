@@ -26,42 +26,55 @@ In "Bulid Path", choose "Use as a Source Folder"
 ####Work Done by Each Person
 
 - Eric Gauderman (Integration Lead/Git Lead)
-  - Person Agent
+  - Person Agent (sophisticated upgrade in v2)
   - Home Scenarios (most importantly, HomeOccupantRole)
   - Integration, major contributor (with Omar and Yixin)
   - Instantiation of Person Agent with the correct job and house; use of factory methods (with Yixin)
-  - Design of program's architecture (i.e. packages and class hierarchy)
-  - General helping with questions
+  - Design of program's architecture (i.e. packages and class hierarchy) 
+  - Designed Directory
+  - Integrated his Restaurant (including revolving stand, market interaction, bank interaction)
+  - Implemented hacks in PersonAgent for running specific scenarios
+  - General helping with questions & issues
+  - Fixed naming conventions for v2
+  - Bug fixing
 - Omar Khulusi (Team Leader)
-  - Bank Scenarios (+ Robber/GuardDog)
+  - Bank Scenarios (+ Robber/GuardDog for v2)
   - Console Log integration
+  - Configuration Panel v2 upgrades (Upgraded configuration panels to run scenarios)
+  - Gui Panel Upgrades (took over for Tanner)
   - Animation Panels (Building interior animation panels and worldview specifically)
-  - Configuration Panel v2 upgrades
   - Integration, major contributor (with Eric and Yixin)
   - Aided Eric with integration of Person Agent and Roles
-  - Aided with Person Agent scheduler
+  - Aided with Person Agent scheduler (worked closely Eric and Yixin)
   - Design of program's architecture (i.e. packages and class hierarchy)
   - Integrated his Restaurant (including revolving stand, market interaction, bank interaction)
   - Time class
   - Discussing major decisions (particularly with Eric and Yixin)
-- Ryan Hsu
+  - Bug fixing
+- Ryan Hsu (Art Lead)
   - Transportation (TruckAgent, BusAgent, CommuterRole)
-  - Transportation Tests (Bus, Commuter, Truck)
   - Integrating Truck and Market/Truck and Restaurant scenarios
   - Truck Gui
-  - Integrated his Restaurant (integrated but without revolving stand/market interaction/bank interaction)
-- Tanner Zigrang
-  - Gui Panels (more specifically, creation/configuration buttons/forms, organization of frames and panels)
+  - Integrated his Restaurant (integrated with revolving stand/market interaction/bank interaction)
+  - Added all images and made them look spectacular
+  - Worked with each individual restaurant panel to standardize them to look the same
+- Tanner Zigrang -- Going to be assessed individually (Talked to Professor Wilcynski regarding this)
+  - Gui Panel Setup (more specifically, creation/configuration buttons/forms, organization of frames and panels)
   - Bank unit testing
-  - Attempted to integrate his restaurant, but ran out of time (incomplete)
+  - Did not integrate restaurant into team's final deliverable
+  - Worked on his restaurant on his own branch
 - Yixin Cai (Restaurant Integration Lead, Largest Code Contributor)
-  - First to fully integrate his Restaurant, and assisted Omar/Ryan/Tanner in integrating restaurants
-  - Market scenarios
-  - Extensive Testing of his scenarios
+  - First to fully integrate his Restaurant, and assisted Omar/Ryan/Eric in integrating restaurants
+  - Finalized worldview (added lanes/semaphores/navigation system)
+  - Added most non-normative scenarios
+  - Workplace and person integration
+  - Market design and scenarios (including interactions with all the restaurants)
+  - Extensive Testing of city scenarios
   - Instantiation of Person Agent with the correct job and house; use of factory methods (with Eric)
   - Integration, major contributor (with Eric and Omar)
+  - Bug fixing
 
 ####Known Issues
   - 1 restaurant not integrated (Tanner)
-  - Apartments can be occupied but owners do not pay rent.
+  - No collision detection in restaurants
   - No parties and friend scenarios because we are a group of 5. 
