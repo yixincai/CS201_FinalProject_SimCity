@@ -48,9 +48,9 @@ public class PersonAgent extends Agent implements Person
 	private Role _nextRole; // this is the Role that will become active once the current transportation finishes.
 	private CommuterRole _commuterRole;
 	public Role _occupation = null;
-	private boolean _weekday_notWeekend;
+	// private boolean _weekday_notWeekend;
 	private HomeOccupantRole _homeOccupantRole;
-	// private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house (now, just pays rent on apartment)
+	// private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house
 	private BankCustomerRole _bankCustomerRole = null;
 	private boolean _dontCheckPlaceOpen = false;
 	
@@ -173,7 +173,7 @@ public class PersonAgent extends Agent implements Person
 		a = new ImageIcon(ImageAtlas.mapAtlas.get("MPerson"));
 		b = new ImageIcon(ImageAtlas.mapAtlas.get("FPerson"));
 		_personInfoPanel = personInfoPanel;
-		setWorkDays(weekday_notWeekend);
+		// setWorkDays(weekday_notWeekend);
 		acquireOccupation(occupationType);
 		if(_occupation != null) { AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(), "Acquired occupation " + _occupation.typeToString() + "."); }
 		else { AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(),"Acquired null occupation."); }
@@ -400,8 +400,8 @@ public class PersonAgent extends Agent implements Person
 	public double bankAccountFunds() { return _bankCustomerRole != null ? _bankCustomerRole.accountFunds() : 0.0; }
 	public double bankAmountOwed() { return _bankCustomerRole != null ? _bankCustomerRole.amountOwed() : 0.0; }
 	public double totalMoney() { return _money + bankAccountFunds() + bankAmountOwed(); }
-	/** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
-	public void setWorkDays(boolean weekday_notWeekend) { _weekday_notWeekend = weekday_notWeekend; }
+	// /** Sets the days the person works. @param weekday_notWeekend True if working weekdays, false if working weekends. */
+	// public void setWorkDays(boolean weekday_notWeekend) { _weekday_notWeekend = weekday_notWeekend; }
 	public Role currentRole() { return _currentRole; }
 	public String occupationTypeToString() { return (_occupation != null) ? _occupation.typeToString() : "None"; }
 	public String nextRoleTypeToString() { return (_nextRole != null && _nextRole != _currentRole) ? _nextRole.typeToString() : "None"; }
@@ -597,20 +597,34 @@ public class PersonAgent extends Agent implements Person
 				}
 				else if(nextAction.contains("Bank"))
 				{
+					int preferredBankNumber = -1;
+					if(nextAction.contains("First")) {
+						preferredBankNumber = 0;
+					}
+					else if(nextAction.contains("Second")) {
+						preferredBankNumber = 1;
+					}
 					if(nextAction.contains("Withdraw")) {
-						if(actGoToBank("Withdraw", 20)) return true;
+						if(actGoToBank("Withdraw", 20, preferredBankNumber)) return true;
 					}
 					else if(nextAction.contains("Deposit")) {
-						if(actGoToBank("Deposit", 20)) return true;
+						if(actGoToBank("Deposit", 20, preferredBankNumber)) return true;
 					}
 					else if(nextAction.contains("Robber")) {
-						if(actGoToBank("Robber", 500)) return true;
+						if(actGoToBank("Robber", 500, preferredBankNumber)) return true;
 					}
 				}
 				else if(nextAction.contains("Market"))
 				{
+					int preferredMarketNumber = -1;
+					if(nextAction.contains("First")) {
+						preferredMarketNumber = 0;
+					}
+					else if(nextAction.contains("Second")) {
+						preferredMarketNumber = 1;
+					}
 					// Buy 3 meals from the market
-					if(actBuyMealsFromMarket(3)) return true;
+					if(actBuyMealsFromMarket(3, preferredMarketNumber)) return true;
 				}
 				else if(nextAction.contains("Home"))
 				{
@@ -660,24 +674,24 @@ public class PersonAgent extends Agent implements Person
 			{
 				if(_bankCustomerRole != null && _bankCustomerRole.amountOwed() > 0)
 				{
-					if(actGoToBank("Pay Loan", _bankCustomerRole.amountOwed() > _money ? _money : _bankCustomerRole.amountOwed())) return true;
+					if(actGoToBank("Pay Loan", _bankCustomerRole.amountOwed() > _money ? _money : _bankCustomerRole.amountOwed(), -1)) return true;
 				}
 				else
 				{
-					if(actGoToBank("Deposit", _state.amountToWithdrawOrDeposit())) return true;
+					if(actGoToBank("Deposit", _state.amountToWithdrawOrDeposit(), -1)) return true;
 				}
 			}
 			// If I have low money and I have funds, withdraw
 			else if(_state.haveLowMoney() && _bankCustomerRole != null)
 			{
-				if(_bankCustomerRole.accountFunds() > 0) actGoToBank("Withdraw", _state.amountToWithdrawOrDeposit());
-				else actGoToBank("Withdraw Loan", _state.amountToWithdrawOrDeposit());
+				if(_bankCustomerRole.accountFunds() > 0) actGoToBank("Withdraw", _state.amountToWithdrawOrDeposit(), -1);
+				else actGoToBank("Withdraw Loan", _state.amountToWithdrawOrDeposit(), -1);
 			}
 			else if(totalMoney() == 0)
 			{
 				if(_bankCustomerRole != null && _bankCustomerRole.accountFunds() <= 5 && _bankCustomerRole.amountOwed() > 0)
 				{
-					if(actGoToBank("Robber", 1000)) return true;
+					if(actGoToBank("Robber", 1000, -1)) return true;
 				}
 			}
 			
@@ -717,7 +731,7 @@ public class PersonAgent extends Agent implements Person
 		}
 		else
 		{
-			if(actBuyMealsFromMarket(3)) // hard-coded 3 meals for now
+			if(actBuyMealsFromMarket(3, -1)) // hard-coded 3 meals for now
 			{
 				insertFirstActionToDo("HomeEat");
 				return true;
@@ -729,7 +743,7 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	// ----------------- Market -----------------
-	private boolean actBuyMealsFromMarket(int meals)
+	private boolean actBuyMealsFromMarket(int meals, int preferredMarketNumber)
 	{
 		// Search for a MarketCustomerRole in _customerRoles, use that;
 		// if no MarketCustomerRole in _customerRoles, choose a Market from the Directory, and get a new MarketCustomerRole from it
@@ -744,6 +758,18 @@ public class PersonAgent extends Agent implements Person
 		}
 		// note: we only get here if no MarketCustomerRole was found in _customerRoles
 		List<Market> markets = Directory.markets();
+		
+		// Check for preferred market
+		if(preferredMarketNumber != -1)
+		{
+			if(markets.size() > preferredMarketNumber)
+			{
+				MarketCustomerRole mcr = markets.get(preferredMarketNumber).generateCustomerRole(this);
+				mcr.cmdBuyFood(meals);
+				if(setNextRole(mcr)) return true;
+			}
+		}
+		
 		for(Market m : markets)
 		{
 			MarketCustomerRole mcr = m.generateCustomerRole(this);
@@ -757,12 +783,12 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	// ------------------- Bank ---------------------
-	private boolean actGoToBank(String request, double amount)
+	private boolean actGoToBank(String request, double amount, int preferredBankNumber)
 	{
 		// If _bankCustomerRole is nonexistant, try to generate a new role.
 		if(_bankCustomerRole == null)
 		{
-			if(!getNewBankCustomerRole()) {
+			if(!getNewBankCustomerRole(preferredBankNumber)) {
 				return false;
 			}
 		}
@@ -772,16 +798,24 @@ public class PersonAgent extends Agent implements Person
 		if(setNextRole(_bankCustomerRole)) return true;
 		return false;
 	}
-	private boolean getNewBankCustomerRole()
+	private boolean getNewBankCustomerRole(int preferredBankNumber)
 	{
 		List<Bank> banks = Directory.banks();
+		
+		if(preferredBankNumber != -1)
+		{
+			if(banks.size() > preferredBankNumber)
+			{
+				_bankCustomerRole = banks.get(preferredBankNumber).generateCustomerRole(this);
+				return true;
+			}
+		}
+		
 		if(!banks.isEmpty()) {
 			_bankCustomerRole = banks.get(new Random().nextInt(banks.size())).generateCustomerRole(this);
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 	
 	
@@ -906,6 +940,10 @@ public class PersonAgent extends Agent implements Person
 			if(!((Workplace)nextRole.place()).isOpen()) {
 				return false;
 			}
+		}
+		if(nextRole != null && nextRole.place() instanceof Workplace && !((Workplace)nextRole.place()).allowedToOpen())
+		{
+			return false;
 		}
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
