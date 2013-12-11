@@ -217,9 +217,45 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("CS201 Student 8", 150, "Restaurant Host", true, "house");
 			cPanel.addPerson("CS201 Student 9", 150, "Restaurant Cashier", true, "house");
 		} else if(configBox.getSelectedIndex() == 3){
-			//TODO Weekend Behavior
-			Time.setToFriday();
-			//TODO add people
+			//Weekend Behavior
+			Time.setToSaturday();
+
+			cPanel.addPerson("BankTeller1", 50, "Bank Teller", true, "house");
+			cPanel.addPerson("BankHost1", 50, "Bank Host", true, "house");
+			cPanel.addPerson("BankTeller2", 300, "Bank Teller", true, "house");
+			cPanel.addPerson("BankHost2", 300, "Bank Host", true, "house");
+			
+			cPanel.addPerson("MarketCashier1", 150, "Market Cashier", false, "apartment");
+			cPanel.addPerson("MarketEmployee1", 50, "Market Employee", false, "apartment");
+
+			//yixin restaurant
+			cPanel.addPerson("YixinHost", 300, "YixinRestaurant Host", false, "house");
+			cPanel.addPerson("YixinCashier", 300, "YixinRestaurant Cashier", false, "apartment");
+			cPanel.addPerson("YixinCook", 50, "YixinRestaurant Cook", false, "apartment");
+			cPanel.addPerson("YixinSharedDataWaiter", 150, "YixinRestaurant SharedDataWaiter", false, "apartment");
+			cPanel.addPerson("YixinNormalWaiter", 150, "YixinRestaurant NormalWaiter", false, "apartment");
+			
+			//omar restaurant
+			cPanel.addPerson("OmarHost", 300, "OmarRestaurant Host", true, "house");
+			cPanel.addPerson("OmarCashier", 300, "OmarRestaurant Cashier", true, "apartment");
+			cPanel.addPerson("OmarCook", 50, "OmarRestaurant Cook", true, "apartment");
+			cPanel.addPerson("OmarSharedDataWaiter", 150, "OmarRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("OmarNormalWaiter", 150, "OmarRestaurant NormalWaiter", true, "apartment");
+
+			//add home occupant role
+			cPanel.addPerson("HomeOccupant1", 300, "None", true, "apartment");
+			cPanel.addPerson("HomeOccupant2", 150, "None", true, "apartment");
+			cPanel.addPerson("HomeOccupant3", 50, "None", true, "apartment");
+			cPanel.addPerson("HomeOccupant4", 50, "None", true, "apartment");
+			
+			//add customers
+			cPanel.addPerson("YixinRestaurantCustomer1", 300, "YixinRestaurant Customer", true, "apartment");
+			cPanel.addPerson("OmarRestaurantCustomer1", 300, "OmarRestaurant Customer", true, "apartment");
+
+			cPanel.addPerson("MarketCustomer1", 1000, "Market Customer", true, "apartment");
+			cPanel.addPerson("MarketCustomer2", 1000, "Market Customer", true, "apartment");
+			cPanel.addPerson("MarketCustomer3", 1000, "Market Customer", true, "apartment");
+			
 		} else if(configBox.getSelectedIndex() == 4){
 			//markets
 			cPanel.addPerson("MarketCashier1", 150, "Market Cashier", true, "apartment");
@@ -251,7 +287,6 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 				}
 			);
 			timer.start();
-			//TODO Job Changing
 		} else if(configBox.getSelectedIndex() == 5){
 			//markets
 			cPanel.addPerson("MarketCashier1", 150, "Market Cashier", true, "apartment");
@@ -328,7 +363,6 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("YixinCook", 50, "YixinRestaurant Cook", true, "apartment");
 			cPanel.addPerson("YixinSharedDataWaiter", 150, "YixinRestaurant SharedDataWaiter", true, "apartment");
 			cPanel.addPerson("YixinNormalWaiter", 150, "YixinRestaurant NormalWaiter", true, "apartment");
-			//TODO change timer to be way longer
 			timer = new Timer(30000, new ActionListener() { 
 				public void actionPerformed(ActionEvent e){
 					cPanel.addPerson("YixinCashier", 300, "YixinRestaurant Cashier", true, "apartment");
@@ -336,7 +370,72 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			timer.start();
 		}
 		else if (configBox.getSelectedIndex() == 7){
-			//TODO bring workspaces down
+			//NOTE: shut places down through gui panel
+			//markets
+			cPanel.addPerson("MarketCashier1", 150, "Market Cashier", true, "apartment");
+			cPanel.addPerson("MarketEmployee1", 50, "Market Employee", true, "apartment");
+			cPanel.addPerson("MarketCashier2", 300, "Market Cashier", true, "apartment");
+			cPanel.addPerson("MarketEmployee2", 50, "Market Employee", true, "apartment");
+			//banks
+			cPanel.addPerson("BankTeller1", 150, "Bank Teller", true, "house");
+			cPanel.addPerson("BankHost1", 50, "Bank Host", true, "apartment");
+			cPanel.addPerson("BankTeller2", 300, "Bank Teller", true, "house");
+			cPanel.addPerson("BankHost2", 50, "Bank Host", true, "apartment");
+			//yixin restaurant
+			cPanel.addPerson("YixinHost", 300, "YixinRestaurant Host", true, "house");
+			cPanel.addPerson("YixinCashier", 300, "YixinRestaurant Cashier", true, "apartment");
+			cPanel.addPerson("YixinCook", 50, "YixinRestaurant Cook", true, "apartment");
+			cPanel.addPerson("YixinSharedDataWaiter", 150, "YixinRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("YixinNormalWaiter", 150, "YixinRestaurant NormalWaiter", true, "apartment");
+			
+			//omar restaurant
+			cPanel.addPerson("OmarHost", 300, "OmarRestaurant Host", true, "house");
+			cPanel.addPerson("OmarCashier", 300, "OmarRestaurant Cashier", true, "apartment");
+			cPanel.addPerson("OmarCook", 50, "OmarRestaurant Cook", true, "apartment");
+			cPanel.addPerson("OmarSharedDataWaiter", 150, "OmarRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("OmarNormalWaiter", 150, "OmarRestaurant NormalWaiter", true, "apartment");
+
+			//ryan restaurant
+			cPanel.addPerson("RyanHost", 300, "RyanRestaurant Host", true, "house");
+			cPanel.addPerson("RyanCashier", 300, "RyanRestaurant Cashier", true, "apartment");
+			cPanel.addPerson("RyanCook", 50, "RyanRestaurant Cook", true, "apartment");
+			cPanel.addPerson("RyanSharedDataWaiter", 150, "RyanRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("RyanNormalWaiter", 150, "RyanRestaurant NormalWaiter", true, "apartment");
+			
+			//eric restaurant
+			cPanel.addPerson("EricHost", 300, "EricRestaurant Host", true, "house");
+			cPanel.addPerson("EricCashier", 300, "EricRestaurant Cashier", true, "apartment");
+			cPanel.addPerson("EricCook", 50, "EricRestaurant Cook", true, "apartment");
+			cPanel.addPerson("EricSharedDataWaiter", 150, "EricRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("EricNormalWaiter", 150, "EricRestaurant NormalWaiter", true, "apartment");
+				
+			//add home occupant role
+			cPanel.addPerson("HomeOccupant1", 300, "None", true, "apartment");
+			cPanel.addPerson("HomeOccupant2", 150, "None", true, "apartment");
+			cPanel.addPerson("HomeOccupant3", 50, "None", true, "apartment");
+			cPanel.addPerson("HomeOccupant4", 50, "None", true, "apartment");
+			
+			//add customers
+			cPanel.addPerson("YixinRestaurantCustomer1", 300, "YixinRestaurant Customer", true, "apartment");
+			cPanel.addPerson("OmarRestaurantCustomer1", 300, "OmarRestaurant Customer", true, "apartment");
+			cPanel.addPerson("RyanRestaurantCustomer1", 300, "RyanRestaurant Customer", true, "apartment");
+			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
+			cPanel.addPerson("YixinRestaurantCustomer2", 150, "YixinRestaurant Customer", true, "apartment");
+			cPanel.addPerson("OmarRestaurantCustomer2", 150, "OmarRestaurant Customer", true, "apartment");
+			cPanel.addPerson("RyanRestaurantCustomer2", 150, "RyanRestaurant Customer", true, "apartment");
+			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
+			cPanel.addPerson("YixinRestaurantCustomer3", 50, "YixinRestaurant Customer", true, "apartment");
+			cPanel.addPerson("OmarRestaurantCustomer3", 50, "OmarRestaurant Customer", true, "apartment");
+			cPanel.addPerson("RyanRestaurantCustomer3", 50, "RyanRestaurant Customer", true, "apartment");
+			cPanel.addPerson("EricRestaurantCustomer", 50, "EricRestaurant Customer", true, "apartment");
+
+			cPanel.addPerson("MarketCustomer1", 1000, "Market Customer", true, "apartment");
+			cPanel.addPerson("MarketCustomer2", 1000, "Market Customer", true, "apartment");
+			cPanel.addPerson("MarketCustomer3", 1000, "Market Customer", true, "apartment");
+			
+			cPanel.addPerson("BankCustomer1", 1000, "Bank Customer", true, "apartment");
+			cPanel.addPerson("BankCustomer2", 1000, "Bank Customer", true, "apartment");
+			cPanel.addPerson("BankCustomer3", 1000, "Bank Customer", true, "apartment");
 		}
 		else if (configBox.getSelectedIndex() == 8){
 			cPanel.addPerson("Student 2", 150, "Restaurant Cashier", true, "house");
@@ -365,7 +464,7 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("OmarCook", 50, "OmarRestaurant Cook", true, "apartment");
 			cPanel.addPerson("OmarSharedDataWaiter", 50, "OmarRestaurant SharedDataWaiter", true, "apartment");
 			cPanel.addPerson("OmarNormalWaiter", 50, "OmarRestaurant NormalWaiter", true, "apartment");
-			//TODO change route to ryan's restaurant
+
 			//ryan restaurant
 			cPanel.addPerson("RyanHost", 300, "RyanRestaurant Host", true, "house");
 			cPanel.addPerson("RyanCashier", 300, "RyanRestaurant Cashier", true, "apartment");
@@ -416,12 +515,14 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("GeneralCustomer", 1000, "Market Customer", true, "apartment");
 			List<PersonAgent> personList = Directory.personAgents();
 			PersonAgent currentPerson = personList.get(personList.size() - 1);
-			//TODO go to another market
+
 			currentPerson.addActionToDo("Bank Deposit");
 			currentPerson.addActionToDo("Yixin Restaurant");
 			currentPerson.addActionToDo("Omar Restaurant");
 			currentPerson.addActionToDo("Ryan Restaurant");
-			//currentPerson.addActionToDo("Eric Restaurant");
+			currentPerson.addActionToDo("Eric Restaurant");
+			currentPerson.addActionToDo("Second Market Customer");
+			currentPerson.addActionToDo("Second Bank Customer");
 		}
 		else if(configBox.getSelectedIndex() == 11){
 			//markets
@@ -456,11 +557,11 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("RyanNormalWaiter", 150, "RyanRestaurant NormalWaiter", true, "apartment");
 			
 			//eric restaurant
-//			cPanel.addPerson("YixinHost", 300, "YixinRestaurant Host", true, "house");
-//			cPanel.addPerson("YixinCashier", 300, "YixinRestaurant Cashier", true, "apartment");
-//			cPanel.addPerson("YixinCook", 50, "YixinRestaurant Cook", true, "apartment");
-//			cPanel.addPerson("YixinSharedDataWaiter", 150, "YixinRestaurant SharedDataWaiter", true, "apartment");
-//			cPanel.addPerson("YixinNormalWaiter", 150, "YixinRestaurant NormalWaiter", true, "apartment");
+			cPanel.addPerson("EricHost", 300, "EricRestaurant Host", true, "house");
+			cPanel.addPerson("EricCashier", 300, "EricRestaurant Cashier", true, "apartment");
+			cPanel.addPerson("EricCook", 50, "EricRestaurant Cook", true, "apartment");
+			cPanel.addPerson("EricSharedDataWaiter", 150, "EricRestaurant SharedDataWaiter", true, "apartment");
+			cPanel.addPerson("EricNormalWaiter", 150, "EricRestaurant NormalWaiter", true, "apartment");
 			
 			//add customers
 			cPanel.addPerson("GeneralCustomer1", 1000, "Market Customer", true, "apartment");
@@ -469,26 +570,31 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 
 			List<PersonAgent> personList = Directory.personAgents();
 			PersonAgent currentPerson = personList.get(personList.size() - 1);
-			//TODO go to another market
+			currentPerson.addActionToDo("Eric Restaurant");
 			currentPerson.addActionToDo("Omar Restaurant");
 			currentPerson.addActionToDo("Ryan Restaurant");
 			currentPerson.addActionToDo("Yixin Restaurant");
 			currentPerson.addActionToDo("Bank Deposit");
+			currentPerson.addActionToDo("Second Market Customer");
+			currentPerson.addActionToDo("Second Bank Customer");
 
 			currentPerson = personList.get(personList.size() - 2);
-			//TODO go to another market
+			currentPerson.addActionToDo("Second Market Customer");
+			currentPerson.addActionToDo("Second Bank Customer");
 			currentPerson.addActionToDo("Ryan Restaurant");
+			currentPerson.addActionToDo("Eric Restaurant");
 			currentPerson.addActionToDo("Yixin Restaurant");
 			currentPerson.addActionToDo("Omar Restaurant");
 			currentPerson.addActionToDo("Market Customer");
 			
 			currentPerson = personList.get(personList.size() - 3);
-			//TODO go to another market
 			currentPerson.addActionToDo("Ryan Restaurant");
 			currentPerson.addActionToDo("Bank Deposit");
+			currentPerson.addActionToDo("Second Market Customer");
+			currentPerson.addActionToDo("Second Bank Customer");
 			currentPerson.addActionToDo("Market Customer");
 			currentPerson.addActionToDo("Omar Restaurant");
-			//currentPerson.addActionToDo("Eric Restaurant");
+			currentPerson.addActionToDo("Eric Restaurant");
 		}
 	}
 
