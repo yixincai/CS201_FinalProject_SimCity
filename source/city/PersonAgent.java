@@ -636,8 +636,7 @@ public class PersonAgent extends Agent implements Person
 			// Now, choose the next behavior based on free-running choices.
 			if(_occupation != null && workingToday() && timeToBeAtWork())
 			{
-				setNextRole(_occupation);
-				return true;
+				if(setNextRole(_occupation)) return true;
 			}
 			if(_state.nourishment() == NourishmentState.HUNGRY)
 			{
@@ -713,7 +712,7 @@ public class PersonAgent extends Agent implements Person
 		if(_homeOccupantRole.haveFood())
 		{
 			_homeOccupantRole.cmdCookAndEatFood();
-			setNextRole(_homeOccupantRole);
+			setNextRole(_homeOccupantRole); // always returns true for _homeOccupantRole
 			return true;
 		}
 		else
@@ -740,8 +739,7 @@ public class PersonAgent extends Agent implements Person
 			{
 				MarketCustomerRole mcr = (MarketCustomerRole)r;
 				mcr.cmdBuyFood(meals);
-				setNextRole(mcr);
-				return true;
+				if(setNextRole(mcr)) return true;
 			}
 		}
 		// note: we only get here if no MarketCustomerRole was found in _customerRoles
@@ -749,10 +747,9 @@ public class PersonAgent extends Agent implements Person
 		for(Market m : markets)
 		{
 			MarketCustomerRole mcr = m.generateCustomerRole(this);
-			mcr.cmdBuyFood(meals);
-			setNextRole(mcr);
 			_customerRoles.add(mcr);
-			return true;
+			mcr.cmdBuyFood(meals);
+			if(setNextRole(mcr)) return true;
 		}
 		return false;
 	}
@@ -772,8 +769,8 @@ public class PersonAgent extends Agent implements Person
 		// note: _bankCustomerRole will not be null here.
 		
 		_bankCustomerRole.cmdRequest(request, amount);
-		setNextRole(_bankCustomerRole);
-		return true;
+		if(setNextRole(_bankCustomerRole)) return true;
+		return false;
 	}
 	private boolean getNewBankCustomerRole()
 	{
@@ -870,32 +867,25 @@ public class PersonAgent extends Agent implements Person
 	
 	
 	
-	// --------------- (Peanut gallery) ---------------------
-	private void actTellLongStory()
-	{
-		AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(),"When I was a young programmer, my boss was skeptical of my design.  I proved him wrong.");
-	}
-	private void actIWhale()
-	{
-		print("\n");
-		print("\n");
-		print("\n");
-		print("\n");
-		print("\n");
-		print("\n");
-		print("*_____________________________________*");
-	}
-	
-	
-	
 	// ------------------------------------------ UTILITIES -------------------------------------
 	private boolean workingToday()
 	{
-		//return true;
+		if(_occupation != null)
+		{
+			if(
+				_occupation instanceof BankHostRole ||
+				_occupation instanceof BankTellerRole
+			)
+			{
+				// if I work at a bank, return true if not the weekend
+				return !(_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY);
+			}
+		}
 		// Commenting this out because we're currently not taking account of weekends
-		return ((_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && !_weekday_notWeekend) ||
-				(!(_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && _weekday_notWeekend);
-				
+		// return ((_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && !_weekday_notWeekend) ||
+		//		(!(_state.today() == Time.Day.SATURDAY || _state.today() == Time.Day.SUNDAY) && _weekday_notWeekend);
+		
+		return true;
 	}
 	private boolean timeToBeAtWork()
 	{
