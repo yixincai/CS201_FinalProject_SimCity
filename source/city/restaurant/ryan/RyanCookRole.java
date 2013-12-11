@@ -240,8 +240,8 @@ public class RyanCookRole extends RestaurantCookRole{
 			return true;
 		}
 		
-		if (orders.size() == 0 && orderState == OrderState.none && roleState == RoleState.WantToLeave){
-			gui.LeaveRestaurant();
+		if (orders.size() == 0 && orderState == OrderState.none && roleState == RoleState.WantToLeave && _restaurant.getNumberOfCustomers() == 0){
+			//gui.LeaveRestaurant();
 			roleState = RoleState.none;
 			active = false;
 			return true;

@@ -139,7 +139,7 @@ public class YixinCookRole extends RestaurantCookRole {//implements Cook{
 				lowInFood = false;
 				return true;
 			}
-			if (orders.size() == 0 && state == CookState.ableToOrder && role_state == RoleState.WantToLeave){
+			if (orders.size() == 0 && state == CookState.ableToOrder && role_state == RoleState.WantToLeave && restaurant.getNumberOfCustomers() == 0){
 				//LeaveRestaurant();
 				role_state = RoleState.none;
 				active = false;
