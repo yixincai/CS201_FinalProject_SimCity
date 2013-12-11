@@ -41,6 +41,11 @@ public class RyanCookGui extends JPanel implements Gui{
     Image cook = a.getImage();
     int xGap = 18;
     int yGap = 32;
+    
+    ImageIcon b = new ImageIcon(this.getClass().getResource("/image/restaurant/Pot.png"));
+    Image pot = b.getImage();
+    int xPGap = 20;
+    int yPGap = 20;
 	
 	public RyanCookGui(RyanCookRole agent){
 		this.agent = agent;
@@ -231,7 +236,8 @@ public class RyanCookGui extends JPanel implements Gui{
         for(Grill temp: grills){
         	if(temp.occupied == true){
         		g.setColor(Color.black);
-    			g.drawString((temp.choice), (temp.x+2), (temp.y-7));
+    			g.drawString((temp.choice), (temp.x+22), (temp.y-9));
+    			g.drawImage(pot, temp.x, temp.y, xPGap, yPGap, this);
         	}
         }
         
