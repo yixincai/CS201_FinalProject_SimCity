@@ -258,6 +258,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	private void Deposit(){
 		print(AlertTag.RYAN_RESTAURANT,"Deposited " + register/2 + " to the bank");
 		Directory.banks().get(0).tellers().get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), register/2, "Deposit");
+		register = register/2;
 		moneyState = MoneyState.OrderedFromBank;
 	}
 	

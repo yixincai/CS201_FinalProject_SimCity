@@ -2,6 +2,9 @@ package city.restaurant.eric.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 import city.restaurant.eric.EricHostRole;
 import gui.Gui;
@@ -12,7 +15,10 @@ public class EricHostGui implements Gui {
 	private RestDim _position = new RestDim(EricAnimationConstants.FRONTDESK_X, EricAnimationConstants.FRONTDESK_Y);
 	private EricHostRole _role;
 	
-	
+	private ImageIcon i = new ImageIcon(this.getClass().getResource("/image/restaurant/Host.png"));
+	private Image image = i.getImage();
+	public static int xGap = 21;
+	public static int yGap = 30;
 	
 	// ------------------------------ CONSTRUCTOR & PROPERTIES -----------------------------
 	public EricHostGui(EricHostRole role) {
@@ -34,14 +40,6 @@ public class EricHostGui implements Gui {
 
 	@Override
 	public void draw(Graphics2D g) {
-        g.setColor(Color.CYAN);
-        g.fillRect(_position.x, _position.y, EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.PERSON_HEIGHT);
-        
-    	g.setFont(EricAnimationConstants.FONT);
-    	g.setColor(Color.BLACK);
-    	g.drawString("Host",
-    			_position.x,
-    			_position.y + EricAnimationConstants.PERSON_HEIGHT
-    			);
+        g.drawImage(image, _position.x, _position.y, xGap, yGap, null);
 	}
 }
