@@ -8,6 +8,8 @@ import gui.Gui;
 import java.awt.*;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 public class EricWaiterGui implements Gui
 {
 	// ---------------------------------- DATA ----------------------------------
@@ -32,6 +34,11 @@ public class EricWaiterGui implements Gui
     private EricWaiterRole _role = null;
     // private RestaurantGui _restaurantGui; //TODO implement a system to appropriately replace this
     
+    ImageIcon a = new ImageIcon(this.getClass().getResource("/image/restaurant/NormalWaiter.png"));
+    Image normal = a.getImage();
+    int xGap = 17;
+    int yGap = 27;
+    
     // -------------------------------- CONSTRUCTOR -----------------------------
     public EricWaiterGui(EricWaiterRole role)
     {
@@ -39,15 +46,15 @@ public class EricWaiterGui implements Gui
         
         // Initialize values:
         // Unchanging:
-        TABLES.add(new RestDim(EricAnimationConstants.TABLE0_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE0_POSY - EricAnimationConstants.PERSON_HEIGHT));
-        TABLES.add(new RestDim(EricAnimationConstants.TABLE1_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE1_POSY - EricAnimationConstants.PERSON_HEIGHT));
-        TABLES.add(new RestDim(EricAnimationConstants.TABLE2_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE2_POSY - EricAnimationConstants.PERSON_HEIGHT));
+        TABLES.add(new RestDim(EricAnimationConstants.TABLE0_POSX - EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE0_POSY - EricAnimationConstants.PERSON_HEIGHT));
+        TABLES.add(new RestDim(EricAnimationConstants.TABLE1_POSX - EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE1_POSY - EricAnimationConstants.PERSON_HEIGHT));
+        TABLES.add(new RestDim(EricAnimationConstants.TABLE2_POSX - EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.TABLE2_POSY - EricAnimationConstants.PERSON_HEIGHT));
         FRONT_DESK = new RestDim(EricAnimationConstants.FRONTDESK_X + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.FRONTDESK_Y - EricAnimationConstants.PERSON_HEIGHT);
         OUTSIDE = new RestDim(EricAnimationConstants.OUTSIDE_X, EricAnimationConstants.OUTSIDE_Y);
         IDLE_LOCATION = new RestDim(EricAnimationConstants.NEXT_WAITER_X, EricAnimationConstants.NEXT_WAITER_Y);
         EricAnimationConstants.updateNextWaiter();
-        COOK = new RestDim(EricAnimationConstants.COOK_POSX + EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.COOK_POSY - EricAnimationConstants.PERSON_HEIGHT);
-        REVOLVING_STAND = new RestDim(EricAnimationConstants.REVOLVING_STAND_POSX, EricAnimationConstants.REVOLVING_STAND_POSY);
+        COOK = new RestDim(EricAnimationConstants.COOK_POSX, EricAnimationConstants.COOK_POSY - EricAnimationConstants.PERSON_HEIGHT);
+        REVOLVING_STAND = new RestDim(EricAnimationConstants.REVOLVING_STAND_POSX, EricAnimationConstants.REVOLVING_STAND_POSY- EricAnimationConstants.PERSON_HEIGHT);
         CASHIER = new RestDim(EricAnimationConstants.CASHIER_POSX, EricAnimationConstants.CASHIER_POSY - EricAnimationConstants.PERSON_HEIGHT);
         // Variable:
         _position = new RestDim(OUTSIDE);
@@ -89,7 +96,7 @@ public class EricWaiterGui implements Gui
     	
     	// Hack (sorta) to pass the coordinates of the table to the CustomerGui (there might be a better way to do this)
     	customer.gui().tableIsHere(
-    			TABLES.get(tableNumber).x - EricAnimationConstants.PERSON_WIDTH ,
+    			TABLES.get(tableNumber).x + EricAnimationConstants.PERSON_WIDTH ,
     			TABLES.get(tableNumber).y + EricAnimationConstants.PERSON_HEIGHT
     			);
     }
@@ -207,8 +214,7 @@ public class EricWaiterGui implements Gui
 
     public void draw(Graphics2D g)
     {
-        g.setColor(Color.MAGENTA);
-        g.fillRect(_position.x, _position.y, EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.PERSON_HEIGHT);
+    	g.drawImage(normal, _position.x, _position.y, xGap, yGap, null);
         
         if(_carrying != null)
         {

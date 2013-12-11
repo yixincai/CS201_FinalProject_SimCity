@@ -116,6 +116,12 @@ public class RyanAnimationPanel extends JPanel implements ActionListener { //Add
     }
 
 	public void actionPerformed(ActionEvent e) {
+		
+        for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+        }
 		repaint();  //Will have paintComponent called
 	}
 
@@ -152,13 +158,6 @@ public class RyanAnimationPanel extends JPanel implements ActionListener { //Add
         //Here is the table
         for(Dimension temp: tables){
         	g2.drawImage(table, temp.width, temp.height+10, xTGap, yTGap, this);
-        }
-
-
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
         }
 
         for(Gui gui : guis) {

@@ -14,11 +14,11 @@ public class EricAnimationConstants
 	
     // Constants for table positions
 	public static final int NUMBER_OF_TABLES = 3;
-    public static final int TABLE0_POSX = 180;
+    public static final int TABLE0_POSX = 325;
     public static final int TABLE0_POSY = 20;
-    public static final int TABLE1_POSX = 180;
+    public static final int TABLE1_POSX = 325;
     public static final int TABLE1_POSY = 110;
-    public static final int TABLE2_POSX = 180;
+    public static final int TABLE2_POSX = 325;
     public static final int TABLE2_POSY = 200;
     
     // Constant for outside position
@@ -26,7 +26,7 @@ public class EricAnimationConstants
     public static final int OUTSIDE_Y = -20;
     
     // Constant for front desk position
-    public static final int FRONTDESK_X = 50;
+    public static final int FRONTDESK_X = 90;
     public static final int FRONTDESK_Y = 10;
     
     // Non-constant for waiters' idle position
@@ -48,10 +48,10 @@ public class EricAnimationConstants
     }
     
     // Constants for cook and revolving stand positions
-    public static final int COOK_POSX = 100;
-    public static final int COOK_POSY = 300;
-	public static final int REVOLVING_STAND_POSX = 0; //TODO
-	public static final int REVOLVING_STAND_POSY = 0; //TODO
+    public static final int COOK_POSX = 233;
+    public static final int COOK_POSY = 257;
+	public static final int REVOLVING_STAND_POSX = 200; //TODO
+	public static final int REVOLVING_STAND_POSY = 250; //TODO
     
     // Constant for cashier position
     public static final int CASHIER_POSX = 70;

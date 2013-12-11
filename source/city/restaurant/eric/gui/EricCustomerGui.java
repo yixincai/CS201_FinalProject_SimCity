@@ -31,8 +31,6 @@ public class EricCustomerGui implements Gui
 	// Status data:
 	private boolean _isHungry = false;
 	private String _food = null;
-
-
 	private enum Commands { NONE, GO_TO_FRONT_DESK, GO_TO_TABLE, GO_TO_CASHIER, LEAVE_RESTAURANT };
 	private Commands _command = Commands.NONE;
 	
@@ -205,9 +203,8 @@ public class EricCustomerGui implements Gui
 
 	public void draw(Graphics2D g)
 	{
-		g.setColor(Color.GREEN);
-		g.fillRect(_position.x, _position.y, EricAnimationConstants.PERSON_WIDTH, EricAnimationConstants.PERSON_HEIGHT);
-        
+		g.drawImage(_role.getImage(), _position.x, _position.y, 20, 27, null);
+		
         if(_food != null)
         {
         	g.setFont(EricAnimationConstants.FONT);
