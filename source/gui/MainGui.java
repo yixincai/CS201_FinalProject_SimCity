@@ -228,7 +228,7 @@ public class MainGui extends JFrame
 			WorldViewBuilding b4 = _worldView.addBuilding(10, 3 + 2*i, 20, ImageAtlas.mapAtlas.get("Apartment"));
 			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + i, new city.home.gui.ApartmentAnimationPanel());
 			b4.setBuildingPanel(bp4);
-			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
+			ApartmentBuilding apartment = new ApartmentBuilding("Apartment" + i, b4, bp4);
 			Directory.addApartmentBuilding(apartment);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
 			cPanel.currentBuildingPanel.addBuilding(apartment.name());
@@ -239,7 +239,7 @@ public class MainGui extends JFrame
 			WorldViewBuilding b4 = _worldView.addBuilding(10, 13 + 2*i, 20, ImageAtlas.mapAtlas.get("Apartment"));
 			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + i, new city.home.gui.ApartmentAnimationPanel());
 			b4.setBuildingPanel(bp4);
-			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
+			ApartmentBuilding apartment = new ApartmentBuilding("Apartment" + i, b4, bp4);
 			Directory.addApartmentBuilding(apartment);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
 			cPanel.currentBuildingPanel.addBuilding(apartment.name());
@@ -251,7 +251,7 @@ public class MainGui extends JFrame
 		    WorldViewBuilding b4 = _worldView.addBuilding(12, 3 + 2*i, 20, ImageAtlas.mapAtlas.get("House"));
 			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House " + (i + 5), new city.home.gui.HouseAnimationPanel());
 			b4.setBuildingPanel(bp4);
-			House house = new House("House " + i + 5, b4, bp4);
+			House house = new House("House " + (i + 5), b4, bp4);
 			Directory.addHouse(house);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
 			cPanel.currentBuildingPanel.addBuilding(house.name());
@@ -262,7 +262,7 @@ public class MainGui extends JFrame
 		    WorldViewBuilding b4 = _worldView.addBuilding(12, 13 + 2*i, 20, ImageAtlas.mapAtlas.get("House"));
 			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House " + (i + 5), new city.home.gui.HouseAnimationPanel());
 			b4.setBuildingPanel(bp4);
-			House house = new House("House " + i + 5, b4, bp4);
+			House house = new House("House " + (i + 5), b4, bp4);
 			Directory.addHouse(house);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
 			cPanel.currentBuildingPanel.addBuilding(house.name());
@@ -275,7 +275,7 @@ public class MainGui extends JFrame
 			WorldViewBuilding b4 = _worldView.addBuilding(14, 3 + 2*i, 20, ImageAtlas.mapAtlas.get("Apartment"));
 			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + (i + 5), new city.home.gui.ApartmentAnimationPanel());
 			b4.setBuildingPanel(bp4);
-			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
+			ApartmentBuilding apartment = new ApartmentBuilding("Apartment" + (i+5), b4, bp4);
 			Directory.addApartmentBuilding(apartment);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
 			cPanel.currentBuildingPanel.addBuilding(apartment.name());
@@ -286,7 +286,7 @@ public class MainGui extends JFrame
 			WorldViewBuilding b4 = _worldView.addBuilding(14, 13 + 2*i, 20, ImageAtlas.mapAtlas.get("Apartment"));
 			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + (i + 5), new city.home.gui.ApartmentAnimationPanel());
 			b4.setBuildingPanel(bp4);
-			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
+			ApartmentBuilding apartment = new ApartmentBuilding("Apartment" + (i+5), b4, bp4);
 			Directory.addApartmentBuilding(apartment);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
 			cPanel.currentBuildingPanel.addBuilding(apartment.name());
@@ -295,9 +295,9 @@ public class MainGui extends JFrame
 		
 		for(int i = 1; i < 4; i++){
 		    WorldViewBuilding b4 = _worldView.addBuilding(44, 17 + 2*i, 20, ImageAtlas.mapAtlas.get("House"));
-			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House " + (i + 5), new city.home.gui.HouseAnimationPanel());
+			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House " + (i + 10), new city.home.gui.HouseAnimationPanel());
 			b4.setBuildingPanel(bp4);
-			House house = new House("House " + i + 5, b4, bp4);
+			House house = new House("House " + (i + 10), b4, bp4);
 			Directory.addHouse(house);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
 			cPanel.currentBuildingPanel.addBuilding(house.name());
@@ -306,9 +306,9 @@ public class MainGui extends JFrame
 		
 		for(int i = 1; i < 4; i++){
 			WorldViewBuilding b4 = _worldView.addBuilding(46, 17 + 2*i, 20, ImageAtlas.mapAtlas.get("Apartment"));
-			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + i, new city.home.gui.ApartmentAnimationPanel());
+			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + (i + 10), new city.home.gui.ApartmentAnimationPanel());
 			b4.setBuildingPanel(bp4);
-			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
+			ApartmentBuilding apartment = new ApartmentBuilding("Apartment" + (i+10), b4, bp4);
 			Directory.addApartmentBuilding(apartment);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
 			cPanel.currentBuildingPanel.addBuilding(apartment.name());
@@ -317,9 +317,9 @@ public class MainGui extends JFrame
 		
 		for(int i = 1; i < 4; i++){
 		    WorldViewBuilding b4 = _worldView.addBuilding(48, 17 + 2*i, 20, ImageAtlas.mapAtlas.get("House"));
-			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House " + (i + 5), new city.home.gui.HouseAnimationPanel());
+			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House " + (i + 13), new city.home.gui.HouseAnimationPanel());
 			b4.setBuildingPanel(bp4);
-			House house = new House("House " + i + 5, b4, bp4);
+			House house = new House("House " + (i + 13), b4, bp4);
 			Directory.addHouse(house);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
 			cPanel.currentBuildingPanel.addBuilding(house.name());
@@ -328,9 +328,9 @@ public class MainGui extends JFrame
 		
 		for(int i = 1; i < 4; i++){
 			WorldViewBuilding b4 = _worldView.addBuilding(50, 17 + 2*i, 20, ImageAtlas.mapAtlas.get("Apartment"));
-			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + i, new city.home.gui.ApartmentAnimationPanel());
+			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + (i+13), new city.home.gui.ApartmentAnimationPanel());
 			b4.setBuildingPanel(bp4);
-			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
+			ApartmentBuilding apartment = new ApartmentBuilding("Apartment" + (i+13), b4, bp4);
 			Directory.addApartmentBuilding(apartment);
 			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
 			cPanel.currentBuildingPanel.addBuilding(apartment.name());
