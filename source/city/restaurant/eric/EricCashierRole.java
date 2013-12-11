@@ -18,13 +18,18 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 {
 	// ----------------------------------------- DATA ----------------------------------------------
 	
+	// Constants:
+	private double MONEY_HIGH_LEVEL = 300;
+	private double MONEY_MID_LEVEL = 200;
+	private double MONEY_LOW_LEVEL = 100;
+	
 	// Correspondence:
 	private EricHost _host;
 	private EricRestaurant _restaurant;
 	private EricCashierGui _gui;
 	
 	// Agent data:
-	private double _money = 140;
+	private double _money = MONEY_MID_LEVEL;
 	// Note: public for TEST
 	public class Bill
 	{
@@ -171,8 +176,11 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 
 	@Override
 	public void msgHereIsTheChange(Market m, double change) {
-		//TODO Auto-generated method stub
-		
+		if(change > 0)
+		{
+			_money += change;
+			stateChanged();
+		}
 	}
 
 	@Override
@@ -219,13 +227,22 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 				}
 			}
 		}
+		// TODO add bank interaction
+		//	if(_money < MONEY_LOW_LEVEL)
+		//	{
+		//		
+		//	}
+		//	else if(_money > MONEY_HIGH_LEVEL)
+		//	{
+		//		
+		//	}
 		synchronized(_marketBills) {
 			if(_money > 0) {
 				for(MarketBill b : _marketBills) {
 					if(b.foodsReceived != null) {
-						actMakeMarketPayment(b);
+						if(actMakeMarketPayment(b)) return true;
+						else break;
 					}
-					return true;
 				}
 			}
 		}

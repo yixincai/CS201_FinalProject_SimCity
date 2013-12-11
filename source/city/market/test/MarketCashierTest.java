@@ -30,7 +30,7 @@ public class MarketCashierTest  extends TestCase {
 		cashier.setPerson(p);
 		customer = new MockMarketCustomer("Customer1");
 		Bank b = new Bank();
-		Directory.addPlace(b);
+		Directory.addBank(b);
 		Directory.banks().get(0)._tellers.get(0).makeDatabase();
 		Directory.banks().get(0)._tellers.get(0).setPerson(new PersonAgent("Dummy"));
 	}
