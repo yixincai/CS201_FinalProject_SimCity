@@ -9,6 +9,7 @@ import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
+import city.restaurant.eric.EricWaiterRole;
 import city.restaurant.omar.OmarWaiterRole;
 import city.restaurant.ryan.gui.*;
 
@@ -127,5 +128,14 @@ public class RyanRestaurant extends Restaurant implements PlaceWithAnimation{
 			if (waiter.active)
 				return true;
 		return false;
+	}
+
+	@Override
+	protected void cmdTimeToClose() {
+		getHost().cmdFinishAndLeave();
+		getCook().cmdFinishAndLeave();
+		getCashier().cmdFinishAndLeave();
+		for(RyanWaiterRole waiter : waiters)
+			waiter.cmdFinishAndLeave();		
 	}
 }

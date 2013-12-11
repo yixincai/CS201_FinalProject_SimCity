@@ -169,8 +169,8 @@ public class YixinHostRole extends Role {//implements Host{
 					}
 				}
 			}
-			if (waitingCustomers.size() == 0 && role_state == RoleState.WantToLeave){
-				LeaveRestaurant();
+			if (waitingCustomers.size() == 0 && role_state == RoleState.WantToLeave && restaurant.getNumberOfCustomers() == 0){
+				//LeaveRestaurant();
 				role_state = RoleState.none;
 				active = false;
 				return true;

@@ -43,7 +43,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 
 	public enum CustomerState {paying, paid, awaitingChange, canAfford, cantAfford};
 	enum Command{None, Leave};
-	Command command;
+	Command command = Command.None;
 
 	class Food {
 		String foodType;
@@ -139,7 +139,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 			}
 		}
 
-		if(command == Command.Leave && orders.isEmpty() && myCustomers.isEmpty()){
+		if(command == Command.Leave && orders.isEmpty() && myCustomers.isEmpty() && restaurant.getNumberOfCustomers() == 0){
 			leave();
 			return true;
 		}
@@ -186,6 +186,7 @@ public class OmarCashierRole extends RestaurantCashierRole {
 	}
 
 	void leave(){
+		command = Command.None;
 		active = false;
 	}
 

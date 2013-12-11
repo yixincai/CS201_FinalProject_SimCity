@@ -238,7 +238,7 @@ public abstract class YixinWaiterRole extends Role {//implements Waiter{
 					return true;
 				}
 			}
-			if (customers.size() == 0 && role_state == RoleState.WantToLeave){
+			if (customers.size() == 0 && role_state == RoleState.WantToLeave && restaurant.getNumberOfCustomers() == 0){
 				//LeaveRestaurant();
 				role_state = RoleState.none;
 				active = false;
