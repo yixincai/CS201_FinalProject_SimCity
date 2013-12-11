@@ -15,6 +15,7 @@ import javax.swing.Timer;
 
 import city.Directory;
 import city.PersonAgent;
+import city.Time;
 
 public class ConfigurationPanel extends JPanel implements ActionListener {
 
@@ -185,6 +186,8 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			cPanel.addPerson("CS201 Student 9", 150, "Restaurant Cashier", true, "house");
 		} else if(configBox.getSelectedIndex() == 3){
 			//TODO Weekend Behavior
+			Time.setToFriday();
+			//TODO add people
 		} else if(configBox.getSelectedIndex() == 4){
 			//TODO Job Changing
 		} else if(configBox.getSelectedIndex() == 5){
