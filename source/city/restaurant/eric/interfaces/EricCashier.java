@@ -1,5 +1,8 @@
 package city.restaurant.eric.interfaces;
 
+import java.util.Map;
+
+import city.market.Market;
 import city.restaurant.eric.Check;
 
 public interface EricCashier
@@ -12,4 +15,5 @@ public interface EricCashier
 	public void msgDoesCustomerOwe(EricCustomer customer); // from Host
 	public void msgHereIsOwedMoney(EricCustomer sender, double money);
 	public void msgYouOwe(OLD_EricMarket sender, double amount);
+	public void msgIReceivedTheseFoods(Market market, Map<String, Integer> foodsReceived);
 }

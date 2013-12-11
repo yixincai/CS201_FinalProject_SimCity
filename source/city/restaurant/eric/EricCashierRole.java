@@ -37,11 +37,14 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 	// Note: public for TEST
 	public enum BillState { REQUESTED, WAITING_FOR_PAYMENT, PAID_NEEDS_CHANGE, OWED, NOTIFY_HOST_OWED, PAY_DEBT_NEEDS_CHANGE }
 	private List<Bill> _bills = Collections.synchronizedList(new ArrayList<Bill>());
+	private enum MarketBillState { RECEIVED, INVOICE_RECEIVED }
 	// Note: public for TEST
 	public class MarketBill
 	{
 		public double amountOwed;
-		public OLD_EricMarket market;
+		public Map<String, Double> priceList;
+		public Market market;
+		public MarketBillState state = MarketBillState.RECEIVED;
 	}
 	private List<MarketBill> _marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 	
@@ -146,9 +149,16 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 	}
 
 	@Override
-	public void msgHereIsTheBill(Market m, double bill,
-			Map<String, Double> price_list) {
-		//TODO Auto-generated method stub
+	public void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list) {
+		MarketBill b = new MarketBill();
+		b.market = m;
+		b.amountOwed = bill;
+		b.priceList = price_list;
+		stateChanged();
+	}
+
+	@override
+	public void msgIReceivedTheseFoods(Market market, Map<String, Integer> foodsReceived) {
 		
 	}
 
@@ -159,8 +169,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 	}
 
 	@Override
-	public void msgTransactionComplete(double amount, Double balance,
-			Double debt, int newAccountNumber) {
+	public void msgTransactionComplete(double amount, Double balance, Double debt, int newAccountNumber) {
 		//TODO Auto-generated method stub
 		
 	}
