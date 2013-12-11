@@ -146,7 +146,7 @@ public class YixinCashierRole extends RestaurantCashierRole{// implements Cashie
 					return true;
 				}
 			}
-			if (marketBills.size() == 0 && bills.size() == 0 && role_state == RoleState.WantToLeave){
+			if (marketBills.size() == 0 && bills.size() == 0 && role_state == RoleState.WantToLeave && restaurant.getNumberOfCustomers() == 0){
 				//LeaveRestaurant();
 				role_state = RoleState.none;
 				active = false;

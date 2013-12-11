@@ -7,13 +7,14 @@ import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
 import city.Place;
+import city.Workplace;
 import city.bank.gui.BankAnimationPanel;
 import city.bank.gui.BankHostRoleGui;
 import city.bank.gui.BankTellerRoleGui;
 import city.bank.interfaces.*;
 import city.interfaces.PlaceWithAnimation;
 
-public class Bank extends Place implements PlaceWithAnimation {
+public class Bank extends Workplace implements PlaceWithAnimation {
 
 	// --------------------------------------- DATA -------------------------------------------
 
@@ -119,5 +120,12 @@ public class Bank extends Place implements PlaceWithAnimation {
 	
 	public BankCustomerRole generateCustomerRole(PersonAgent person){
 		return new BankCustomerRole(person, this);
+	}
+
+	@Override
+	protected void cmdTimeToClose() {
+		_bankHostRole.cmdFinishAndLeave();
+		for (BankTellerRole teller : _tellers )
+			teller.cmdFinishAndLeave();
 	}
 }

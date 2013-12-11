@@ -8,6 +8,7 @@ import agent.Role;
 import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
 import city.restaurant.*;
+import city.restaurant.eric.EricWaiterRole;
 import city.restaurant.omar.gui.*;
 
 public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
@@ -117,5 +118,15 @@ public class OmarRestaurant extends Restaurant implements PlaceWithAnimation {
 			if (waiter.active)
 				return true;
 		return false;
+	}
+
+	@Override
+	protected void cmdTimeToClose() {
+		// TODO Auto-generated method stub
+		getHost().cmdFinishAndLeave();
+		getCook().cmdFinishAndLeave();
+		getCashier().cmdFinishAndLeave();
+		for(OmarWaiterRole waiter : waiters)
+			waiter.cmdFinishAndLeave();
 	}
 }

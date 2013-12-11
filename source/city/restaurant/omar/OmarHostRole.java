@@ -10,6 +10,7 @@ import java.util.concurrent.Semaphore;
 
 import city.PersonAgent;
 import city.Place;
+import city.restaurant.omar.OmarCookRole.Command;
 import agent.Role;
 
 public class OmarHostRole extends Role {
@@ -23,6 +24,8 @@ public class OmarHostRole extends Role {
 
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
+	enum Command {None, Leave};
+	Command command = Command.None;
 
 	public OmarHostRole(PersonAgent p, OmarRestaurant r, String name) {
 		super(p);
@@ -91,8 +94,16 @@ public class OmarHostRole extends Role {
 				}
 			}
 		}
-
+		if (waitingCustomers.isEmpty() && command == Command.Leave && restaurant.getNumberOfCustomers() == 0){
+			leaveRestaurant();
+			return true;
+		}
 		return false;
+	}
+
+	private void leaveRestaurant() {
+		command = Command.None;
+		active = false;
 	}
 
 	// Actions
@@ -140,8 +151,7 @@ public class OmarHostRole extends Role {
 
 	@Override	//TODO INTEGRATION REQUIRED
 	public void cmdFinishAndLeave() {
-		// TODO Auto-generated method stub
-		active = false;
+		command = Command.Leave;
 		stateChanged();
 	}
 }

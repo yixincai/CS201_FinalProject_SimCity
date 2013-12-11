@@ -8,6 +8,7 @@ import agent.Role;
 import city.PersonAgent;
 import city.interfaces.PlaceWithAnimation;
 import city.restaurant.*;
+import city.restaurant.eric.EricWaiterRole;
 import city.restaurant.omar.OmarWaiterRole;
 import city.restaurant.yixin.gui.*;
 
@@ -129,5 +130,14 @@ public class YixinRestaurant extends Restaurant implements PlaceWithAnimation {
 			if (waiter.active)
 				return true;
 		return false;
+	}
+
+	@Override
+	protected void cmdTimeToClose() {
+		getHost().cmdFinishAndLeave();
+		getCook().cmdFinishAndLeave();
+		getCashier().cmdFinishAndLeave();
+		for(YixinWaiterRole waiter : waiters)
+			waiter.cmdFinishAndLeave();
 	}
 }

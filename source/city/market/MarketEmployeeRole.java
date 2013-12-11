@@ -65,7 +65,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			deliverOrders.remove(0);
 			return true;
 		}
-		if (pickUpOrders.size() == 0 && deliverOrders.size() == 0 && role_state == RoleState.WantToLeave){
+		if (pickUpOrders.size() == 0 && deliverOrders.size() == 0 && role_state == RoleState.WantToLeave && market.getNumberOfCustomers() == 0){
 			role_state = RoleState.none;
 			active = false;
 			return true;

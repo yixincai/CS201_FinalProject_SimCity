@@ -9,7 +9,7 @@ import city.market.gui.*;
 import city.restaurant.yixin.gui.*;
 import city.transportation.TruckAgent;
 
-public class Market extends Place implements PlaceWithAnimation {
+public class Market extends Workplace implements PlaceWithAnimation {
 	
 	boolean open;
 	public MarketCashierRole MarketCashier;
@@ -108,5 +108,10 @@ public class Market extends Place implements PlaceWithAnimation {
 			return true;
 		else
 			return false;
+	}
+	@Override
+	protected void cmdTimeToClose() {
+		MarketCashier.cmdFinishAndLeave();
+		MarketEmployee.cmdFinishAndLeave();
 	}
 }
