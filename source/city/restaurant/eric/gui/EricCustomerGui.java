@@ -161,7 +161,7 @@ public class EricCustomerGui implements Gui
 	public void doLeaveRestaurant() // from CustomerAgent
 	{
 		_command = Commands.LEAVE_RESTAURANT;
-		_destination.set(FRONT_DESK);
+		_destination.set(OUTSIDE);
 	}
 	
 	
