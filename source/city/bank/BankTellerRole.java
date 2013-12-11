@@ -289,12 +289,12 @@ public class BankTellerRole extends Role implements BankTeller {
 	
 	private void actLeaveBank(){
 		command = Command.None;
-		gui.DoLeaveBank();
-		try{
-			tellerSem.acquire();
-		} catch (Exception e){
-			e.printStackTrace();
-		}
+//		gui.DoLeaveBank();
+//		try{
+//			tellerSem.acquire();
+//		} catch (Exception e){
+//			e.printStackTrace();
+//		}
 		active = false;
 	}
 

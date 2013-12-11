@@ -17,6 +17,14 @@ public abstract class Workplace extends Place{
 		allowedToOpen = false;
 		cmdTimeToClose();
 	}
+
+	public void msgAllowedToOpen(){
+		allowedToOpen = true;
+	}
+	
+	public boolean allowedToOpen(){
+		return allowedToOpen;
+	}
 	
 	public synchronized void msgIAmComing(){
 		numberOfCustomers++;

@@ -111,7 +111,6 @@ public class RyanCookRole extends RestaurantCookRole{
 	//Messages******************************************************************************************************************************************************************************************************************
 	
 	public void msgOrderFulfillment(Market m, List<Item> order) {
-		// TODO Auto-generated method stub
 		print(AlertTag.RYAN_RESTAURANT,"Market response received");
 		orderState = OrderState.OrderReceived;
 		currentMarket = m;
@@ -240,7 +239,7 @@ public class RyanCookRole extends RestaurantCookRole{
 			return true;
 		}
 		
-		if (orders.size() == 0 && orderState == OrderState.none && roleState == RoleState.WantToLeave && _restaurant.getNumberOfCustomers() == 0){
+		if (orders.size() == 0 && orderState == OrderState.ableToOrder && roleState == RoleState.WantToLeave && _restaurant.getNumberOfCustomers() == 0){
 			//gui.LeaveRestaurant();
 			roleState = RoleState.none;
 			active = false;
@@ -462,7 +461,6 @@ public class RyanCookRole extends RestaurantCookRole{
 
 	@Override
 	public Place place() {
-		// TODO Auto-generated method stub
 		return _restaurant;
 	}
 

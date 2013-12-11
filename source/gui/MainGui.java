@@ -293,6 +293,50 @@ public class MainGui extends JFrame
 			_buildingInteriorAnimationPanels.add(bp4);
 		}
 		
+		for(int i = 1; i < 4; i++){
+		    WorldViewBuilding b4 = _worldView.addBuilding(44, 17 + 2*i, 20, ImageAtlas.mapAtlas.get("House"));
+			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House " + (i + 5), new city.home.gui.HouseAnimationPanel());
+			b4.setBuildingPanel(bp4);
+			House house = new House("House " + i + 5, b4, bp4);
+			Directory.addPlace(house);
+			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
+			cPanel.currentBuildingPanel.addBuilding(house.name());
+			_buildingInteriorAnimationPanels.add(bp4);
+		}
+		
+		for(int i = 1; i < 4; i++){
+			WorldViewBuilding b4 = _worldView.addBuilding(46, 17 + 2*i, 20, ImageAtlas.mapAtlas.get("Apartment"));
+			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + i, new city.home.gui.ApartmentAnimationPanel());
+			b4.setBuildingPanel(bp4);
+			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
+			Directory.addPlace(apartment);
+			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
+			cPanel.currentBuildingPanel.addBuilding(apartment.name());
+			_buildingInteriorAnimationPanels.add(bp4);
+		}
+		
+		for(int i = 1; i < 4; i++){
+		    WorldViewBuilding b4 = _worldView.addBuilding(48, 17 + 2*i, 20, ImageAtlas.mapAtlas.get("House"));
+			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "House " + (i + 5), new city.home.gui.HouseAnimationPanel());
+			b4.setBuildingPanel(bp4);
+			House house = new House("House " + i + 5, b4, bp4);
+			Directory.addPlace(house);
+			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
+			cPanel.currentBuildingPanel.addBuilding(house.name());
+			_buildingInteriorAnimationPanels.add(bp4);
+		}
+		
+		for(int i = 1; i < 4; i++){
+			WorldViewBuilding b4 = _worldView.addBuilding(50, 17 + 2*i, 20, ImageAtlas.mapAtlas.get("Apartment"));
+			BuildingInteriorAnimationPanel bp4 = new BuildingInteriorAnimationPanel(this, "Apartment " + i, new city.home.gui.ApartmentAnimationPanel());
+			b4.setBuildingPanel(bp4);
+			ApartmentBuilding apartment = new ApartmentBuilding("Apartment", b4, bp4);
+			Directory.addPlace(apartment);
+			_buildingCardLayoutPanel.add( bp4, bp4.getName() );
+			cPanel.currentBuildingPanel.addBuilding(apartment.name());
+			_buildingInteriorAnimationPanels.add(bp4);
+		}
+		
 		//vehicle lanes
 		Lane l3 = new Lane( 8*10+41, 15*10+30, 80, 10, 1, 0, true, Color.black, Color.yellow );
 		Lane l4 = new Lane( 24*10+41, 15*10+30, 120, 10, 1, 0, true, Color.black, Color.yellow );
