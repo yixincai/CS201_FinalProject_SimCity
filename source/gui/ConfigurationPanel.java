@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.Timer;
 
+import agent.Role;
 import city.Directory;
 import city.PersonAgent;
 import city.Time;
@@ -52,7 +53,7 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 	SpringLayout layout;
 	private final int WIDTH = 1024/3;
 	private final int HEIGHT = 720;
-	Timer timer;
+	Timer timer, timer2;
 	
 	public ConfigurationPanel(ControlPanel cp)
 	{
@@ -220,6 +221,36 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 			Time.setToFriday();
 			//TODO add people
 		} else if(configBox.getSelectedIndex() == 4){
+			//markets
+			cPanel.addPerson("MarketCashier1", 150, "Market Cashier", true, "apartment");
+			cPanel.addPerson("MarketEmployee1", 50, "Market Employee", true, "apartment");
+			//banks
+			cPanel.addPerson("MarketCustomer1", 1000, "Market Customer", true, "apartment");
+			cPanel.addPerson("MarketCustomer2", 1000, "Market Customer", true, "apartment");
+			
+			timer = new Timer(30000, new ActionListener() { 
+				public void actionPerformed(ActionEvent e){
+					PersonAgent poorGuy = Directory.personAgents().get(0);
+					Role occupation = poorGuy.currentRole();
+					occupation.active = false;
+					poorGuy._occupation = null;
+					
+					cPanel.addPerson("YixinCashier", 300, "YixinRestaurant Cashier", true, "apartment");
+					Directory.personAgents().get(4)._occupation = occupation;
+					timer.stop();
+					timer2 = new Timer(2000, new ActionListener() { 
+						public void actionPerformed(ActionEvent e){
+							cPanel.addPerson("MarketCustomer3", 1000, "Market Customer", true, "apartment");
+							cPanel.addPerson("MarketCustomer4", 1000, "Market Customer", true, "apartment");
+							timer2.stop();
+							}
+						}
+					);
+					timer2.start();
+					}
+				}
+			);
+			timer.start();
 			//TODO Job Changing
 		} else if(configBox.getSelectedIndex() == 5){
 			//markets
