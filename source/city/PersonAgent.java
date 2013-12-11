@@ -137,8 +137,8 @@ public class PersonAgent extends Agent implements Person
 	Timer schedulerTimer = new Timer();
 	
 	//Images
-    ImageIcon a = new ImageIcon(ImageAtlas.mapAtlas.get("MPerson"));
-    ImageIcon b = new ImageIcon(ImageAtlas.mapAtlas.get("FPerson"));
+    ImageIcon a;
+    ImageIcon b;
     Image _picture;
 	
 	
@@ -147,7 +147,8 @@ public class PersonAgent extends Agent implements Person
 	{
 		this(name, money, occupationType, weekday_notWeekend, housingType, personInfoPanel);
 		_actionsToDo.addAll(actionsToDo);
-		
+		a = new ImageIcon(ImageAtlas.mapAtlas.get("MPerson"));
+		b = new ImageIcon(ImageAtlas.mapAtlas.get("FPerson"));
     	Random generator = new Random();
     	int i = generator.nextInt(2);
     	if(i == 1){
