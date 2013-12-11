@@ -52,6 +52,7 @@ public class PersonAgent extends Agent implements Person
 	private HomeOccupantRole _homeOccupantRole;
 	// private HomeBuyingRole _homeBuyingRole; // Will handle buying an apartment or house (now, just pays rent on apartment)
 	private BankCustomerRole _bankCustomerRole = null;
+	private boolean _dontCheckPlaceOpen = false;
 	
 	// Commands for scenarios
 	private List<String> _actionsToDo = new ArrayList<String>();
@@ -509,25 +510,23 @@ public class PersonAgent extends Agent implements Person
 				return true;
 			}
 		}
-		else // i.e. _currentRole.active == false
+		else // i.e. _currentRole is null or _currentRole.active == false
 		{
 			// note: if we get here, a role just finished leaving.
 			_sentCmdFinishAndLeave = false;
 			
 			if(_currentRole == _commuterRole)
 			{
-				// commuter role must have just reached the destination
+				// Commuter role must have just finished travelling to the destination.
+				// If the next role is a customer role and an actionToDo is not active (i.e. _dontCheckPlaceOpen = false), check if the place is open.
+				// If the next role is a customer role and the place is open, send msgIAmComing() to the place.
 				
 				// First, check if it's a workplace and do appropriate actions (check if it's closed, add yourself to the list)
 				if(_nextRole != null && _nextRole.place() instanceof Workplace)
 				{
-					if(
-							_nextRole instanceof RestaurantCustomerRole ||
-							_nextRole instanceof BankCustomerRole ||
-							_nextRole instanceof MarketCustomerRole
-					)
+					if(isCustomerRole(_nextRole))
 					{
-						if(((Workplace)_nextRole.place()).isOpen())
+						if( _dontCheckPlaceOpen || ((Workplace)_nextRole.place()).isOpen())
 						{
 							// Only if _nextRole is a customer role and nextRole's place is open
 							((Workplace)_nextRole.place()).msgIAmComing();
@@ -536,13 +535,15 @@ public class PersonAgent extends Agent implements Person
 						{
 							// if my next role is a customer role but the place isn't open
 							_currentRole = null;
+							// Note: if we call setNextRole(_homeOccupantRole), the person will return home after going to a closed place.
+							// setNextRole(_homeOccupantRole);
 							return true;
 						}
 					}
 					
 				}
 				
-				// Shift the current role from the commuter role to whatever next role is.
+				// Shift the current role from the commuter role to whatever next role is, and start the next role.
 				_currentRole = _nextRole;
 				if(_currentRole != null) _currentRole.active = true;
 				return true;
@@ -550,11 +551,7 @@ public class PersonAgent extends Agent implements Person
 			else if(_currentRole != null && (_currentRole.place() instanceof Workplace))
 			{
 				// we just left a workplace because _currentRole just finished
-				if(
-						_currentRole instanceof RestaurantCustomerRole ||
-						_currentRole instanceof BankCustomerRole ||
-						_currentRole instanceof MarketCustomerRole
-				)
+				if(isCustomerRole(_currentRole))
 				{
 					// we just left a workplace and we were a customer
 					((Workplace)_currentRole.place()).msgIAmLeaving();
@@ -563,8 +560,14 @@ public class PersonAgent extends Agent implements Person
 			
 			
 			
-			// We will only get here if we just finished a role which is not _commuterRole.
-			// Choose a new role and call setNextRole on it
+			// We just finished a role that was NOT commuterRole.
+			// Whether it was an actionToDo or not, reset _dontCheckPlaceOpen to false.
+			// If another actionToDo is chosen, it will set _dontCheckPlaceOpen to true.
+			_dontCheckPlaceOpen = false;
+			
+			
+			
+			// Now, choose a new role and call setNextRole on it.
 			
 			
 			
@@ -572,6 +575,7 @@ public class PersonAgent extends Agent implements Person
 			if(!_actionsToDo.isEmpty())
 			{
 				String nextAction = popFirstActionToDo();
+				_dontCheckPlaceOpen = true;
 				if(nextAction.contains("Restaurant"))
 				{
 					if(nextAction.contains("Eric")) {
@@ -621,11 +625,14 @@ public class PersonAgent extends Agent implements Person
 					setNextRole(_homeOccupantRole);
 					return true;
 				}
+				
+				// If we get here, no actionsToDo were called, so we go back to free-run mode and we do want to check if a place is open.  Usually won't get here.
+				_dontCheckPlaceOpen = false;
 			}
 			
 			
 			
-			// Now we begin the free-running, autonomous behavior for the person.
+			// Now, choose the next behavior based on free-running choices.
 			if(_occupation != null && workingToday() && timeToBeAtWork())
 			{
 				setNextRole(_occupation);
@@ -790,12 +797,11 @@ public class PersonAgent extends Agent implements Person
 	/** If a RestaurantCustomerRole exists in _customerRoles, set that to the next role.  Else, get a new customer role from a randomly chosen restaurant */
 	private boolean actGoToAnyRestaurant()
 	{
-		RestaurantCustomerRole rcr = (RestaurantCustomerRole)getRoleOfType(RestaurantCustomerRole.class);
+		RestaurantCustomerRole rcr = (RestaurantCustomerRole)findCustomerRoleOfType(RestaurantCustomerRole.class);
 		if(rcr != null)
 		{
 			rcr.cmdGotHungry();
-			setNextRole(rcr);
-			return true;
+			if(setNextRole(rcr)) return true;
 		}
 		
 		// note: we only get here if no RestaurantCustomerRole was found in _customerRoles
@@ -804,9 +810,8 @@ public class PersonAgent extends Agent implements Person
 		{
 			rcr = restaurants.get(new Random().nextInt(restaurants.size())).generateCustomerRole(this);
 			rcr.cmdGotHungry();
-			setNextRole(rcr);
 			_customerRoles.add(rcr);
-			return true;
+			if(setNextRole(rcr)) return true;
 		}
 		
 		return false;
@@ -822,21 +827,21 @@ public class PersonAgent extends Agent implements Person
 		switch(type)
 		{
 		case "Eric":
-			rcr = (RestaurantCustomerRole)getRoleOfType(EricCustomerRole.class);
+			rcr = (RestaurantCustomerRole)findCustomerRoleOfType(EricCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(EricRestaurant.class);
 				if(rcr != null) _customerRoles.add(rcr);
 			}
 			break;
 		case "Omar":
-			rcr = (RestaurantCustomerRole)getRoleOfType(OmarCustomerRole.class);
+			rcr = (RestaurantCustomerRole)findCustomerRoleOfType(OmarCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(OmarRestaurant.class);
 				if(rcr != null) _customerRoles.add(rcr);
 			}
 			break;
 		case "Ryan":
-			rcr = (RestaurantCustomerRole)getRoleOfType(RyanCustomerRole.class);
+			rcr = (RestaurantCustomerRole)findCustomerRoleOfType(RyanCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(RyanRestaurant.class);
 				if(rcr != null) _customerRoles.add(rcr);
@@ -851,7 +856,7 @@ public class PersonAgent extends Agent implements Person
 		//	}
 		//	break;
 		case "Yixin":
-			rcr = (RestaurantCustomerRole)getRoleOfType(YixinCustomerRole.class);
+			rcr = (RestaurantCustomerRole)findCustomerRoleOfType(YixinCustomerRole.class);
 			if(rcr == null) {
 				rcr = getNewCustomerRoleFromRestaurantOfType(YixinRestaurant.class);
 				if(rcr != null) _customerRoles.add(rcr);
@@ -861,8 +866,7 @@ public class PersonAgent extends Agent implements Person
 		if(rcr != null)
 		{
 			rcr.cmdGotHungry();
-			setNextRole(rcr);
-			return true;
+			if(setNextRole(rcr)) return true;
 		}
 		
 		return false;
@@ -899,7 +903,6 @@ public class PersonAgent extends Agent implements Person
 	}
 	private boolean timeToBeAtWork()
 	{
-		//TODO choose between restaurant opening/closing time and regular opening/closing time etc
 		return _state.time() > Directory.OPENING_TIME - .5 && // .5 is half an hour
 				_state.time() < Directory.CLOSING_TIME + .5;
 	}
@@ -910,23 +913,40 @@ public class PersonAgent extends Agent implements Person
 		_currentRole.cmdFinishAndLeave();
 		stateChanged();
 	}
-	private void setNextRole(Role nextRole)
+	private boolean setNextRole(Role nextRole)
 	{
+		if(!_dontCheckPlaceOpen && isCustomerRole(nextRole))
+		{
+			if(!((Workplace)nextRole.place()).isOpen()) {
+				return false;
+			}
+		}
 		_nextRole = nextRole;
 		_commuterRole.setDestination(nextRole.place());
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
 		_personInfoPanel.refreshInfo(this);
+		return true;
 	}
-	private void setNextPlace(Place place)
+	// Uncomment if we want to be able to make people go to a place but not enter
+	//	private void setNextPlace(Place place)
+	//	{
+	//		_nextRole = null;
+	//		_commuterRole.setDestination(place);
+	//		_currentRole = _commuterRole;
+	//		_currentRole.active = true;
+	//		_personInfoPanel.refreshInfo(this);
+	//	}
+	private boolean isCustomerRole(Role r)
 	{
-		_nextRole = null;
-		_commuterRole.setDestination(place);
-		_currentRole = _commuterRole;
-		_currentRole.active = true;
-		_personInfoPanel.refreshInfo(this);
+		return (
+				r instanceof RestaurantCustomerRole ||
+				r instanceof BankCustomerRole ||
+				r instanceof MarketCustomerRole
+		);
 	}
-	private Role getRoleOfType(Type type)
+	/** This method searches for & returns a role in _customerRoles that is of the passed-in type; if none is found, it returns null. */
+	private Role findCustomerRoleOfType(Type type)
 	{
 		for(Role r : _customerRoles)
 		{
@@ -934,7 +954,7 @@ public class PersonAgent extends Agent implements Person
 		}
 		return null;
 	}
-	/** This method returns a new customer role from the restaurant type specified.
+	/** This method returns a newly generated customer role from the restaurant type specified.
 	 * It does not take into account whether or not the restaurant's customer role already exists in _customerRoles.
 	 */
 	private RestaurantCustomerRole getNewCustomerRoleFromRestaurantOfType(Type type)
