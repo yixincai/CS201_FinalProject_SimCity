@@ -49,7 +49,7 @@ public class RyanCashierRole extends RestaurantCashierRole {
 		menu = new Menu();
 		
 		_restaurant = r;
-		register = 500.0;
+		register = 50000.0;
 		bankBalance = 0;
 		bankDebt = 0;
 	}
@@ -111,9 +111,9 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	public void msgTransactionComplete(double amount, Double balance, Double debt, int newAccountNumber){
 		_restaurant.updateAccountNumber(newAccountNumber);
 		moneyState = MoneyState.none;
-		register = amount;
-		bankBalance = balance;
-		bankDebt = debt;
+//		register -= amount;
+//		bankBalance = balance;
+//		bankDebt = debt;
 	}
 	
 //	public void msgHeresBill(Market market, String choice, double price){
@@ -164,11 +164,11 @@ public class RyanCashierRole extends RestaurantCashierRole {
 			}
 			
 			if (moneyState == MoneyState.none){
-				if (register > 200 && bankDebt > 0){
+				if (register > 4000 && bankDebt > 0){
 					PayLoan();
 					return true;
 				}
-				else if (register > 400){
+				else if (register > 4000){
 					Deposit();
 					return true;
 				}
@@ -256,8 +256,9 @@ public class RyanCashierRole extends RestaurantCashierRole {
 	}
 	
 	private void Deposit(){
-		print(AlertTag.RYAN_RESTAURANT,"Deposited " + register/2 + " to the bank");
-		Directory.banks().get(0).tellers().get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), register/2, "Deposit");
+		print(AlertTag.RYAN_RESTAURANT,"Deposited " + (register-3000) + " to the bank");
+		Directory.banks().get(0).tellers().get(0).msgWiredTransaction(_restaurant, _restaurant.getAccountNumber(), register-3000, "Deposit");
+		register = 3000;
 		moneyState = MoneyState.OrderedFromBank;
 	}
 	
