@@ -137,7 +137,7 @@ public class RyanAnimationPanel extends JPanel implements ActionListener { //Add
         }
         
         for(Dimension chair: chairs){
-        	g2.drawImage(chairimage, chair.width, chair.height, xCGap, yCGap, this);
+        	g2.drawImage(chairimage, chair.width, chair.height+10, xCGap, yCGap, this);
         }
         
         //Kitchen Places
@@ -151,7 +151,7 @@ public class RyanAnimationPanel extends JPanel implements ActionListener { //Add
         
         //Here is the table
         for(Dimension temp: tables){
-        	g2.drawImage(table, temp.width, temp.height, xTGap, yTGap, this);
+        	g2.drawImage(table, temp.width, temp.height+10, xTGap, yTGap, this);
         }
 
 

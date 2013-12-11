@@ -46,6 +46,31 @@ public class RyanCookGui extends JPanel implements Gui{
     Image pot = b.getImage();
     int xPGap = 20;
     int yPGap = 20;
+    
+    ImageIcon c = new ImageIcon(this.getClass().getResource("/image/restaurant/FoodString.png"));
+    Image string = c.getImage();
+    int xSGap = 20;
+    int ySGap = 15;
+    
+    ImageIcon d = new ImageIcon(this.getClass().getResource("/image/restaurant/Steak.png"));
+    Image steak = d.getImage();
+    int xStGap = 20;
+    int yStGap = 12;
+    
+    ImageIcon e = new ImageIcon(this.getClass().getResource("/image/restaurant/Salad.png"));
+    Image salad = e.getImage();
+    int xSaGap = 19;
+    int ySaGap = 12;
+    
+    ImageIcon f = new ImageIcon(this.getClass().getResource("/image/restaurant/Chicken.png"));
+    Image chicken = f.getImage();
+    int xChGap = 21;
+    int yChGap = 15;
+    
+    ImageIcon g = new ImageIcon(this.getClass().getResource("/image/restaurant/Pizza.png"));
+    Image pizza = g.getImage();
+    int xPiGap = 20;
+    int yPiGap = 16;
 	
 	public RyanCookGui(RyanCookRole agent){
 		this.agent = agent;
@@ -236,15 +261,30 @@ public class RyanCookGui extends JPanel implements Gui{
         for(Grill temp: grills){
         	if(temp.occupied == true){
         		g.setColor(Color.black);
-    			g.drawString((temp.choice), (temp.x+22), (temp.y-9));
-    			g.drawImage(pot, temp.x, temp.y, xPGap, yPGap, this);
+        		g.drawImage(string, temp.x+33, temp.y+3, xSGap, ySGap, this);
+    			g.drawString((temp.choice), (temp.x+35), (temp.y+15));
+    			g.drawImage(pot, temp.x+2, temp.y-3, xPGap, yPGap, this);
         	}
         }
         
         for(Plate temp: plates){
         	if(temp.occupied == true){
-        		g.setColor(Color.black);
-    			g.drawString((temp.choice), temp.x, (temp.y-5));
+    			switch(temp.choice){
+    			case "St": g.drawImage(steak, temp.x, temp.y-20, xStGap, yStGap, this);
+    				break;
+    				
+    			case "Ch": g.drawImage(chicken, temp.x, temp.y-20, xChGap, yChGap, this);
+    				break;
+    				
+    			case "Sa": g.drawImage(salad, temp.x, temp.y-20, xSaGap, ySaGap, this);
+    				break;
+    				
+    			case "Pi": g.drawImage(pizza, temp.x, temp.y-20, xPiGap, yPiGap, this);
+    				break;
+    				default:
+    	        		g.setColor(Color.black);
+    	    			g.drawString((temp.choice), temp.x, (temp.y-5));
+    			}
         	}
         }
 	}

@@ -17,12 +17,17 @@ import javax.swing.JScrollPane;
 
 import city.Directory;
 import city.Place;
+import city.Workplace;
 import city.bank.Bank;
 import city.restaurant.Restaurant;
 import city.restaurant.eric.EricRestaurant;
+import city.restaurant.eric.gui.EricAnimationPanel;
 import city.restaurant.omar.OmarRestaurant;
+import city.restaurant.omar.gui.OmarRestaurantAnimationPanel;
 import city.restaurant.ryan.RyanRestaurant;
+import city.restaurant.ryan.gui.RyanAnimationPanel;
 import city.restaurant.yixin.YixinRestaurant;
+import city.restaurant.yixin.gui.YixinAnimationPanel;
 
 public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	
@@ -35,6 +40,7 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	
 	Place _currentlySelectedBuilding;
 	JButton clearInventoryButton;
+	JButton closeWorkplaceButton;
 	private final Dimension buttonDimension = new Dimension(340, 30);
 	
 	BuildingInteriorAnimationPanel currentBuildingPanel = null;
@@ -69,9 +75,26 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	             }
 	         });
 			 
+			 closeWorkplaceButton = new JButton("Close Workplace");
+			 closeWorkplaceButton.setMinimumSize(buttonDimension);
+			 closeWorkplaceButton.setMaximumSize(buttonDimension);
+			 closeWorkplaceButton.setVisible(false);
+			 
+			 closeWorkplaceButton.addActionListener(new ActionListener() {
+	             @Override
+	             public void actionPerformed(ActionEvent e) {
+	            	 if(_currentlySelectedBuilding != null && _currentlySelectedBuilding instanceof Workplace){
+	            		((Workplace) _currentlySelectedBuilding).msgTimeToClose();
+	            	 }
+	             }
+	         });
+			 
+			 
+			 
 			buildingName = new JLabel("Building Name: ");
 			infoPanel.add(buildingName); 
 			infoPanel.add(clearInventoryButton);
+			infoPanel.add(closeWorkplaceButton);
 			this.add(infoPanel, BorderLayout.NORTH);
 			buttonPanel = new JPanel();
 			buttonPanel.setLayout(new BorderLayout());
@@ -86,6 +109,7 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 			buttonPanel.add(buildingButtons, BorderLayout.CENTER);
 			buttonPanel.validate();
 			this.add(buttonPanel, BorderLayout.CENTER);
+		
 	}
 	
 	public void addBuilding(String name)
@@ -93,9 +117,9 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 		JButton newBuildingButton = new JButton(name);
 		newBuildingButton.setBackground(Color.white);
 		Dimension paneSize = buttonPanel.getPreferredSize();
-		newBuildingButton.setPreferredSize(new Dimension(paneSize.width, paneSize.height/10));
-		newBuildingButton.setMinimumSize(new Dimension(paneSize.width, paneSize.height/10));
-		newBuildingButton.setMaximumSize(new Dimension(paneSize.width, paneSize.height/10));
+		newBuildingButton.setPreferredSize(new Dimension(paneSize.width - 50, paneSize.height/10));
+		newBuildingButton.setMinimumSize(new Dimension(paneSize.width - 50, paneSize.height/10));
+		newBuildingButton.setMaximumSize(new Dimension(paneSize.width - 50, paneSize.height/10));
 		newBuildingButton.addActionListener(this);
 		view.add(newBuildingButton);
 		this.updateInfo(newBuildingButton);
@@ -103,11 +127,15 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	
 	public void updateInfo(JButton selected)
 	{
-		
+		updateInfo(selected.getText());
+	}
+	
+	public void updateInfo(String selectedBuilding)
+	{
 		List<Place> places = Directory.places();
 		for(Place p : places)
 		{
-			if(p.name() == selected.getText())
+			if(p.name().contains(selectedBuilding))
 			{
 				_currentlySelectedBuilding = p;
 				if(p instanceof OmarRestaurant || p instanceof YixinRestaurant || 
@@ -115,6 +143,11 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 					clearInventoryButton.setVisible(true);
 				} else {
 					clearInventoryButton.setVisible(false);
+				}
+				if(p instanceof Workplace){
+					closeWorkplaceButton.setVisible(true);
+				} else{
+					closeWorkplaceButton.setVisible(false);
 				}
 				buildingName.setText("Building Name: " + p.name());
 			//	buildingMoney.setText("Building Money: Need a money field in places");
@@ -125,7 +158,7 @@ public class CurrentBuildingPanel extends JPanel implements ActionListener {
 	
 	public void setBuildingPanel(BuildingInteriorAnimationPanel bp){
 		this.currentBuildingPanel = bp;
-		buildingName.setText("Building Name: " + bp.getName());
+		//updateInfo(bp.getName());
 	}
 
 	@Override

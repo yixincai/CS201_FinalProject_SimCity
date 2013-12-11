@@ -74,6 +74,10 @@ public class CommuterGui implements Gui {
     
 	private ImageIcon i = new ImageIcon(this.getClass().getResource("/image/bank/Skull.png"));
 	private Image skull = i.getImage();
+	
+	private ImageIcon j = new ImageIcon(this.getClass().getResource("/image/transportation/Crash.png"));
+	private Image crash = j.getImage();
+	
 	int xGap = 10;
 	int yGap = 10;
 	
@@ -1014,10 +1018,16 @@ public class CommuterGui implements Gui {
 				g.fillRect(_xPos - 2, _yPos - 2, xGap + 4, yGap + 4);
 			}
 			
-			if (dead){
+			if (dead && _commuter.hasCar){
+				g.drawImage(crash,_xPos,_yPos, xGap, yGap, null);
+				return;
+			}
+			
+			if (dead && !_commuter.hasCar){
 				g.drawImage(skull,_xPos,_yPos, xGap, yGap, null);
 				return;
 			}
+			
 			if(_commuter.hasCar()){
 				if(direction == CarDirection.CarDown){
 					g.drawImage(CarDown, _xPos, _yPos, 10, 10, null);

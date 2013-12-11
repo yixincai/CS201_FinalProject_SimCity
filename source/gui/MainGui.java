@@ -518,7 +518,6 @@ public class MainGui extends JFrame
 	public WorldView getWorldView() { return _worldView; }
 	
 	 public void displayBuildingPanel(BuildingInteriorAnimationPanel bp ) {
-		//System.out.println("MainGui: showing building " + bp.getName() + "'s AnimationPanel." );
 		((CardLayout) _buildingCardLayoutPanel.getLayout()).show(_buildingCardLayoutPanel, bp.getName());
 		cPanel.updateBuildingInfo(bp);
 	 }

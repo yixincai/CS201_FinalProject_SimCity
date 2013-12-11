@@ -2,6 +2,8 @@ package city.restaurant.ryan.gui;
 
 import java.awt.*;
 
+import javax.swing.ImageIcon;
+
 import city.restaurant.ryan.RyanCustomerRole;
 
 public class RyanCustomerGui implements Gui{
@@ -25,6 +27,26 @@ public class RyanCustomerGui implements Gui{
 	public int yTable;
 	
 	Dimension CashierPos = new Dimension(200, 65);
+	
+	ImageIcon d = new ImageIcon(this.getClass().getResource("/image/restaurant/Steak.png"));
+    Image steak = d.getImage();
+    int xStGap = 20;
+    int yStGap = 12;
+    
+    ImageIcon e = new ImageIcon(this.getClass().getResource("/image/restaurant/Salad.png"));
+    Image salad = e.getImage();
+    int xSaGap = 19;
+    int ySaGap = 12;
+    
+    ImageIcon f = new ImageIcon(this.getClass().getResource("/image/restaurant/Chicken.png"));
+    Image chicken = f.getImage();
+    int xChGap = 21;
+    int yChGap = 15;
+    
+    ImageIcon g = new ImageIcon(this.getClass().getResource("/image/restaurant/Pizza.png"));
+    Image pizza = g.getImage();
+    int xPiGap = 20;
+    int yPiGap = 16;
 
 	public RyanCustomerGui(RyanCustomerRole c){ //HostAgent m) {
 		agent = c;
@@ -103,8 +125,23 @@ public class RyanCustomerGui implements Gui{
 			g.drawString((choice +"?"), xPos, (yPos-5));
 		}
 		if(state == State.eating){
-			g.setColor(Color.black);
-			g.drawString((choice), xPos, (yPos+35));
+			switch(choice){
+			case "St": g.drawImage(steak, xPos, yPos+35, xStGap, yStGap, null);
+				break;
+				
+			case "Ch": g.drawImage(chicken, xPos, yPos+35, xChGap, yChGap, null);
+				break;
+				
+			case "Sa": g.drawImage(salad, xPos, yPos+35, xSaGap, ySaGap, null);
+				break;
+				
+			case "Pi": g.drawImage(pizza, xPos, yPos+35, xPiGap, yPiGap, null);
+				break;
+				default:
+					g.setColor(Color.black);
+					g.drawString((choice), xPos, (yPos+35));
+			}
+			
 		}
 		if(state == State.paying){
 			g.setColor(Color.black);

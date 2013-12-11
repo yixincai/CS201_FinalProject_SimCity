@@ -285,7 +285,7 @@ public class YixinCustomerRole extends RestaurantCustomerRole{// implements Cust
 			leaveRestaurant();
 		}
 		else{
-			host.msgIWantToStay(this);
+			restaurant.host.msgIWantToStay(this);
 			print(AlertTag.YIXIN_RESTAURANT,"I want to stay in the restaurant");
 			state = AgentState.StillWaitingInRestaurant;
 		}
