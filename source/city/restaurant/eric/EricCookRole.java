@@ -16,6 +16,7 @@ import city.interfaces.Person;
 import city.market.Item;
 import city.market.Market;
 import city.restaurant.RestaurantCookRole;
+import city.restaurant.eric.gui.EricCookGui;
 import city.restaurant.eric.interfaces.*;
 
 public class EricCookRole extends RestaurantCookRole implements EricCook
@@ -30,6 +31,7 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	// use Order.waiter for waiter correspondence.
 	private EricCashier _cashier;
 	private EricRestaurant _restaurant;
+	private EricCookGui _gui;
 	
 	// Agent data:
 	private class Order
@@ -96,6 +98,7 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	public void setCashier(EricCashier c) { _cashier = c; }
 	public Place place() { return _restaurant; }
 	private EricRevolvingStand revolvingStand() { return _restaurant.revolvingStand(); }
+	public void setGui(EricCookGui gui) { _gui = gui; }
 	
 	
 	
@@ -197,12 +200,18 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 				}
 			}
 		}
+		
+		Invoice invoice = null;
 		synchronized(_invoices) {
 			if(!_invoices.isEmpty()) {
-				actSendInvoice(_invoices.remove(0));
-				return true;
+				invoice = _invoices.get(0);
 			}
 		}
+		if(invoice != null) {
+			actSendInvoice(invoice);
+			return true;
+		}
+		
 		if(!_awaitingMarketDelivery) {
 			synchronized(_foods) {
 				for(Food f : _foods) {
@@ -300,7 +309,8 @@ public class EricCookRole extends RestaurantCookRole implements EricCook
 	{
 		print(AlertTag.ERIC_RESTAURANT, "Sending invoice to the cashier.");
 		
-		_cashier.msgIReceivedTheseFoods(invoice.market, invoice.foodsReceived)
+		_cashier.msgIReceivedTheseFoods(invoice.market, invoice.foodsReceived);
+		_invoices.remove(invoice);
 	}
 	
 	

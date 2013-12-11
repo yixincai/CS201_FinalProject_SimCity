@@ -14,6 +14,5 @@ public interface EricCashier
 	public void msgHereIsMoney(EricCustomer sender, double money, Check c);
 	public void msgDoesCustomerOwe(EricCustomer customer); // from Host
 	public void msgHereIsOwedMoney(EricCustomer sender, double money);
-	public void msgYouOwe(OLD_EricMarket sender, double amount);
 	public void msgIReceivedTheseFoods(Market market, Map<String, Integer> foodsReceived);
 }

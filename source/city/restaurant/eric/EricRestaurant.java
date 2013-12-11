@@ -10,7 +10,10 @@ import city.PersonAgent;
 import city.restaurant.Restaurant;
 import city.restaurant.RestaurantCustomerRole;
 import city.restaurant.eric.gui.EricAnimationPanel;
+import city.restaurant.eric.gui.EricCashierGui;
+import city.restaurant.eric.gui.EricCookGui;
 import city.restaurant.eric.gui.EricCustomerGui;
+import city.restaurant.eric.gui.EricHostGui;
 import city.restaurant.eric.gui.EricWaiterGui;
 import city.restaurant.eric.interfaces.EricCashier;
 import city.restaurant.eric.interfaces.EricWaiter;
@@ -103,20 +106,23 @@ public class EricRestaurant extends Restaurant {
 
 	@Override
 	public void generateCashierGui() {
-		// TODO Auto-generated method stub
-		
+		EricCashierGui gui = new EricCashierGui((EricCashierRole)_cashier);
+		((EricCashierRole)_cashier).setGui(gui);
+		animationPanel().addGui(gui);
 	}
 
 	@Override
 	public void generateCookGui() {
-		// TODO Auto-generated method stub
-		
+		EricCookGui gui = new EricCookGui((EricCookRole)_cook);
+		((EricCookRole)_cook).setGui(gui);
+		animationPanel().addGui(gui);
 	}
 
 	@Override
 	public void generateHostGui() {
-		// TODO Auto-generated method stub
-		
+		EricHostGui gui = new EricHostGui((EricHostRole)_host);
+		((EricHostRole)_host).setGui(gui);
+		animationPanel().addGui(gui);
 	}
 
 }

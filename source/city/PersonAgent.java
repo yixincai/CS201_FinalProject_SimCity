@@ -408,7 +408,7 @@ public class PersonAgent extends Agent implements Person
 	// =========================================================================================================================
 	@Override
 	protected boolean pickAndExecuteAnAction() {
-		if(_currentRole.active)
+		if(_currentRole != null && _currentRole.active)
 		{
 			if(!_sentCmdFinishAndLeave)
 			{
@@ -482,11 +482,34 @@ public class PersonAgent extends Agent implements Person
 			
 			if(_currentRole == _commuterRole)
 			{
-				// commuter role must have just reached the destination; we need to shift the current role from the commuter role to whatever next role is.
+				// commuter role must have just reached the destination
+				
+//				//TODO uncomment when Workplace is implemented
+//				// First, check if it's a workplace and do appropriate actions (check if it's closed, add yourself to the list)
+//				if(_nextRole.place() instanceof Workplace)
+//				{
+//					if(!( (Workplace)_nextRole.place() ).isOpen())
+//					{
+//						_currentRole = null;
+//						return true;
+//					}
+//					else
+//					{
+//						((Workplace)_nextRole.place()).msgIAmComing();
+//					}
+//				}
+				
+				// Shift the current role from the commuter role to whatever next role is.
 				_currentRole = _nextRole;
-				_currentRole.active = true;
+				if(_currentRole != null) _currentRole.active = true;
 				return true;
 			}
+//			//TODO this too
+//			else if(_currentRole.place() instanceof Workplace)
+//			{
+//				// We just left a workplace because _currentRole just finished
+//				((Workplace)_nextRole.place()).msgIAmLeaving();
+//			}
 			
 			
 			
@@ -844,7 +867,14 @@ public class PersonAgent extends Agent implements Person
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
 		_personInfoPanel.refreshInfo(this);
-		stateChanged();
+	}
+	private void setNextPlace(Place place)
+	{
+		_nextRole = null;
+		_commuterRole.setDestination(place);
+		_currentRole = _commuterRole;
+		_currentRole.active = true;
+		_personInfoPanel.refreshInfo(this);
 	}
 	private Role getRoleOfType(Type type)
 	{

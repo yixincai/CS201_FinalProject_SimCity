@@ -11,6 +11,7 @@ import city.Place;
 import city.interfaces.Person;
 import city.market.Market;
 import city.restaurant.RestaurantCashierRole;
+import city.restaurant.eric.gui.EricCashierGui;
 import city.restaurant.eric.interfaces.*;
 
 public class EricCashierRole extends RestaurantCashierRole implements EricCashier
@@ -20,6 +21,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 	// Correspondence:
 	private EricHost _host;
 	private EricRestaurant _restaurant;
+	private EricCashierGui _gui;
 	
 	// Agent data:
 	private double _money = 140;
@@ -43,8 +45,9 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 	{
 		public double amountOwed;
 		public Map<String, Double> priceList;
+		public Map<String, Integer> foodsReceived;
 		public Market market;
-		public MarketBillState state = MarketBillState.RECEIVED;
+		public MarketBillState state;
 	}
 	private List<MarketBill> _marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 	
@@ -59,6 +62,7 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 	public String name() { return _person.name(); }
 	public void setHost(EricHost host) { _host = host; }
 	public Place place() { return _restaurant; }
+	public void setGui(EricCashierGui gui) { _gui = gui; }
 	
 	// ------------------------------------------- TEST PROPERTIES ------------------------------------------------
 	public List<Bill> bills() { return _bills; }
@@ -138,15 +142,6 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 			}
 		}
 	}
-	
-	public void msgYouOwe(OLD_EricMarket sender, double amount)
-	{
-		MarketBill b = new MarketBill();
-		b.amountOwed = amount;
-		b.market = sender;
-		_marketBills.add(b);
-		stateChanged();
-	}
 
 	@Override
 	public void msgHereIsTheBill(Market m, double bill, Map<String, Double> price_list) {
@@ -154,12 +149,21 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 		b.market = m;
 		b.amountOwed = bill;
 		b.priceList = price_list;
+		b.state = MarketBillState.RECEIVED;
+		_marketBills.add(b);
 		stateChanged();
 	}
 
-	@override
-	public void msgIReceivedTheseFoods(Market market, Map<String, Integer> foodsReceived) {
-		
+	@Override
+	public void msgIReceivedTheseFoods(Market market, Map<String, Integer> foodsReceived) { // from cook
+		for(MarketBill b : _marketBills)
+		{
+			if(b.market == market)
+			{
+				b.foodsReceived = foodsReceived;
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -215,7 +219,9 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 		synchronized(_marketBills) {
 			if(_money > 0) {
 				for(MarketBill b : _marketBills) {
-					actMakeMarketPayment(b);
+					if(b.foodsReceived != null) {
+						actMakeMarketPayment(b);
+					}
 					return true;
 				}
 			}
@@ -305,24 +311,26 @@ public class EricCashierRole extends RestaurantCashierRole implements EricCashie
 		}
 	}
 	
-	private void actMakeMarketPayment(MarketBill b)
+	private boolean actMakeMarketPayment(MarketBill b)
 	{
 		logThis("actMakeMarketPayment");
 		
-		// Choose the amount to pay:
-		double amountToPay = b.amountOwed;
-		if(_money < amountToPay) {
-			amountToPay = _money;
+		double amountToPay = 0;
+		for(Map.Entry<String, Integer> e : b.foodsReceived.entrySet())
+		{
+			//                  price for this food         number of food items
+			amountToPay += b.priceList.get(e.getKey()) * e.getValue();
 		}
-
-		print(AlertTag.ERIC_RESTAURANT,"Paying $" + amountToPay + " to " + b.market.getName() + ".");
 		
-		// Send the payment
-		b.amountOwed -= amountToPay;
-		_money -= amountToPay;
-		if(b.amountOwed < .01) {
-			_marketBills.remove(b);
-		}
-		b.market.msgPayment(this, amountToPay);
+		if(amountToPay > b.amountOwed) amountToPay = b.amountOwed;
+		
+		if(_money < amountToPay) return false;
+		
+		print(AlertTag.ERIC_RESTAURANT,"Paying $" + amountToPay + " to " + b.market.name() + ".");
+
+		_marketBills.remove(b);
+		b.market.getCashier().msgHereIsPayment(_restaurant, amountToPay);
+		
+		return true;
 	}
 }
