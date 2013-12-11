@@ -182,8 +182,8 @@ public class RyanCashierRole extends RestaurantCashierRole {
 				}
 			}
 			
-			if (bills.size() == 0 && receipts.size() == 0 && roleState == RoleState.WantToLeave){
-				LeaveRestaurant();
+			if (bills.size() == 0 && receipts.size() == 0 && roleState == RoleState.WantToLeave && _restaurant.getNumberOfCustomers() == 0){
+				//LeaveRestaurant();
 				roleState = RoleState.none;
 				active = false;
 				return true;

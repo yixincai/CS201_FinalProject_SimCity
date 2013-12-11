@@ -16,6 +16,7 @@ import java.util.Random;
 
 import city.PersonAgent;
 import city.Place;
+import city.restaurant.ryan.RyanHostRole.RoleState;
 import city.restaurant.ryan.gui.RyanWaiterGui;
 import agent.Agent;
 import agent.Role;
@@ -252,6 +253,11 @@ public abstract class RyanWaiterRole extends Role{
 //				goOnBreak();
 //				return true;
 //			}
+			if (Customers.isEmpty() && 	role_state == RoleState.WantToLeave && _restaurant.getNumberOfCustomers() == 0){
+				role_state = RoleState.none;
+				active = false;
+				return true;
+			}
 		}
 		gui.setPosition(0);
 		return false;
