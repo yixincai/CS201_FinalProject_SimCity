@@ -517,32 +517,48 @@ public class PersonAgent extends Agent implements Person
 			{
 				// commuter role must have just reached the destination
 				
-//				//TODO uncomment when Workplace is implemented
-//				// First, check if it's a workplace and do appropriate actions (check if it's closed, add yourself to the list)
-//				if(_nextRole.place() instanceof Workplace)
-//				{
-//					if(!( (Workplace)_nextRole.place() ).isOpen())
-//					{
-//						_currentRole = null;
-//						return true;
-//					}
-//					else
-//					{
-//						((Workplace)_nextRole.place()).msgIAmComing();
-//					}
-//				}
+				// First, check if it's a workplace and do appropriate actions (check if it's closed, add yourself to the list)
+				if(_nextRole != null && _nextRole.place() instanceof Workplace)
+				{
+					if(
+							_nextRole instanceof RestaurantCustomerRole ||
+							_nextRole instanceof BankCustomerRole ||
+							_nextRole instanceof MarketCustomerRole
+					)
+					{
+						if(((Workplace)_nextRole.place()).isOpen())
+						{
+							// Only if _nextRole is a customer role and nextRole's place is open
+							((Workplace)_nextRole.place()).msgIAmComing();
+						}
+						else
+						{
+							// if my next role is a customer role but the place isn't open
+							_currentRole = null;
+							return true;
+						}
+					}
+					
+				}
 				
 				// Shift the current role from the commuter role to whatever next role is.
 				_currentRole = _nextRole;
 				if(_currentRole != null) _currentRole.active = true;
 				return true;
 			}
-//			//TODO this too
-//			else if(_currentRole.place() instanceof Workplace)
-//			{
-//				// We just left a workplace because _currentRole just finished
-//				((Workplace)_nextRole.place()).msgIAmLeaving();
-//			}
+			else if(_currentRole != null && (_currentRole.place() instanceof Workplace))
+			{
+				// we just left a workplace because _currentRole just finished
+				if(
+						_currentRole instanceof RestaurantCustomerRole ||
+						_currentRole instanceof BankCustomerRole ||
+						_currentRole instanceof MarketCustomerRole
+				)
+				{
+					// we just left a workplace and we were a customer
+					((Workplace)_currentRole.place()).msgIAmLeaving();
+				}
+			}
 			
 			
 			
