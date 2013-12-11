@@ -134,6 +134,7 @@ public class OmarCookRole extends RestaurantCookRole {
 			for(MyMarket m: markets){
 				if(m.marketState == MarketStatus.paying){
 					restockFood(m);
+					return true;
 				}
 			}
 		}
@@ -141,12 +142,10 @@ public class OmarCookRole extends RestaurantCookRole {
 			for(MyMarket m: markets){
 				if(m.marketState == MarketStatus.paid){
 					tellCashierToPayMarket(m);
+					return true;
 				}
 			}
 		}	
-		if(orders.isEmpty() && command == Command.Leave && restaurant.getNumberOfCustomers() == 0){
-			leaveRestaurant();
-		}
 
 		if(!orders.isEmpty()){
 			synchronized(orders){
@@ -190,6 +189,11 @@ public class OmarCookRole extends RestaurantCookRole {
 				}
 			}, 10000);
 			check_state = CheckState.Checked;
+			return true;
+		}
+		if(orders.isEmpty() && command == Command.Leave && restaurant.getNumberOfCustomers() == 0){
+			leaveRestaurant();
+			return true;
 		}
 		return false;
 	}

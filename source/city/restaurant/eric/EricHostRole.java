@@ -10,6 +10,7 @@ import java.util.List;
 import city.Place;
 import city.interfaces.Person;
 import city.restaurant.eric.gui.EricAnimationConstants;
+import city.restaurant.eric.gui.EricHostGui;
 import agent.Role;
 import city.restaurant.eric.interfaces.*;
 
@@ -20,6 +21,7 @@ public class EricHostRole extends Role implements EricHost
 	// Correspondence:
 	private EricCashier _cashier;
 	private EricRestaurant _restaurant;
+	private EricHostGui _gui;
 	
 	// Personal state:
 	private boolean _wantToLeave = false;
@@ -79,6 +81,7 @@ public class EricHostRole extends Role implements EricHost
 	public void setCashier(EricCashier cashier) { _cashier = cashier; }
 	public Place place() { return _restaurant; }
 	public boolean restaurantIsOpen() { return !_wantToLeave; }
+	public void setGui(EricHostGui gui) { _gui = gui; }
 	
 	
 	

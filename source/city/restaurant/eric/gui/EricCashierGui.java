@@ -4,14 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import city.restaurant.eric.EricCashierRole;
-import city.restaurant.eric.EricCookRole;
 import gui.Gui;
 
 public class EricCashierGui implements Gui {
 	
 	// ---------------------------------- DATA ----------------------------------
 	private RestDim _position = new RestDim(EricAnimationConstants.CASHIER_POSX, EricAnimationConstants.CASHIER_POSY);
-	private boolean _isPresent = false;
 	private EricCashierRole _role;
 	
 	
@@ -22,7 +20,7 @@ public class EricCashierGui implements Gui {
 	}
 	@Override
 	public boolean isPresent() {
-		return _isPresent;
+		return _role.active;
 	}
     
     

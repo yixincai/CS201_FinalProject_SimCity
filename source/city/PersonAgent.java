@@ -181,10 +181,10 @@ public class PersonAgent extends Agent implements Person
 		
 		Random generator = new Random();
     	int i = generator.nextInt(2);
-    	if(i == 1){
+    	if(i == 1) {
     		_picture = a.getImage();
     	}
-    	else{
+    	else {
     		_picture = b.getImage();
     	}
 
@@ -199,61 +199,69 @@ public class PersonAgent extends Agent implements Person
 	 * @param homeType Either "house" or "apartment" */
 	public void acquireHome(String homeType)
 	{
-		if(homeType.equalsIgnoreCase("apartment"))
+		while(true)
 		{
-			List<ApartmentBuilding> apartmentBuildings = Directory.apartmentBuildings();
-			for(ApartmentBuilding b : apartmentBuildings)
+			if(!homeType.equals("house"))
 			{
-				List<Apartment> apartments = b.apartments();
-				for(Apartment a : apartments)
+				List<ApartmentBuilding> apartmentBuildings = Directory.apartmentBuildings();
+				for(ApartmentBuilding b : apartmentBuildings)
 				{
-					HomeOccupantRole newHomeOccupantRole = a.tryGenerateHomeOccupantRole(this);
-					if(newHomeOccupantRole != null)
+					List<Apartment> apartments = b.apartments();
+					for(Apartment a : apartments)
 					{
-						_homeOccupantRole = newHomeOccupantRole;
-						// _homeBuyingRole = a.generateHomeBuyingRole(this);
-						return;
+						HomeOccupantRole newHomeOccupantRole = a.tryGenerateHomeOccupantRole(this);
+						if(newHomeOccupantRole != null)
+						{
+							_homeOccupantRole = newHomeOccupantRole;
+							// _homeBuyingRole = a.generateHomeBuyingRole(this);
+							return;
+						}
 					}
 				}
 			}
-		}
-		else if(homeType.equalsIgnoreCase("house"))
-		{
-			List<House> houses = Directory.houses();
-			for(House h : houses)
+			if(!homeType.equalsIgnoreCase("apartment"))
 			{
-				HomeOccupantRole newHomeOccupantRole = h.tryGenerateHomeOccupantRole(this);
-				if(newHomeOccupantRole != null)
+				List<House> houses = Directory.houses();
+				for(House h : houses)
 				{
-					_homeOccupantRole = newHomeOccupantRole;
-					// _homeBuyingRole = null; // will eventually change this to HomeOwnerRole
-					return;
+					HomeOccupantRole newHomeOccupantRole = h.tryGenerateHomeOccupantRole(this);
+					if(newHomeOccupantRole != null)
+					{
+						_homeOccupantRole = newHomeOccupantRole;
+						// _homeBuyingRole = null; // will eventually change this to HomeOwnerRole
+						return;
+					}
+				}
+
+				List<ApartmentBuilding> apartmentBuildings = Directory.apartmentBuildings();
+				for(ApartmentBuilding b : apartmentBuildings)
+				{
+					List<Apartment> apartments = b.apartments();
+					for(Apartment a : apartments)
+					{
+						HomeOccupantRole newHomeOccupantRole = a.tryGenerateHomeOccupantRole(this);
+						if(newHomeOccupantRole != null)
+						{
+							_homeOccupantRole = newHomeOccupantRole;
+							// _homeBuyingRole = a.generateHomeBuyingRole(this);
+							return;
+						}
+					}
 				}
 			}
 			
-			List<ApartmentBuilding> apartmentBuildings = Directory.apartmentBuildings();
-			for(ApartmentBuilding b : apartmentBuildings)
+			if(!homeType.equals("house") && !homeType.equals("apartment")) // i.e. if you tried to get both an apartment and a house and it still failed
 			{
-				List<Apartment> apartments = b.apartments();
-				for(Apartment a : apartments)
-				{
-					HomeOccupantRole newHomeOccupantRole = a.tryGenerateHomeOccupantRole(this);
-					if(newHomeOccupantRole != null)
-					{
-						_homeOccupantRole = newHomeOccupantRole;
-						// _homeBuyingRole = a.generateHomeBuyingRole(this);
-						return;
-					}
-				}
+				break;
 			}
-		}
-		else
-		{
-			throw new IllegalArgumentException("Invalid value of homeType: " + homeType);
+			else
+			{
+				homeType = "";
+			}
 		}
 		
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, this.name(),"Failed to acquire a(n) " + homeType + ".");
-		_homeOccupantRole = new HomelessRole(this);
+		// _homeOccupantRole = new HomelessRole(this);
 		// _homeBuyingRole = null;
 	}
 	/** Sets the value of _occupation to a role that is requested by occupationType if possible; else it sets _occupation to null. */
@@ -433,7 +441,7 @@ public class PersonAgent extends Agent implements Person
 	// =========================================================================================================================
 	@Override
 	protected boolean pickAndExecuteAnAction() {
-		if(_currentRole.active)
+		if(_currentRole != null && _currentRole.active)
 		{
 			if(!_sentCmdFinishAndLeave)
 			{
@@ -507,11 +515,34 @@ public class PersonAgent extends Agent implements Person
 			
 			if(_currentRole == _commuterRole)
 			{
-				// commuter role must have just reached the destination; we need to shift the current role from the commuter role to whatever next role is.
+				// commuter role must have just reached the destination
+				
+//				//TODO uncomment when Workplace is implemented
+//				// First, check if it's a workplace and do appropriate actions (check if it's closed, add yourself to the list)
+//				if(_nextRole.place() instanceof Workplace)
+//				{
+//					if(!( (Workplace)_nextRole.place() ).isOpen())
+//					{
+//						_currentRole = null;
+//						return true;
+//					}
+//					else
+//					{
+//						((Workplace)_nextRole.place()).msgIAmComing();
+//					}
+//				}
+				
+				// Shift the current role from the commuter role to whatever next role is.
 				_currentRole = _nextRole;
-				_currentRole.active = true;
+				if(_currentRole != null) _currentRole.active = true;
 				return true;
 			}
+//			//TODO this too
+//			else if(_currentRole.place() instanceof Workplace)
+//			{
+//				// We just left a workplace because _currentRole just finished
+//				((Workplace)_nextRole.place()).msgIAmLeaving();
+//			}
 			
 			
 			
@@ -869,7 +900,14 @@ public class PersonAgent extends Agent implements Person
 		_currentRole = _commuterRole;
 		_currentRole.active = true;
 		_personInfoPanel.refreshInfo(this);
-		stateChanged();
+	}
+	private void setNextPlace(Place place)
+	{
+		_nextRole = null;
+		_commuterRole.setDestination(place);
+		_currentRole = _commuterRole;
+		_currentRole.active = true;
+		_personInfoPanel.refreshInfo(this);
 	}
 	private Role getRoleOfType(Type type)
 	{

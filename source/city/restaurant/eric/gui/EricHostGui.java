@@ -10,7 +10,6 @@ public class EricHostGui implements Gui {
 	
 	// ---------------------------------- DATA ----------------------------------
 	private RestDim _position = new RestDim(EricAnimationConstants.FRONTDESK_X, EricAnimationConstants.FRONTDESK_Y);
-	private boolean _isPresent = false;
 	private EricHostRole _role;
 	
 	
@@ -21,7 +20,7 @@ public class EricHostGui implements Gui {
 	}
 	@Override
 	public boolean isPresent() {
-		return _isPresent;
+		return _role.active;
 	}
     
     
