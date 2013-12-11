@@ -19,7 +19,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	// --------------------------------------- DATA -------------------------------------------
 	BankHost _bankHost;
 	BankTeller _teller;
-	public String _request; //TODO HEY OMAR I recommend you change these fields to be private, even though I see that you only use them for tests; Just make some getters.
+	public String _request;
 	public double _amount;
 	public double _accountFunds;
 	public double _amountOwed;
@@ -27,8 +27,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	public State _state;
 	public Event _event;
-	Semaphore _bankCustSem; //TODO this name is ambiguous; what is it for?
-	public BankCustomerRoleGui gui; //TODO it won't let me add an underscore, but I can't figure out why
+	Semaphore _bankCustSem; 
+	public BankCustomerRoleGui gui;
 	Bank bank;
 	 
 	public enum State {Dead, Robber, DoingNothing, Waiting, AtTeller, GaveRequest, 
